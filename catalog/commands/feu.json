@@ -1,0 +1,2451 @@
+{
+  "commands": [
+    {
+      "name": "ACIER",
+      "family": "feu",
+      "context": "top",
+      "summary": "Definit un type de barre d acier passif utilise pour les armatures des sections de calcul au feu.",
+      "syntax": [
+        "ACIER ac ('Titre')",
+        "   DIAMETRE phi",
+        "   (SECTION as)",
+        "   (CLASSE <N, X>)",
+        "   (LAMINE <CHAUD, FROID>)",
+        "   E es",
+        "   FYK fy",
+        "FIN"
+      ],
+      "pages": [
+        227
+      ],
+      "terminator": "FIN",
+      "exec": "EXEC INCENDIE",
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "aliases": [],
+      "doc": "Definit les caracteristiques d un **type de barre d acier passif** utilise pour les armatures de beton arme de la section de calcul au feu [p.227].\n\nLe numero `ac` est ensuite reference dans les commandes `ARMATURE`.\n\nLe diametre `phi` sert a deux choses [p.227] :\n- calculer la section d acier, qui vaut alors **pi.phi^2/4**, sauf si `SECTION as` est renseigne ;\n- determiner la **position de la maille de beton** ou se situent les fibres extremes de la section d armature, donc la **temperature de l armature**.",
+      "prerequisites": [
+        "OPTION PLANE ou OPTION SPATIALE [p.217]",
+        "Travailler en metre [p.218]",
+        "A definir avant les commandes ARMATURE qui le referencent [p.390]"
+      ],
+      "forbidden": [
+        "OPTION GRILL [p.217]"
+      ],
+      "pitfalls": [
+        "**Augmenter le diametre de l armature peut avoir l effet inverse de celui escompte** : la position du centre de l armature etant fixee par l enrobage, un plus gros diametre rapproche la fibre extreme de l armature de la paroi chauffee [p.400].",
+        "Pour du beton arme, la ruine intervient souvent quand les ferraillages atteignent 500-600 degres ; les leviers efficaces sont l augmentation de l enrobage ou la protection incendie de la paroi [p.400].",
+        "L aide-memoire de syntaxe du manuel ecrit `LAMINES` alors que le chapitre 12 et les exemples ecrivent `LAMINE` : c est `LAMINE` qui est la forme documentee au chapitre 12 [p.227] et utilisee dans l exemple officiel [p.317]."
+      ],
+      "examples": [
+        "ACIER 25 'ACIERS HA25'\n   DIAMETRE 0.025\n   LAMINE CHAUD\n   E 200000\n   FYK 500\nFIN",
+        "ACIER 20 'ACIERS HA20'\n   DIAMETRE 0.020\n   CLASSE N\n   LAMINE FROID\n   E 200000\n   FYK 500\nFIN"
+      ],
+      "args": [
+        {
+          "name": "ac",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero du type de barre d acier passif.",
+          "pages": [
+            227
+          ]
+        },
+        {
+          "name": "Titre",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Titre du type d acier, entre apostrophes.",
+          "pages": [
+            227
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ACIER",
+      "family": "feu",
+      "context": "bloc:ARMATURE",
+      "summary": "Lit d armatures : type d acier, nombre de barres et position (enrobage ou coordonnees locales).",
+      "syntax": [
+        "ACIER aci NOMBRE nbi ENROBAGE <SUP, INF> enri",
+        "ACIER ac NOMBRE nb LOCAL Y y Z z"
+      ],
+      "pages": [
+        227,
+        228
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Declare un **lit d armatures** dans le type d armature courant [p.227] :\n\n- `aci` : numero du type d acier passif (commande `ACIER`) ;\n- `nbi` : nombre de barres d acier passif dans la section ;\n- `ENROBAGE SUP enri` / `ENROBAGE INF enri` : enrobage du **centre de gravite** des armatures par rapport au parement SUP (VY) ou INF (WY), pour une section de type `DALLE` ou `RECTANGLE` ;\n- `LOCAL Y y Z z` : coordonnees de l armature dans le repere local de la `SECTION` de type `PERIMETRE`.",
+      "pitfalls": [
+        "Les enrobages ne tiennent pas compte des diametres des aciers : `enr` est la distance parement -> centre de gravite des armatures [p.228].",
+        "Si l epaisseur de section a ete reduite pour tenir compte de l ecaillage, les enrobages doivent l etre aussi [p.228]."
+      ],
+      "examples": [
+        "ACIER 25 NOMBRE 6 ENROBAGE SUP 0.05",
+        "ACIER 20 NOMBRE 6 ENROBAGE INF 0.10",
+        "ACIER 20 NOMBRE 1 LOCAL Y 0.20 Z -0.45"
+      ],
+      "args": [
+        {
+          "name": "aci",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero du type d acier passif (commande ACIER).",
+          "pages": [
+            227
+          ]
+        },
+        {
+          "name": "NOMBRE",
+          "kind": "keyword",
+          "type": "int",
+          "required": true,
+          "doc": "Nombre de barres d acier passif du lit dans la section.",
+          "pages": [
+            227
+          ]
+        },
+        {
+          "name": "ENROBAGE",
+          "kind": "keyword",
+          "type": "enum",
+          "required": false,
+          "doc": "Positionnement par enrobage, pour une section DALLE ou RECTANGLE : `SUP` (parement VY) ou `INF` (parement WY), suivi de la valeur d enrobage du centre de gravite des armatures.",
+          "values": [
+            "SUP",
+            "INF"
+          ],
+          "unit": "metre",
+          "pages": [
+            227
+          ]
+        },
+        {
+          "name": "LOCAL",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Positionnement par coordonnees `Y y Z z` dans le repere local d une SECTION de type PERIMETRE.",
+          "onlyOptions": [
+            "SPATIALE"
+          ],
+          "unit": "metre",
+          "pages": [
+            227
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ADIABATIQUE",
+      "family": "feu",
+      "context": "bloc:EXPOSITION FEU",
+      "summary": "Paroi adiabatique : aucun echange thermique a travers la paroi.",
+      "syntax": [
+        "ADIABATIQUE"
+      ],
+      "pages": [
+        220
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Impose un **comportement adiabatique de la paroi** [p.220]. Utile pour un plan de symetrie thermique ou une face totalement isolee.\n\nMutuellement exclusif avec CN, HC, HCM, TEMP, LOI_GAZ, LOI_PAROI.",
+      "examples": [
+        "EXPOSITION FEU 7 ADIABATIQUE"
+      ],
+      "args": []
+    },
+    {
+      "name": "ANALYSE FEU",
+      "family": "feu",
+      "context": "top",
+      "summary": "Regle les parametres de l analyse au feu : iterations Newton-Raphson, position du centre de gravite, conservation des caracteristiques a chaud.",
+      "syntax": [
+        "ANALYSE FEU",
+        "   NEWTON_RAPHSON MAX_ITER n (PERIODE i)",
+        "   (Y <CTE, VAR>)",
+        "   (CARA <ZERO, GARDER>)",
+        "FIN"
+      ],
+      "pages": [
+        230,
+        231
+      ],
+      "terminator": "FIN",
+      "exec": "EXEC INCENDIE",
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "aliases": [],
+      "doc": "**Commande optionnelle** qui modifie les parametres de l analyse au feu, resolue par une methode de **Newton-Raphson** (avec rigidite secante et tangente) [p.230, p.217].\n\n- `MAX_ITER n` : nombre maximal d iterations de la boucle de convergence Newton-Raphson, **500 par defaut** [p.230].\n- `PERIODE i` : periode d iterations du calcul en **rigidite secante**, les autres iterations se faisant avec des rigidites tangentes, **5 par defaut** [p.230].\n- `Y <CTE, VAR>` : la position du centre de gravite peut etre conservee **constante** ou **variable (par defaut)** selon les efforts a chaud [p.230].\n- `CARA GARDER` : les caracteristiques de la section **a chaud** apres un calcul incendie sont sauvegardees et peuvent etre reutilisees pour un calcul sur la structure refroidie ou un calcul de charge critique. `CARA ZERO` (defaut) les reinitialise a leur valeur de depart, correspondant a la structure indemne [p.231].\n\nA placer **avant l execution de l incendie** [p.401].",
+      "prerequisites": [
+        "OPTION PLANE ou OPTION SPATIALE [p.217]",
+        "A ecrire avant EXEC INCENDIE [p.401]"
+      ],
+      "forbidden": [
+        "OPTION GRILL [p.217]"
+      ],
+      "pitfalls": [
+        "La ligne `NEWTON_RAPHSON MAX_ITER n` est ecrite sans parentheses dans la syntaxe (p.230), mais l exemple officiel de l annexe conseils utilise un bloc reduit a `ANALYSE FEU / CARA GARDER / FIN` [p.401] : en pratique le bloc peut ne contenir que les parametres a modifier.",
+        "`CARA GARDER` sert au calcul de charge critique pendant l incendie, mais **attention au sens des alpha critiques** : le comportement etant non lineaire, un alpha de 2 ne signifie pas que la structure est stable jusqu a deux fois la charge. Il vaut mieux augmenter la charge jusqu a obtenir un alpha proche de 1 [p.401].",
+        "Le fichier PARAMETRES de ST1 contient un bloc homonyme ecrit avec un souligne, `ANALYSE_FEU`, qui fixe les valeurs par defaut [p.332] ; dans un script ST1 la commande s ecrit `ANALYSE FEU` en deux mots [p.230].",
+        "La convergence n est pas garantie dans le cas general : augmenter MAX_ITER ne remplace pas un ferraillage manquant [p.231, p.400]."
+      ],
+      "examples": [
+        "# Parametres explicites (valeurs par defaut du logiciel)\nANALYSE FEU\n   NEWTON_RAPHSON MAX_ITER 500 PERIODE 5\n   Y VAR\n   CARA ZERO\nFIN",
+        "# Conserver les caracteristiques a chaud pour un post-incendie ou une charge critique\nANALYSE FEU\n   CARA GARDER\nFIN"
+      ],
+      "args": []
+    },
+    {
+      "name": "ARMATURE",
+      "family": "feu",
+      "context": "top",
+      "summary": "Definit un type d armature (lits d aciers passifs) utilise dans une SECTION de calcul au feu.",
+      "syntax": [
+        "ARMATURE ar ('Titre')",
+        "   < (ACIER ac1 NOMBRE nb1 ENROBAGE SUP enr1)",
+        "     (ACIER ac2 NOMBRE nb2 ENROBAGE INF enr2),",
+        "     (ACIER ac NOMBRE nb LOCAL Y y Z z) ... >",
+        "FIN"
+      ],
+      "pages": [
+        227,
+        228
+      ],
+      "terminator": "FIN",
+      "exec": "EXEC INCENDIE",
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "aliases": [],
+      "doc": "Definit le **type d armature numero `ar`** utilise dans une section de calcul au feu [p.227].\n\nDeux modes de positionnement, exclusifs l un de l autre :\n- **par enrobage**, pour les sections de type `DALLE` ou `RECTANGLE` : `ACIER aci NOMBRE nbi ENROBAGE <SUP, INF> enri`, ou `enri` est l enrobage du **centre de gravite** des armatures par rapport au parement `SUP` (VY) ou `INF` (WY) [p.227] ;\n- **par coordonnees**, pour les sections de type `PERIMETRE` : `ACIER ac NOMBRE nb LOCAL Y y Z z`, ou `y` et `z` sont l abscisse et l ordonnee de l armature dans le repere local de la `SECTION PERIMETRE` [p.227].\n\nLe numero `ar` est ensuite reference par `CARA ib SECTION is ARMATURE ar` [p.228].",
+      "prerequisites": [
+        "Les types d acier ACIER ac doivent etre definis avant [p.390]",
+        "Travailler en metre [p.218]"
+      ],
+      "forbidden": [
+        "OPTION GRILL [p.217]"
+      ],
+      "pitfalls": [
+        "Dans le calcul au feu, **les enrobages ne tiennent PAS compte des diametres des aciers** : la distance d enrobage est directement la distance du parement au **centre de gravite** des armatures [p.228].",
+        "Si l epaisseur de la section tient compte de l ecaillage du beton, il faut en tenir compte aussi dans la definition des enrobages [p.228].",
+        "En beton arme, le ferraillage est souvent **absolument necessaire pour stabiliser le calcul non lineaire** des que les fibres de beton tendues sont considerees comme rompues : il peut falloir decrire un ferraillage minimum y compris dans des zones que l on sait comprimees, pour que le solveur ne s egare pas dans de faux modes de rupture [p.400].",
+        "La dilatation thermique peut inverser le signe des moments et faire passer des zones comprimees en zones tendues : il faut alors rajouter du ferraillage la ou il n en fallait pas a froid [p.401]."
+      ],
+      "examples": [
+        "# Section DALLE : 6 HA25 en fibre superieure, 6 HA20 en fibre inferieure, sur 1.00 m\nARMATURE 1 'ARMATURE DALLE'\n   ACIER 25 NOMBRE 6 ENROBAGE SUP 0.05\n   ACIER 20 NOMBRE 6 ENROBAGE INF 0.10\nFIN",
+        "# Section PERIMETRE : armatures reperees par leurs coordonnees locales\nARMATURE 2 'ARMATURE PERIMETRE'\n   ACIER 20 NOMBRE 1 LOCAL Y -0.20 Z -0.45\n   ACIER 20 NOMBRE 1 LOCAL Y  0.20 Z -0.45\nFIN"
+      ],
+      "args": [
+        {
+          "name": "ar",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero du type d armature.",
+          "pages": [
+            227
+          ]
+        },
+        {
+          "name": "Titre",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Titre du type d armature, entre apostrophes.",
+          "pages": [
+            227
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CARA",
+      "family": "feu",
+      "context": "bloc:ANALYSE FEU",
+      "summary": "Conserve ou reinitialise les caracteristiques de section a chaud apres un calcul d incendie.",
+      "syntax": [
+        "CARA <ZERO, GARDER>"
+      ],
+      "pages": [
+        231
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "- **`CARA GARDER`** : les caracteristiques de la section **a chaud** apres un calcul incendie sont **sauvegardees**. Elles peuvent ensuite etre reutilisees pour un calcul sur la structure refroidie (post-incendie) ou pour un calcul de charge critique [p.231].\n- **`CARA ZERO`** (par defaut) : les caracteristiques sont **reinitialisees a leur valeur de depart**, correspondant a la structure indemne (valeurs a froid) [p.231].\n\nA placer avant l execution de l incendie [p.401].",
+      "pitfalls": [
+        "Pour un calcul post-incendie, combiner `CARA GARDER` avec le mot cle `LOCAL` de la commande INCENDIE : les materiaux conservent leurs caracteristiques degradees et les effets hyperstatiques de l echauffement disparaissent [p.230, p.401].",
+        "Pour une charge critique pendant l incendie avec `GARDER`, attention au sens des alpha critiques : le comportement etant non lineaire, un alpha de 2 ne veut pas dire que la structure est stable jusqu a deux fois la charge ; preferer augmenter la charge jusqu a un alpha proche de 1 [p.401]."
+      ],
+      "examples": [
+        "CARA ZERO",
+        "CARA GARDER"
+      ],
+      "args": [
+        {
+          "name": "ZERO",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Reinitialise les caracteristiques a leur valeur de depart, structure indemne (comportement par defaut).",
+          "pages": [
+            231
+          ]
+        },
+        {
+          "name": "GARDER",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Sauvegarde les caracteristiques de section a chaud pour un calcul post-incendie ou de charge critique.",
+          "pages": [
+            231
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CHALEUR_SPECIFIQUE_MASSIQUE",
+      "family": "feu",
+      "context": "bloc:MAT",
+      "summary": "Impose une chaleur specifique massique constante du beton (analyse au feu simplifiee).",
+      "syntax": [
+        "CHALEUR_SPECIFIQUE_MASSIQUE chalm"
+      ],
+      "pages": [
+        218,
+        219
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Impose une **chaleur specifique massique constante** `chalm`, en **J.kg-1.K-1** [p.218].\n\nPar defaut la chaleur specifique massique est **variable en fonction de la temperature**, conformement a l EN1992-1-2 §3.3.2 ; renseigner une valeur revient a faire une **analyse au feu simplifiee** [p.219].\n\nElle depend aussi de la teneur en eau `UU` [p.219].",
+      "examples": [
+        "MAT 1 'BETON'\n   E FEU EC2 MPA FCK 30\n   CHALEUR_SPECIFIQUE_MASSIQUE 900\nFIN"
+      ],
+      "args": [
+        {
+          "name": "chalm",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Chaleur specifique massique constante du beton.",
+          "unit": "J.kg-1.K-1",
+          "pages": [
+            218
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CLASSE",
+      "family": "feu",
+      "context": "bloc:ACIER",
+      "summary": "Classe d acier au sens de l EN 1992-1-2 §3.2.3.",
+      "syntax": [
+        "CLASSE <N, X>"
+      ],
+      "pages": [
+        227
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "**Classe d acier** au sens de l **EN 1992-1-2 §3.2.3** : `N` (par defaut) ou `X` [p.227].",
+      "examples": [
+        "CLASSE N",
+        "CLASSE X"
+      ],
+      "args": [
+        {
+          "name": "N",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Classe d acier N (valeur par defaut), EN 1992-1-2 §3.2.3.",
+          "pages": [
+            227
+          ]
+        },
+        {
+          "name": "X",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Classe d acier X, EN 1992-1-2 §3.2.3.",
+          "pages": [
+            227
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CN",
+      "family": "feu",
+      "context": "bloc:EXPOSITION FEU",
+      "summary": "Courbe de temperature normalisee (feu ISO) pour une exposition au feu.",
+      "syntax": [
+        "CN"
+      ],
+      "pages": [
+        220
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Selectionne la **courbe de temperature normalisee**. Si `CONVECTION` n est pas precise, le coefficient de transfert thermique par convection vaut automatiquement **25 W/m2/K** (EN1991-1-2 §3.2) [p.220-221].\n\nMutuellement exclusif avec HC, HCM, ADIABATIQUE, TEMP, LOI_GAZ, LOI_PAROI.",
+      "examples": [
+        "EXPOSITION FEU 2 CN"
+      ],
+      "args": []
+    },
+    {
+      "name": "CONDUCTIVITE",
+      "family": "feu",
+      "context": "bloc:MAT",
+      "summary": "Conductivite thermique du beton : constante, ou loi EN1992-1-2 (annexe nationale ou interpolation alpha).",
+      "syntax": [
+        "CONDUCTIVITE <conduc, EC2 (<AN <NORMAL, BHP>, alpha>)>"
+      ],
+      "pages": [
+        218,
+        219
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Definit la **conductivite thermique du beton** [p.218-219].\n\nTrois formes possibles :\n- **`CONDUCTIVITE conduc`** : valeur constante, independante de la temperature (cas d une analyse au feu simplifiee), en W.m-1.K-1.\n- **`CONDUCTIVITE EC2 AN NORMAL`** : loi EN1992-1-2 NA §3.3.3, betons traditionnels. **Option par defaut.**\n- **`CONDUCTIVITE EC2 AN BHP`** : loi EN1992-1-2 NA §6.3, betons a hautes performances.\n- **`CONDUCTIVITE EC2 alpha`** : conductivite de l EN1992-1-2 §3.3.3, definie par `alpha.Cond[INF] + (1-alpha).Cond[SUP]`, ou Cond[INF] et Cond[SUP] sont les limites inferieure et superieure de la conductivite de l EN1992-1-2 §3.3.3.\n\n`alpha` vaut **1 par defaut**, c est-a-dire la conductivite inferieure [p.218].",
+      "pitfalls": [
+        "L exemple officiel du manuel ecrit `CONDUCTIVITE EC2 AN` sans preciser NORMAL ni BHP [p.317] : c est la loi de l annexe nationale, NORMAL etant l option par defaut [p.219]."
+      ],
+      "examples": [
+        "# Loi de l annexe nationale, betons traditionnels (option par defaut)\nMAT 1 'BETON'\n   E FEU EC2 MPA FCK 30\n   CONDUCTIVITE EC2 AN NORMAL\nFIN",
+        "# Beton a hautes performances\nMAT 2 'BHP'\n   E FEU EC2 MPA FCK 60\n   CONDUCTIVITE EC2 AN BHP\nFIN",
+        "# Analyse simplifiee : conductivite constante\nMAT 3 'BETON SIMPLIFIE'\n   E FEU EC2 MPA FCK 30\n   CONDUCTIVITE 1.6\nFIN"
+      ],
+      "args": [
+        {
+          "name": "conduc",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "doc": "Conductivite thermique constante du beton, independante de la temperature (analyse au feu simplifiee).",
+          "unit": "W.m-1.K-1",
+          "pages": [
+            218
+          ]
+        },
+        {
+          "name": "EC2",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Conductivite variable avec la temperature selon l EN1992-1-2.",
+          "pages": [
+            218
+          ]
+        },
+        {
+          "name": "AN",
+          "kind": "keyword",
+          "type": "enum",
+          "required": false,
+          "doc": "Utilise l annexe nationale : `NORMAL` (EN1992-1-2 NA §3.3.3, betons traditionnels, option par defaut) ou `BHP` (EN1992-1-2 NA §6.3, betons a hautes performances).",
+          "values": [
+            "NORMAL",
+            "BHP"
+          ],
+          "default": "NORMAL",
+          "pages": [
+            219
+          ]
+        },
+        {
+          "name": "alpha",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "doc": "Ratio entre les conductivites limites de l EN1992-1-2 §3.3.3 : lambda = alpha.Cond[INF] + (1-alpha).Cond[SUP]. 1 par defaut, c est-a-dire la conductivite inferieure.",
+          "default": "1",
+          "min": 0,
+          "max": 1,
+          "pages": [
+            218,
+            219
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CONVECTION",
+      "family": "feu",
+      "context": "bloc:EXPOSITION FEU",
+      "summary": "Coefficient de transfert thermique par convection de la paroi (automatique ou impose).",
+      "syntax": [
+        "CONVECTION <EC1, alphac>"
+      ],
+      "pages": [
+        220,
+        221
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Fixe le **coefficient de transfert thermique par convection** de la paroi [p.220-221].\n\n- **Commande absente ou `CONVECTION EC1`** : le coefficient est choisi automatiquement par ST1 selon la nature de l exposition (CN 25, HC 25, HCM 50, LOI_GAZ/LOI_PAROI 50, TEMP 4 ou 25 W/m2/K).\n- **`CONVECTION alphac`** : valeur imposee par l utilisateur (EN1991-1-2 §3.2).",
+      "pitfalls": [
+        "Ne PAS utiliser la valeur de 9 W/m2/K de l EN1991-1-2 §3.1 pour les faces non exposees : cette valeur est censee inclure le rayonnement, or ST1 calcule deja explicitement les transferts par rayonnement, ils seraient comptes deux fois [p.221]."
+      ],
+      "examples": [
+        "EXPOSITION FEU 8 CN CONVECTION EC1",
+        "EXPOSITION FEU 9 CN CONVECTION 25."
+      ],
+      "args": [
+        {
+          "name": "EC1",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Coefficient de convection automatique selon la nature de l exposition (comportement par defaut).",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "alphac",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "doc": "Coefficient de transfert thermique par convection impose (EN1991-1-2 §3.2).",
+          "unit": "W/m2/K",
+          "pages": [
+            220
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DALLE",
+      "family": "feu",
+      "context": "bloc:SECTION",
+      "summary": "Section de calcul au feu rectangulaire pour l OPTION PLANE, definie par son epaisseur et sa largeur.",
+      "syntax": [
+        "DALLE EPAISSEUR e (LARGEUR larg)"
+      ],
+      "pages": [
+        222,
+        223
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE"
+      ],
+      "onlyOptions": [
+        "PLANE"
+      ],
+      "doc": "Declare la section comme une **DALLE** : geometrie rectangulaire d epaisseur `e` et de largeur `larg` (**1 par defaut**), pour un calcul en `OPTION PLANE` [p.222].\n\nLes parois `VY` (superieure) et `WY` (inferieure) sont orientees selon les plans normaux aux fibres d axe principal de la barre (voir §2.10 - caracteristiques R.D.M. des barres) [p.222].\n\nL epaisseur sert aussi a definir les fibres superieure et inferieure des contraintes, pour compatibilite avec les contraintes deja calculees dans ST1 [p.222].",
+      "prerequisites": [
+        "OPTION PLANE [p.222]"
+      ],
+      "forbidden": [
+        "OPTION SPATIALE et OPTION GRILL [p.222]"
+      ],
+      "pitfalls": [
+        "En cas de risque d ecaillage, retrancher soi-meme l epaisseur de beton ecaille a `e` [p.223].",
+        "Pour le calcul au feu, les contraintes maximales ne sont plus atteintes en fibres extremes [p.223]."
+      ],
+      "examples": [
+        "SECTION 1 'DALLE DE 1 M'\n   DALLE EPAISSEUR 1.0\n   LARGEUR 1.0\n   EXPOSITION FEU SUP 1 INF 3\n   MATERIAU 1\nFIN"
+      ],
+      "args": [
+        {
+          "name": "EPAISSEUR",
+          "kind": "keyword",
+          "type": "real",
+          "required": true,
+          "doc": "Epaisseur e de la section.",
+          "unit": "metre",
+          "pages": [
+            222
+          ]
+        },
+        {
+          "name": "LARGEUR",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Largeur larg de la section.",
+          "default": "1",
+          "unit": "metre",
+          "pages": [
+            222
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DIAMETRE",
+      "family": "feu",
+      "context": "bloc:ACIER",
+      "summary": "Diametre d une barre d acier passif.",
+      "syntax": [
+        "DIAMETRE phi"
+      ],
+      "pages": [
+        227
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "**Diametre d une barre d acier passif** `phi` (0 par defaut) [p.227].\n\nIl permet de calculer la section d acier, qui vaut alors **pi.phi^2/4**, sauf si la section `as` est renseignee par `SECTION as` [p.227].\n\nIl intervient aussi pour determiner la **position de la maille de beton** ou se situent les fibres extremes de la section d armature, et donc la **temperature de l armature** [p.227].",
+      "pitfalls": [
+        "Augmenter phi rapproche les fibres extremes de l armature de la paroi exposee, ce qui peut abaisser la resistance au feu au lieu de l ameliorer [p.400]."
+      ],
+      "examples": [
+        "DIAMETRE 0.025   # HA25, en metres"
+      ],
+      "args": [
+        {
+          "name": "phi",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Diametre d une barre d acier passif.",
+          "default": "0",
+          "unit": "metre",
+          "pages": [
+            227
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DUREE",
+      "family": "feu",
+      "context": "bloc:FEU",
+      "summary": "Duree d exposition au feu, en minutes.",
+      "syntax": [
+        "DUREE t"
+      ],
+      "pages": [
+        229
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "**Duree d exposition au feu** `t`, exprimee en **minutes** [p.229].\n\nC est ce parametre qui determine jusqu ou les courbes temperature-temps des expositions sont parcourues.",
+      "pitfalls": [
+        "Approche progressive documentee : commencer a 10 minutes puis augmenter jusqu a la duree cible, **pas plus de 120 minutes en general** [p.400].",
+        "En augmentant la duree, surveiller la diminution progressive de la raideur secante des sections et l elevation de temperature dans les aciers : en BA la ruine intervient souvent quand les ferraillages atteignent 500-600 degres [p.400]."
+      ],
+      "examples": [
+        "DUREE 60      # minutes",
+        "DUREE 10      # feu court de mise au point"
+      ],
+      "args": [
+        {
+          "name": "t",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Duree d exposition au feu.",
+          "unit": "minute",
+          "pages": [
+            229
+          ]
+        }
+      ]
+    },
+    {
+      "name": "E",
+      "family": "feu",
+      "context": "bloc:ACIER",
+      "summary": "Module elastique a froid de l acier passif.",
+      "syntax": [
+        "E es"
+      ],
+      "pages": [
+        227
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "**Module elastique a froid** `es` des aciers [p.227]. Sa degradation avec la temperature est prise en charge par les lois de l EN1992-1-2.\n\nAucune unite n est imposee : `es` s exprime dans le systeme d unites coherent du fichier (l exemple officiel du manuel, en MN et m, ecrit `E 200000`, soit 200 000 MPa) [p.317].",
+      "examples": [
+        "E 200000"
+      ],
+      "args": [
+        {
+          "name": "es",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Module elastique a froid des aciers.",
+          "pages": [
+            227
+          ]
+        }
+      ]
+    },
+    {
+      "name": "E FEU EC2",
+      "family": "feu",
+      "context": "bloc:MAT",
+      "summary": "Definit la loi de comportement beton au feu EN1992-1-2 d un materiau et sa resistance caracteristique fck.",
+      "syntax": [
+        "E FEU EC2 (<MPA, TM2, KNM2>) FCK fck (TRACTION <OUI, NON>)",
+        "E e FCK fck (TRACTION <OUI, NON>)"
+      ],
+      "pages": [
+        218,
+        219
+      ],
+      "exec": "EXEC INCENDIE",
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Complement **feu** de la commande `MAT` (§3.3 - definition d un materiau, p.74) : active la loi beton de l **EN1992-1-2** pour le materiau [p.218].\n\n- `fck` : resistance caracteristique du beton en compression a 20 degres, **en MPa** [p.218]. Lors du calcul au feu elle est evaluee en fonction de la temperature, fc,theta etant interpolee a partir du Tableau 3.1 de l EN1992-1-2 §3.2.2.1 [p.218].\n- Le module d Young est evalue en fonction de la temperature a partir de la relation contrainte/deformation de l EN1992-1-2 §3.2.2.1 : le module retenu a la temperature theta est le module **secant** sigma(theta,eps)/eps [p.218].\n- Le mot cle optionnel `MPA` / `TM2` / `KNM2` precise l unite dans laquelle le **module** est exprime (MPa, t/m2, kN/m2) [p.76].\n- `E FEU EC2` affecte automatiquement, pour les sections non exposees, la valeur tangente a l origine a 20 degres E(theta=20) = 3.fc,theta / (2.eps_c1,theta) ; cette valeur peut aussi etre imposee directement par une commande `E e` [p.219].\n\n**TRACTION** : `NON` par defaut, conformement a l EN1992-1-2 ; la loi de comportement ne reprend alors pas la traction et l analyse est fissuree [p.219]. `TRACTION OUI` active le module tangent a l origine pour les deformations de traction : peu realiste, mais permet de verifier un modele dans une situation quasi elastique et de stabiliser la resolution pour du debogage [p.219, p.231].",
+      "prerequisites": [
+        "Etre a l interieur d un bloc MAT i ... FIN [p.218]",
+        "Travailler en metre : l unite de longueur de reference du calcul au feu est le metre [p.218]"
+      ],
+      "forbidden": [
+        "OPTION GRILL [p.217]"
+      ],
+      "pitfalls": [
+        "`TRACTION OUI` ne doit pas rester dans le modele final : c est un moyen de rendre l analyse stable pour comprendre un mecanisme d instabilite, pas un calcul realiste ; il faut remodifier ce parametre pour l analyse finale [p.231].",
+        "Il n y a normalement pas lieu d envisager un fck ni un module d Young independants de la temperature pour une section exposee au feu, meme en analyse au feu simplifiee [p.218-219].",
+        "Ne pas ecrire d operateur d affectation entre le mot cle et sa valeur : `FCK 30` et non `FCK = 30`."
+      ],
+      "examples": [
+        "# Beton au feu, module exprime en MPa, traction non reprise (defaut)\nMAT 1 'BETON TRAVERSE'\n   E FEU EC2 MPA FCK 30\n   RO 0.025\n   TEMP 1e-5      # coefficient de dilatation thermique\nFIN",
+        "# Etape de mise au point : traction autorisee pour stabiliser le calcul\nMAT 1 'BETON'\n   E 34077.0 FCK 30 TRACTION OUI\nFIN"
+      ],
+      "args": [
+        {
+          "name": "FEU EC2",
+          "kind": "subcommand",
+          "type": "flag",
+          "required": false,
+          "doc": "Active la loi beton au feu de l EN1992-1-2 et le calcul automatique du module en fonction de la temperature.",
+          "pages": [
+            218
+          ]
+        },
+        {
+          "name": "MPA",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Le module du materiau est exprime en Mega Pascals.",
+          "pages": [
+            218
+          ]
+        },
+        {
+          "name": "TM2",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Le module du materiau est exprime en tonnes par metre carre.",
+          "pages": [
+            218
+          ]
+        },
+        {
+          "name": "KNM2",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Le module du materiau est exprime en kilo Newtons par metre carre.",
+          "pages": [
+            218
+          ]
+        },
+        {
+          "name": "FCK",
+          "kind": "keyword",
+          "type": "real",
+          "required": true,
+          "doc": "Resistance caracteristique du beton en compression a 20 degres.",
+          "unit": "MPa",
+          "pages": [
+            218
+          ]
+        },
+        {
+          "name": "TRACTION",
+          "kind": "keyword",
+          "type": "enum",
+          "required": false,
+          "doc": "`NON` (defaut) : le beton ne reprend pas la traction, analyse fissuree conforme a l EN1992-1-2. `OUI` : module tangent a l origine actif en traction, utile pour verifier ou stabiliser un modele.",
+          "values": [
+            "OUI",
+            "NON"
+          ],
+          "default": "NON",
+          "pages": [
+            219
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EMISSIVITE",
+      "family": "feu",
+      "context": "bloc:MAT",
+      "summary": "Emissivite de surface du beton pour le calcul du transfert thermique par rayonnement.",
+      "syntax": [
+        "EMISSIVITE em"
+      ],
+      "pages": [
+        218
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "**Emissivite de surface** utilisee pour le calcul du transfert thermique par **rayonnement**, `0,7 par defaut` conformement a l EN1992-1-2 §2.2 [p.218].",
+      "pitfalls": [
+        "Le rayonnement etant deja calcule explicitement par ST1 via cette emissivite, il ne faut pas le recompter dans le coefficient de convection (voir CONVECTION) [p.221]."
+      ],
+      "examples": [
+        "MAT 1 'BETON TRAVERSE'\n   E FEU EC2 MPA FCK 30\n   EMISSIVITE 0.7\nFIN"
+      ],
+      "args": [
+        {
+          "name": "em",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Emissivite de surface pour le calcul du transfert thermique par rayonnement.",
+          "default": "0.7",
+          "pages": [
+            218
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EXEC INCENDIE",
+      "family": "feu",
+      "context": "exec",
+      "summary": "Lance le calcul de l effet des charges d incendie listees.",
+      "syntax": [
+        "EXEC INCENDIE lst"
+      ],
+      "pages": [
+        231
+      ],
+      "exec": "EXEC INCENDIE",
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "aliases": [],
+      "doc": "Execute le calcul de l effet d un ou plusieurs **incendies** sous leur charge respective. `lst` est la **liste des numeros de charge incendie** [p.231].\n\nDeroulement du calcul [p.390] :\n1. calcul de l effet de la charge combinee a froid dans chaque section ;\n2. construction du maillage des sections, calcul des caracteristiques a froid et de la repartition des temperatures dans chaque section sous l effet du feu ;\n3. calcul iteratif de type Newton-Raphson (deformations thermiques, rigidites secantes et tangentes, lois moment-courbure, verification des rotations des rotules plastiques, mise a jour des caracteristiques mecaniques), avec verification de la convergence sur les deformations, les rigidites et l equilibre ;\n4. stockage des sollicitations en base de donnees.\n\nOrdre complet des commandes d un calcul au feu [p.390] : geometrie (noeuds, appuis, barres) -> materiaux avec parametres feu -> `EXPOSITION FEU` -> `SECTION` -> `ACIER` -> `ARMATURE` -> `CARA ... SECTION ... ARMATURE` -> chargement statique combine (`CHARG i COMB`) -> `FEU` -> `INCENDIE` -> `EXEC INCENDIE`.",
+      "prerequisites": [
+        "Les commandes INCENDIE citees dans lst doivent etre definies [p.230]",
+        "Le chargement statique combine doit avoir ete calcule (EXEC CHARG) [p.318]",
+        "ANALYSE FEU, si utilisee, doit preceder EXEC INCENDIE [p.401]",
+        "OPTION PLANE ou OPTION SPATIALE, modele en metre [p.217-218]"
+      ],
+      "forbidden": [
+        "OPTION GRILL [p.217]"
+      ],
+      "pitfalls": [
+        "**Avertissement du manuel** : par defaut le beton suit une loi non lineaire fissuree (pas de resistance en traction). En flexion simple, des lits d acier en zone tendue des sections soumises au feu sont a prevoir. La convergence n est donc pas assuree dans le cas general, l equilibre interne d une section pouvant ne plus etre verifie et conduire a une instabilite [p.231].",
+        "Pour analyser un modele instable, on peut le stabiliser temporairement en reprenant la traction du beton (`TRACTION OUI` dans MATERIAU) pour du debogage : ce n est pas un calcul realiste, il faudra remodifier ce parametre pour l analyse finale [p.231].",
+        "Methode progressive documentee [p.399-401] : 1) feu isotherme a 20 degres, courte duree, sans dilatation thermique, traction autorisee ; 2) interdire la traction et definir les aciers sur toutes les faces, fibres tendues ET comprimees ; 3) implementer la vraie sollicitation thermique avec un feu de 10 min puis augmenter progressivement jusqu a 120 min max ; 4) autoriser les dilatations thermiques en repartant d un feu court puis en augmentant.",
+        "La structure doit etre suffisamment discretisee : le calcul utilise la deformation moyenne de toute la barre sans sous-discretisation ; une travee doit etre decoupee en plusieurs barres [p.217].",
+        "Les resultats se lisent avec les formes feu de la commande `RESU` (`RESU FEU SECTION`, `RESU INCENDIE BARRE ... CARA CHAUD / TEMP / EFFORT / DEPLA`, `RESU INCENDIE APPUI`), qui produisent aussi des fichiers .vtp exploitables avec Paraview [p.232-233].",
+        "Les commandes de recuperation `GET DEPLA NOEUD`, `GET REAC APPUI` et `GET EFFORT BARRE` acceptent le mot cle `INCENDIE` pour relire ces resultats."
+      ],
+      "examples": [
+        "EXEC INCENDIE 10",
+        "EXEC INCENDIE 1,2,5 A 9",
+        "# Enchainement complet minimal d un calcul au feu 2D (d apres l exemple 19.9)\nOPTION PLANE\nEXPOSITION FEU 1 TEMP 20\nEXPOSITION FEU 3 HCM PROTECTION 0.03/0.19\nMAT 1 'BETON TRAVERSE'\n   E FEU EC2 MPA FCK 30\n   RO 0.025\n   UU 0.015\n   CONDUCTIVITE EC2 AN\n   GRANULAT SILICE\n   RHO_FEU 2500.\n   EMISSIVITE 0.7\n   TEMP 1e-5\nFIN\nSECTION 1 'DALLE DE 1 M'\n   DALLE EPAISSEUR 1.0\n   LARGEUR 1.0\n   EXPOSITION FEU SUP 1 INF 3\n   MATERIAU 1\n   MAILLE 0.01\nFIN\nACIER 25 'HA25'\n   DIAMETRE 0.025\n   LAMINE CHAUD\n   E 200000\n   FYK 500\nFIN\nARMATURE 1 'ARMATURE DALLE'\n   ACIER 25 NOMBRE 6 ENROBAGE SUP 0.05\nFIN\nCARA 4 A 6 SECTION 1 ARMA 1\nCHARG 100 COMB 'CHARGE STATIQUE COMBINEE'\n   CHARG 1 0.5\n   CHARG 2 1.\nFIN\nEXEC CHARG 100\nFEU 20 'FEU'\n   DUREE 60\nFIN\nINCENDIE 10\n   FEU 20 CHARG 100\nFIN\nEXEC INCENDIE 10"
+      ],
+      "args": [
+        {
+          "name": "lst",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des numeros de charge incendie a executer. Notation de liste ST1 admise (`1,2,5 a 9`, `i a j pas p`).",
+          "pages": [
+            231
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EXPOSITION FEU",
+      "family": "feu",
+      "context": "top",
+      "summary": "Definit un type d exposition au feu affecte ensuite aux parois d une SECTION de calcul au feu.",
+      "syntax": [
+        "EXPOSITION FEU i",
+        "   <CN, HC, HCM, ADIABATIQUE, TEMP temp, <LOI_GAZ, LOI_PAROI> tj tempj ...>",
+        "   (PROTECTION res)",
+        "   (CONVECTION <EC1, alphac>)",
+        "FIN"
+      ],
+      "pages": [
+        220,
+        221
+      ],
+      "terminator": "FIN",
+      "exec": "EXEC INCENDIE",
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "aliases": [],
+      "doc": "Cree le **type d exposition numero `i`** : la loi temperature-temps vue par une paroi de section, plus eventuellement une protection passive et un coefficient de convection.\n\nUne et une seule loi doit etre choisie parmi `CN`, `HC`, `HCM`, `ADIABATIQUE`, `TEMP temp`, `LOI_GAZ`, `LOI_PAROI` [p.220].\n\nLe numero `i` est ensuite reference :\n- dans `SECTION ... EXPOSITION FEU (<SUP,VY> ej) (<INF,WY> ek)` (DALLE) ou `(VY ej) (WY ek) (VZ el) (WZ eo)` (RECTANGLE) ;\n- dans `SECTION ... PERIMETRE` par `Y y Z z EXPOSITION expo` pour le segment courant [p.222-224].\n\nCoefficient de convection retenu automatiquement quand `CONVECTION` est absente ou vaut `EC1` [p.220-221] :\n- `CN` : 25 W/m2/K (EN1991-1-2 §3.2)\n- `HC` : 25 W/m2/K (EN1991-1-2 §3.2)\n- `HCM` : 50 W/m2/K (guide CETU Comportement au feu des tunnels routiers p34)\n- `LOI_GAZ` / `LOI_PAROI` : 50 W/m2/K (programme par extension)\n- `TEMP` : 4 W/m2/K si la temperature de paroi reste < 50 degres (surface consideree non exposee, EN1991-1-2 §3.1), 25 W/m2/K au dela.\n\nLes courbes CN, HC et HCM sont decrites dans le guide Cerema p12 (annexe B6 - calcul au feu) [p.221].",
+      "prerequisites": [
+        "OPTION PLANE ou OPTION SPATIALE (le calcul au feu n existe pas en GRILL) [p.217]",
+        "Travailler en metre [p.218]",
+        "Doit etre defini AVANT les SECTION qui le referencent [p.390]"
+      ],
+      "forbidden": [
+        "OPTION GRILL [p.217]",
+        "Combiner plusieurs lois de temperature dans une meme EXPOSITION FEU (le choix < > est exclusif) [p.220]"
+      ],
+      "pitfalls": [
+        "La duree de la courbe de feu doit etre choisie par l utilisateur : elle est pilotee par DUREE dans la commande FEU, pas ici [p.221, p.229].",
+        "Ne pas utiliser la valeur de 9 W/m2/K evoquee par l EN1991-1-2 §3.1 pour les faces non exposees : elle inclut le rayonnement, or ST1 calcule deja le rayonnement, on le compterait deux fois [p.221].",
+        "La resistance de protection `res` est traitee comme CONSTANTE par simplification, alors qu en realite elle evolue avec la temperature dans la protection : c est a l utilisateur de l evaluer [p.220].",
+        "Attention au mot TEMP, qui a trois sens differents en calcul au feu : ici temperature de paroi constante (degres), dans MAT coefficient de dilatation thermique, dans FEU temperature initiale de la structure [p.220, p.229].",
+        "Dans l exemple officiel du manuel, certaines lignes sont ecrites `EXPOSITION 5` sans le mot FEU et tiennent sur une seule ligne sans FIN (`EXPOSITION FEU 1 TEMP 20`) [p.316] ; la forme documentee et sure reste `EXPOSITION FEU i ... FIN`.",
+        "Une face non exposee au feu se declare explicitement, par exemple via une exposition `TEMP 20.` [p.219]."
+      ],
+      "examples": [
+        "# Expositions au feu des parois (d apres l exemple 19.9 du manuel)\nEXPOSITION FEU 1 TEMP 20\nEXPOSITION FEU 2 CN\nEXPOSITION FEU 3 HCM PROTECTION 0.03/0.19   # epaisseur / conductivite\nEXPOSITION FEU 4 HC",
+        "# Loi de temperature des gaz donnee point par point (minutes ; degres)\nEXPOSITION FEU 5\n   LOI_GAZ\n   0     20\n   1     349.213665756567\n   10    678.427331513134\n   20    781.354927230988\n   30    841.79587968833\n   50    918.084808553963\n   100   1021.75321804906\nFIN",
+        "# Feu isotherme a 20 degres : sert a calibrer un modele avant le vrai feu\nEXPOSITION FEU 6\n   LOI_PAROI\n   0.    20.\n   30.   20.\nFIN"
+      ],
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero du type d exposition au feu. Reference ensuite par les commandes SECTION.",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "CN",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Courbe de temperature normalisee (feu ISO). Convection automatique 25 W/m2/K.",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "HC",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Courbe de temperature hydrocarbure. Convection automatique 25 W/m2/K.",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "HCM",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Courbe de temperature hydrocarbure majoree. Convection automatique 50 W/m2/K (guide CETU).",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "ADIABATIQUE",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Comportement adiabatique de la paroi (aucun echange thermique).",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "TEMP",
+          "kind": "choice",
+          "type": "real",
+          "required": false,
+          "doc": "Temperature de paroi constante `temp` (degres Celsius).",
+          "default": "20",
+          "unit": "degre Celsius",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "LOI_GAZ",
+          "kind": "choice",
+          "type": "bloc",
+          "required": false,
+          "doc": "Courbe temperature-temps des GAZ definie par une suite de couples `tj tempj` (une ligne par couple).",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "LOI_PAROI",
+          "kind": "choice",
+          "type": "bloc",
+          "required": false,
+          "doc": "Courbe temperature-temps appliquee DIRECTEMENT sur les parois de la section, definie par une suite de couples `tj tempj`.",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "tj",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "doc": "Instant du couple de la loi LOI_GAZ / LOI_PAROI.",
+          "unit": "minute",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "tempj",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "doc": "Temperature du couple de la loi LOI_GAZ / LOI_PAROI. Les lois sont prolongees au-dela des dates extremes par une temperature constante egale a celle de l extremite.",
+          "unit": "degre Celsius",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "PROTECTION",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Resistance thermique surfacique equivalente `res` de la protection passive. Absente = pas de protection.",
+          "unit": "m2.K/W",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "CONVECTION",
+          "kind": "keyword",
+          "type": "enum",
+          "required": false,
+          "doc": "`EC1` = coefficient de transfert par convection choisi automatiquement selon la nature de l exposition (comportement par defaut, identique a l absence de la commande) ; sinon valeur `alphac` imposee par l utilisateur.",
+          "values": [
+            "EC1",
+            "alphac"
+          ],
+          "default": "EC1",
+          "unit": "W/m2/K",
+          "pages": [
+            220,
+            221
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EXPOSITION FEU",
+      "family": "feu",
+      "context": "bloc:SECTION",
+      "summary": "Affecte les numeros de type d exposition au feu aux parois d une SECTION DALLE ou RECTANGLE.",
+      "syntax": [
+        "EXPOSITION FEU (<SUP, VY> ej) (<INF, WY> ek)",
+        "EXPOSITION FEU (VY ej) (WY ek) (VZ el) (WZ eo)"
+      ],
+      "pages": [
+        222,
+        223
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Associe a chaque paroi de la section un **numero de type d exposition au feu** defini par la commande `EXPOSITION FEU i` de niveau superieur [p.222-223].\n\n- **Section `DALLE` (OPTION PLANE)** : `<SUP, VY> ej` pour la paroi superieure, `<INF, WY> ek` pour la paroi inferieure. `SUP` et `VY` sont synonymes, `INF` et `WY` aussi [p.222].\n- **Section `RECTANGLE` (OPTION SPATIALE)** : `VY ej`, `WY ek`, `VZ el`, `WZ eo` pour les quatre parois [p.223].\n\nPour une section `PERIMETRE`, l affectation se fait ligne par ligne via `Y y Z z EXPOSITION expo` et non par cette commande [p.224].",
+      "prerequisites": [
+        "Les types d exposition ej, ek, el, eo doivent avoir ete definis par EXPOSITION FEU i ... FIN [p.390]"
+      ],
+      "pitfalls": [
+        "Une face non exposee au feu se declare explicitement, par exemple avec une exposition de type `TEMP 20.` [p.219].",
+        "L exemple officiel du manuel ecrit `EXPOSITION SUP 1 INF Expo` en omettant le mot FEU [p.317] ; la forme documentee est `EXPOSITION FEU SUP ej INF ek` [p.222]."
+      ],
+      "examples": [
+        "# Section DALLE (OPTION PLANE)\nEXPOSITION FEU SUP 1 INF 3",
+        "# Meme chose avec les noms de fibres\nEXPOSITION FEU VY 1 WY 3",
+        "# Section RECTANGLE (OPTION SPATIALE), quatre parois\nEXPOSITION FEU VY 2 WY 2 VZ 2 WZ 2"
+      ],
+      "args": [
+        {
+          "name": "SUP",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "doc": "Numero d exposition de la paroi superieure d une section DALLE. Synonyme de VY.",
+          "onlyOptions": [
+            "PLANE"
+          ],
+          "pages": [
+            222
+          ]
+        },
+        {
+          "name": "INF",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "doc": "Numero d exposition de la paroi inferieure d une section DALLE. Synonyme de WY.",
+          "onlyOptions": [
+            "PLANE"
+          ],
+          "pages": [
+            222
+          ]
+        },
+        {
+          "name": "VY",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "doc": "Numero d exposition de la paroi VY (superieure).",
+          "pages": [
+            222,
+            223
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "doc": "Numero d exposition de la paroi WY (inferieure).",
+          "pages": [
+            222,
+            223
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "doc": "Numero d exposition de la paroi VZ d une section RECTANGLE.",
+          "onlyOptions": [
+            "SPATIALE"
+          ],
+          "pages": [
+            223
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "doc": "Numero d exposition de la paroi WZ d une section RECTANGLE.",
+          "onlyOptions": [
+            "SPATIALE"
+          ],
+          "pages": [
+            223
+          ]
+        }
+      ]
+    },
+    {
+      "name": "FEU",
+      "family": "feu",
+      "context": "top",
+      "summary": "Definit une repartition de temperature dans toutes les sections definies, pour une duree d incendie donnee.",
+      "syntax": [
+        "FEU i ('Titre')",
+        "   DUREE t",
+        "   (TEMP temp)",
+        "   (MAILLE dx)",
+        "FIN"
+      ],
+      "pages": [
+        229
+      ],
+      "terminator": "FIN",
+      "exec": "EXEC INCENDIE",
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "aliases": [],
+      "doc": "Definit le **feu numero `i`** : la repartition de temperature de **toutes les sections definies** et une **duree d incendie** [p.229].\n\n- `DUREE t` : duree d exposition au feu, **en minutes** [p.229].\n- `TEMP temp` : temperature initiale de la structure, **20 degres par defaut** [p.229].\n- `MAILLE dx` : taille de maille du calcul thermique ; l annexe B6 liste explicitement les parametres du feu comme etant « duree, maille » [p.390] et l exemple de mise au point de l annexe ecrit `MAILLE 0.01` a l interieur d un bloc `FEU` [p.401].\n\nLe numero `i` est ensuite reference par `INCENDIE ... FEU i CHARG k`.",
+      "prerequisites": [
+        "Les SECTION, EXPOSITION FEU et materiaux feu doivent etre definis [p.390]",
+        "OPTION PLANE ou OPTION SPATIALE [p.217]"
+      ],
+      "forbidden": [
+        "OPTION GRILL [p.217]"
+      ],
+      "pitfalls": [
+        "La duree des courbes de feu doit etre choisie par l utilisateur : c est `DUREE` qui la fixe, pas la commande EXPOSITION FEU [p.221].",
+        "Methode progressive recommandee : commencer par un feu court (10 min) puis **augmenter progressivement la duree** jusqu a la duree cible, **pas plus de 120 minutes en general** [p.400].",
+        "`TEMP` designe ici la temperature INITIALE de la structure, a ne pas confondre avec `TEMP` dans MAT (coefficient de dilatation thermique) ni avec `TEMP` dans EXPOSITION FEU (temperature de paroi constante).",
+        "La syntaxe du §12.10 (p.229) ne mentionne pas `MAILLE`, qui n apparait que dans l annexe B6 (p.390) et dans l exemple de l annexe conseils (p.401)."
+      ],
+      "examples": [
+        "# Feu de 60 minutes\nFEU 20 'FEU'\n   DUREE 60      # minutes\nFIN",
+        "# Feu court de mise au point, maille et temperature initiale explicites\nFEU 10\n   DUREE 10\n   MAILLE 0.01\n   TEMP 20.\nFIN"
+      ],
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero de feu d incendie, reference ensuite par la commande INCENDIE.",
+          "pages": [
+            229
+          ]
+        },
+        {
+          "name": "Titre",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Titre du feu, entre apostrophes.",
+          "pages": [
+            229
+          ]
+        }
+      ]
+    },
+    {
+      "name": "FEU",
+      "family": "feu",
+      "context": "bloc:INCENDIE",
+      "summary": "Associe un feu, eventuellement local, a une charge statique simultanee.",
+      "syntax": [
+        "FEU j (LOCAL) CHARG k"
+      ],
+      "pages": [
+        230
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Associe le **feu numero `j`** a la **charge numero `k`** appliquee simultanement [p.230].\n\n`LOCAL` : les **effets hyperstatiques des deformations thermiques dans la structure ne sont pas pris en compte** [p.230]. Sert soit a verifier la resistance sous feu localise sans compter l effet hyperstatique parfois benefique, soit a faire le re-calcul a froid apres incendie (materiaux degrades, echauffement disparu).",
+      "prerequisites": [
+        "Le FEU j et la CHARG k doivent exister [p.230]"
+      ],
+      "pitfalls": [
+        "Une seule charge simultanee est admise ; utiliser une charge combinee `CHARG k COMB` [p.230].",
+        "Ne pas cumuler l incendie avec un calcul de `SURCH`, realise en elastique [p.230]."
+      ],
+      "examples": [
+        "FEU 20 CHARG 100",
+        "FEU 10 LOCAL CHARG 106"
+      ],
+      "args": [
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero du feu (commande FEU).",
+          "pages": [
+            230
+          ]
+        },
+        {
+          "name": "LOCAL",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Ignore les effets hyperstatiques des deformations thermiques dans la structure.",
+          "pages": [
+            230
+          ]
+        },
+        {
+          "name": "CHARG",
+          "kind": "keyword",
+          "type": "int",
+          "required": true,
+          "doc": "Numero de la charge simultanee avec l incendie (en general une charge combinee CHARG k COMB).",
+          "pages": [
+            230
+          ]
+        }
+      ]
+    },
+    {
+      "name": "FYK",
+      "family": "feu",
+      "context": "bloc:ACIER",
+      "summary": "Limite elastique de l acier passif.",
+      "syntax": [
+        "FYK fy"
+      ],
+      "pages": [
+        227
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "**Limite elastique de l acier** `fy` [p.227]. Sa degradation avec la temperature suit les lois de l EN1992-1-2 §3.2.3, en fonction de la classe (`CLASSE N` ou `X`) et du mode de laminage (`LAMINE CHAUD` ou `FROID`).\n\nAucune unite n est imposee : `fy` s exprime dans le systeme d unites coherent du fichier (l exemple officiel, en MN et m, ecrit `FYK 500`, soit 500 MPa) [p.317].",
+      "examples": [
+        "FYK 500"
+      ],
+      "args": [
+        {
+          "name": "fy",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Limite elastique de l acier passif.",
+          "pages": [
+            227
+          ]
+        }
+      ]
+    },
+    {
+      "name": "GRANULAT",
+      "family": "feu",
+      "context": "bloc:MAT",
+      "summary": "Nature du granulat du beton pour le calcul au feu (siliceux ou calcaire).",
+      "syntax": [
+        "GRANULAT <SILICE, CALCAIRE>"
+      ],
+      "pages": [
+        218
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Precise la **nature du granulat** du beton utilisee par les lois de l EN1992-1-2 pour le calcul au feu : `SILICE` ou `CALCAIRE` [p.218].\n\nCommande optionnelle ; le manuel v24 ne documente pas de valeur par defaut.",
+      "examples": [
+        "MAT 1 'BETON TRAVERSE'\n   E FEU EC2 MPA FCK 30\n   GRANULAT SILICE\nFIN"
+      ],
+      "args": [
+        {
+          "name": "SILICE",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Granulat siliceux.",
+          "pages": [
+            218
+          ]
+        },
+        {
+          "name": "CALCAIRE",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Granulat calcaire.",
+          "pages": [
+            218
+          ]
+        }
+      ]
+    },
+    {
+      "name": "HC",
+      "family": "feu",
+      "context": "bloc:EXPOSITION FEU",
+      "summary": "Courbe de temperature hydrocarbure pour une exposition au feu.",
+      "syntax": [
+        "HC"
+      ],
+      "pages": [
+        220
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Selectionne la **courbe de temperature hydrocarbure**. Convection automatique **25 W/m2/K** (EN1991-1-2 §3.2) si `CONVECTION` est absente ou vaut `EC1` [p.220-221].\n\nMutuellement exclusif avec CN, HCM, ADIABATIQUE, TEMP, LOI_GAZ, LOI_PAROI.",
+      "examples": [
+        "EXPOSITION FEU 4 HC"
+      ],
+      "args": []
+    },
+    {
+      "name": "HCM",
+      "family": "feu",
+      "context": "bloc:EXPOSITION FEU",
+      "summary": "Courbe de temperature hydrocarbure majoree pour une exposition au feu.",
+      "syntax": [
+        "HCM"
+      ],
+      "pages": [
+        220
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Selectionne la **courbe de temperature hydrocarbure majoree**. Convection automatique **50 W/m2/K** (guide CETU Comportement au feu des tunnels routiers p34) si `CONVECTION` est absente ou vaut `EC1` [p.220-221].\n\nMutuellement exclusif avec CN, HC, ADIABATIQUE, TEMP, LOI_GAZ, LOI_PAROI.",
+      "examples": [
+        "EXPOSITION FEU 3 HCM PROTECTION 0.03/0.19   # epaisseur / conductivite"
+      ],
+      "args": []
+    },
+    {
+      "name": "INCENDIE",
+      "family": "feu",
+      "context": "top",
+      "summary": "Definit une charge d incendie : un feu applique a la structure sous un chargement statique donne.",
+      "syntax": [
+        "INCENDIE i ('Titre')",
+        "   FEU j (LOCAL) CHARG k",
+        "FIN"
+      ],
+      "pages": [
+        230
+      ],
+      "terminator": "FIN",
+      "exec": "EXEC INCENDIE",
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "aliases": [],
+      "doc": "Definit la **charge incendie numero `i`** : le feu `j` applique a la structure **sous la charge simultanee `k`** [p.230].\n\nL incendie est prevu pour **une seule charge simultanee** : on a recours a une **charge combinee** (`CHARG k COMB`) en general [p.230].\n\nAvec le mot cle **`LOCAL`**, les **effets hyperstatiques des deformations thermiques ne sont pas pris en compte** [p.230]. Cela permet :\n- de verifier la resistance de la structure sous un feu localise, qui affaiblit localement une section, sans tenir compte de l effet hyperstatique parfois benefique ;\n- d effectuer le **re-calcul a froid** apres incendie : les materiaux conservent leurs caracteristiques degradees, mais la structure ayant refroidi, les effets hyperstatiques de l echauffement ont disparu.",
+      "prerequisites": [
+        "Le FEU j doit etre defini [p.229]",
+        "La CHARG k doit etre definie, en general une charge combinee CHARG k COMB (§7.14 et §12.9) [p.229-230]",
+        "Les caracteristiques feu des barres doivent etre affectees par CARA ib SECTION is [p.228]",
+        "OPTION PLANE ou OPTION SPATIALE, unites en metre [p.217-218]"
+      ],
+      "forbidden": [
+        "OPTION GRILL [p.217]",
+        "Cumuler l effet d un chargement d incendie calcule d un cote et l effet des charges d exploitation calcule avec SURCH de l autre : ce n est ni equivalent ni correct, SURCH etant realise sous calcul elastique [p.230]",
+        "Referencer plusieurs charges simultanees dans un meme INCENDIE [p.230]"
+      ],
+      "pitfalls": [
+        "**L analyse au feu est non lineaire** : la charge appliquee doit etre representative des charges permanentes et des charges d exploitation eventuelles. Il faut simuler ces charges par des charges statiques equivalentes puis les combiner avec `CHARG COMB` [p.230].",
+        "Il n est pas equivalent d etudier la somme des effets de differents chargements au feu et l effet d une combinaison de chargement : le calcul depend du chargement applique [p.229].",
+        "`LOCAL` est aussi le mot cle documente pour un calcul post-incendie, a combiner avec `ANALYSE FEU / CARA GARDER` [p.230, p.401].",
+        "La commande `COMB` ne fait aucun recalcul non lineaire : elle ne peut pas servir a combiner des resultats d incendie [p.234]."
+      ],
+      "examples": [
+        "# Incendie associe a 1 feu et 1 charge combinee\nINCENDIE 10\n   FEU 20 CHARG 100\nFIN",
+        "# Feu localise : effets hyperstatiques thermiques ignores\nINCENDIE 6\n   FEU 10 LOCAL CHARG 106\nFIN"
+      ],
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero de la charge incendie, reference par EXEC INCENDIE et par les commandes de resultats.",
+          "pages": [
+            230
+          ]
+        },
+        {
+          "name": "Titre",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Titre de la charge incendie, entre apostrophes.",
+          "pages": [
+            230
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LAMINE",
+      "family": "feu",
+      "context": "bloc:ACIER",
+      "summary": "Mode de laminage de l acier passif : a chaud ou a froid.",
+      "syntax": [
+        "LAMINE <CHAUD, FROID>"
+      ],
+      "pages": [
+        227
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Precise si les barres d acier sont **laminees a chaud** (`CHAUD`) ou **a froid** (`FROID`).\n\nLes barres d aciers sont des **lamines a froid par defaut** [p.227].",
+      "pitfalls": [
+        "L aide-memoire de syntaxe du manuel orthographie ce mot cle `LAMINES` ; le chapitre 12 et les exemples officiels utilisent `LAMINE` [p.227, p.317]."
+      ],
+      "examples": [
+        "LAMINE CHAUD",
+        "LAMINE FROID"
+      ],
+      "args": [
+        {
+          "name": "CHAUD",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Acier lamine a chaud.",
+          "pages": [
+            227
+          ]
+        },
+        {
+          "name": "FROID",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Acier lamine a froid (valeur par defaut).",
+          "pages": [
+            227
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LOI_GAZ",
+      "family": "feu",
+      "context": "bloc:EXPOSITION FEU",
+      "summary": "Courbe temperature-temps des gaz definie point par point.",
+      "syntax": [
+        "LOI_GAZ",
+        "tj tempj",
+        "..."
+      ],
+      "pages": [
+        220
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Definit une **courbe temperature-temps des gaz** quelconque, par une suite de couples `tj tempj` (temps en minutes ; temperature en degres), un couple par ligne [p.220].\n\nLa loi est **prolongee au-dela des dates extremes par une temperature constante egale a celle definie en extremite** [p.220].\n\nConvection automatique **50 W/m2/K** (programmee par extension) si `CONVECTION` est absente ou vaut `EC1` [p.221].",
+      "pitfalls": [
+        "Le premier couple doit couvrir l instant 0 et le dernier au moins la duree du feu, sinon la temperature est prolongee par palier constant [p.220]."
+      ],
+      "examples": [
+        "EXPOSITION FEU 5\n   LOI_GAZ\n   0     20\n   10    678.427331513134\n   30    841.79587968833\n   100   1021.75321804906\nFIN"
+      ],
+      "args": [
+        {
+          "name": "tj",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Instant du couple.",
+          "unit": "minute",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "tempj",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Temperature des gaz a l instant tj.",
+          "unit": "degre Celsius",
+          "pages": [
+            220
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LOI_PAROI",
+      "family": "feu",
+      "context": "bloc:EXPOSITION FEU",
+      "summary": "Courbe temperature-temps imposee directement sur la paroi de la section.",
+      "syntax": [
+        "LOI_PAROI",
+        "tj tempj",
+        "..."
+      ],
+      "pages": [
+        220
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Definit une **courbe temperature-temps appliquee directement sur les parois de la section** (et non sur les gaz), par une suite de couples `tj tempj` [p.220].\n\nLa loi est **prolongee au-dela des dates extremes par une temperature constante** egale a la valeur d extremite [p.220].\n\nConvection automatique **50 W/m2/K** si `CONVECTION` est absente ou vaut `EC1` [p.221].",
+      "pitfalls": [
+        "C est la commande conseillee pour l etape 1 de la mise au point d un calcul au feu : imposer 20 degres constants sur les parois pour obtenir un calcul quasi a froid, puis introduire la vraie sollicitation thermique [p.399-400]."
+      ],
+      "examples": [
+        "# Etape de calage : paroi maintenue a 20 degres pendant 30 minutes\nEXPOSITION FEU 6\n   LOI_PAROI\n   0.    20.\n   30.   20.\nFIN"
+      ],
+      "args": [
+        {
+          "name": "tj",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Instant du couple.",
+          "unit": "minute",
+          "pages": [
+            220
+          ]
+        },
+        {
+          "name": "tempj",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Temperature de la paroi a l instant tj.",
+          "unit": "degre Celsius",
+          "pages": [
+            220
+          ]
+        }
+      ]
+    },
+    {
+      "name": "MAILLE",
+      "family": "feu",
+      "context": "bloc:SECTION",
+      "summary": "Taille de maille du maillage thermique de la section.",
+      "syntax": [
+        "MAILLE dx"
+      ],
+      "pages": [
+        224,
+        226,
+        399
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Fixe la **taille de maille** `dx` du maillage de la section, en metres. **Valeur recommandee et valeur par defaut : 0,01 m** [p.224, p.399].\n\nPlus la maille est petite, plus le maillage est fin et le resultat precis, mais plus le temps de calcul augmente : il convient de garder une maille de l ordre de **1 cm** pour des sections usuelles [p.399].\n\n**Regle de dimensionnement** : la taille de maille doit etre **trois fois inferieure a la plus petite dimension du dessin** (plus petite longueur de segment du perimetre, largeur d ame ou d aile d une poutre en I) [p.399].",
+      "pitfalls": [
+        "La syntaxe du manuel ne documente `MAILLE` que dans la section `PERIMETRE` [p.224], mais l exemple officiel l utilise aussi dans une section `DALLE` [p.317].",
+        "Une maille trop petite, imposee par exemple par des arrondis representes par de nombreux segments courts, rend le pas de temps tres court (condition CFL des iterations explicites) et le calcul au feu tres long [p.399]."
+      ],
+      "examples": [
+        "MAILLE 0.01",
+        "MAILLE 0.001   # maille de 1 mm pour un profil IPN"
+      ],
+      "args": [
+        {
+          "name": "dx",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Taille de maille pour le maillage de la section.",
+          "default": "0.01",
+          "unit": "metre",
+          "pages": [
+            224
+          ]
+        }
+      ]
+    },
+    {
+      "name": "MAILLE",
+      "family": "feu",
+      "context": "bloc:FEU",
+      "summary": "Taille de maille du calcul thermique associee au feu.",
+      "syntax": [
+        "MAILLE dx"
+      ],
+      "pages": [
+        390,
+        401
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Taille de maille `dx` associee au feu. L annexe B6 decrit l etape « definition du feu » avec les parametres **duree et maille** [p.390], et l exemple de mise au point de l annexe conseils ecrit `MAILLE 0.01` a l interieur d un bloc `FEU` [p.401].\n\nMemes ordres de grandeur que pour la maille de section : de l ordre de 1 cm, et trois fois inferieure a la plus petite dimension du dessin [p.399].",
+      "pitfalls": [
+        "Ce mot cle ne figure pas dans la ligne de syntaxe du §12.10 (p.229) ; il n est atteste que par l annexe B6 (p.390) et l exemple de l annexe conseils (p.401)."
+      ],
+      "examples": [
+        "FEU 10\n   DUREE 10\n   MAILLE 0.01\n   TEMP 20.\nFIN"
+      ],
+      "args": [
+        {
+          "name": "dx",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Taille de maille du calcul thermique.",
+          "unit": "metre",
+          "pages": [
+            390,
+            401
+          ]
+        }
+      ]
+    },
+    {
+      "name": "MAT",
+      "family": "feu",
+      "context": "bloc:SECTION",
+      "summary": "Affecte le materiau (avec ses complements feu) a une SECTION de calcul au feu.",
+      "syntax": [
+        "MAT m"
+      ],
+      "pages": [
+        222,
+        223,
+        224
+      ],
+      "aliases": [
+        "MATERIAU"
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Designe le **numero du materiau** `m` associe a la section [p.222-224]. Le materiau doit avoir ete defini avec ses complements feu (`E FEU EC2 ... FCK ...`).\n\nC est par cette affectation que la commande `CARA ib SECTION is` genere aussi l affectation au materiau : **il n y a pas a ecrire la commande `CONS` pour la barre correspondante** [p.228].\n\nL alias `MATERIAU` est utilise dans les exemples officiels [p.225, p.317].",
+      "prerequisites": [
+        "Le materiau m doit etre defini avant la SECTION [p.390]"
+      ],
+      "examples": [
+        "MAT 1",
+        "MATERIAU 1"
+      ],
+      "args": [
+        {
+          "name": "m",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero du materiau associe a la section.",
+          "pages": [
+            222
+          ]
+        }
+      ]
+    },
+    {
+      "name": "NEWTON_RAPHSON",
+      "family": "feu",
+      "context": "bloc:ANALYSE FEU",
+      "summary": "Parametres de la boucle de convergence Newton-Raphson de l analyse au feu.",
+      "syntax": [
+        "NEWTON_RAPHSON MAX_ITER n (PERIODE i)"
+      ],
+      "pages": [
+        230
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Regle la boucle de convergence **Newton-Raphson** de l analyse au feu [p.230] :\n- `MAX_ITER n` : nombre maximal d iterations, **500 par defaut** ;\n- `PERIODE i` : periode d iterations du calcul en **rigidite secante**, les autres iterations se faisant avec des rigidites tangentes, **5 par defaut**.",
+      "pitfalls": [
+        "Augmenter `MAX_ITER` ne stabilise pas un modele instable : si l equilibre interne d une section ne peut pas etre verifie (beton sans traction, ferraillage insuffisant), le calcul divergera de toute facon [p.231, p.400]."
+      ],
+      "examples": [
+        "NEWTON_RAPHSON MAX_ITER 500 PERIODE 5"
+      ],
+      "args": [
+        {
+          "name": "MAX_ITER",
+          "kind": "keyword",
+          "type": "int",
+          "required": true,
+          "doc": "Nombre maximal d iterations de la boucle de convergence Newton-Raphson.",
+          "default": "500",
+          "pages": [
+            230
+          ]
+        },
+        {
+          "name": "PERIODE",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "doc": "Periode d iterations du calcul en rigidite secante (les autres iterations se font en rigidite tangente).",
+          "default": "5",
+          "pages": [
+            230
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PERIMETRE",
+      "family": "feu",
+      "context": "bloc:SECTION",
+      "summary": "Section de calcul au feu a contour polygonal quelconque, en OPTION SPATIALE.",
+      "syntax": [
+        "PERIMETRE",
+        "MAT m",
+        "(MAILLE dx)",
+        "Y y1 Z z1 EXPOSITION expo1",
+        "...",
+        "Y yn Z zn EXPOSITION expon"
+      ],
+      "pages": [
+        224,
+        225,
+        226
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "SPATIALE"
+      ],
+      "onlyOptions": [
+        "SPATIALE"
+      ],
+      "doc": "Declare une section a **contour polygonal quelconque** dans un modele 3D (`OPTION SPATIALE`) [p.224].\n\nLe contour est decrit par une suite de lignes `Y yi Z zi EXPOSITION expoi`, chaque exposition s appliquant au **segment [i, i+1]** (et `[n, 1]` pour le dernier, qui boucle la section) [p.224].\n\nLe repere de definition n est pas force d etre le repere local ST1 de la poutre : seule la **direction** des axes est commune. ST1 replace automatiquement le centre de gravite de la section brute sur l axe local de la poutre et calcule l angle des axes d inertie principaux [p.224-225].\n\nLes points du perimetre peuvent etre rentres **dans le sens direct ou indirect** [p.225]. Si la section est symetrique par rapport a y=0 ou z=0, le maillage respectera cette ou ces symetries [p.225].",
+      "prerequisites": [
+        "OPTION SPATIALE [p.224]",
+        "Les EXPOSITION FEU referencees doivent exister [p.390]"
+      ],
+      "forbidden": [
+        "OPTION PLANE et OPTION GRILL [p.224]"
+      ],
+      "pitfalls": [
+        "Le maillage place quatre points a chaque angle du perimetre (trois a l exterieur, un a l interieur) : cette methode convient aux angles droits mais donne des points tres proches pour des segments quasiment alignes, ce qu il faut eviter (condition CFL, pas de temps tres court, calculs tres longs) [p.399].",
+        "Ne pas representer des arrondis de petit rayon par de nombreux segments courts : cela impose une maille trop petite [p.399].",
+        "La position des noeuds (et/ou des excentrements) doit etre definie pour positionner correctement la poutre a froid, ST1 ramenant le centre de gravite sur l axe local [p.225]."
+      ],
+      "examples": [
+        "SECTION 1 'TRIANGLE'\n   PERIMETRE\n   MATERIAU 1\n   MAILLE 0.01\n   Y 0.0    Z 0.0    EXPOSITION 1\n   Y 1.1    Z 0.5    EXPOSITION 2\n   Y 0.0    Z 1.0    EXPOSITION 3\nFIN",
+        "# Poutre en I : la semelle superieure voit l exposition 5, le reste l exposition 1\nSECTION 2 'POUTRE I'\n   PERIMETRE\n   MATERIAU 2\n   MAILLE 0.01\n   Y -0.3    Z -0.5   EXPOSITION 1\n   Y  0.3    Z -0.5   EXPOSITION 1\n   Y  0.3    Z -0.3   EXPOSITION 1\n   Y  0.15   Z -0.2   EXPOSITION 1\n   Y  0.15   Z  0.1   EXPOSITION 1\n   Y  0.5    Z  0.2   EXPOSITION 5\n   Y  0.5    Z  0.5   EXPOSITION 5\n   Y -0.5    Z  0.5   EXPOSITION 5\n   Y -0.5    Z  0.2   EXPOSITION 1\n   Y -0.15   Z  0.1   EXPOSITION 1\n   Y -0.15   Z -0.2   EXPOSITION 1\n   Y -0.3    Z -0.3   EXPOSITION 1\nFIN"
+      ],
+      "args": []
+    },
+    {
+      "name": "PROTECTION",
+      "family": "feu",
+      "context": "bloc:EXPOSITION FEU",
+      "summary": "Resistance thermique surfacique equivalente d une protection passive de la paroi.",
+      "syntax": [
+        "PROTECTION res"
+      ],
+      "pages": [
+        220
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Ajoute une **protection passive** a la paroi, caracterisee par sa resistance thermique surfacique equivalente `res` en **m2.K/W** [p.220].\n\n`res` doit etre **evaluee par l utilisateur** (ex. epaisseur / conductivite). Elle est consideree comme constante par simplification, alors qu en realite elle evolue avec l elevation de temperature dans la protection : res_eq(t) = integrale de 1/lambda_c(theta(x,t)) dx [p.220].\n\nCommande optionnelle : absente = pas de protection (le fichier resultat affiche alors `Protection : Non`) [p.319].",
+      "pitfalls": [
+        "Augmenter la protection incendie de la paroi est, avec l augmentation de l enrobage, le levier documente pour repousser la ruine d une section BA au feu [p.400]."
+      ],
+      "examples": [
+        "EXPOSITION FEU 3 HCM PROTECTION 0.03/0.19   # epaisseur 0.03 m / conductivite 0.19"
+      ],
+      "args": [
+        {
+          "name": "res",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Resistance thermique surfacique equivalente de la protection passive.",
+          "unit": "m2.K/W",
+          "pages": [
+            220
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RECTANGLE",
+      "family": "feu",
+      "context": "bloc:SECTION",
+      "summary": "Section de calcul au feu rectangulaire pour l OPTION SPATIALE, definie par son epaisseur et sa largeur.",
+      "syntax": [
+        "RECTANGLE EPAISSEUR e LARGEUR larg"
+      ],
+      "pages": [
+        223
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "SPATIALE"
+      ],
+      "onlyOptions": [
+        "SPATIALE"
+      ],
+      "doc": "Declare la section comme un **RECTANGLE** d epaisseur `e` et de largeur `larg`, pour un calcul en `OPTION SPATIALE` [p.223].\n\nLe repere local de la section est centre sur l axe local de la poutre (centre de gravite de la section brute). Les remarques faites pour la section `DALLE` s appliquent aussi au `RECTANGLE` [p.223].\n\nLa poutre rectangulaire peut etre tournee sur elle-meme avec la commande `BETA` [p.223].",
+      "prerequisites": [
+        "OPTION SPATIALE [p.223]"
+      ],
+      "forbidden": [
+        "OPTION PLANE et OPTION GRILL [p.223]"
+      ],
+      "pitfalls": [
+        "Le chapitre 12 du manuel (p.223) donne `RECTANGLE EPAISSEUR e LARGEUR larg` sans parentheses, donc LARGEUR obligatoire, alors que l aide-memoire de syntaxe la note optionnelle : renseigner explicitement LARGEUR est la forme sure.",
+        "En cas de risque d ecaillage, retrancher soi-meme l epaisseur de beton ecaille [p.223]."
+      ],
+      "examples": [
+        "SECTION 2 'POTEAU 0.5 X 0.4'\n   RECTANGLE EPAISSEUR 0.5 LARGEUR 0.4\n   EXPOSITION FEU VY 2 WY 2 VZ 2 WZ 2\n   MAT 1\nFIN"
+      ],
+      "args": [
+        {
+          "name": "EPAISSEUR",
+          "kind": "keyword",
+          "type": "real",
+          "required": true,
+          "doc": "Epaisseur e de la section.",
+          "unit": "metre",
+          "pages": [
+            223
+          ]
+        },
+        {
+          "name": "LARGEUR",
+          "kind": "keyword",
+          "type": "real",
+          "required": true,
+          "doc": "Largeur larg de la section.",
+          "unit": "metre",
+          "pages": [
+            223
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RHO_FEU",
+      "family": "feu",
+      "context": "bloc:MAT",
+      "summary": "Masse volumique utilisee pour le calcul thermique au feu (chaleur specifique volumique).",
+      "syntax": [
+        "RHO_FEU rho_feu (<EC2, CTE>)"
+      ],
+      "pages": [
+        218,
+        219
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "**Masse volumique pour le calcul au feu**, en **kg/m3**, `2300 kg/m3 par defaut` [p.218].\n\nElle intervient uniquement pour passer de la chaleur specifique **massique** (J.kg-1.K-1) a la chaleur specifique **volumique** (J.m-3.K-1) [p.219].\n\nVariation avec la temperature [p.219] :\n- par defaut la masse volumique est **variable en fonction de la temperature**, conformement a l EN1992-1-2 §3.3.2(3) (`RHO_FEU EC2`) ;\n- `RHO_FEU CTE` la fige a une valeur constante (analyse au feu simplifiee).",
+      "pitfalls": [
+        "`rho_feu` **ne se substitue pas au poids volumique `ro`** de la commande MAT [p.218] : elle n agit que dans le calcul thermique. Sa variation est donc invisible dans les sorties mecaniques (RO reste constant), d ou l impression frequente que le parametre ne change rien (retour d experience support, non documente comme tel dans le manuel).",
+        "Le manuel decrit `RHO_FEU EC2` / `RHO_FEU CTE` comme des mots cles seuls dans le texte explicatif [p.219], alors que la ligne de syntaxe attend une VALEUR suivie eventuellement de EC2 ou CTE [p.218] ; l exemple officiel ecrit `RHO_FEU 2500. # CTE` [p.317]."
+      ],
+      "examples": [
+        "MAT 1 'BETON TRAVERSE'\n   E FEU EC2 MPA FCK 30\n   RHO_FEU 2500.       # kg/m3, variation EN1992-1-2 par defaut\nFIN",
+        "MAT 2 'BETON ANALYSE SIMPLIFIEE'\n   E FEU EC2 MPA FCK 30\n   RHO_FEU 2300. CTE   # masse volumique figee\nFIN"
+      ],
+      "args": [
+        {
+          "name": "rho_feu",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Masse volumique pour le calcul au feu. Ne se substitue pas au poids volumique ro.",
+          "default": "2300",
+          "unit": "kg/m3",
+          "pages": [
+            218
+          ]
+        },
+        {
+          "name": "EC2",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Masse volumique variable en fonction de la temperature selon l EN1992-1-2 §3.3.2(3) (comportement par defaut).",
+          "pages": [
+            219
+          ]
+        },
+        {
+          "name": "CTE",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Masse volumique consideree comme constante (analyse au feu simplifiee).",
+          "pages": [
+            219
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SECTION",
+      "family": "feu",
+      "context": "top",
+      "summary": "Definit un type de section de calcul au feu (DALLE, RECTANGLE ou PERIMETRE) avec ses parois exposees et son materiau.",
+      "syntax": [
+        "SECTION is ('Titre de section')",
+        "   DALLE EPAISSEUR e (LARGEUR larg)",
+        "   EXPOSITION FEU (<SUP, VY> ej) (<INF, WY> ek)",
+        "   MAT m",
+        "FIN",
+        "SECTION is ('Titre de section')",
+        "   RECTANGLE EPAISSEUR e LARGEUR larg",
+        "   EXPOSITION FEU (VY ej) (WY ek) (VZ el) (WZ eo)",
+        "   MAT m",
+        "FIN",
+        "SECTION is ('Titre de section')",
+        "   PERIMETRE",
+        "   MAT m",
+        "   (MAILLE dx)",
+        "   Y y1 Z z1 EXPOSITION expo1",
+        "   ...",
+        "   Y yn Z zn EXPOSITION expon",
+        "FIN"
+      ],
+      "pages": [
+        222,
+        223,
+        224,
+        225,
+        226
+      ],
+      "terminator": "FIN",
+      "exec": "EXEC INCENDIE",
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "aliases": [],
+      "doc": "Definit le **type de section numero `is`** necessaire pour qu une barre puisse etre soumise au feu [p.222].\n\nTrois geometries :\n- **`DALLE`** en `OPTION PLANE` : section rectangulaire d epaisseur `e` et de largeur `larg` (1 par defaut) [p.222].\n- **`RECTANGLE`** en `OPTION SPATIALE` : section rectangulaire `e` x `larg` [p.223].\n- **`PERIMETRE`** en `OPTION SPATIALE` : contour polygonal quelconque decrit point par point [p.224].\n\nLa geometrie sert a la fois au calcul des caracteristiques mecaniques, au calcul de la diffusion de la chaleur et a l evaluation de la resistance de la section (lois moment-courbure) lors du calcul au feu [p.222].\n\nL origine du repere des sections `DALLE` et `RECTANGLE` est le centre de gravite de la section brute, la ou passe l axe neutre, c est-a-dire l axe du repere local de la barre ST1 [p.222-223].\n\nPour la section `PERIMETRE`, seule la **direction** des axes locaux coincide avec le repere local ST1 : la geometrie peut etre decrite n importe ou, **ST1 replace automatiquement le centre de gravite** sur l axe local de la poutre et calcule l angle des axes d inertie principaux [p.224].",
+      "prerequisites": [
+        "OPTION PLANE (DALLE) ou OPTION SPATIALE (RECTANGLE, PERIMETRE) [p.222-224]",
+        "Les EXPOSITION FEU referencees doivent etre definies avant [p.390]",
+        "Le materiau MAT m doit etre defini avant, avec ses complements feu [p.390]",
+        "Travailler en metre [p.218]"
+      ],
+      "forbidden": [
+        "OPTION GRILL [p.217]",
+        "DALLE en OPTION SPATIALE, RECTANGLE ou PERIMETRE en OPTION PLANE [p.222-224]"
+      ],
+      "pitfalls": [
+        "Pour le calcul au feu, **les contraintes maximales ne sont plus obtenues pour les fibres extremes** ; les contraintes internes sont donnees par la commande RESU [p.223].",
+        "Risque d ecaillage : l utilisateur doit lui-meme **soustraire l epaisseur de beton ecaille** a l epaisseur initiale, et en tenir compte dans les enrobages des armatures [p.223, p.228].",
+        "Taille de maille : plus la maille est fine, plus le resultat est precis, mais la maille doit rester de l ordre de 1 cm pour des sections usuelles et **trois fois inferieure a la plus petite dimension du dessin** (plus petit segment, epaisseur d ame ou d aile) [p.399].",
+        "Representer des arrondis de petit rayon par plusieurs segments courts entraine une taille de maille trop petite : des points tres proches donnent, via la condition CFL des iterations explicites, un pas de temps tres court et des calculs au feu tres longs [p.399].",
+        "La structure doit etre discretisee finement : le calcul tient compte de la deformation moyenne de TOUTE la barre, sans sous-discretisation ; une travee doit etre decoupee en plusieurs barres et non modelisee par une seule [p.217].",
+        "Si la section est symetrique par rapport a l axe y=0 ou z=0 du repere de la SECTION, le maillage respectera cette ou ces symetries [p.225]."
+      ],
+      "examples": [
+        "# OPTION PLANE : dalle de 1 m d epaisseur exposee dessus (expo 1) et dessous (expo 3)\nSECTION 1 'DALLE DE 1 M'\n   DALLE EPAISSEUR 1.0\n   LARGEUR 1.0\n   EXPOSITION FEU SUP 1 INF 3\n   MATERIAU 1\n   MAILLE 0.01\nFIN",
+        "# OPTION SPATIALE : section rectangulaire, 4 parois exposees\nSECTION 2 'POTEAU'\n   RECTANGLE EPAISSEUR 0.5 LARGEUR 0.4\n   EXPOSITION FEU VY 2 WY 2 VZ 2 WZ 2\n   MAT 1\nFIN",
+        "# OPTION SPATIALE : contour polygonal quelconque (exemple triangle du manuel)\nSECTION 1 'TRIANGLE'\n   PERIMETRE\n   MATERIAU 1\n   MAILLE 0.01\n   Y 0.0    Z 0.0    EXPOSITION 1\n   Y 1.1    Z 0.5    EXPOSITION 2\n   Y 0.0    Z 1.0    EXPOSITION 3\nFIN"
+      ],
+      "args": [
+        {
+          "name": "is",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero du type de section, reference ensuite par CARA ib SECTION is.",
+          "pages": [
+            222
+          ]
+        },
+        {
+          "name": "Titre",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Titre de la section, entre apostrophes.",
+          "pages": [
+            222
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SECTION",
+      "family": "feu",
+      "context": "bloc:ACIER",
+      "summary": "Aire de la section d une barre d acier passif, si differente de pi.phi2/4.",
+      "syntax": [
+        "SECTION as"
+      ],
+      "pages": [
+        227
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "**Aire de la section d une barre d acier** `as` [p.227].\n\nCommande optionnelle : si elle est absente, la section vaut **pi.phi^2/4** a partir du diametre declare par `DIAMETRE phi` [p.227].\n\nLe calcul au feu impose de travailler en metre [p.218], donc `as` s exprime en m2.",
+      "pitfalls": [
+        "Renseigner `SECTION as` ne dispense pas de renseigner `DIAMETRE phi` : le diametre reste utilise pour localiser la maille de beton donnant la temperature de l armature [p.227]."
+      ],
+      "examples": [
+        "SECTION 3.142e-4   # aire d une barre HA20, en m2"
+      ],
+      "args": [
+        {
+          "name": "as",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Aire de la section de la barre d acier.",
+          "unit": "m2",
+          "pages": [
+            227
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SECTION",
+      "family": "feu",
+      "context": "bloc:CARA",
+      "summary": "Affecte a une barre une SECTION de calcul au feu et, optionnellement, un type d armature.",
+      "syntax": [
+        "CARA ib",
+        "   SECTION i (ARMATURE j)",
+        "FIN"
+      ],
+      "pages": [
+        228
+      ],
+      "aliases": [
+        "ARMA"
+      ],
+      "exec": "EXEC INCENDIE",
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Complement **feu** de la commande caracteristique (§12.7) : associe la barre `ib` a une **section de calcul au feu** `i` et, optionnellement, a un **type d armature** `j` [p.228].\n\n**L affectation au materiau est realisee implicitement via la commande `SECTION`** : cette commande genere donc les caracteristiques mecaniques geometriques ET l affectation au materiau, il n y a **pas a ecrire la commande `CONS`** pour la barre correspondante [p.228].\n\n`ARMATURE` est optionnelle : cela permet de traiter des cas de beton seul en pre-dimensionnement, ou de faciliter le calcul d une simple diffusion thermique [p.228]. L abreviation `ARMA` est utilisee dans les exemples officiels [p.318, p.400].\n\n`ib` accepte une liste de barres (`CARA 1 A 2 SECTION 1`) [p.324].",
+      "prerequisites": [
+        "La SECTION i doit etre definie [p.390]",
+        "Le type d armature j, s il est cite, doit etre defini [p.390]"
+      ],
+      "forbidden": [
+        "Rededefinir ensuite les caracteristiques de la meme barre par une commande CARA classique : cela invalide l exposition au feu [p.228]"
+      ],
+      "pitfalls": [
+        "**Attention : la redefinition des caracteristiques sur une barre deja affectee par la commande SECTION, avec la commande classique `CARA`, invalide l exposition au feu — l incendie ne cree plus d echauffement** [p.228].",
+        "Sans `ARMATURE`, la section de beton soumise au feu ne reprend plus aucune traction : l equilibre de la section n est plus forcement assure sous des sollicitations courantes (flexion simple sans effort axial de compression) et la structure peut devenir instable. Activer `TRACTION OUI` dans le MATERIAU peut stabiliser la resolution pour comprendre le mecanisme d instabilite, mais n est pas realiste [p.228].",
+        "Il n y a pas besoin de `CONS` : le materiau vient de la SECTION [p.228]."
+      ],
+      "examples": [
+        "# Une barre, avec armatures\nCARA 5\n   SECTION 1 ARMATURE 1\nFIN",
+        "# Forme condensee, abreviation ARMA (exemple officiel)\nCARA 5 SECTION 1 ARMA 1",
+        "# Liste de barres, beton seul (diffusion thermique / pre-dimensionnement)\nCARA 1 A 2 SECTION 1"
+      ],
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero de la SECTION de calcul au feu affectee a la barre.",
+          "pages": [
+            228
+          ]
+        },
+        {
+          "name": "ARMATURE",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "doc": "Numero du type d ARMATURE affecte a la barre. Optionnel (beton seul possible). Abreviation ARMA acceptee.",
+          "pages": [
+            228
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TEMP",
+      "family": "feu",
+      "context": "bloc:EXPOSITION FEU",
+      "summary": "Temperature de paroi constante imposee pour une exposition au feu.",
+      "syntax": [
+        "TEMP temp"
+      ],
+      "pages": [
+        220,
+        221
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Impose une **temperature de paroi constante** `temp` (20 degres par defaut) [p.220].\n\nCoefficient de convection associe [p.221] : **4 W/m2/K** tant que la temperature de paroi reste inferieure a 50 degres (seuil conventionnel du programme : la surface est alors consideree comme non exposee, EN1991-1-2 §3.1) ; **25 W/m2/K** au-dela.\n\nC est la facon documentee de declarer une **face non exposee** (`EXPOSITION TEMP 20.`) [p.219].",
+      "pitfalls": [
+        "A ne pas confondre avec `TEMP` dans un bloc MAT (coefficient de dilatation thermique) ni avec `TEMP` dans un bloc FEU (temperature initiale de la structure)."
+      ],
+      "examples": [
+        "EXPOSITION FEU 1 TEMP 20"
+      ],
+      "args": [
+        {
+          "name": "temp",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "doc": "Valeur de la temperature constante de la paroi.",
+          "default": "20",
+          "unit": "degre Celsius",
+          "pages": [
+            220
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TEMP",
+      "family": "feu",
+      "context": "bloc:FEU",
+      "summary": "Temperature initiale de la structure avant l incendie.",
+      "syntax": [
+        "TEMP temp"
+      ],
+      "pages": [
+        229
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "**Temperature initiale de la structure**, `20 degres par defaut` [p.229].",
+      "pitfalls": [
+        "Homonyme trompeur : `TEMP` vaut coefficient de dilatation thermique dans un bloc MAT, temperature de paroi constante dans un bloc EXPOSITION FEU, et temperature initiale de la structure ici."
+      ],
+      "examples": [
+        "TEMP 20."
+      ],
+      "args": [
+        {
+          "name": "temp",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Temperature initiale de la structure.",
+          "default": "20",
+          "unit": "degre Celsius",
+          "pages": [
+            229
+          ]
+        }
+      ]
+    },
+    {
+      "name": "UU",
+      "family": "feu",
+      "context": "bloc:MAT",
+      "summary": "Teneur en eau du beton intervenant dans le calcul de la chaleur specifique massique.",
+      "syntax": [
+        "UU uu"
+      ],
+      "pages": [
+        218
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "**Teneur en eau** du beton : rapport entre le poids de l eau et le poids du beton [p.218].\n\nElle intervient dans le calcul de la **chaleur specifique massique** (en J.kg-1.K-1) conformement a l EN1992-1-2 §3.3.2, qui prevoit des valeurs comprises entre **0.0 (0 %) et 0.03 (3 %)** [p.219].",
+      "pitfalls": [
+        "Valeur adimensionnelle (rapport de poids), pas un pourcentage : ecrire `UU 0.015` pour 1,5 %."
+      ],
+      "examples": [
+        "MAT 1 'BETON TRAVERSE'\n   E FEU EC2 MPA FCK 30\n   UU 0.015\nFIN"
+      ],
+      "args": [
+        {
+          "name": "uu",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Teneur en eau (poids d eau / poids de beton). 0 par defaut, comprise entre 0 et 1, en general entre 0 et 0.03.",
+          "default": "0",
+          "min": 0,
+          "max": 1,
+          "pages": [
+            218
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Y",
+      "family": "feu",
+      "context": "bloc:SECTION",
+      "summary": "Point du contour d une SECTION PERIMETRE et exposition au feu du segment qui en part.",
+      "syntax": [
+        "Y yi Z zi EXPOSITION expoi"
+      ],
+      "pages": [
+        224
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "SPATIALE"
+      ],
+      "onlyOptions": [
+        "SPATIALE"
+      ],
+      "doc": "Definit un **point du perimetre** de la section, dans le repere local de la section, et le **numero de type d exposition au feu** de la paroi correspondant au segment [i1, i2] (ou [n, 1] pour le dernier segment qui boucle la section) [p.224].\n\nA n utiliser qu apres la sous-commande `PERIMETRE` d une `SECTION`.",
+      "pitfalls": [
+        "L exposition portee par une ligne s applique au SEGMENT qui part de ce point, pas au point lui-meme [p.224].",
+        "Les coordonnees acceptent des expressions de pseudo-programmation ST1 (variables, cos, sin, atan, sqrt) [p.226, p.324]."
+      ],
+      "examples": [
+        "Y 0.0    Z 0.0    EXPOSITION 1",
+        "Y 0.5*DIAM   Z 0.0   EXPOSITION EXPO   # coordonnees calculees"
+      ],
+      "args": [
+        {
+          "name": "Y",
+          "kind": "keyword",
+          "type": "real",
+          "required": true,
+          "doc": "Abscisse y du point du perimetre dans le repere local de la section.",
+          "unit": "metre",
+          "pages": [
+            224
+          ]
+        },
+        {
+          "name": "Z",
+          "kind": "keyword",
+          "type": "real",
+          "required": true,
+          "doc": "Ordonnee z du point du perimetre dans le repere local de la section.",
+          "unit": "metre",
+          "pages": [
+            224
+          ]
+        },
+        {
+          "name": "EXPOSITION",
+          "kind": "keyword",
+          "type": "int",
+          "required": true,
+          "doc": "Numero du type d exposition au feu applique a la paroi definie par le segment partant de ce point.",
+          "pages": [
+            224
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Y",
+      "family": "feu",
+      "context": "bloc:ANALYSE FEU",
+      "summary": "Position du centre de gravite pendant l analyse au feu : constante ou variable.",
+      "syntax": [
+        "Y <CTE, VAR>"
+      ],
+      "pages": [
+        230
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Par la commande `Y`, la **position du centre de gravite** peut etre conservee **constante** (`CTE`) ou **variable** (`VAR`, par defaut) selon les efforts a chaud [p.230].",
+      "examples": [
+        "Y VAR",
+        "Y CTE"
+      ],
+      "args": [
+        {
+          "name": "CTE",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Position du centre de gravite maintenue constante.",
+          "pages": [
+            230
+          ]
+        },
+        {
+          "name": "VAR",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Position du centre de gravite variable selon les efforts a chaud (comportement par defaut).",
+          "pages": [
+            230
+          ]
+        }
+      ]
+    }
+  ]
+}

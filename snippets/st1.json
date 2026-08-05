@@ -1,0 +1,1115 @@
+{
+  "ACTIVER": {
+    "prefix": [
+      "ACTIVER",
+      "activer"
+    ],
+    "body": [
+      "ACTIVER$0"
+    ],
+    "description": "Active selectivement des barres et des appuis (hors phasage) ; seuls les elements actives sont pris en compte. — manuel p.99, 100"
+  },
+  "DESACTIVER": {
+    "prefix": [
+      "DESACTIVER",
+      "desactiver"
+    ],
+    "body": [
+      "DESACTIVER$0"
+    ],
+    "description": "Desactive selectivement des barres et des appuis (hors phasage). — manuel p.99, 100"
+  },
+  "ENREGISTRER": {
+    "prefix": [
+      "ENREGISTRER",
+      "enregistrer"
+    ],
+    "body": [
+      "ENREGISTRER ${1:nom du projet}$0"
+    ],
+    "description": "Enregistre l etat courant de la session (base de donnees ST1) sous un nom de projet. — manuel p.39, 40"
+  },
+  "ENREGISTRER PROJET": {
+    "prefix": [
+      "ENREGISTRER PROJET",
+      "enregistrer projet"
+    ],
+    "body": [
+      "ENREGISTRER PROJET PROJET ${1:projet} ${2:nom du projet}$0"
+    ],
+    "description": "Forme explicite de ENREGISTRER : sauvegarde la base de donnees courante sous un nom de projet. — manuel p.40"
+  },
+  "LIRE": {
+    "prefix": [
+      "LIRE",
+      "lire"
+    ],
+    "body": [
+      "LIRE ${1:nom du fichier}$0"
+    ],
+    "description": "Lit et interprete un fichier de donnees ST1 depuis la console ou depuis un autre fichier de donnees. — manuel p.37, 38"
+  },
+  "LIRE CONSOLE": {
+    "prefix": [
+      "LIRE CONSOLE",
+      "lire console"
+    ],
+    "body": [
+      "LIRE CONSOLE$0"
+    ],
+    "description": "Interrompt temporairement la lecture du fichier de donnees et rend la main a la console. — manuel p.37, 38"
+  },
+  "LISTER PROJET": {
+    "prefix": [
+      "LISTER PROJET",
+      "lister projet"
+    ],
+    "body": [
+      "LISTER PROJET$0"
+    ],
+    "description": "Edite la liste des projets deja stockes sur disque. — manuel p.40"
+  },
+  "MESSAGE": {
+    "prefix": [
+      "MESSAGE",
+      "message"
+    ],
+    "body": [
+      "MESSAGE ${1|AUCUN,TOUT,REDUIT|}$0"
+    ],
+    "description": "Regle le niveau d affichage des messages d execution et d avertissement. — manuel p.41"
+  },
+  "MX_ETUDE": {
+    "prefix": [
+      "MX_ETUDE",
+      "mx_etude"
+    ],
+    "body": [
+      "MX_ETUDE ${1:nse}$0"
+    ],
+    "description": "Fixe le nombre limite de sections d etude dans le fichier parametres ST1.par. — manuel p.29, 332"
+  },
+  "PAGINATION": {
+    "prefix": [
+      "PAGINATION",
+      "pagination"
+    ],
+    "body": [
+      "PAGINATION ${1:1}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Definit le nombre de lignes par page et le caractere ASCII de saut de page des fichiers de sortie. — manuel p.41"
+  },
+  "PARA_STRUCTURE": {
+    "prefix": [
+      "PARA_STRUCTURE",
+      "para_structure"
+    ],
+    "body": [
+      "PARA_STRUCTURE ${1:20000} ${2:40000} ${3:na}$0"
+    ],
+    "description": "Fixe les nombres limites de noeuds, de barres et d appuis dans le fichier parametres ST1.par. — manuel p.29, 332"
+  },
+  "PROJET": {
+    "prefix": [
+      "PROJET",
+      "projet"
+    ],
+    "body": [
+      "PROJET$0"
+    ],
+    "description": "Relit un projet enregistre, ou rappelle le nom du projet courant si aucun nom n est donne. — manuel p.39, 40"
+  },
+  "QUITTER": {
+    "prefix": [
+      "QUITTER",
+      "quitter"
+    ],
+    "body": [
+      "QUITTER$0"
+    ],
+    "description": "Termine la session ST1 en proposant la sauvegarde de l etat courant sous un nom de projet. — manuel p.40, 41"
+  },
+  "RETOUR": {
+    "prefix": [
+      "RETOUR",
+      "retour"
+    ],
+    "body": [
+      "RETOUR$0"
+    ],
+    "description": "Arrete la lecture d un fichier de donnees, poursuit la lecture apres LIRE CONSOLE, ou sort du mode graphique. — manuel p.37, 38, 247"
+  },
+  "SORTIE": {
+    "prefix": [
+      "SORTIE",
+      "sortie"
+    ],
+    "body": [
+      "SORTIE$0"
+    ],
+    "description": "Dirige les editions (LISTER, RESU, ECRIRE) vers un fichier ou vers la console. — manuel p.39"
+  },
+  "TITRE": {
+    "prefix": [
+      "TITRE",
+      "titre"
+    ],
+    "body": [
+      "TITRE ${1:titre de la structure}$0"
+    ],
+    "description": "Definit le titre de la structure, rappele dans les editions de resultats et sur les dessins. — manuel p.45"
+  },
+  "APPUI": {
+    "prefix": [
+      "APPUI",
+      "appui"
+    ],
+    "body": [
+      "APPUI ${1:liste1}$0"
+    ],
+    "description": "Definit des appuis rigides en bloquant des degres de liberte dans le repere general, avec numerotation d'appui distincte de la numerotation de noeud. — manuel p.47, 48"
+  },
+  "APPUI EL": {
+    "prefix": [
+      "APPUI EL",
+      "appui el"
+    ],
+    "body": [
+      "APPUI EL ${1:liste1} EL ${2:el}$0"
+    ],
+    "description": "Definit un appui elastique par la demi-matrice de rigidite complete (6 termes en plane, 21 en spatiale), eventuellement orientee par une rotation ROT. — manuel p.49, 50, 51"
+  },
+  "APPUI EL DI": {
+    "prefix": [
+      "APPUI EL DI",
+      "appui el di"
+    ],
+    "body": [
+      "APPUI EL DI ${1:liste1} EL DI ${2:el di}$0"
+    ],
+    "description": "Definit un appui elastique par les seuls termes diagonaux de sa matrice de rigidite (3 termes en plane, 6 en spatiale). — manuel p.49, 50, 51"
+  },
+  "ART": {
+    "prefix": [
+      "ART",
+      "art"
+    ],
+    "body": [
+      "ART ${1:liste}$0"
+    ],
+    "description": "Libere des rotations aux extremites des barres (articulations), dans le repere local de la barre. — manuel p.55, 56"
+  },
+  "BARRE": {
+    "prefix": [
+      "BARRE",
+      "barre"
+    ],
+    "body": [
+      "BARRE ${1:liste}$0"
+    ],
+    "description": "Relie deux noeuds par une barre ; le sens origine vers extremite fixe l'axe x du repere local de la barre. — manuel p.52"
+  },
+  "BETA": {
+    "prefix": [
+      "BETA",
+      "beta"
+    ],
+    "body": [
+      "BETA ${1:liste} ${2:beta}$0"
+    ],
+    "description": "Applique aux barres une rotation d'angle beta, en radians, autour de leur axe local OX (structures spatiales). [OPTION SPATIALE] — manuel p.57, 58"
+  },
+  "EXC": {
+    "prefix": [
+      "EXC",
+      "exc"
+    ],
+    "body": [
+      "EXC ${1:liste}$0"
+    ],
+    "description": "Definit les excentrements des liaisons barre/noeud aux extremites des barres, dans le repere general, sous forme de barres infiniment rigides. — manuel p.53, 54"
+  },
+  "GENER BARRE": {
+    "prefix": [
+      "GENER BARRE",
+      "gener barre"
+    ],
+    "body": [
+      "GENER BARRE ${1:n} ${2:barre} ${3:j} DE ${4:de} A ${5:a}$0"
+    ],
+    "description": "Genere automatiquement une serie de barres a numerotation et noeuds origine/extremite regulierement incrementes. — manuel p.52"
+  },
+  "GENER NOEUD": {
+    "prefix": [
+      "GENER NOEUD",
+      "gener noeud"
+    ],
+    "body": [
+      "GENER NOEUD ${1:n} ${2:noeud} ${3:j}$0"
+    ],
+    "description": "Genere automatiquement une serie de noeuds a numerotation et coordonnees regulierement incrementees. — manuel p.46"
+  },
+  "NOEUD": {
+    "prefix": [
+      "NOEUD",
+      "noeud"
+    ],
+    "body": [
+      "NOEUD ${1:liste} ${2:coor1} ${3:coor2}$0"
+    ],
+    "description": "Definit les coordonnees des noeuds de la structure dans le repere global, en forme ligne, en forme bloc, avec ou sans mots-cles X/Y/Z. — manuel p.46"
+  },
+  "OPTION": {
+    "prefix": [
+      "OPTION",
+      "option"
+    ],
+    "body": [
+      "OPTION ${1|PLANE,GRILL,SPATIALE|}$0"
+    ],
+    "description": "Definit le type de structure (plane, grillage de poutres, spatiale) et fixe ainsi les coordonnees et les degres de liberte disponibles dans tout le reste du fichier. — manuel p.43, 44, 332"
+  },
+  "CARA": {
+    "prefix": [
+      "CARA",
+      "cara"
+    ],
+    "body": [
+      "CARA ${1:liste}$0"
+    ],
+    "description": "Definit les caracteristiques R.D.M. constantes (section, inerties, fibres extremes) des barres. — manuel p.59, 60, 66"
+  },
+  "CARA PSE": {
+    "prefix": [
+      "CARA PSE",
+      "cara pse"
+    ],
+    "body": [
+      "CARA PSE ${1:liste} ${2:zone}$0"
+    ],
+    "description": "Caracteristiques constantes de barres reposant sur un sol elastique ou pseudo plastique, decoupe en zones de raideur. — manuel p.59, 60, 61, 65, 66"
+  },
+  "CARA VAR LIN Y": {
+    "prefix": [
+      "CARA VAR LIN Y",
+      "cara var lin y"
+    ],
+    "body": [
+      "CARA VAR LIN Y ${1:liste} ${2:or} ${3:ex}$0"
+    ],
+    "description": "Caracteristiques variant comme celles d'une section rectangulaire dont la dimension suivant l'axe oy local varie lineairement. — manuel p.59, 60"
+  },
+  "CARA VAR LIN Z": {
+    "prefix": [
+      "CARA VAR LIN Z",
+      "cara var lin z"
+    ],
+    "body": [
+      "CARA VAR LIN Z ${1:liste} ${2:or} ${3:ex}$0"
+    ],
+    "description": "Caracteristiques variant comme celles d'une section rectangulaire dont la dimension suivant l'axe oz local varie lineairement. — manuel p.59, 60"
+  },
+  "CARA VAR PARA": {
+    "prefix": [
+      "CARA VAR PARA",
+      "cara var para"
+    ],
+    "body": [
+      "CARA VAR PARA ${1:liste} ${2:or} ${3:mi} ${4:ex}$0"
+    ],
+    "description": "Definit des poutres dont l'inverse des caracteristiques est interpolable par une parabole entre origine, milieu et extremite. — manuel p.59, 60"
+  },
+  "CONTRG": {
+    "prefix": [
+      "CONTRG",
+      "contrg"
+    ],
+    "body": [
+      "CONTRG ${1:i}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Definit une contrainte generalisee, combinaison lineaire ponderee des efforts R.D.M. augmentee d'un terme constant. — manuel p.103, 104, 105"
+  },
+  "ETUDE": {
+    "prefix": [
+      "ETUDE",
+      "etude"
+    ],
+    "body": [
+      "ETUDE ${1:se}$0"
+    ],
+    "description": "Definit les sections d'etude des barres et le type de resultats (efforts, deplacements) qui y sera calcule. — manuel p.101, 102"
+  },
+  "MASSE PROPRE": {
+    "prefix": [
+      "MASSE PROPRE",
+      "masse propre"
+    ],
+    "body": [
+      "MASSE PROPRE ${1:1}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Bloc de definition des masses propres aux noeuds et des masses generees automatiquement sur les barres, pour le calcul dynamique. [OPTION PLANE/SPATIALE] — manuel p.69, 70, 71"
+  },
+  "CABLE": {
+    "prefix": [
+      "CABLE",
+      "cable"
+    ],
+    "body": [
+      "CABLE ${1:i}",
+      "\tPREC ${2:prec}",
+      "\tTENSION ${3|OR,EX,OR EX,EX OR|}",
+      "\tTRACE ${4:trace}",
+      "FIN$0"
+    ],
+    "description": "Definit la geometrie d'un cable de precontrainte dans le repere global, son dispositif PREC, son mode de mise en tension et ses barres support. — manuel p.95, 96, 97, 98"
+  },
+  "CONS": {
+    "prefix": [
+      "CONS",
+      "cons"
+    ],
+    "body": [
+      "CONS ${1:liste}$0"
+    ],
+    "description": "Affecte les constantes physiques a une liste de barres, soit directement (E, NU, RO...), soit par renvoi a un materiau MAT. — manuel p.72, 73"
+  },
+  "MAT": {
+    "prefix": [
+      "MAT",
+      "mat"
+    ],
+    "body": [
+      "MAT ${1:i}",
+      "\tE ${2:e}",
+      "FIN$0"
+    ],
+    "description": "Definit un materiau et ses lois d'evolution dans le temps (module d'Young, retrait, fluage) selon un reglement, puis l'affecte aux barres via CONS liste MAT i. — manuel p.74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91"
+  },
+  "PREC": {
+    "prefix": [
+      "PREC",
+      "prec"
+    ],
+    "body": [
+      "PREC ${1:i}",
+      "\tSECTION ${2:section}",
+      "\tTENSION ${3:tension}",
+      "\tE ${4:e}",
+      "FIN$0"
+    ],
+    "description": "Definit un type (dispositif) de precontrainte : section d'acier, tension de mise en tension, module, relaxation, recul d'ancrage, pertes par frottement et, le cas echeant, pretension. — manuel p.92, 93, 94"
+  },
+  "CHARG": {
+    "prefix": [
+      "CHARG",
+      "charg"
+    ],
+    "body": [
+      "CHARG ${1:1}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Ouvre le bloc de definition d'un chargement fixe numerote, ferme par FIN. — manuel p.106, 107, 190"
+  },
+  "CHARG COMB": {
+    "prefix": [
+      "CHARG COMB",
+      "charg comb"
+    ],
+    "body": [
+      "CHARG COMB ${1:i}",
+      "\tCOMB ${2:comb}",
+      "FIN$0"
+    ],
+    "description": "Definit une charge combinee : plusieurs chargements ponderes appliques ensemble en un seul calcul. — manuel p.125, 229"
+  },
+  "EXEC CHARG": {
+    "prefix": [
+      "EXEC CHARG",
+      "exec charg"
+    ],
+    "body": [
+      "EXEC CHARG$0"
+    ],
+    "description": "Execute les chargements fixes definis et stocke les resultats en base de donnees. — manuel p.125"
+  },
+  "EXEC CHARG PSE": {
+    "prefix": [
+      "EXEC CHARG PSE",
+      "exec charg pse"
+    ],
+    "body": [
+      "EXEC CHARG PSE ${1:pse}$0"
+    ],
+    "description": "Execute les chargements sur un modele comportant des poutres sur ressort plastique (calcul non lineaire). — manuel p.125"
+  },
+  "ALG": {
+    "prefix": [
+      "ALG",
+      "alg"
+    ],
+    "body": [
+      "ALG ${1:i}",
+      "\tDENS ${2:dens}",
+      "FIN$0"
+    ],
+    "description": "Definit une charge A(l) generalisee : charge repartie entre zeros de ligne d influence dont la densite depend de la longueur chargee. — manuel p.160, 161, 162, 163"
+  },
+  "CONV": {
+    "prefix": [
+      "CONV",
+      "conv"
+    ],
+    "body": [
+      "CONV ${1:i}",
+      "\tESSIEU ${2:essieu}",
+      "FIN$0"
+    ],
+    "description": "Definit un convoi generalise : charge roulante utilisateur decrite essieu par essieu. — manuel p.164, 165, 166"
+  },
+  "EUROCODE": {
+    "prefix": [
+      "EUROCODE",
+      "eurocode"
+    ],
+    "body": [
+      "EUROCODE ${1:1}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Modifie les valeurs par defaut des charges Eurocode : coefficients psi, poids TS/UDL et coefficients d ajustement par classe de trafic. — manuel p.167, 168, 169"
+  },
+  "EXEC SURCH": {
+    "prefix": [
+      "EXEC SURCH",
+      "exec surch"
+    ],
+    "body": [
+      "EXEC SURCH$0"
+    ],
+    "description": "Execute l etude des charges d exploitation definies et stocke les resultats en base de donnees. — manuel p.178"
+  },
+  "SURCH": {
+    "prefix": [
+      "SURCH",
+      "surch"
+    ],
+    "body": [
+      "SURCH ${1:i}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Definit une charge d exploitation (repartie, roulante ou Eurocode) et l enveloppe des effets recherchee. — manuel p.140, 141, 146, 147, 148, 170, 171, 172, 173"
+  },
+  "TABLIER": {
+    "prefix": [
+      "TABLIER",
+      "tablier"
+    ],
+    "body": [
+      "TABLIER ${1:1}",
+      "\tBARRE ${2:barre}",
+      "FIN$0"
+    ],
+    "description": "Definit le tablier support des charges d exploitation : barres porteuses, profil en travers, classe et repartition transversale. — manuel p.130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 170"
+  },
+  "EXEC PHASAGE": {
+    "prefix": [
+      "EXEC PHASAGE",
+      "exec phasage"
+    ],
+    "body": [
+      "EXEC PHASAGE$0"
+    ],
+    "description": "Execute les phasages definis et stocke les resultats en base de donnees. — manuel p.196"
+  },
+  "EXEC PHASAGE PSE": {
+    "prefix": [
+      "EXEC PHASAGE PSE",
+      "exec phasage pse"
+    ],
+    "body": [
+      "EXEC PHASAGE PSE PSE$0"
+    ],
+    "description": "Execute les phasages dont le modele comporte des poutres sur sol pseudo-plastique et stocke les resultats en base. — manuel p.196"
+  },
+  "PHASAGE": {
+    "prefix": [
+      "PHASAGE",
+      "phasage"
+    ],
+    "body": [
+      "PHASAGE ${1:1}",
+      "\t${2}",
+      "FIN PHASAGE$0"
+    ],
+    "description": "Ouvre la description chronologique d un phasage de construction (activations, dates, sollicitations, cables) ; la description ne produit aucun resultat. — manuel p.179, 180, 181"
+  },
+  "ACCELEROGRAMME": {
+    "prefix": [
+      "ACCELEROGRAMME",
+      "accelerogramme"
+    ],
+    "body": [
+      "ACCELEROGRAMME ${1:j}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Definit un historique d acceleration au sol pour une analyse temporelle lineaire elastique (ST1 v2). — manuel p.207, 208"
+  },
+  "AMORTISSEMENT": {
+    "prefix": [
+      "AMORTISSEMENT",
+      "amortissement"
+    ],
+    "body": [
+      "AMORTISSEMENT ${1:i}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Definit un type d amortissement (Rayleigh, modal ou energetique) affecte ensuite aux barres par CONS ou MAT. — manuel p.200, 201"
+  },
+  "CARA SPECIAL": {
+    "prefix": [
+      "CARA SPECIAL",
+      "cara special"
+    ],
+    "body": [
+      "CARA SPECIAL ${1:j}",
+      "\tRIGIDITE CARA ${2:rigidite cara}",
+      "\tEFFORT ${3:effort}",
+      "FIN$0"
+    ],
+    "description": "Definit un element special : barre RDM assortie de seuils limites par composante d effort (ST1 v2). — manuel p.386"
+  },
+  "DYNAMIQUE CHARGE": {
+    "prefix": [
+      "DYNAMIQUE CHARGE",
+      "dynamique charge"
+    ],
+    "body": [
+      "DYNAMIQUE CHARGE ${1:j}",
+      "\tPAS_TEMPS ${2:pas_temps}",
+      "\tTEMPS ${3:temps}",
+      "\tMODE ${4:mode}",
+      "\tBARRE ${5:barre}",
+      "FIN$0"
+    ],
+    "description": "Definit une charge forcee sinusoidale calee sur un mode propre, pour l analyse dynamique des passerelles (ST1 v2). — manuel p.211, 212, 213"
+  },
+  "DYNAMIQUE CONVOI": {
+    "prefix": [
+      "DYNAMIQUE CONVOI",
+      "dynamique convoi"
+    ],
+    "body": [
+      "DYNAMIQUE CONVOI ${1:j}",
+      "\tCONVOI ${2:convoi}",
+      "\tPAS_TEMPS ${3:pas_temps}",
+      "\tVITESSE ${4:vitesse}",
+      "\tTEMPS ${5:temps}",
+      "FIN$0"
+    ],
+    "description": "Definit les parametres d une analyse temporelle du passage d un convoi sur le tablier (ST1 v2). — manuel p.209, 210"
+  },
+  "EXEC FLAMBEMENT": {
+    "prefix": [
+      "EXEC FLAMBEMENT",
+      "exec flambement"
+    ],
+    "body": [
+      "EXEC FLAMBEMENT$0"
+    ],
+    "description": "Calcule les modes critiques de flambement lineaire elastique d Euler a partir de la rigidite geometrique. — manuel p.215, 216"
+  },
+  "EXEC HISTORIQUE": {
+    "prefix": [
+      "EXEC HISTORIQUE",
+      "exec historique"
+    ],
+    "body": [
+      "EXEC HISTORIQUE$0"
+    ],
+    "description": "Execute l analyse temporelle lineaire elastique d un accelerogramme, d un convoi ou d une charge forcee (ST1 v2). — manuel p.208, 210, 213"
+  },
+  "EXEC MODE": {
+    "prefix": [
+      "EXEC MODE",
+      "exec mode"
+    ],
+    "body": [
+      "EXEC MODE$0"
+    ],
+    "description": "Calcule les modes propres de la structure a partir des masses aux noeuds et stocke les resultats en base de donnees. [OPTION PLANE/SPATIALE] — manuel p.197, 198, 199"
+  },
+  "EXEC SPECTRE REPONSE": {
+    "prefix": [
+      "EXEC SPECTRE REPONSE",
+      "exec spectre reponse"
+    ],
+    "body": [
+      "EXEC SPECTRE REPONSE ${1:list}$0"
+    ],
+    "description": "Execute le calcul des reponses spectrales listees et stocke les resultats en base de donnees. — manuel p.205, 206"
+  },
+  "SPECTRE": {
+    "prefix": [
+      "SPECTRE",
+      "spectre"
+    ],
+    "body": [
+      "SPECTRE ${1:isp}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Definit un spectre d acceleration, soit point par point, soit selon les formes reglementaires Eurocode Se ou Sd reduit. — manuel p.202, 203, 204"
+  },
+  "SPECTRE REPONSE": {
+    "prefix": [
+      "SPECTRE REPONSE",
+      "spectre reponse"
+    ],
+    "body": [
+      "SPECTRE REPONSE ${1:ic}",
+      "\tREPONSE ${2:reponse}",
+      "\tSPECTRE ${3:spectre}",
+      "\tLIN ${4|LIN,SRSS,CQC|}",
+      "FIN$0"
+    ],
+    "description": "Definit une reponse spectrale : recombinaison modale LIN, SRSS ou CQC d un spectre avec ponderations par direction. — manuel p.205, 206"
+  },
+  "ACIER": {
+    "prefix": [
+      "ACIER",
+      "acier"
+    ],
+    "body": [
+      "ACIER ${1:ac}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Definit un type de barre d acier passif utilise pour les armatures des sections de calcul au feu. [OPTION PLANE/SPATIALE] — manuel p.227"
+  },
+  "ANALYSE FEU": {
+    "prefix": [
+      "ANALYSE FEU",
+      "analyse feu"
+    ],
+    "body": [
+      "ANALYSE FEU ${1:1}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Regle les parametres de l analyse au feu : iterations Newton-Raphson, position du centre de gravite, conservation des caracteristiques a chaud. [OPTION PLANE/SPATIALE] — manuel p.230, 231"
+  },
+  "ARMATURE": {
+    "prefix": [
+      "ARMATURE",
+      "armature"
+    ],
+    "body": [
+      "ARMATURE ${1:ar}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Definit un type d armature (lits d aciers passifs) utilise dans une SECTION de calcul au feu. [OPTION PLANE/SPATIALE] — manuel p.227, 228"
+  },
+  "EXEC INCENDIE": {
+    "prefix": [
+      "EXEC INCENDIE",
+      "exec incendie"
+    ],
+    "body": [
+      "EXEC INCENDIE ${1:lst}$0"
+    ],
+    "description": "Lance le calcul de l effet des charges d incendie listees. [OPTION PLANE/SPATIALE] — manuel p.231"
+  },
+  "EXPOSITION FEU": {
+    "prefix": [
+      "EXPOSITION FEU",
+      "exposition feu"
+    ],
+    "body": [
+      "EXPOSITION FEU ${1:i}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Definit un type d exposition au feu affecte ensuite aux parois d une SECTION de calcul au feu. [OPTION PLANE/SPATIALE] — manuel p.220, 221"
+  },
+  "FEU": {
+    "prefix": [
+      "FEU",
+      "feu"
+    ],
+    "body": [
+      "FEU ${1:i}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Definit une repartition de temperature dans toutes les sections definies, pour une duree d incendie donnee. [OPTION PLANE/SPATIALE] — manuel p.229"
+  },
+  "INCENDIE": {
+    "prefix": [
+      "INCENDIE",
+      "incendie"
+    ],
+    "body": [
+      "INCENDIE ${1:i}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Definit une charge d incendie : un feu applique a la structure sous un chargement statique donne. [OPTION PLANE/SPATIALE] — manuel p.230"
+  },
+  "SECTION": {
+    "prefix": [
+      "SECTION",
+      "section"
+    ],
+    "body": [
+      "SECTION ${1:is}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Definit un type de section de calcul au feu (DALLE, RECTANGLE ou PERIMETRE) avec ses parois exposees et son materiau. [OPTION PLANE/SPATIALE] — manuel p.222, 223, 224, 225, 226"
+  },
+  "BRISER": {
+    "prefix": [
+      "BRISER",
+      "briser"
+    ],
+    "body": [
+      "BRISER$0"
+    ],
+    "description": "Interrompt l'execution d'une boucle POUR ; l'indice conserve sa valeur au moment de l'interruption. — manuel p.273"
+  },
+  "COMB": {
+    "prefix": [
+      "COMB",
+      "comb"
+    ],
+    "body": [
+      "COMB ${1:i}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Combinaison lineaire de resultats deja en base (chargements, combinaisons, etats, phasages, spectres, incendies), calculee et stockee immediatement. — manuel p.234"
+  },
+  "DESS": {
+    "prefix": [
+      "DESS",
+      "dess"
+    ],
+    "body": [
+      "DESS ${1:1}",
+      "\t${2}",
+      "RETOUR$0"
+    ],
+    "description": "Passe du mode console au mode dessin interactif ; donne acces a toutes les commandes du module graphique. — manuel p.247"
+  },
+  "DIM": {
+    "prefix": [
+      "DIM",
+      "dim"
+    ],
+    "body": [
+      "DIM ${1:nom} ${2:n}$0"
+    ],
+    "description": "Cree un tableau indice de variables de dimension n, utilisable ensuite sous la forme nom(i). — manuel p.266"
+  },
+  "ECRIRE": {
+    "prefix": [
+      "ECRIRE",
+      "ecrire"
+    ],
+    "body": [
+      "ECRIRE$0"
+    ],
+    "description": "Ecrit un commentaire et/ou une valeur dans la sortie courante. — manuel p.281"
+  },
+  "ENV": {
+    "prefix": [
+      "ENV",
+      "env"
+    ],
+    "body": [
+      "ENV ${1:i}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Enveloppe (max et min) de chargements, surcharges, combinaisons, etats, phasages, spectres, historiques ou enveloppes, avec gestion des concomitances. — manuel p.235, 236, 237"
+  },
+  "ENV COMB": {
+    "prefix": [
+      "ENV COMB",
+      "env comb"
+    ],
+    "body": [
+      "ENV COMB ${1:i}",
+      "\tCOMB ${2:comb}",
+      "FIN$0"
+    ],
+    "description": "Combinaison d'enveloppes : chaque source recoit un coefficient minimum et un coefficient maximum, le resultat est une enveloppe stockee en base. — manuel p.238, 239"
+  },
+  "GET": {
+    "prefix": [
+      "GET",
+      "get"
+    ],
+    "body": [
+      "GET$0"
+    ],
+    "description": "Recupere un resultat de calcul dans des variables tampon prefixees par $, exploitables par la pseudo-programmation. — manuel p.274, 275, 276, 277, 278, 279, 280"
+  },
+  "GET ACCELERATION BARRE": {
+    "prefix": [
+      "GET ACCELERATION BARRE",
+      "get acceleration barre"
+    ],
+    "body": [
+      "GET ACCELERATION BARRE ${1|MAX,MIN|} ${2:i} SEC ${3:sec} ${4:j}$0"
+    ],
+    "description": "Recupere les accelerations enveloppes d'une section d'etude de barre pour un historique. — manuel p.279"
+  },
+  "GET ALPHA FLAMBEMENT": {
+    "prefix": [
+      "GET ALPHA FLAMBEMENT",
+      "get alpha flambement"
+    ],
+    "body": [
+      "GET ALPHA FLAMBEMENT ${1:i}$0"
+    ],
+    "description": "Recupere la valeur propre critique (effet critique) d'un mode de flambement dans $alpha. — manuel p.280"
+  },
+  "GET CONTR BARRE": {
+    "prefix": [
+      "GET CONTR BARRE",
+      "get contr barre"
+    ],
+    "body": [
+      "GET CONTR BARRE ${1:i} SEC ${2:sec} ${3:j}$0"
+    ],
+    "description": "Recupere les contraintes normales d'une section d'etude de barre dans $vy, $wy, $vz, $wz ou $vyvz, $wyvz, $vywz, $wywz. — manuel p.277, 278"
+  },
+  "GET CONTRG BARRE": {
+    "prefix": [
+      "GET CONTRG BARRE",
+      "get contrg barre"
+    ],
+    "body": [
+      "GET CONTRG BARRE ${1:k} ${2:i} SEC ${3:sec} ${4:j}$0"
+    ],
+    "description": "Recupere la contrainte generalisee k d'une section d'etude de barre dans $contrg (+ $xl, $nsec). — manuel p.277, 278"
+  },
+  "GET DEPLA BARRE": {
+    "prefix": [
+      "GET DEPLA BARRE",
+      "get depla barre"
+    ],
+    "body": [
+      "GET DEPLA BARRE ${1:i} SEC ${2:sec} ${3:j}$0"
+    ],
+    "description": "Recupere les deplacements d'une section d'etude de barre dans $dx, $dy, $dz, $rx, $ry, $rz (+ $xl, $nsec). — manuel p.277, 278"
+  },
+  "GET DEPLA NOEUD": {
+    "prefix": [
+      "GET DEPLA NOEUD",
+      "get depla noeud"
+    ],
+    "body": [
+      "GET DEPLA NOEUD ${1:i} ${2:j}$0"
+    ],
+    "description": "Recupere les deplacements d'un noeud dans les variables tampon $dx, $dy, $dz, $rx, $ry, $rz. — manuel p.275"
+  },
+  "GET EFFORT BARRE": {
+    "prefix": [
+      "GET EFFORT BARRE",
+      "get effort barre"
+    ],
+    "body": [
+      "GET EFFORT BARRE ${1:i} SEC ${2:sec} ${3:j}$0"
+    ],
+    "description": "Recupere les efforts R.D.M. d'une section d'etude de barre dans $n, $ty, $tz, $mx, $my, $mz (+ $xl, $nsec). — manuel p.277, 278"
+  },
+  "GET PRESS BARRE": {
+    "prefix": [
+      "GET PRESS BARRE",
+      "get press barre"
+    ],
+    "body": [
+      "GET PRESS BARRE ${1:i} SEC ${2:sec} ${3:j}$0"
+    ],
+    "description": "Recupere les pressions de sol d'une section d'etude de barre dans $px, $py, $pz, $mx (+ $xl, $nsec). — manuel p.278"
+  },
+  "GET REAC APPUI": {
+    "prefix": [
+      "GET REAC APPUI",
+      "get reac appui"
+    ],
+    "body": [
+      "GET REAC APPUI ${1:i} ${2:j}$0"
+    ],
+    "description": "Recupere les reactions d'un appui dans les variables tampon $fx, $fy, $fz, $mx, $my, $mz. — manuel p.276"
+  },
+  "GET TENSION CABLE": {
+    "prefix": [
+      "GET TENSION CABLE",
+      "get tension cable"
+    ],
+    "body": [
+      "GET TENSION CABLE ${1:i} SEC ${2:sec} ${3:j}$0"
+    ],
+    "description": "Recupere la tension et la perte dans une section de cable ainsi que ses coordonnees globales. — manuel p.280"
+  },
+  "GET VITESSE BARRE": {
+    "prefix": [
+      "GET VITESSE BARRE",
+      "get vitesse barre"
+    ],
+    "body": [
+      "GET VITESSE BARRE ${1|MAX,MIN|} ${2:i} SEC ${3:sec} ${4:j}$0"
+    ],
+    "description": "Recupere les vitesses enveloppes d'une section d'etude de barre pour un historique. — manuel p.279"
+  },
+  "LISTER": {
+    "prefix": [
+      "LISTER",
+      "lister"
+    ],
+    "body": [
+      "LISTER$0"
+    ],
+    "description": "Rappelle (edite) les donnees deja lues : geometrie, caracteristiques, materiaux, precontrainte, chargements, charges d'exploitation, phasages, donnees dynamiques et donnees de calcul au feu. — manuel p.240, 241, 242, 243, 228, 40"
+  },
+  "PASSER": {
+    "prefix": [
+      "PASSER",
+      "passer"
+    ],
+    "body": [
+      "PASSER$0"
+    ],
+    "description": "Ignore les instructions finales de l'iteration courante d'une boucle POUR et passe a l'iteration suivante. — manuel p.273"
+  },
+  "PAUSE": {
+    "prefix": [
+      "PAUSE",
+      "pause"
+    ],
+    "body": [
+      "PAUSE$0"
+    ],
+    "description": "Arrete momentanement l'interpretation du fichier de commandes ; reprise par la touche ENTER. — manuel p.281"
+  },
+  "POUR": {
+    "prefix": [
+      "POUR",
+      "pour"
+    ],
+    "body": [
+      "POUR ${1:i} ${2:liste}$0"
+    ],
+    "description": "Boucle de repetition d'instructions sur les valeurs d'une liste. — manuel p.269, 273"
+  },
+  "RESU": {
+    "prefix": [
+      "RESU",
+      "resu"
+    ],
+    "body": [
+      "RESU ${1:1}",
+      "\t${2}",
+      "FIN$0"
+    ],
+    "description": "Bloc d'edition des resultats stockes en base : chargements, combinaisons, enveloppes, surcharges, etats, phasages, modes, spectres, historiques, flambement et incendie. — manuel p.244, 245, 246"
+  },
+  "SI": {
+    "prefix": [
+      "SI",
+      "si"
+    ],
+    "body": [
+      "SI ${1:expression logique}$0"
+    ],
+    "description": "Debranchement conditionnel : execute une instruction simple ou un bloc << >> selon une expression logique. — manuel p.270, 271, 272"
+  },
+  "SINON": {
+    "prefix": [
+      "SINON",
+      "sinon"
+    ],
+    "body": [
+      "SINON$0"
+    ],
+    "description": "Branche alternative d'un debranchement conditionnel SI. — manuel p.270, 272"
+  },
+  "Etude — squelette complet": {
+    "prefix": [
+      "etude",
+      "ETUDE-SQUELETTE"
+    ],
+    "body": [
+      "# ${1:Titre de l etude}",
+      "OPTION ${2|PLANE,GRILL,SPATIALE|}",
+      "TITRE '${1:Titre de l etude}'",
+      "",
+      "# --- Geometrie",
+      "NOEUD 1 0. 0.",
+      "NOEUD 2 ${3:10.} 0.",
+      "BARRE 1 DE 1 A 2",
+      "",
+      "APPUI 1 NOEUD 1 DX DY",
+      "APPUI 2 NOEUD 2 DY",
+      "",
+      "# --- Caracteristiques et constantes physiques",
+      "CARA 1 SX ${4:0.5} IZ ${5:0.0417} VY ${6:0.25} WY ${6:0.25}",
+      "CONS 1 E ${7:3.5e10} NU ${8:0.2} RO ${9:25000.}",
+      "",
+      "# --- Sections d etude",
+      "ETUDE EFFORT DEPLA",
+      "   TOUT SE 0. a 1. PAS 1/10 REL",
+      "",
+      "# --- Chargements",
+      "CHARG 1 '${10:Poids propre}'",
+      "   POIDS PROPRE TOUT",
+      "FIN",
+      "",
+      "EXEC CHARG",
+      "",
+      "RESU",
+      "   BARRE EFFORT DEPLA CONTR",
+      "FIN",
+      "$0"
+    ],
+    "description": "Squelette d'une etude ST1 complete : geometrie, appuis, caracteristiques, chargement, execution, edition."
+  },
+  "Boucle POUR": {
+    "prefix": [
+      "pour",
+      "POUR"
+    ],
+    "body": [
+      "POUR ${1:i} = ${2:1} a ${3:10} <<",
+      "   $0",
+      ">>"
+    ],
+    "description": "Boucle de pseudo-programmation — manuel p.269"
+  },
+  "Test SI": {
+    "prefix": [
+      "si",
+      "SI"
+    ],
+    "body": [
+      "SI (${1:\\$fy}<${2:0}) <<",
+      "   $0",
+      ">>"
+    ],
+    "description": "Test conditionnel de pseudo-programmation — manuel p.270"
+  }
+}

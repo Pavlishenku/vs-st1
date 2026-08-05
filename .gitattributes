@@ -1,0 +1,8 @@
+# Fins de ligne normalisees en LF dans le depot, quel que soit l'OS.
+* text=auto eol=lf
+
+# Fichiers de donnees ST1 : LF egalement (ST1 lit les deux).
+*.st1 text eol=lf
+
+*.png binary
+*.pdf binary

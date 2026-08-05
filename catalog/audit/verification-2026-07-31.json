@@ -1,0 +1,619 @@
+{
+  "problems": [
+    {
+      "command": "PARA_STRUCTURE",
+      "field": "args[na].default",
+      "verdict": "FAUX",
+      "claim": "Valeur par defaut du nombre limite d'appuis = 2000.",
+      "evidence": "p.29 : « Les limites modifiables dans le fichier parametres (cf. p331) sont par defaut a : 20000 noeuds - 40000 barres / 4000 appuis / 80000 sections d'etude ». Le 2000 ne figure QUE dans l'extrait de ST1.par livre (p.332 : « PARA_STRUCTURE 20000 40000 2000 »).",
+      "correction": "Supprimer le champ default (ou le mettre a null). Le manuel donne 4000 comme limite par defaut annoncee [p.29] et 2000 comme valeur du ST1.par livre [p.332] : deux valeurs contradictoires, aucune ne peut etre presentee comme LA valeur par defaut."
+    },
+    {
+      "command": "MX_ETUDE",
+      "field": "args[nse].default",
+      "verdict": "FAUX",
+      "claim": "Valeur par defaut du nombre limite de sections d'etude = 200000.",
+      "evidence": "p.29 : « ... 80000 sections d'etude » (limites par defaut). p.332 : « MX_ETUDE 200000 » (extrait du ST1.par livre).",
+      "correction": "Supprimer le champ default. Documenter les deux valeurs contradictoires sans en elire une."
+    },
+    {
+      "command": "PAGINATION",
+      "field": "args[ASC_PAGE].default / args[MAX_LIGNE].default",
+      "verdict": "NON_SOURCE",
+      "claim": "ASC_PAGE default = 12, MAX_LIGNE default = 100.",
+      "evidence": "p.41 ne documente aucune valeur par defaut : « n nombre de lignes par page / iasc code ASCII ... =12 ... =49 » puis « Les parametres de pagination sont initialises dans le fichier parametres (cf. p331) ». Les valeurs 12/100 proviennent uniquement de l'extrait ST1.par (p.332), fichier explicitement modifiable par l'utilisateur.",
+      "correction": "Supprimer les champs default. Conserver uniquement la mention 'initialise par ST1.par, valeurs de l'extrait livre : ASC_PAGE 12 / MAX_LIGNE 100 [p.332]'."
+    },
+    {
+      "command": "PARA_STRUCTURE",
+      "field": "doc",
+      "verdict": "FAUX",
+      "claim": "« memoire de travail 300-400 Mo (< 500 Mo maximum) » attribue a [p.29].",
+      "evidence": "p.29 : « la memoire allouee de 300 Mo pour l'execution de ST1, (< 500 Mo maximum) ». La valeur 400 apparait seulement dans l'extrait ST1.par p.332 : « 400 # taille memoire vive en mega-octets ... ne pas depasser 500 Mo ».",
+      "correction": "« memoire allouee 300 Mo par defaut, < 500 Mo maximum [p.29] ; l'extrait ST1.par livre porte 400 Mo [p.332] »."
+    },
+    {
+      "command": "ACTIVER",
+      "field": "doc",
+      "verdict": "FAUX",
+      "claim": "« Ne pas confondre avec ACTIVER APPUI / ACTIVER BARRE du bloc PHASAGE (p.186-188), qui portent en plus AGE et MODE. »",
+      "evidence": "p.186 : « L'activation des appuis au cours d'un phasage s'effectue selon la syntaxe : ACTIVER APPUI liste / avec : liste liste des appuis » — aucun AGE ni MODE. p.187 : « ACTIVER BARRE liste (AGE age) (MODE<REL,ABS>) ».",
+      "correction": "« ACTIVER BARRE du phasage porte en plus AGE et MODE [p.187] ; ACTIVER APPUI du phasage n'a que la liste [p.186]. »"
+    },
+    {
+      "command": "ACTIVER",
+      "field": "pitfalls",
+      "verdict": "FAUX",
+      "claim": "« Dans les blocs de chargement, `liste` designe les elements actives au moment de l'execution [p.109-121]. »",
+      "evidence": "p.108/109/111/112/115/116/117/118/119/120/121 (formulation identique) : « Dans les instructions ci-dessus, la liste peut etre remplacee par le mot TOUT. L'instruction agira sur toutes les barres activees au moment de l'execution du chargement. » La regle porte sur le mot-cle TOUT, pas sur une liste explicite.",
+      "correction": "« Dans les blocs de chargement, le mot TOUT designe les elements actives au moment de l'execution du chargement [p.108-121]. »"
+    },
+    {
+      "command": "APPUI",
+      "field": "pitfalls",
+      "verdict": "FAUX",
+      "claim": "« cf. MODIFIER APPUI 1 DX DY qui supprime un encastrement, p.240 chapitre phasage »",
+      "evidence": "p.195 : « La commande MODIFIER APPUI 1 DX DY a pour effet de supprimer l'encastrement de l'appui 1 ». L'aide-memoire p.14 renvoie « MODIFIER APPUI liste ... p195 ». La p.240 est le chapitre RAPPEL DES DONNEES (« 14.1 - RAPPEL DE LA GEOMETRIE ... LISTER GEOM »).",
+      "correction": "Remplacer « p.240 chapitre phasage » par « p.195 (chapitre PHASAGE) »."
+    },
+    {
+      "command": "DESACTIVER",
+      "field": "doc",
+      "verdict": "FAUX",
+      "claim": "« ni avec `DESACTIVER ENV liste` du phasage (suspension d'une enveloppe, p.183) »",
+      "evidence": "La commande « DESACTIVER ENV liste » et l'exemple « DESACTIVER ENV 1 » figurent p.184 ; p.183 ne les contient pas.",
+      "correction": "Remplacer p.183 par p.184."
+    },
+    {
+      "command": "NOEUD",
+      "field": "examples",
+      "verdict": "INVENTE",
+      "claim": "Exemple « # option SPATIALE, forme bloc fermee par FIN (exemple p.300) : NOEUD / 1 X 0.000 Y 0.000 Z 0 / 2 ... / 3 ... / FIN ».",
+      "evidence": "p.300 (texte reel) : « NOEUD / 1 X 0.000 Y 0.000 Z 0 / 2 X 10 Y 0.000 Z 0 / 3 X 20 Y 0.000 Z 0 / #--- / BARRE / GENER 2 BARRE ID 11 1 DE 1 1 A 2 1 / FIN ». Le FIN ferme le bloc BARRE, pas le bloc NOEUD, qui est ferme implicitement par la commande suivante.",
+      "correction": "Supprimer le FIN de cet exemple, ou changer l'etiquette en « forme bloc fermee implicitement par la commande suivante (exemple p.300) ». Le seul exemple ou un bloc NOEUD est reellement ferme par FIN est p.314."
+    },
+    {
+      "command": "NOEUD",
+      "field": "pitfalls",
+      "verdict": "FAUX",
+      "claim": "« Dans les exemples officiels le bloc est ferme soit par FIN (p.300, p.314), soit implicitement par la commande suivante (p.286, p.292). »",
+      "evidence": "p.300 : le bloc NOEUD n'est pas ferme par FIN (le FIN suit le bloc BARRE). p.314 : « NOEUD / POUR i=1 A ndiv+1 << i X 0 Y lg*(i-1)/ndiv >> / FIN » — la seule fermeture par FIN.",
+      "correction": "« ferme par FIN (p.314), ou implicitement par la commande suivante (p.286, p.292, p.300) »."
+    },
+    {
+      "command": "OPTION",
+      "field": "doc / pitfalls",
+      "verdict": "FAUX",
+      "claim": "« l'extrait du fichier parametres reproduit dans le manuel porte `OPTION PLANE` (p.332) ».",
+      "evidence": "p.332, extrait ST1.par : « OPTION_PLANE      #-definition de l'option de calcul par defaut » (mot-cle unique avec underscore, et non « OPTION PLANE » en deux mots).",
+      "correction": "Ecrire « l'extrait ST1.par porte le mot-cle `OPTION_PLANE` [p.332] »."
+    },
+    {
+      "command": "OPTION",
+      "field": "forbidden",
+      "verdict": "NON_SOURCE",
+      "claim": "« Aucune autre commande ne doit preceder OPTION dans le fichier de donnees. »",
+      "evidence": "p.43 (seule formulation) : « L'utilisation de cette commande avant toute commande au debut des donnees permet de remplacer l'option definie par defaut. » Le manuel enonce une condition d'efficacite, pas une interdiction.",
+      "correction": "Deplacer en pitfall : « OPTION ne remplace l'option par defaut de ST1.par que si elle est placee avant toute autre commande [p.43] » ; vider le champ forbidden."
+    },
+    {
+      "command": "OPTION",
+      "field": "pitfalls",
+      "verdict": "FAUX",
+      "claim": "« Le calcul au feu n'est disponible qu'en PLANE et SPATIALE, pas en GRILL, et impose de travailler en metre (p.218). »",
+      "evidence": "p.217 : « Le calcul est limite a l'option plane et spatiale (il n'est pas disponible en option grille). » p.218 : « L'unite de longueur de reference est le metre : il est indispensable de travailler en metre pour faire les calculs au feu. »",
+      "correction": "Citer p.217 pour la restriction d'option et p.218 pour l'obligation du metre."
+    },
+    {
+      "command": "TITRE",
+      "field": "doc",
+      "verdict": "NON_SOURCE",
+      "claim": "« Dans l'ordre type d'un fichier de donnees, TITRE vient juste apres OPTION [p.42, chapitre d'exemples p.286 et suivantes]. »",
+      "evidence": "p.42 dit l'inverse : « Les commandes de description de la geometrie peuvent etre utilisees plusieurs fois, et dans un ordre quelconque. C'est la derniere description qui est prise en compte. » La liste a puces de p.42 est un inventaire des elements decrits, pas un ordre impose.",
+      "correction": "Supprimer l'affirmation, ou la reformuler en usage observe dans les exemples, sans citer p.42 comme source d'un ordre."
+    },
+    {
+      "command": "CARA",
+      "field": "pitfalls (pages)",
+      "verdict": "FAUX",
+      "claim": "« Eviter des ecarts trop importants dans les ordres de grandeur des inerties des barres (p.60) » et « Ne pas definir SY/SZ ... valeurs trop grandes ... convergence numerique a l'inversion de la matrice (p.60) ».",
+      "evidence": "Les deux remarques sont p.61 : « Il convient d'eviter des ecarts trop importants dans les ordres de grandeur des inerties des barres. » / « Pour le tranchant, ne pas definir de section reduite de cisaillement revient a ne pas prendre en compte l'effet du tranchant. Cette solution est recommandee plutot que de definir des valeurs de Sy et Sz trop grandes qui peuvent conduire a des problemes de convergences numeriques lors de l'inversion de matrice. »",
+      "correction": "Remplacer p.60 par p.61 dans ces deux pitfalls."
+    },
+    {
+      "command": "CARA",
+      "field": "doc",
+      "verdict": "FAUX",
+      "claim": "« Par defaut les caracteristiques des barres sont constantes (p.60) » et « `liste` peut etre remplacee par TOUT ... (il n'y a pas de caracteristiques constantes par defaut) » rattache a p.60.",
+      "evidence": "p.66 : « Par defaut, les caracteristiques des barres sont constantes. » et « Dans les instructions ci-dessus, la liste peut etre remplacee par le mot TOUT. L'instruction agira sur toutes les barres deja definies (pas de constantes par defaut). » p.60 ne contient que le glossaire des parametres, le tableau par option et les regles CARA PSE.",
+      "correction": "Citer p.66 pour ces deux regles."
+    },
+    {
+      "command": "CARA",
+      "field": "pitfalls",
+      "verdict": "NON_SOURCE",
+      "claim": "« Il n'existe aucune caracteristique par defaut : sans CARA sur une barre, le calcul ne peut pas etre mene (p.60). »",
+      "evidence": "Le manuel n'ecrit que l'incise « (pas de constantes par defaut) » (p.66), dans le contexte du mot TOUT. La consequence « le calcul ne peut pas etre mene » n'est enoncee nulle part.",
+      "correction": "« Il n'y a pas de caracteristiques par defaut [p.66] » — supprimer la consequence non documentee, ou l'etiqueter explicitement comme deduction."
+    },
+    {
+      "command": "CARA PSE",
+      "field": "pitfalls",
+      "verdict": "FAUX",
+      "claim": "« l'aide-memoire p.59 fait pourtant apparaitre `(SY sy)` dans la ligne CARA PSE : c'est le texte p.60 qui fait foi ».",
+      "evidence": "L'aide-memoire des commandes projet est p.7 : « CARA PSE liste SX sx (SY sy) ... (IZ iz) (IPOL ip) (VY vy) ... (WZ wz) p59 ». La p.59 est le chapitre detaille et ecrit au contraire « CARA PSE liste SX sx ... (IZ iz) ... » (sans SY).",
+      "correction": "« l'aide-memoire p.7 fait apparaitre (SY sy) ; le chapitre detaille p.59-60 l'exclut et fait foi »."
+    },
+    {
+      "command": "CARA VAR PARA",
+      "field": "pitfalls",
+      "verdict": "FAUX",
+      "claim": "« l'aide-memoire p.59 (et le memo de reference) ecrivent les lignes OR/MI/EX de CARA VAR PARA SANS (IPOL ip), alors que le chapitre detaille p.59-60 les ecrit AVEC (IPOL ip) ».",
+      "evidence": "Meme page citee pour les deux sources contradictoires. L'aide-memoire est p.7 (« CARA VAR PARA liste p59 / OR SX sx (SY sy) ... (IZ iz) (VY vy) ... » sans IPOL) ; le chapitre detaille est p.59 (« OR SX sx (SY sy) ... (IZ iz) (IPOL ip) (VY vy) ... »).",
+      "correction": "Remplacer « aide-memoire p.59 » par « aide-memoire p.7 »."
+    },
+    {
+      "command": "OR / MI / EX (bloc:CARA VAR PARA)",
+      "field": "syntax + args",
+      "verdict": "MANQUANT",
+      "claim": "Les lignes OR/MI/EX de CARA VAR PARA sont decrites sans l'argument IPOL.",
+      "evidence": "p.59 (chapitre detaille, instruction simple et instruction de bloc) : « OR SX sx (SY sy) ... (IZ iz) (IPOL ip) (VY vy) ... (WZ wz) (EXTY exty) (EXTZ extz) » — idem MI et EX (MI sans EXTY/EXTZ dans la forme bloc).",
+      "correction": "Ajouter l'argument IPOL (inertie polaire d'axe OX) aux trois sous-entrees OR/MI/EX de bloc:CARA VAR PARA, en signalant qu'il est absent de l'aide-memoire p.7."
+    },
+    {
+      "command": "CARA VAR LIN Y / CARA VAR LIN Z",
+      "field": "doc / pitfalls (pages)",
+      "verdict": "FAUX",
+      "claim": "« Consequence sur les inerties (exemples p.61-62) : option PLANE ... option GRILL ... option SPATIALE ... » et « verifier le tableau d'exemples p.61-62 ».",
+      "evidence": "Les exemples sont repartis : OPTION PLANE p.62, OPTION GRILL p.63 (« L'inertie IY varie lineairement ... » / « ... varie en degre 3 ... »), OPTION SPATIALE p.64. La p.61 contient les exemples CARA constante et CARA VAR PARA.",
+      "correction": "Citer p.62 (PLANE), p.63 (GRILL), p.64 (SPATIALE)."
+    },
+    {
+      "command": "CARA PSE / PLASTIQUE",
+      "field": "doc / pitfalls / pages",
+      "verdict": "FAUX",
+      "claim": "« Poutre sur sol elastique (PSE) ... (p.59-64) » et pour PLASTIQUE « (p.59-60, exemples p.63-64) ».",
+      "evidence": "Les exemples CARA PSE (sol elastique fascicule 62, sol plastique option plane et option spatiale, y compris « PLASTIQUE NEG KFY ffy0*diam1*nbp ») sont sur la p.65. Les p.62-64 sont les exemples CARA VAR LIN.",
+      "correction": "Remplacer par « exemples p.65 »."
+    },
+    {
+      "command": "CARA PSE / ZONE",
+      "field": "pitfalls (pages)",
+      "verdict": "FAUX",
+      "claim": "« XL de la derniere zone est facultatif ... (p.60) » et « La fin de la derniere zone comprend obligatoirement l'extremite de la barre (p.60) ».",
+      "evidence": "p.61 : « La valeur de XL pour la derniere zone de la liste n'a pas a etre specifiee : meme si une valeur de XL est fournie, les proprietes de la derniere zone s'appliquent jusqu'a l'extremite de la poutre ... ». p.66 : « La fin de la derniere zone comprend obligatoirement l'extremite de la barre. »",
+      "correction": "Citer p.61 pour la regle XL et p.66 pour la fin de zone (dans CARA PSE et dans l'entree ZONE)."
+    },
+    {
+      "command": "MASSE PROPRE",
+      "field": "doc / pitfalls (pages)",
+      "verdict": "FAUX",
+      "claim": "« Le calcul des modes propres, et donc celui des masses propres, n'est disponible qu'en option PLANE et SPATIALE (p.71) » ; pitfalls citant p.70 pour MASSE NUL, masses excentrees et SUP ; « nombre de termes ... (p.71) ».",
+      "evidence": "Toutes ces phrases sont p.69 : « Le calcul des modes propres et donc celui des masses propres est disponible uniquement en option plane et spatiale. » / « On peut enfin annuler les masses modales d'une barre avec la commande NUL. Attention, cela n'annule pas les masses directement definies aux noeuds. » / « ... la creation de masses excentrees a des barres non pourvues de masses non excentrees peut rendre impossible la resolution des modes ... Il n'est pas possible d'utiliser le mot cle SUP ... ». Le comptage 6/21 et 3/6 est p.70. p.71 ne contient que les exemples et le rappel matriciel.",
+      "correction": "Restriction d'option et regles NUL/EXC/SUP -> p.69 ; nombre de termes -> p.70 ; exemples et rappel matriciel -> p.71."
+    },
+    {
+      "command": "GENER BARRE",
+      "field": "examples",
+      "verdict": "FAUX",
+      "claim": "« GENER 20 BARRE ID 20 1 DE 20 1 A 21 1   # p.292 : file continue de 20 barres »",
+      "evidence": "p.293 : « gener 20 barre id 20 1 de 20 1 a 21 1 » (section « definition du tablier »). La p.292 porte « gener 4 barre id 1 1 de 1 1 a 5 0 ».",
+      "correction": "Remplacer p.292 par p.293."
+    },
+    {
+      "command": "APPUI EL",
+      "field": "doc",
+      "verdict": "NON_SOURCE",
+      "claim": "« Definit un appui elastique par sa demi-matrice de rigidite inferieure » presente comme fait unique.",
+      "evidence": "p.49, phrase d'introduction : « La demi-matrice de rigidite superieure d'un appui elastique est definie par defaut dans le repere general ... » ; legende de la meme page : « m1 ... mj1 demi-matrice de rigidite inferieure ». Le manuel se contredit sur la meme page.",
+      "correction": "Signaler la contradiction documentaire p.49 (intro 'superieure' vs legende 'inferieure') et trancher par le rangement effectif donne p.51 (m1 ; m2 m3 ; m4 m5 m6 = triangulaire inferieure lue par lignes)."
+    },
+    {
+      "command": "SE (bloc:ETUDE)",
+      "field": "aliases",
+      "verdict": "MANQUANT",
+      "claim": "Aucun alias n'est declare pour SE / REL / TOUT.",
+      "evidence": "Exemple officiel p.138 : « ETUDE EFFORT DEPLA / 1,2 SECTION 0.000 A 1.00 PAS 0.50 RELATIF / 21,22 SECTION 0.000 A 1.00 PAS 0.50 RELATIF / FIN » ; exemple p.300 : « ETUDE EFFORT DEPLA / TOUTES SE 0. A 1. pas 0.1 ». De meme p.138 : « MATERIAU 10 » et « CONSTANTES tout MATERIAU 10 ».",
+      "correction": "Ajouter les formes attestees dans les exemples du manuel : SECTION (= SE), RELATIF (= REL), TOUTES (= TOUT), et signaler que le dictionnaire de mots-cles est modifiable via ST1.par [p.331-332]."
+    },
+    {
+      "command": "EXEC PHASAGE",
+      "field": "doc / pitfalls / examples / prerequisites",
+      "verdict": "FAUX",
+      "claim": "« Un phasage defini comme la suite d un autre phasage (cf. SUITE PHASAGE p.182) doit etre execute **apres** celui-ci » et pitfall « L ordre d execution compte : EXEC PHASAGE 1,2 doit preceder EXEC PHASAGE 3 si le phasage 3 contient SUITE PHASAGE 1,2 [p.196] », avec l exemple « EXEC PHASAGE 1,2 / EXEC PHASAGE 3 ».",
+      "evidence": "Manuel §9.15, p.196 : « Un phasage défini comme la suite d'un autre phasage (cf. commande SUITE PHASAGE p182) doit être exécuté AVANT ce dernier. » (verifie sur la page OCR 196)",
+      "correction": "Le catalogue affirme exactement l inverse du manuel. Remplacer par la citation litterale : « Un phasage defini comme la suite d un autre phasage doit etre execute avant ce dernier [p.196] », et signaler l ambiguite/le caractere contre-intuitif de la phrase plutot que d inventer l ordre inverse. Supprimer l exemple « EXEC PHASAGE 1,2 puis EXEC PHASAGE 3 » presente comme documente."
+    },
+    {
+      "command": "SUITE PHASAGE",
+      "field": "prerequisites / pitfalls",
+      "verdict": "FAUX",
+      "claim": "« Les phasages repris doivent avoir ete definis puis EXECUTES avant celui qui les reprend (EXEC PHASAGE p.196) » ; « Un phasage defini comme la suite d un autre doit etre execute APRES celui-ci : le phasage repris doit avoir ete execute au prealable [p.196] ».",
+      "evidence": "Manuel p.196 : « ... doit être exécuté AVANT ce dernier. » §9.2 p.182 ne dit rien de l ordre d execution, seulement « liste des phasages déjà exécutés ».",
+      "correction": "Meme inversion que ci-dessus. Ne garder que ce qui est ecrit : §9.2 p.182 « liste des phasages deja executes » ; et citer p.196 telle quelle (« avant ce dernier ») sans la reinterpreter."
+    },
+    {
+      "command": "CARA SPECIAL",
+      "field": "name / pages / syntax / doc",
+      "verdict": "NON_SOURCE",
+      "claim": "Commande « CARA SPECIAL j / RIGIDITE CARA / sx sy (sz ix iy) iz (ip) / EFFORT / fx fy (fz mx my) mz / FIN », citee [p.214].",
+      "evidence": "Recherche plein texte du manuel v24 : « CARA SPECIAL » -> 0 occurrence ; « RIGIDITE CARA » -> 0 occurrence ; « SPECIAL » n apparait qu en p.175 (vehicule special). La page imprimee 214 est VIDE (contenu OCR : « ST1 - Liste des commandes (Dynamique) / 214 »). Seule l annexe « B4.4 – ELEMENTS SPECIAUX » (p.386) evoque des elements speciaux, sans donner de syntaxe de commande.",
+      "correction": "Supprimer la citation [p.214] (page blanche). La commande n est attestee que par le memo distille, pas par le manuel v24 : la marquer explicitement « non attestee dans le manuel v24 ; seule reference : annexe B4.4 p.386 (methode de resolution, sans syntaxe) », ou retirer l entree. Idem pour les sous-commandes RIGIDITE CARA et EFFORT (bloc:CARA SPECIAL)."
+    },
+    {
+      "command": "RIGIDITE CARA",
+      "field": "pages / syntax",
+      "verdict": "NON_SOURCE",
+      "claim": "Sous-commande « RIGIDITE CARA / sx sy (sz ix iy) iz (ip) » attribuee a [p.214], avec restrictions onlyOptions SPATIALE sur sz/ix/iy/ip.",
+      "evidence": "« RIGIDITE CARA » : 0 occurrence dans le manuel v24 ; p.214 est une page blanche (OCR index 213).",
+      "correction": "Retirer la page [214] et marquer la sous-commande comme non attestee par le manuel v24 (source unique : memo distille). Les onlyOptions PLANE/SPATIALE en decoulent et sont donc egalement non sourcees."
+    },
+    {
+      "command": "EFFORT (bloc:CARA SPECIAL)",
+      "field": "pages / doc",
+      "verdict": "NON_SOURCE",
+      "claim": "« Une composante a 0 reste ELASTIQUE (non limitee) et non un seuil nul [p.214] ».",
+      "evidence": "p.214 du manuel v24 est vide ; aucune occurrence de « seuils limites », « sx sy », « RIGIDITE CARA » dans tout le manuel.",
+      "correction": "Supprimer la citation [p.214] ; signaler la regle « 0 = elastique » comme non documentee dans le manuel v24 (memo uniquement)."
+    },
+    {
+      "command": "EXEC MODE",
+      "field": "restrictedToOptions / prerequisites",
+      "verdict": "NON_SOURCE",
+      "claim": "restrictedToOptions [PLANE, SPATIALE] et prerequisite « OPTION PLANE ou SPATIALE (le calcul des modes propres et des masses propres n'est pas disponible en option GRILL) [p.71] ».",
+      "evidence": "p.71 ne contient que des exemples de matrices de masse en PLANE et SPATIALE, aucune exclusion. La seule exclusion explicite de GRILL du manuel v24 est p.217 (calcul au feu) : « Le calcul est limité à l'option plane et spatiale (il n'est pas disponible en option grille) » ; recherche « option grille » / « pas disponible en option » -> uniquement p.217.",
+      "correction": "Supprimer restrictedToOptions ou le requalifier en deduction non documentee. Le seul element factuel citable est p.70 : la demi-matrice de masse est donnee « 6 termes pour les structures planes / 21 termes pour les structures spatiales » (GRILL non evoque). Ne pas presenter cela comme une interdiction documentee, ni citer p.71."
+    },
+    {
+      "command": "SPATIALE (bloc:ANALYSE FEU)",
+      "field": "pages / restrictedToOptions / onlyOptions",
+      "verdict": "FAUX",
+      "claim": "pages [230, 231] ; restrictedToOptions [SPATIALE] ; onlyOptions [SPATIALE] pour un mot cle « SPATIALE <OUI,NON> » du bloc ANALYSE FEU.",
+      "evidence": "Manuel §12.12 p.230 : « ANALYSE FEU / NEWTON_RAPHSON MAX_ITER n (PERIODE i) / (Y <CTE, VAR>) / (CARA <ZERO, GARDER>) / FIN » ; aide-memoire p.19 : meme bloc, sans SPATIALE. Le mot cle n existe que dans st1_reference.md l.778 et st1_commands.json.",
+      "correction": "Le catalogue signale bien l incertitude, mais les pages [230,231] sont une citation fausse (le mot cle n y figure pas) et les restrictions SPATIALE sont inventees. Retirer pages, restrictedToOptions et onlyOptions ; ne conserver que « atteste uniquement par st1_reference.md / st1_commands.json, absent du manuel v24 »."
+    },
+    {
+      "command": "MODIFIER APPUI",
+      "field": "pitfalls",
+      "verdict": "FAUX",
+      "claim": "« L aide-memoire p.179 renvoie a 'APPUI p116' pour la nouvelle definition, mais le chapitre detaille renvoie a APPUI p.47 ».",
+      "evidence": "Le renvoi « MODIFIER APPUI liste (cf. commande APPUI p116) » figure sur l aide-memoire des commandes projet, page 14, pas page 179. Le bloc de syntaxe p.179 ecrit seulement « MODIFIER APPUI liste » sans renvoi.",
+      "correction": "Remplacer « aide-memoire p.179 » par « aide-memoire p.14 ». (Meme confusion pour ENV : la ligne REAC <FX,FY,FZ,RX,RY,RZ> figure a la fois p.14 (aide-memoire) et p.179 (bloc de syntaxe du chapitre) ; l appellation « aide-memoire p.179 » est impropre.)"
+    },
+    {
+      "command": "SPECTRE REPONSE",
+      "field": "pitfalls",
+      "verdict": "FAUX",
+      "claim": "« CQC sans amortissement defini : le manuel indique que la combinaison CQC degenere alors en SRSS [p.243] ».",
+      "evidence": "La phrase « si l'amortissement est nul (commande amortissement non définie par exemple), la combinaison CQC dégénère en combinaison dite SRSS » se trouve page 245 (chapitre 15 - Edition des resultats). p.243 contient l aide-memoire LISTER (LISTER MASSE/AMORTISSEMENT/SPECTRE/HISTORIQUE).",
+      "correction": "Remplacer [p.243] par [p.245]. Meme correction pour la pitfall identique de la commande CQC."
+    },
+    {
+      "command": "CQC",
+      "field": "pitfalls",
+      "verdict": "FAUX",
+      "claim": "« Si l'amortissement est nul ... la combinaison CQC degenere en combinaison SRSS [p.243] ».",
+      "evidence": "Enonce localise page 245 (§15 Edition des resultats, commande RESU SPECTRE), pas page 243.",
+      "correction": "Corriger la page : [p.245]."
+    },
+    {
+      "command": "POND (bloc:SPECTRE REPONSE)",
+      "field": "pitfalls",
+      "verdict": "FAUX",
+      "claim": "« Des ponderations signees (POND X 1 Y -1, POND X -1 Y 1, ...) permettent de balayer les combinaisons de signes entre directions (exemple p.304) ».",
+      "evidence": "Le jeu « POND X 1 Y 1 / POND X 1 Y -1 / POND X -1 Y 1 / POND X -1 Y -1 » figure page 306 (exemple 19.6). La page 304 contient la fin du listing des cables de l exemple 19.5 (pretension).",
+      "correction": "Remplacer « exemple p.304 » par « exemple p.306 » (exemple 19.6, debut p.305)."
+    },
+    {
+      "command": "PROTECTION",
+      "field": "doc",
+      "verdict": "FAUX",
+      "claim": "« Commande optionnelle : absente = pas de protection (l edition des donnees affiche alors `Protection : Non`) [p.316] ».",
+      "evidence": "La chaine « Protection : Non » apparait page 319 (fichier resultat / LISTER EXPOSITION de l exemple 19.9). La page 316 contient le fichier de donnees de l exemple 19.9 (commandes EXPOSITION FEU), pas une edition.",
+      "correction": "Remplacer [p.316] par [p.319]."
+    },
+    {
+      "command": "EXEC MODE",
+      "field": "doc",
+      "verdict": "FAUX",
+      "claim": "« Nombre d'iterations de la methode 2 : fixe dans le fichier st1.par (50 par defaut) ... [p.199] » et « Ordre de grandeur conseille par le manuel : 10 a 30 modes ... [p.199] ».",
+      "evidence": "« Le nombre d'itérations pour la méthode 2 est fixé dans le fichier st1.par (50 par défaut) » et « les 10 à 30 premiers modes sont souvent suffisants pour atteindre au moins 70-80% de la masse modale totale ... (>20Hz) » sont tous deux page 198. Seul l avertissement sur les convergences des modes superieurs (elements locaux trop rigides, K=E*I/L^2) est page 199.",
+      "correction": "Corriger les pages : st1.par 50 -> [p.198] ; 10 a 30 modes / 70-80 % / >20 Hz -> [p.198]. Conserver [p.199] uniquement pour la pitfall de convergence."
+    },
+    {
+      "command": "BARRE (bloc:DYNAMIQUE CHARGE)",
+      "field": "args[].onlyOptions",
+      "verdict": "FAUX",
+      "claim": "Seul FZ porte onlyOptions [SPATIALE, GRILL] ; FX, FY, MX, MY, MZ n ont aucune restriction d option, ce qui laisse entendre que les six composantes sont utilisables en PLANE.",
+      "evidence": "st1_commands.json / structure_options : PLANE nodal_loads = [FX, FY, MZ] ; GRILL nodal_loads = [MX, FZ, MY] ; SPATIALE = les six. Manuel p.43-44 (options de calcul) : PLANE ddl dx, dy, rz ; GRILL rx, dz, ry.",
+      "correction": "Ajouter les restrictions manquantes : FX -> onlyOptions [PLANE, SPATIALE] ; FY -> [PLANE, SPATIALE] ; MZ -> [PLANE, SPATIALE] ; MX -> [GRILL, SPATIALE] ; MY -> [GRILL, SPATIALE]. Et rendre FZ coherent avec la restriction annoncee par ailleurs pour la dynamique (la pitfall du meme bloc cite deja « PLANE : FX FY MZ ; GRILL : FZ MX MY ; SPATIALE : les six »)."
+    },
+    {
+      "command": "PAS_TEMPS (bloc:ACCELEROGRAMME)",
+      "field": "pitfalls / doc",
+      "verdict": "NON_SOURCE",
+      "claim": "« le manuel le relie a la periode propre la plus courte a prendre en compte, divisee par 40 [p.208] » (repris dans ACCELEROGRAMME : « de l'ordre de cette periode divisee par 40 »).",
+      "evidence": "Manuel p.208 (texte OCR litteral) : « il faut un pas de temps dont la durée soit inférieure 40 fois la période propre la plus courte à prendre en compte du modèle étudiée ». La phrase est incomplete/ambigue et ne dit pas « divisee par 40 ».",
+      "correction": "Ne pas transformer la phrase en regle numerique T/40 presentee comme documentee. Citer litteralement le manuel et signaler l ambiguite de la formulation (OCR/redaction), ex. : « le manuel demande un pas de temps lie a la periode propre la plus courte ; la formulation p.208 est ambigue »."
+    },
+    {
+      "command": "EXPOSITION FEU",
+      "field": "pitfalls",
+      "verdict": "NON_SOURCE",
+      "claim": "« Une paroi laissee sans exposition ne recoit aucune condition thermique : pour modeliser une face non exposee, declarer explicitement une exposition `TEMP 20` [p.219] ». (Repris a l identique dans EXPOSITION FEU (bloc:SECTION) : « Une paroi non citee ne recoit aucune condition d exposition ».)",
+      "evidence": "p.219 dit seulement : « il se peut que dans une structure donnée, certaines sections ne soient pas exposées au feu (à définir par exemple via la commande EXPOSITION TEMP 20.) ». Aucune phrase du manuel ne decrit le comportement d une paroi laissee sans exposition.",
+      "correction": "Conserver uniquement la partie sourcee (« une face non exposee se declare par exemple via EXPOSITION TEMP 20. [p.219] ») et supprimer l affirmation sur l absence de condition thermique, ou la marquer explicitement comme deduction non documentee."
+    },
+    {
+      "command": "RELACHER_BANC CABLE",
+      "field": "prerequisites / forbidden",
+      "verdict": "NON_SOURCE",
+      "claim": "« En cas de traitement thermique : la date de relachement doit etre posterieure a la date de fin de cure definie dans la loi du materiau [p.193] » et forbidden « Mettre en tension avant la date de fin de cure specifiee dans la loi du materiau en cas de traitement thermique [p.193] ».",
+      "evidence": "Manuel §9.12 p.193 : « La valeur de résistance de fin de cure fcp ne sera obtenue qu'à la date de fin de cure spécifiée dans la loi du matériau, LA MISE EN TENSION ne doit se faire qu'au delà de cette date. Par ailleurs les pertes thermiques sur le câble de précontrainte sont prises en compte au relâchement du banc. »",
+      "correction": "Le manuel contraint la date de MISE EN TENSION (TENDRE_BANC), pas la date de relachement. Reformuler : « la mise en tension (sur banc) ne doit pas intervenir avant la date de fin de cure [p.193] » ; ne conserver pour RELACHER_BANC que « les pertes thermiques sont prises en compte au relachement du banc [p.193] »."
+    },
+    {
+      "command": "DESACTIVER ENV",
+      "field": "pitfalls",
+      "verdict": "NON_SOURCE",
+      "claim": "« La suspension prend effet a partir de sa position dans la chronologie du phasage : la placer apres la commande DATE qui ouvre la periode a exclure [p.184] ».",
+      "evidence": "p.183-184 ne donnent que la syntaxe « DESACTIVER ENV liste » / « ACTIVER ENV liste » et un exemple (ENV 1 / DATE 180 / DESACTIVER ENV 1 / DATE 200 / ACTIVER ENV 1 / FIN). Aucune regle de positionnement n est enoncee.",
+      "correction": "Requalifier en lecture de l exemple (« d apres l exemple p.184 ») et non en regle documentee, ou supprimer la citation de page."
+    },
+    {
+      "command": "CONS",
+      "field": "pitfalls[5]",
+      "verdict": "FAUX",
+      "claim": "\"L'alias CONSTANTES (et MATERIAU pour MAT) est atteste dans les fichiers d'exemples officiels du manuel (chapitre EXEMPLES DE FICHIERS DE DONNEES, p286 et suivantes) : CONSTANTES tout MATERIAU 10.\"",
+      "evidence": "Le mot-cle CONSTANTES n'apparait qu'aux pages 65, 72, 73 (titres/prose) et 138. p138 (chapitre CHARGES D'EXPLOITATION, exemple modele 3D) : \"# AFFECTATION DU MATERIAU / CONSTANTES tout MATERIAU 10\". Le chapitre EXEMPLES (p286+) n'emploie jamais CONSTANTES ; il ecrit \"MATERIAU 1 'Beton'\" puis \"CONS 11,12 MAT 1\" [p.301].",
+      "correction": "Remplacer la page : \"L'alias CONSTANTES est atteste une seule fois, dans l'exemple de modele 3D du chapitre CHARGES D'EXPLOITATION (p138) : CONSTANTES tout MATERIAU 10. L'alias MATERIAU est en outre atteste p138 et dans le chapitre EXEMPLES (p301).\" Noter que ni le memo (st1_reference.md) ni st1_commands.json ne declarent d'alias pour CONS (seul MAT a l'alias MATERIAU)."
+    },
+    {
+      "command": "MAT",
+      "field": "pitfalls[7]",
+      "verdict": "FAUX",
+      "claim": "\"Les alias MATERIAU (pour MAT) et CONSTANTES (pour CONS) sont attestes dans les fichiers d'exemples officiels (chapitre EXEMPLES p286 et suivantes).\"",
+      "evidence": "Idem : CONSTANTES est absent des pages 286-329. Attestation unique p138. MATERIAU : p138, p301, p317.",
+      "correction": "Corriger en \"MATERIAU : p138 et p301 ; CONSTANTES : p138 uniquement\"."
+    },
+    {
+      "command": "CONTR",
+      "field": "pitfalls[1]",
+      "verdict": "INVENTE",
+      "claim": "\"Le tableau p.147 omet WYWZ dans certaines impressions du manuel ; la ligne de syntaxe p.146 la mentionne.\"",
+      "evidence": "Tableau p.147, colonne CONTR, ligne Option SPATIALE : \"vyvz, vywz, wyvz, wywz\" — WYWZ est bien present. Le tableau p.141 donne la meme liste.",
+      "correction": "Supprimer entierement ce pitfall : aucune omission de WYWZ dans le manuel."
+    },
+    {
+      "command": "EXEC CHARG PSE",
+      "field": "examples[1]",
+      "verdict": "FAUX",
+      "claim": "\"# Sequence complete d'apres l'exemple 19.11 du manuel [p.379-380]\"",
+      "evidence": "\"19.11- STRUCTURE PLANE - POUTRES SUR RESSORTS PSEUDO PLASTIQUE\" est titre de la page 326 ; le code cite (CARA PSE 1 a nb pas 1 sx 1 iz 10 / PLASTIQUE NEG kfy 300 / zone 1 kfx 1 kfy 500) est en bas de p326, et \"charg 102 'ressort plastique' ... exec charg pse 102\" est en haut de p327. Les pages 379-381 sont des annexes B4.10 sur la relaxation EN1992-1-1 de 2027.",
+      "correction": "Remplacer \"[p.379-380]\" par \"[p.326-327]\"."
+    },
+    {
+      "command": "LOI",
+      "field": "pitfalls[3]",
+      "verdict": "FAUX",
+      "claim": "\"KP n'a de sens documente que pour la loi EC2_2027 (p92, p345 et suivantes).\" (et doc : formule B.43 avec k1=0.01, kp=0.16)",
+      "evidence": "La formule B.43 est p.380 : \"B4.10.2 - COMPORTEMENT D'UNE ARMATURE DE PRECONTRAINTE EN1992-1-1 DE 2027 / PERTE PAR RELAXATION PURE ... (B.43) ... kp 0.16 (modifiable (voir B44)) ; k_1 0.01\". La page 345 est \"B4.3.2 - COMPORTEMENT D'UNE ARMATURE DE PRECONTRAINTE BPEL91\" (k1 = 6.10-3 / 8.10-3, k2 = 1.10/1.25/1.50) : ce n'est pas la loi EC2_2027.",
+      "correction": "Remplacer \"p345 et suivantes\" par \"p380\" dans le pitfall ET dans le champ doc de LOI."
+    },
+    {
+      "command": "T_THERM",
+      "field": "doc",
+      "verdict": "FAUX",
+      "claim": "\"La formule EC2_2027 associee : delta_sigma = (1-lambda)*Ep*alpha_b*(theta_max - theta_0) avec theta_0 = 20 degres (p345 et suivantes).\"",
+      "evidence": "La formule EC2_2027 figure p.381 : \"$\\Delta\\sigma_{\\theta_{max}} = (1 - \\lambda) \\cdot Ep \\cdot \\alpha_b \\cdot (\\theta_{max} - \\theta_0)$ (eq 13.3)\". La version BPEL91 est p.346, la version EC2 2010 p.359. p345 ne contient aucune formule de traitement thermique.",
+      "correction": "Remplacer \"(p345 et suivantes)\" par \"(p381, eq 13.3 ; formes BPEL91 p346 et EC2-2010 p359)\"."
+    },
+    {
+      "command": "T_THERM",
+      "field": "args[THETA].min / args[THETA].max",
+      "verdict": "NON_SOURCE",
+      "claim": "min 20 / max 80 appliques a l'argument THETA de T_THERM (toutes formes).",
+      "evidence": "La borne n'est documentee que pour la forme BPEL : \"tetamax temperature maximale en degres pour le traitement thermique (BPEL Annexe 6) (entre 20 et 80 degres)\" [p.75]. Pour les formes EC2/EC2_BHP/FIB/EC2_2027 le manuel n'ecrit que \"listeta liste des temperatures maximales (en degres) pour le traitement thermique\" [p.80, p.83, p.85, p.89] — aucune borne.",
+      "correction": "Retirer min/max du niveau argument et les deplacer dans la doc de la forme BPEL uniquement : \"tetamax entre 20 et 80 degres (forme BPEL seulement, p75) ; aucune borne documentee pour les listes listeta des formes Eurocode/FIB\"."
+    },
+    {
+      "command": "CONTRG",
+      "field": "pitfalls[0]",
+      "verdict": "FAUX",
+      "claim": "\"Le terme constant CST d'une contrainte generalisee n'est pas applicable aux surcharges [p.125].\"",
+      "evidence": "L'enonce est p.103 : \"cst constante applicable uniquement pour les charges, non-applicable aux surcharges\" (bloc CONTRG, section 6.2). La p.125 traite CHARG COMB / EXEC CHARG / EXEC CHARG PSE et ne mentionne pas CST.",
+      "correction": "Remplacer \"[p.125]\" par \"[p.103]\"."
+    },
+    {
+      "command": "CONTRG",
+      "field": "pitfalls[1]",
+      "verdict": "FAUX",
+      "claim": "\"La contrainte generalisee ... est integree aux resultats au moment de l'execution, pas apres [p.125, p.178].\"",
+      "evidence": "La phrase source est p.105 : \"Les contraintes generalisees sont integrees aux resultats de chaque section d'etude au moment de l'execution des chargements et des surcharges (cf. commandes EXEC CHARG p125 et EXEC SURCH p178).\"",
+      "correction": "Remplacer par \"[p.105] (qui renvoie a EXEC CHARG p125 et EXEC SURCH p178)\". Meme correction pour EXEC SURCH / pitfalls[1] qui cite \"[p.125]\" au lieu de \"[p.105]\"."
+    },
+    {
+      "command": "EXEC SURCH",
+      "field": "pitfalls[1]",
+      "verdict": "FAUX",
+      "claim": "\"Les contraintes generalisees (CONTRG) sont integrees aux resultats de chaque section d'etude au moment de l'execution [p.125].\"",
+      "evidence": "Phrase source p.105 (voir ci-dessus). p.125 = CHARG COMB / EXEC CHARG / EXEC CHARG PSE.",
+      "correction": "Remplacer \"[p.125]\" par \"[p.105]\". (Le champ doc de EXEC CHARG cite deja correctement p.105.)"
+    },
+    {
+      "command": "EUROCODE",
+      "field": "doc",
+      "verdict": "FAUX",
+      "claim": "\"Coefficients d'ajustement par defaut selon la classe de trafic [p.167] : | classe | aQ1 | ... |\" et \"Coefficients psi par defaut [p.167] : COMBINAISON (LM3) UDL 0.3 / TS 0.50 ; FREQUENT ...\"",
+      "evidence": "Les deux tableaux sont p.168 : \"Les coefficients d'ajustement, selon la classe de trafic et le numero i de voie sont les suivants : | Classe de trafic | aQ1 | ... |\" puis \"| Combinaison | UDL | TS | LM2 | / COMBINAISON (LM3) | 0,3 | 0,50 | - |\". La p.167 ne porte que les valeurs caracteristiques TS/UDL et la definition des 3 classes de trafic.",
+      "correction": "Remplacer les deux \"[p.167]\" par \"[p.168]\" (les valeurs caracteristiques TS 300/200/100 et UDL 9/2.5 restent bien [p.167])."
+    },
+    {
+      "command": "ZONE_TRANS",
+      "field": "doc / pitfalls[4]",
+      "verdict": "FAUX",
+      "claim": "\"A l'Eurocode le nombre de voies decoule de la largeur chargeable L : L < 5.40 m -> 1 voie de 3.00 m ; ... [p.167]\" et \"la largeur chargeable a considerer est la largeur totale augmentee des largeurs de separateurs non permanents [p.167]\"",
+      "evidence": "Tableau et phrase sont p.168 : \"| Largeur chargeable (L) | Nombre de voies | Largeur d'une voie (metres) | L < 5,40 m | 1 | 3,00 | ...\" puis \"Lorsque la largeur du tablier est divisee en plusieurs zones chargeables, la largeur chargeable a considerer ... est la largeur chargeable totale, a laquelle il faut ajouter les largeurs de separateurs s'il ne s'agit pas de dispositifs physiquement permanents.\"",
+      "correction": "Remplacer \"[p.167]\" par \"[p.168]\" aux deux endroits (et ajouter 168 dans la liste pages de ZONE_TRANS)."
+    },
+    {
+      "command": "MAT",
+      "field": "pitfalls[1..4] (et E.pitfalls[1], FLUAGE.pitfalls[0], SILICE.args[silice].pages)",
+      "verdict": "FAUX",
+      "claim": "Decalage systematique d'une page sur les enonces explicatifs des sections reglementaires : \"unite MPA/TM2/KNM2 met g a 9.81 (p75, p78, p80, p83, p85, p87, p89)\", \"fluage non lineaire ... LINEAIRE NON (p80, p83, p89)\", \"traitement thermique ... QUE pour les phasages (p75, p80, p83, p85, p89)\", \"AUCUN abattement sur fck/fc28 (p80, p83, p85, p89)\", \"SILICE NON par defaut (p89)\".",
+      "evidence": "Ces enonces figurent sur la page SUIVANTE de chaque section : g=9.81 p.76 (BPEL), p.78 (CEB), p.80 (EC2), p.84 (EC2_BHP), p.86 (FIB), p.88 (ACI), p.89 (EC2_2027) ; \"Par defaut, ce coefficient n'est pas applique. Pour l'appliquer, il faut ecrire 'LINEAIRE NON'\" p.81, p.84, p.90 ; \"Le traitement thermique ... n'est pris en compte uniquement pour les phasages de construction\" p.76, p.81, p.84, p.86, p.90 ; \"aucun abattement sur la resistance n'est effectue par ST1\" p.81, p.84, p.86, p.90 ; \"L'ajout de fumee de silice ... avec la commande SILICE (NON par defaut)\" p.90.",
+      "correction": "Corriger les pages : g=9.81 -> p76/78/80/84/86/88/89 ; fluage non lineaire -> p81/p84/p90 ; traitement thermique phasage -> p76/81/84/86/90 ; abattement fck -> p81/84/86/90 ; SILICE NON par defaut -> p90 (ajouter 90 dans SILICE.pages)."
+    },
+    {
+      "command": "EUROCODE",
+      "field": "args[CLASSE].max (idem CLASSE bloc:EUROCODE args[iclass].max)",
+      "verdict": "FAUX",
+      "claim": "Contrainte machine \"max\": 3 sur le numero de classe iclass, doc \"Classe de trafic Eurocode ... (maximum 3 classes)\".",
+      "evidence": "p.169 : \"iclass classe de trafic Eurocode (maximum 3 classes )\" — il s'agit du nombre maximal de lignes CLASSE...AJUSTEMENT, non de la valeur maximale du numero de classe. p.168 documente explicitement les classes 4 (19 t), 5 (12 t) et 6 (3,5 t) avec leurs propres coefficients d'ajustement (aQ1 0,32 / 0,20 / 0,06 ...).",
+      "correction": "Retirer \"max\": 3 de l'argument iclass. Conserver l'information sous forme de note : \"le manuel limite a 3 le nombre de blocs CLASSE ... AJUSTEMENT ; les numeros de classe valides vont de 1 a 6 (4 a 6 = limitations de tonnage, p168)\"."
+    },
+    {
+      "command": "POIDS",
+      "field": "args[TS].max / args[UDL].max (idem AJUSTEMENT args[TS].max, args[UDL].max)",
+      "verdict": "FAUX",
+      "claim": "\"max\": 3 sur TS, \"max\": 4 sur UDL (POIDS) et \"max\": 2 sur TS/UDL (AJUSTEMENT), sur des arguments de type \"list\".",
+      "evidence": "p.169 : \"list_poidsts liste des poids des essieux ... (limitee a 3 coefficients ...) (kN)\" et \"list_poidudl ... (limitee a 4 coefficients ...)\" ; \"list_coeff ... (limitee a 2 coefficients ...)\". Ce sont des LONGUEURS de liste, pas des bornes de valeur.",
+      "correction": "Renommer la contrainte (ex. \"maxItems\": 3 / 4 / 2) ou la deplacer en doc. Tel quel, un validateur numerique rejetterait l'exemple officiel POIDS TS 300,200,100 [p.169]."
+    },
+    {
+      "command": "DIR GLO",
+      "field": "args[MZ].onlyOptions / args[MY].onlyOptions (contexte bloc:ALG et bloc:CONV ; idem DIR LOC)",
+      "verdict": "NON_SOURCE",
+      "claim": "MZ declare disponible en GRILL (\"onlyOptions\": [\"PLANE\",\"GRILL\",\"SPATIALE\"]) et MY exclu de GRILL (\"onlyOptions\": [\"SPATIALE\"]).",
+      "evidence": "Le manuel imprime \"Option GRILL mx, fz, mz\" [p.161 et p.165], mais le tableau de reference structure_options de st1_commands.json donne pour GRILL ddl [RX, DZ, RY], nodal_loads [MX, FZ, MY], surcharge EFFORT [MX, TZ, MY] ; le manuel lui-meme donne partout ailleurs \"Option GRILL mx, fz, my\" pour les charges de barre [p.109, p.110, p.112, p.115]. Le \"mz\" de p161/p165 est donc une coquille pour \"my\".",
+      "correction": "Aligner sur structure_options : MZ -> onlyOptions [\"PLANE\",\"SPATIALE\"], MY -> onlyOptions [\"GRILL\",\"SPATIALE\"], et conserver le pitfall documentant la coquille p161/p165. Ne pas encoder la coquille comme contrainte machine."
+    },
+    {
+      "command": "SURCH",
+      "field": "forbidden[1] et forbidden[2]",
+      "verdict": "NON_SOURCE",
+      "claim": "\"SEUIL avec une charge roulante (mot-cle documente pour les charges reparties seulement, p.140/p.146)\" et \"PAS_CONV et SENS avec une charge repartie\" presentes comme INTERDITS.",
+      "evidence": "Aucun texte du manuel n'interdit ces combinaisons ; il s'agit d'une inference tiree de trois lignes de syntaxe separees (p140, p146, p170). L'aide-memoire des commandes projet p.12 regroupe au contraire tous les types de charge sous UNE seule syntaxe SURCH se terminant par \"(ZONE liste) / (POND pond) / (PAS_CONV pasc) (SENS psens) / (SEUIL seuil)\".",
+      "correction": "Retirer ces deux entrees de \"forbidden\" et les laisser uniquement en pitfalls, formules comme non-documentation et non comme interdiction (les pitfalls de SEUIL, PAS_CONV et SENS le font deja correctement : \"Non documente pour ...\")."
+    },
+    {
+      "command": "MAT",
+      "field": "forbidden[0]",
+      "verdict": "NON_SOURCE",
+      "claim": "\"Melanger dans un meme MAT des lois de reglements differents entre E, RETRAIT et FLUAGE\" presente comme interdit.",
+      "evidence": "Aucun enonce du manuel n'interdit ce melange ; les sections 3.3.1 a 3.3.7 (p75-90) se contentent de presenter une syntaxe par reglement. Le seul element factuel est l'incoherence de l'exemple p.90 (\"E EC2_2027 MPA FCK 40 / RETRAIT EC2 ER 2e-4\").",
+      "correction": "Deplacer en pitfall : \"La doc n'ecrit jamais qu'un seul reglement par bloc MAT ; aucun texte n'interdit explicitement le melange. Seul contre-exemple : la coquille p90 (RETRAIT EC2 dans un materiau EC2_2027).\""
+    },
+    {
+      "command": "AVANCE",
+      "field": "prerequisites[0]",
+      "verdict": "NON_SOURCE",
+      "claim": "\"Bloc MAT avec E, RETRAIT et FLUAGE deja definis\" (presente comme prerequis).",
+      "evidence": "Dans la syntaxe generale de MAT p.74, RETRAIT et FLUAGE sont entre parentheses donc OPTIONNELS : \"(RETRAIT ... ) (FLUAGE ... )\". Le bloc de syntaxe p.91 les montre sans parentheses mais aucun texte n'en fait une condition d'emploi de AVANCE ; par ailleurs p.42 pose que les commandes de description peuvent etre utilisees dans un ordre quelconque.",
+      "correction": "Remplacer par \"Bloc MAT (seule la ligne E est obligatoire, p74)\" et signaler en pitfall que les coefficients de retrait/fluage n'ont d'effet que si les lois correspondantes sont declarees."
+    },
+    {
+      "command": "CHARG",
+      "field": "doc",
+      "verdict": "NON_SOURCE",
+      "claim": "\"Les chargements fixes comprennent : poids propre des barres, charges aux noeuds, ..., action des cables de precontrainte [p.106].\"",
+      "evidence": "L'enumeration du manuel est p.107 et ne contient PAS les cables : \"Les chargements fixes comprennent : le poids propre des barres / les charges sur les noeuds / les charges concentrees sur les barres / les charges reparties sur les barres / les deplacements d'appuis rigides / les dilatations thermiques / le gradient thermique / les deformations concentrees sur les barres / les deformations repartes sur les barres\".",
+      "correction": "Citer [p.107] pour l'enumeration et retirer \"action des cables de precontrainte\" de la liste attribuee au manuel (la sous-commande CABLE figure bien dans le bloc de syntaxe p106, ce qui peut etre dit separement)."
+    },
+    {
+      "command": "ALIGNE",
+      "field": "pitfalls[2] (et RAYON pitfalls[2])",
+      "verdict": "FAUX",
+      "claim": "\"ALIGNE, PENTE, GIS et RAYON sont presentes comme un choix sur la ligne de point : ne pas les cumuler sur un meme point.\"",
+      "evidence": "p.97 : \"la tangente en un point est definie par l'angle du cable avec le plan horizontal (mot cle PENTE) ET/OU de l'angle du trace en plan du cable par rapport a l'axe OX global (mot cle GIS)\". PENTE et GIS sont donc explicitement cumulables. Le catalogue se contredit lui-meme : son propre exemple GIS ecrit \"X 20 Y 0 Z -4 PENTE 0 GIS 0\".",
+      "correction": "Reformuler : \"ALIGNE et RAYON s'excluent mutuellement et excluent la definition d'une tangente ; en revanche PENTE et GIS sont cumulables sur un meme point pour definir completement la tangente (p97).\" Appliquer la meme correction a RAYON.pitfalls[2]."
+    },
+    {
+      "command": "CH_23M3",
+      "field": "pitfalls[0]",
+      "verdict": "NON_SOURCE",
+      "claim": "\"Charge de phase chantier issue de l'annexe nationale : elle ne remplace pas les modeles LM1 a LM4 de service [p.177].\"",
+      "evidence": "p.177 ne contient que : \"MODELES DE VEHICULE DE CHANTIER : CH_23M3 ET CH_34M3 / L'annexe nationale de l'Eurocode 1-2 definit deux engins de calcul pour les phases chantiers.\" Aucune phrase sur un non-remplacement des LM1-LM4.",
+      "correction": "Reduire a la partie sourcee : \"Engin de calcul pour les phases chantier defini par l'annexe nationale de l'EC1-2 [p.177].\" Supprimer \"elle ne remplace pas les modeles LM1 a LM4 de service\"."
+    },
+    {
+      "command": "SECTION",
+      "field": "doc / args[Ap].pages (contexte bloc:PREC ; idem PREC.doc)",
+      "verdict": "FAUX",
+      "claim": "\"Sections unitaires usuelles, en mm2 : fil 7 mm = 38.5 ; fil 8 mm = 50.3 ; T13 = 93 ; T13 S = 100 ; T15 = 139 ; T15 S = 150\" rattache a la page 92.",
+      "evidence": "Le tableau \"Valeurs de quelques sections unitaires d'unites de precontrainte : | Nature | Ap (mm2) | fil 7mm | 38.5 | ... | T15 S | 150 |\" est sur la page 93. La page 92 ne porte que la syntaxe PREC et la liste des parametres.",
+      "correction": "Citer [p.93] pour le tableau des sections unitaires (ajouter 93 dans SECTION.pages)."
+    },
+    {
+      "command": "PAS_CABLE",
+      "field": "name / syntax (idem LG_GAINE)",
+      "verdict": "NON_SOURCE",
+      "claim": "Graphie canonique \"PAS_CABLE\" et \"LG_GAINE\" (avec underscore) retenue comme nom de commande et dans le champ syntax.",
+      "evidence": "Le manuel v24 n'atteste JAMAIS la graphie avec underscore pour ces deux mots-cles : syntaxe p.95 \"(PAS CABLE pas)\" et \"(LG GAINE OR lg1 EX lg2)\" ; exemple de pretension p.301 \"PAS CABLE 0.5\", \"LG GAINE OR 2 EX 2\", \"LG GAINE OR 2\". Seul le memo st1_reference.md (l.332) ecrit PAS_CABLE / LG_GAINE. A comparer avec LG_SCEL, lui bien atteste avec underscore (p.92, p.301 \"pretension lineaire lg_scel 2\").",
+      "correction": "Conserver le pitfall existant mais mettre la graphie attestee du manuel en forme primaire dans syntax (\"PAS CABLE pas\", \"LG GAINE OR lg1 EX lg2\") et la forme underscore en variante non attestee dans le manuel, sourcee du seul memo."
+    }
+  ],
+  "missing": [
+    "LISTER GEOM [p.240] - edition de toute la geometrie (noeuds, appuis, barres, caracteristiques RDM, appuis/barres actives) ; commande citee dans l'exemple meme de SORTIE p.39, et le lot inclut deja LISTER PROJET",
+    "LISTER NOEUD (liste) [p.240]",
+    "LISTER BARRE (liste) [p.240]",
+    "LISTER CARA (liste) [p.240] - rappel des caracteristiques RDM definies par CARA",
+    "LISTER APPUI (liste) [p.240]",
+    "LISTER MAT (liste) [p.240]",
+    "LISTER CONTRG (liste) [p.240] - rappel des contraintes generalisees definies par CONTRG",
+    "LISTER ACTIVATION / LISTER ACTIVATION APPUI / LISTER ACTIVATION BARRE [p.240] - rappel des elements actives par ACTIVER/DESACTIVER",
+    "LISTER MASSE [p.243] - rappel des masses definies par MASSE PROPRE",
+    "TOUT (mot-cle generique de substitution de liste) - documente p.48, p.51, p.53, p.55, p.57, p.66, p.99, p.100, p.102, p.241 mais non decrit comme entree autonome du lexique",
+    "CHARG i COMB (§12.9 – chargement combine pour le feu, p.229 ; referencee par INCENDIE mais absente du lot)",
+    "LISTER SECTION (§12.8, p.228)",
+    "LISTER MATERIAU (§12.8, p.228)",
+    "LISTER EXPOSITION (§12.8, p.228)",
+    "LISTER ACIER (§12.8, p.228)",
+    "LISTER ARMATURE (§12.8, p.228)",
+    "RESU FEU (liste) SECTION (lists) (DUREE lstd) (§12.14, p.232 ; citee seulement dans une pitfall)",
+    "RESU INCENDIE (liste) BARRE (listb) (CARA CHAUD) (TEMP (MAX)(MIN)(tmin)) (§12.14, p.232)",
+    "RESU INCENDIE (liste) BARRE (listb) (EFFORT) (DEPLA) (§12.14, p.232)",
+    "RESU INCENDIE (liste) APPUI (lista) (§12.14, p.233 ; aide-memoire p.19)",
+    "MASSE PROPRE (§2.11, p.69-71) — commande de definition des masses dynamiques, citee comme prerequis de EXEC MODE / EXEC HISTORIQUE mais jamais cataloguee",
+    "LISTER AMORTISSEMENT (p.243) — seule facon documentee d obtenir les amortissements mode par mode, citee dans AMORTISSEMENT/ENERGIE mais absente du lot",
+    "LISTER SPECTRE (p.243)",
+    "LISTER HISTORIQUE (p.243)",
+    "LISTER MASSE (p.243)",
+    "LISTER PHASAGE (p.242)",
+    "RESU ... MODE (listem) (FREQUENCE) (DEPLA) / SPECTRE / HISTORIQUE / FLAMBEMENT (p.244, aide-memoire p.22) — edition des resultats dynamiques et de flambement",
+    "GET ALPHA FLAMBEMENT i (p.280)",
+    "GET <ACCELERATION, VITESSE> <MAX,MIN> BARRE i SEC n HISTORIQUE j (p.279)",
+    "GET TENSION CABLE i SEC n <CHARG,ETAT,PHASAGE> j (p.280)",
+    "LM3 / ZONEVS (numero de zone de restriction du VS) [p.170-171] — traite seulement comme argument de LM3, alors que des mots-cles de meme niveau (KBARRE, KTRANS, LARG VOIE, COEF TRANS) ont une entree propre",
+    "LM3 / YVS (bornes yvs1 yvs2 REL|ABS de la bande du VS) [p.171]",
+    "LM3 / EXC (excentrement du VS par rapport a l'axe de sa voie) [p.171]",
+    "LM3 / DEBORDVOIE (position debv par rapport au bord de la voie 1 ; imprime DEBORDOVE p.170, debordvoie p.12) [p.171]",
+    "LM3 / PONDVS (ponderation du camion VS seul) [p.171]",
+    "LM3 / LGEXCLU (longueur d'exclusion longitudinale, defaut 10 m) [p.171]",
+    "LM3 / CORRELE (numeros de voies vj vk, defaut 1 et 2, abs(vj-vk)=1) [p.171]",
+    "MAT / E FEU EC2 <MPA,TM2,KNM2> FCK fck (TRACTION <OUI,NON>) — sous-commande documentee de MAT [p.218]",
+    "MAT / UU (teneur en eau, 0 par defaut, entre 0 et 1) [p.218]",
+    "MAT / CONDUCTIVITE (<conduc, EC2 <AN <NORMAL,BHP>, alpha>>) [p.218-219]",
+    "MAT / GRANULAT <SILICE,CALCAIRE> [p.218]",
+    "MAT / EMISSIVITE (0,7 par defaut) [p.218]",
+    "MAT / RHO_FEU (2300 kg/m3 par defaut, ne se substitue pas a RO) [p.218-219]",
+    "MAT / CHALEUR_SPECIFIQUE_MASSIQUE [p.218]",
+    "MAT et CONS / NU, RO, G_DYN, AMORTISSEMENT, TEMP — documentes comme sous-commandes du bloc MAT [p.74] mais sans entree propre, alors que ROH, ROS, RM, ROBS, EA, RH, H, RM_EC, CIMENT, SILICE, K_FORME, K_CURE, QUANTITE_* en ont une (granularite incoherente)",
+    "MAT / TEMPS_CURE [p.87] — traite comme argument de K_CURE alors que K_FORME et K_CURE ont chacun une entree",
+    "PREC / LG_SCEL et COEF [p.92] — traites comme arguments de PRETENSION alors que les autres mots-cles de PREC (SECTION, TENSION, E, RG, FPK, R1000, LOI, RECUL, PERTE) ont chacun une entree",
+    "LM3 / labels VSJ de l'annexe A EN1991-2 (VS_600_150 a VS_3600_240_240, LECLERC / PEB_LECERC) [p.172] — aucun n'a d'entree, alors que tous les convois francais CV_* et VS_* utilisables comme VSJ en ont une",
+    "ETUDE (sections d'etude, mots-cles SE / SUP / SEUL / PAS / ABS / REL) [p.101-102] — prerequis cite dans presque toutes les entrees du lot mais absent (autre famille : domaine d'etude)",
+    "CONTRG i ('Titre') ... FIN, commande de premier niveau (CTE / VAR LIN / VAR PARA / CST) [p.103-105] — le lot ne contient que le mot-cle CONTRG en contexte bloc:SURCH ; la commande qui definit la contrainte generalisee, prerequis explicite, est absente"
+  ],
+  "notes": [
+    "PAGINATION - Les pages sont des pages physiques du PDF v24 (meme convention que st1_commands.json, provenance_kind = physical_pdf_page). Verifiees par recoupement de l'aide-memoire de syntaxe (l.71-1058 du markdown OCR, qui porte les references pXXX) et du decoupage en pages du markdown (separateurs \"---\"), avec ancrage sur les sections nommees : 7.1 CHARG=106-107, 7.2 POIDS PROPRE=108, 7.3 NOEUD=109, 7.4 BARRE CON=110-111, 7.5 BARRE UNI=112-114, 7.6 BARRE LIN=115, 7.7 APPUI=116, 7.8 TEMP UNI=117, 7.9 TEMP GY/GZ=118, 7.10 DEFOR CON=119, 7.11 DEFOR UNI=120, 7.12 DEFOR LIN=121, 7.13 CABLE=122-124, 7.14 CHARG COMB=125, 7.15 EXEC CHARG=125, 7.16 EXEC CHARG PSE=125.\n\nPOINT NON TRANCHE 1 - CHARG COMB : l'aide-memoire de syntaxe du manuel indique \"CHARG i COMB('Titre du chargement') p122\" et le memo distille cite [p.122, p.125]. Le decoupage en pages montre que la section 7.14 - CHARGEMENTS COMBINES commence bien apres le saut de page qui suit 7.13.2, donc en p125 (juste avant 7.15 EXEC CHARG p125, page confirmee par de nombreuses references croisees \"EXEC CHARG p125\"). J'ai retenu pages = [125, 229], 229 correspondant au doublon 12.9 - CHARGEMENT COMBINEE POUR LE FEU. Le \"p122\" de l'aide-memoire est tres probablement un decalage OCR (p122 est la page de 7.13 CABLE). A confirmer sur le PDF si une certitude absolue est requise.\n\nPOINT NON TRANCHE 2 - TEMP GY/GZ : le perimetre demandait une entree \"TEMP GY/GZ\". J'ai produit DEUX entrees, \"TEMP GY\" et \"TEMP GZ\", parce que leurs restrictions d'option different (GY = PLANE/SPATIALE, GZ = GRILL/SPATIALE) et que \"TEMP GY/GZ\" n'est pas un mot-cle ecrivable. Les deux entrees rappellent que la syntaxe reelle est \"TEMP liste (GY dty) (GZ dtz)\" et que les deux mots-cles peuvent coexister sur la meme instruction en OPTION SPATIALE.\n\nPOINT NON TRANCHE 3 - POIDS PROPRE <X,Y,Z> (POS,NEG) : le manuel documente le sens par defaut de la forme SANS axe (PLANE = Y negatif, SPATIALE = Z negatif) mais ne documente PAS le sens par defaut lorsqu'un axe est impose sans POS ni NEG. Aucun \"default\" n'est donc renseigne sur POS/NEG ; le piege le signale et recommande d'ecrire le sens explicitement.\n\nPOINT NON TRANCHE 4 - unites de temperature : le manuel gloses ses exemples en \"degres\" (TEMP UNI 20., TEMP GY 15.) mais n'impose aucune unite. Je n'ai donc PAS renseigne \"unit\" sur dt/dty/dtz ; la doc precise seulement que la valeur doit etre coherente avec le coefficient de dilatation de CONS/MAT. Seules les rotations d'APPUI portent unit = \"radian\" (impose explicitement p.116).\n\nPOINT NON TRANCHE 5 - incoherence du manuel p.124 : sous le titre \"DEFINITION DU FLUAGE\" le manuel ecrit \"TENSION UNI 140\" alors que la syntaxe documentee de l'action d'un cable dans un chargement est \"CABLE liste PERTE UNI dsig\" [p.122]. Signale comme piege, non repris comme syntaxe valide.\n\nINCLUSION SUPPLEMENTAIRE - j'ai ajoute une entree \"CHARG\" de contexte \"bloc:CHARG COMB\" (la ligne \"CHARG liste coef\") pour permettre la completion contextuelle a l'interieur d'une charge combinee. Elle porte le meme name que la commande de premier niveau mais un context different.\n\nFORME BLOC vs SIMPLE - NOEUD, APPUI, TEMP, BARRE, DEFOR et CABLE admettent une ecriture \"instruction simple\" (tout sur une ligne) et une ecriture \"instruction de bloc\" (mot-cle seul puis une ligne par groupe d'elements). Les deux formes figurent dans les lignes de syntaxe de chaque entree.\n\nCONVENTION D'ARGUMENT - les groupes exclusifs du manuel (REL,ABS), (GLO,LOC), (GLO,LOC,PRO), (X,Y,Z), (POS,NEG) sont eclates en un argument par mot-cle exact, chacun de kind \"choice\" et portant la liste complete dans \"values\" ; le defaut documente est porte par le mot-cle qui est le defaut (ABS pour les abscisses, GLO pour les charges BARRE, LOC pour les DEFOR).\n\nNON COUVERT VOLONTAIREMENT (autres familles) - commandes CABLE/PREC de definition (p.92-98), APPUI/NOEUD/BARRE de geometrie, CARA PSE et PLASTIQUE (p.59-60), PHASAGE (p.179-196), COMB (p.234), INCENDIE/FEU/ANALYSE FEU (p.226-231), SURCH/TABLIER (p.127-178).",
+    "POINTS INCERTAINS / NON TRANCHES\n\n1) Pages de QUITTER. L'aide-memoire du manuel indique \"QUITTER p40\", mais quatre renvois du corps du texte disent explicitement \"cf. commande QUITTER p41\" (chapitre UTILISATION, chapitre graphique, chapitres d'exemples). La section detaillee 1.9 \"SORTIE DE ST1\" suit 1.8 \"MESSAGE\" (p41). J'ai retenu pages [40, 41] comme le memo ; si un arbitrage unique est fait, p41 est la valeur la mieux attestee.\n\n2) Nom de projet optionnel pour ENREGISTRER. L'aide-memoire ecrit \"ENREGISTRER (PROJET) ('Nom du projet') p40\" (nom entre parentheses = optionnel), alors que la section detaillee 1.6.1 ne documente que deux formes avec nom obligatoire : \"ENREGISTRER PROJET 'Nom du projet'\" et \"ENREGISTRER 'Nom du projet'\". J'ai marque le nom comme requis (section detaillee prioritaire). Le comportement de \"ENREGISTRER\" seul n'est atteste nulle part.\n\n3) Contexte de PARA_STRUCTURE et MX_ETUDE. Le manuel les documente comme \"commandes du fichier parametres\" (ST1.par), pas comme commandes d'un fichier de donnees .ST1. Je les ai laissees en context = \"top\" faute de valeur de contexte prevue pour le fichier parametres, avec l'avertissement porte dans \"forbidden\" et dans \"doc\". Si le schema peut accueillir une valeur dediee (ex. context = \"st1par\" ou \"fichier_parametres\"), c'est preferable : sinon l'extension proposera ces mots-cles en completion dans des scripts .ST1 ou ils ne sont pas documentes.\n\n4) Defauts de PAGINATION (ASC_PAGE 12, MAX_LIGNE 100). Ils ne sont pas donnes comme \"valeurs par defaut de la commande\" mais lus dans l'extrait du fichier parametres livre [p.332], le manuel precisant seulement que \"les parametres de pagination sont initialises dans le fichier parametres, ce qui permet d'avoir une initialisation par defaut\" [p.41]. Ce sont donc des defauts d'installation, modifiables par l'administrateur : renseignes avec cette reserve explicite dans doc et pitfalls.\n\n5) Defauts de PARA_STRUCTURE / MX_ETUDE. Contradiction interne au manuel : p.29 annonce 4000 appuis et 80000 sections d'etude, l'extrait ST1.par p.332 contient 2000 appuis et 200000 sections d'etude. J'ai renseigne les valeurs de l'extrait (celles qui sont litteralement les arguments de la commande) et documente l'ecart dans les deux sens.\n\n6) Page de la sortie du mode graphique par RETOUR. L'aide-memoire renvoie RETOUR a p247 (comme le memo) ; le texte detaille (section 16.2 SORTIE DU MODE GRAPHIQUE) se situe plutot vers la fin du chapitre COMMANDES GRAPHIQUES (p247-258). J'ai conserve p247, seule valeur attestee par un renvoi.\n\n7) Interaction SORTIE / ECRIRE. Le fait que \"ECRIRE s'affiche a la console sauf si SORTIE a ete utilisee prealablement\" est atteste (section 18.8 COMMANDE ECRIRE du chapitre PSEUDO-PROGRAMMATION, p.263-281), mais je n'ai pas pu isoler la page exacte de cette section dans l'OCR ; elle n'a donc pas ete ajoutee au tableau \"pages\" de SORTIE, qui reste [39] (page ou l'interaction avec LISTER est directement attestee par l'exemple SORTIE 'toto' / LISTER GEOM).\n\n8) SORTIE sans SUITE : le manuel dit seulement que SUITE \"permet d'ecrire les sorties a la fin du fichier si celui-ci existe deja\" et commente l'exemple par \"creation du fichier toto\". Le comportement exact sur un fichier existant sans SUITE (ecrasement) n'est pas ecrit noir sur blanc ; j'ai formule le piege sans affirmer l'ecrasement.\n\n9) Non couvert volontairement (hors perimetre de la famille) : OPTION (geometrie), LISTER hors \"LISTER PROJET\" (rappel des donnees p.240-243), ECRIRE / PAUSE / variables / GET (pseudo-programmation), ACTIVER-DESACTIVER APPUI/BARRE/ENV du bloc PHASAGE (p.183, p.186-189), et le detail des commandes graphiques.",
+    "SOURCES CROISEES : memo st1_reference.md (sect. 4 CARA/MASSE PROPRE, sect. 11 CONTRG/ETUDE) + manuel ST1_v24_FR.md (aide-memoire l.129-161 pour CARA/MASSE PROPRE, l.249-268 pour ETUDE/CONTRG ; chapitres detailles l.2275-2895 pour CARA/MASSE PROPRE, l.4443-4682 pour ETUDE/CONTRG).\n\nPOINTS NON TRANCHES / A VERIFIER :\n1. IPOL dans CARA VAR PARA : contradiction interne au manuel. L'aide-memoire p.59 (l.136-139) ecrit les lignes OR/MI/EX de VAR PARA SANS (IPOL ip) — le memo distille reprend cette lecture (\"sans IPOL\") — alors que le chapitre detaille p.59-60 (l.2313-2317 et l.2380-2384) les ecrit AVEC (IPOL ip). J'ai retenu la version aide-memoire/memo dans \"syntax\" et signale la divergence en pitfall ; ne pas transformer cela en erreur bloquante de validation.\n2. SY dans CARA PSE : l'aide-memoire p.59 (l.140) fait apparaitre \"(SY sy)\" dans la ligne CARA PSE, alors que le texte p.60 (l.2453) interdit explicitement SY et SZ dans CARA PSE. J'ai retenu l'interdiction (forbidden) et signale la divergence.\n3. EXTY/EXTZ n'apparaissent pas dans la syntaxe documentee de CARA PSE (ni aide-memoire ni chapitre detaille) : je ne les ai donc pas declares comme arguments de CARA PSE, sans pouvoir affirmer qu'ils sont refuses par le programme.\n4. IPOL, EXTY, EXTZ ne figurent PAS dans le tableau \"caracteristiques utilisables\" par option (p.60, l.2445-2451) : aucun onlyOptions ne leur a ete affecte (le tableau ne permet ni de les restreindre ni de les generaliser).\n5. SX : ecrit hors parentheses (donc obligatoire selon la notation p.32) dans toutes les lignes CARA, mais absent des caracteristiques utilisables en GRILL (p.60) et absent des exemples GRILL du manuel (l.2525-2537). Je l'ai donc marque required=false avec onlyOptions PLANE/SPATIALE plutot que de creer un faux positif en GRILL.\n6. Forme bloc de CARA / CARA VAR ... / CARA PSE / ETUDE : le manuel ne documente AUCUN terminateur FIN pour ces blocs (contrairement a MASSE PROPRE et CONTRG qui en ont un). Le champ \"terminator\" est donc omis pour eux ; la regle de fin de bloc reelle (premiere ligne commencant par un autre mot-cle de commande) n'est pas ecrite dans la doc, je ne l'ai pas affirmee.\n7. Comportement d'une ligne ETUDE sans EFFORT ni DEPLA : non documente explicitement. Seul est documente le defaut global \"une section d'etude des efforts a chaque extremite de barre\" (p.101). Aucune valeur par defaut inventee.\n8. Attribution page-par-page a l'interieur du chapitre 2.10 (p.59-68) impossible a fiabiliser sur l'OCR (figures non paginees). J'ai donc limite \"pages\" aux valeurs directement attestees : p.59 (syntaxe, aide-memoire), p.60 (parametres, tableau par option, regles/pieges), p.66 (fibres extremes obligatoires, signe de N). Les exemples cites se situent dans p.61-64 sans que la page exacte soit certaine.\n9. HORS PERIMETRE, volontairement non traite ici (a couvrir par d'autres familles, signale pour eviter un trou) :\n   - \"CARA ib / SECTION i (ARMATURE j) / FIN\" = complement calcul au feu, p.228 (ST1 v2 seulement ; alias ARMA atteste par le memo). Un pitfall de l'entree CARA rappelle qu'un CARA classique sur une barre \"feu\" invalide l'exposition (p.228).\n   - \"CARA SPECIAL\" = elements speciaux dynamiques, p.214 (ST1 v2), famille dynamique.\n   - \"LISTER CARA\" / \"LISTER CONTRG\" (p.240-243) et \"RESU ... CONTRG\" / \"GET ... CONTRG k\" (p.244, p.274-281), famille edition des resultats.\n10. Le renvoi OCR de la p.105 cite \"commande ENV p183\" pour l'usage des CONTRG dans les enveloppes ; le memo situe ENV p.235-237. J'ai donc cite seulement EXEC CHARG (p.125) et EXEC SURCH (p.178) qui sont coherents entre les deux sources, et n'ai pas repris la page ENV douteuse.\n11. Unites : aucune n'est imposee pour CARA/CONTRG/ETUDE. Pour MASSE PROPRE, la doc impose une dimension (unite de MASSE et non de poids, Masse = Poids/g_dyn) mais pas une unite nommee : l'information est dans \"doc\"/\"pitfalls\" et le champ \"unit\" reste vide, conformement a la consigne.\n12. Entrees homonymes assumees : \"OR\", \"MI\", \"EX\" existent dans plusieurs contextes (bloc:CARA VAR LIN Y, bloc:CARA VAR LIN Z, bloc:CARA VAR PARA, bloc:CONTRG). La cle d'unicite est donc le couple (name, context).",
+    "Points verifies et points restant incertains.\n\nVERIFICATION DES PAGES : les lignes \"---\" isolees du fichier OCR C:/Dev_assistant_IA/Chatbot_ST1_v4/Documentation/output/ST1_v24_FR.md sont exactement les sauts de page physiques. Verification croisee : 42 sauts avant la section 2.1 OPTION (p.43 annoncee par l aide-memoire), 46 avant 2.4 APPUIS RIGIDES (p.47), 51 avant 2.6 BARRE (p.52), 291 avant l exemple 19.3 pont a haubans (p.292 selon le memo), 330 avant DESCRIPTION DU FICHIER PARAMETRES (p.331 selon le sommaire). Toutes les pages citees ci-dessus ont ete obtenues par ce comptage, ce qui les rend fiables.\n\n1. TERMINATEUR DES BLOCS DE GEOMETRIE — point non tranche par le manuel. Les encadres \"INSTRUCTION DE BLOC\" de NOEUD (p.46), APPUI (p.47, p.49), BARRE (p.52), EXC (p.53), ART (p.55) et BETA (p.57) se terminent par \"...\" et ne montrent AUCUN terminateur. Les fichiers de donnees officiels du chapitre 19 utilisent les deux pratiques : bloc ferme par FIN (exemple pretension p.300 : NOEUD ... / BARRE GENER ... FIN / APPUI ... FIN ; exemple flambement p.314 : NOEUD ... FIN / APPUI ... FIN / BARRE ... FIN) et bloc ferme implicitement par la commande suivante (exemples 19.1 p.286 et 19.2 p.289 : \"noeud / 1 0. 0. / ... / barre / 1 1 2\"). J ai renseigne terminator=\"FIN\" (pratique sure, attestee) mais un validateur ne doit PAS signaler comme erreur un bloc ferme par la commande suivante.\n\n2. APPUI EL DI EN OPTION GRILL — non documente. Le manuel donne explicitement 3 termes diagonaux en structure plane et 6 en structure spatiale (p.49) ; il ne dit rien du grill de poutres. Le rappel matriciel p.51 montre pour un grill une matrice 3x3 (m1..m6, appliquee a rx, dz, ry), ce qui suggere 3 termes en EL DI et 6 en EL, mais ce n est pas ecrit. Je l ai signale dans les pitfalls plutot que d inventer une valeur.\n\n3. DECOL NON — atteste uniquement par la ligne de syntaxe \"DECOL <NON, <X,Y,Z> <POS,NEG> >\" (p.47, p.49). Aucun texte explicatif n accompagne l alternative NON ; je l ai donc decrite strictement comme \"alternative prevue par la ligne de syntaxe\".\n\n4. CONTEXTE DE DECOL — DECOL n est pas une commande autonome mais une clause de APPUI (rigide comme elastique). Je lui ai donne context=\"bloc:APPUI\" pour permettre la completion contextuelle, en precisant dans doc qu elle s ecrit aussi bien dans la forme ligne que dans la forme bloc de APPUI.\n\n5. OPTION PAR DEFAUT — le manuel dit seulement que l option par defaut vient du fichier parametres st1.par (p.43). L extrait de st1.par reproduit p.332 porte OPTION PLANE (rendu \"OPTION_PLANE\" par l OCR). Je ne l ai donc PAS mis en champ default d argument (le fichier est modifiable par l utilisateur) mais documente et transforme en piege.\n\n6. SYNTAXE DE BLOC DE ART — l OCR rend l encadre \"INSTRUCTION DE BLOC\" de ART (p.55) sous la forme \"ART liste (OR RY RZ) (EX RY RZ)\" sur une seule ligne, alors que tous les autres blocs de geometrie sont rendus en deux lignes (mot-cle seul, puis lignes de definition). Il s agit tres probablement d une fusion OCR. J ai retenu la forme homogene avec les autres commandes et signale l ambiguite dans les pitfalls de ART.\n\n7. NOMS COMPOSES — \"APPUI EL\" et \"APPUI EL DI\" ne sont pas des sequences contigues dans un script (liste1 et les clauses optionnelles s intercalent entre APPUI et EL), exactement comme \"GENER n NOEUD\". Ils sont conserves entiers dans \"name\" conformement a la consigne.\n\n8. PIEGES NON DOCUMENTES (retours d experience support) repris du memo et explicitement marques comme tels dans le texte : numeros de noeud/barre superieurs a 65536 (contredit la lecture naive des 8 chiffres autorises p.29) ; approche progressive de la non-linearite DECOL / sol plastique.\n\n9. HORS PERIMETRE VOLONTAIREMENT EXCLUS : TITRE (p.45), CARA (p.59-68), MASSE PROPRE (p.69-71), ACTIVER/DESACTIVER (p.99-100) et LISTER GEOM (p.240), bien que situes dans le meme chapitre \"DESCRIPTION DE LA GEOMETRIE\" du manuel ou cites par les exemples.",
+    "POINTS INCERTAINS / NON TRANCHES\n\n1. PAS_CABLE et LG_GAINE (underscore ou espace). Le manuel v24 imprime \"PAS CABLE\" et \"LG GAINE\" SANS underscore, a la fois dans la syntaxe p95 et dans le fichier d'exemple officiel de pretension (chapitre 19.5, EXEMPLES DE FICHIERS DE DONNEES, p286+). Le memo distille (source primaire verifiee) et le schema st1_commands.json retiennent PAS_CABLE / LG_GAINE. Le meme fichier d'exemple conserve pourtant l'underscore de LG_SCEL et de TENDRE_BANC, ce qui affaiblit l'hypothese d'une perte OCR systematique. J'ai retenu la graphie avec underscore (coherente avec LG_SCEL, PAS_LIGNE, PAS_TEMPS, G_DYN, T_THERM) et signale le doute en pitfall sur les deux entrees ainsi que sur la commande CABLE. A VERIFIER sur un ST1 installe avant de transformer cela en regle de validation bloquante.\n\n2. CIMENT pour la loi EC2_2027. La ligne de syntaxe et la liste de mots-cles p89 donnent <S, N, R>, mais le paragraphe decrivant ecs0 parle de \"CS, CN, CR\" et les QUATRE exemples de la doc ecrivent CIMENT CN. J'ai liste S/N/R dans values et documente les deux graphies. La validation ne devrait pas rejeter CS/CN/CR.\n\n3. RM_EC vs H. L'aide-memoire du manuel imprime \"RM EC\" (sans underscore) ; le chapitre detaille et tous les exemples ecrivent RM_EC : j'ai retenu RM_EC. Par ailleurs le fichier d'exemple officiel de pretension ecrit \"RH 55 H 1250\" dans un materiau declare E EC2 TM2 FCK 30, alors que la syntaxe EC2 documentee impose RM_EC (p80). Il est possible que ST1 accepte H comme synonyme de RM_EC pour toutes les lois, mais ce n'est pas documente : je ne l'ai pas declare comme alias, seulement signale en pitfall sur l'entree H.\n\n4. T_THERM, mot-cle DTP. L'aide-memoire imprime \"DT tpa\" pour la forme BPEL ; le chapitre detaille p75 et son exemple ecrivent DTP. J'ai retenu DTP.\n\n5. FLUAGE TRACTION : la doc dit que le fluage \"peut etre pris en compte soit en compression et en traction, soit en compression seulement avec la commande TRACTION\" mais ne dit JAMAIS quelle est la valeur par defaut. Aucun defaut n'a donc ete renseigne (le \"FEU TRACTION: NON\" du schema existant concerne la loi E FEU EC2, hors perimetre).\n\n6. TRACE : la doc ecrit \"TRACE (INTERIEUR, EXTERIEUR)\", donc le mot-cle de position est optionnel, mais la valeur par defaut (interieur ou exterieur) n'est pas documentee. Non renseignee.\n\n7. THETA : la borne 20-80 degres est documentee pour la forme BPEL (annexe 6, p75). Pour EC2_2027 l'annexe p345+ parle de \"temperature de la cure entre 0 et 80 degres\". J'ai porte min=20 / max=80 sur l'argument (valeur BPEL, la plus explicite comme contrainte de saisie) ; a assouplir a 0-80 si la validation vise l'EC2 2027.\n\n8. ROS : la valeur par defaut 0 n'est documentee que pour EC2_2027 (p89). Je ne l'ai pas mise dans le champ default de l'argument pour ne pas la propager aux autres lois, seulement dans doc et pitfalls.\n\n9. Restriction PLANE/GRILL/SPATIALE : aucune restriction d'option n'est documentee pour CONS, MAT, PREC ni CABLE. Le seul onlyOptions pose est celui de la coordonnee Z d'un point de TRACE (SPATIALE), justifie par le tableau des coordonnees de OPTION p43-44. En particulier, je n'ai trouve AUCUNE mention interdisant la precontrainte en OPTION GRILL : je ne l'ai donc pas declaree.\n\n10. Alias CONSTANTES (pour CONS) et CABLES (pluriel, dans les commandes de phasage) : attestes uniquement dans les fichiers d'exemples officiels du chapitre 19, jamais dans les chapitres de syntaxe. Declares en alias pour CONS, signales en pitfall pour CABLE. Aucune regle generale d'abreviation ou de synonymie n'est documentee dans le chapitre \"DEFINITION DES TYPES LEXICAUX\" (p30).\n\n11. Pagination des sous-sections de MAT : les pages de debut sont explicitement attestees (p75 BPEL/BHP, p78 CEB, p80 EC2, p83 EC2_BHP, p85 FIB_2010, p87 ACI_B3, p89 EC2_2027, p91 AVANCE). Les pages de fin ne le sont que pour BPEL (p75-77, memo) et EC2_2027 (p89-90, memo) : je n'ai cite que des pages attestees, sans extrapoler les intervalles. A noter une contradiction interne du manuel : les annexes B4.7 et B4.8 renvoient a \"commande MAT p81\" pour EC2_BHP et FIB_2010, alors que l'aide-memoire donne p83 et p85 ; j'ai suivi l'aide-memoire et le memo.\n\n12. Hors perimetre volontairement : la sous-commande E FEU EC2 et les complements feu du bloc MAT (UU, CONDUCTIVITE, GRANULAT, EMISSIVITE, RHO_FEU, CHALEUR_SPECIFIQUE_MASSIQUE, p218-219), ainsi que la sous-commande CABLE du bloc CHARG (TENSION / PERTE INST / RETRAIT / UNI / RELAX, p122-124) et les actions de phasage sur cables (TENDRE, INJECTER, DETENDRE, TENDRE_BANC, RELACHER_BANC, p191-193) : elles relevent des familles feu, chargements et phasage. Elles sont seulement referencees dans les doc et pitfalls des entrees MAT et CABLE.",
+    "SOURCES ET PAGINATION\n- Pagination verifiee par recoupement : l aide-memoire du manuel (l.469-507) etiquette explicitement PHASAGE p179, SUITE PHASAGE p182, ENV p183, DATE p185, ACTIVER/VERINER APPUI p186, ACTIVER BARRE p187, DESACTIVER p189, CHARG p190, TENDRE/INJECTER CABLE p191, DETENDRE p192, ETAT p194, MODIFIER APPUI p195, EXEC PHASAGE p196. J ai recale le chapitre detaille (l.7628-8466) sur ces reperes en comptant les sauts de page OCR (\"---\") : p180 = mot cle ET, p181 = pertes elastiques + ordre d activation, p184 = ACTIVER/DESACTIVER ENV, p188 = poids propre non genere, p192 = TENDRE_BANC, p193 = RELACHER_BANC, p196 = EXEC PHASAGE et EXEC PHASAGE PSE. Les bornes p179 et p197 (debut chapitre 10) ferment la verification. Ces pages coincident avec la convention \"physical_pdf_page\" de st1_commands.json (PHASAGE = 179 a 196).\n\nDIVERGENCES ENTRE SOURCES, TRANCHEES\n- REAC dans ENV de phasage : l aide-memoire p179 imprime <FX,FY,FZ,RX,RY,RZ>, le chapitre detaille p183 et le tableau des composantes par option donnent <FX,FY,FZ,MX,MY,MZ>. J ai retenu MX,MY,MZ (coherent avec le tableau et avec les composantes REAC de st1_commands.json) et signale la divergence en piege.\n- CONTR dans ENV : l aide-memoire p179 omet WYVZ ; le chapitre p183 donne VY,VZ,WY,WZ,VYVZ,VYWZ,WYVZ,WYWZ. J ai retenu la liste complete de p183.\n- MODIFIER APPUI : l aide-memoire renvoie a \"APPUI p116\", le chapitre detaille a \"APPUI p47\" (et st1_commands.json place APPUI en p47-48). J ai retenu p47 et signale la coquille.\n- TENDRE CABLE : deux ecritures de la syntaxe coexistent, \"liste (NON) (INJECTE)\" (p179) et \"liste ((NON) INJECTE)\" (p191). Les deux lignes sont conservees dans \"syntax\".\n- Terminateur : plusieurs exemples OCR du chapitre 9 se terminent par \"FIN\" seul au lieu de \"FIN PHASAGE\" (l.7861, 7883, 7895, 7938). La syntaxe de reference p179 et p181 donne \"FIN PHASAGE\" ; j ai normalise tous les exemples sur \"FIN PHASAGE\". Ce point merite verification sur le PDF d origine si le parseur doit tolerer \"FIN\".\n\nPOINTS NON TRANCHES / A NE PAS DEDUIRE\n- Unite de AGE (ACTIVER BARRE) : le manuel ne dit nulle part \"exprime en jours\". Seule DATE est explicitement en jours (p185). J ai donc laisse \"unit\" vide sur AGE, avec min 0 (defaut documente = 0 = age initial du beton). Les exemples du manuel (DATE 12 / AGE 12) suggerent le jour, mais ce n est pas documente : ne pas l ecrire dans un survol comme une certitude.\n- Bornes de i (numero de phasage), de i (numero d etat) et de v/i (numero d enveloppe) : aucune borne documentee, \"min\"/\"max\" omis. Seul le defaut i=1 du numero de phasage est documente (p179).\n- Ordre interne des actions dans un bloc PHASAGE : le manuel n impose pas d ordre syntaxique rigide autre que la logique de construction (appuis avant barres, barres supportees avant non supportees, TENDRE_BANC apres activation de la barre, RELACHER_BANC apres TENDRE_BANC, DETENDRE apres TENDRE, INJECTER apres TENDRE NON INJECTE). Je n ai donc pas encode d ordre canonique.\n- Nombre maximal de phasages, d etats ou d enveloppes par phasage : non documente.\n- Les sous-commandes du bloc CHARG imbrique (POIDS PROPRE, NOEUD, BARRE, DEPLA, TEMP, CABLE...) relevent de la famille \"chargement\" (chapitre CHARG p106-124) et n ont volontairement pas ete redecrites ici ; seule l entree CHARG en context bloc:PHASAGE est fournie, avec son terminateur FIN.\n- ACTIVER / DESACTIVER hors phasage (p99-100) est une commande distincte d une autre famille : les entrees ACTIVER APPUI / ACTIVER BARRE / DESACTIVER ... donnees ici sont exclusivement celles du context bloc:PHASAGE. Un meme mot cle existe donc dans deux contextes differents, ce que la completion contextuelle doit gerer.\n- Deux pieges sont des retours d experience support explicitement signales NON DOCUMENTES dans le memo et repris tels quels : les numeros d elements/cables superieurs a 65536 (erreurs \"mot clef mal place\" en phasage/cables) et l approche progressive de la non-linearite pour les sols pseudo-plastiques (EXEC PHASAGE PSE).\n- La remarque \"en phasage le calcul du fluage depend de VY et WY\" est attestee dans le chapitre CARA (regles p60-66) et non dans le chapitre 9 ; elle est portee en prerequis/piege de PHASAGE avec cette pagination.",
+    "POINTS D ATTENTION ET INCERTITUDES\n\n1. CARA SPECIAL [p.214] : la page 214 est ABSENTE de l OCR du manuel (C:/Dev_assistant_IA/Chatbot_ST1_v4/Documentation/output/ST1_v24_FR.md). La chaine \"CARA SPECIAL\" / \"RIGIDITE CARA\" n y apparait nulle part, et l aide-memoire (l.71-1058) saute directement de EXEC HISTORIQUE CHARGE (p213) a EXEC FLAMBEMENT (p215). La table des matieres confirme neanmoins que le chapitre DYNAMIQUE couvre p197-214. Les entrees CARA SPECIAL / RIGIDITE CARA / EFFORT reposent donc UNIQUEMENT sur le memo distille (source primaire declaree verifiee), section 9, [p.214]. L annexe B4.4 \"ELEMENTS SPECIAUX\" du manuel confirme le principe physique (effort normal limite, torsion limite, moments limites via les souplesses S1/S4/S5/S6) mais ne donne aucune syntaxe. L exemple ST1 fourni pour CARA SPECIAL est CONSTRUIT a partir de la syntaxe du memo (valeurs numeriques arbitraires) : c est le seul exemple du catalogue qui ne provienne pas du manuel. A revalider sur le PDF papier p.214.\n\n2. Noms dupliques entre contextes. Le catalogue contient volontairement plusieurs entrees portant le meme \"name\" mais des \"context\" differents (POND x5, METHODE x3, PAS_TEMPS x3, TEMPS x2, SPECTRE x2, BETA x2, ACCELERATION x2, MODE x2, EFFORT x2, FREQUENCE). La cle d unicite doit etre (name, context) et non name seul. Semantiques reellement differentes : POND(AMORTISSEMENT) pondere ksi/alpha/beta, POND(SPECTRE) pondere les accelerations, POND(SPECTRE REPONSE) est une ponderation directionnelle X/Y/Z, POND(DYNAMIQUE CONVOI) pondere les charges du convoi.\n\n3. Homonymie BETA la plus dangereuse du perimetre : \"BETA beta\" sous SPECTRE isp = ANGLE en radian (spatiale, defaut 0) ; \"BETA beta0\" sur la ligne EUROCODE REDUIT = limite inferieure du spectre Sd (defaut 0,2). Meme mot-cle, unites et roles opposes. Idem \"RIGIDITE\" dans AUTOMATIQUE MASSE/RIGIDITE (coefficient beta de Rayleigh, pas une rigidite).\n\n4. Defauts NON documentes, donc volontairement omis : la ponderation POND du bloc SPECTRE (aucun defaut donne p.202-204, contrairement a POND de ACCELEROGRAMME et de DYNAMIQUE CONVOI qui valent 1) ; la valeur par defaut de PAS_TEMPS et de TEMPS (aucune) ; le defaut de nb pour EXEC MODE est documente comme un MAXIMUM (\"par defaut au maximum 100 modes seront calcules\") et non comme une valeur nominale.\n\n5. onlyOptions renseignes uniquement quand la doc est explicite : BETA de SPECTRE et de ACCELEROGRAMME (\"uniquement en option spatiale\", p.202 et p.207) ; POND Z de SPECTRE REPONSE (\"ponderations sur les composantes locales x et y en option plane et x, y et z en option spatiale\", p.205). Par extension de cette meme phrase p.205, AZ des lignes PERIODE/ACCELERATION est marque SPATIALE. Pour CARA SPECIAL, la repartition PLANE (sx sy iz / fx fy mz) vs SPATIALE (sx sy sz ix iy iz ip / fx fy fz mx my mz) vient du memo p.214.\n\n6. restrictedToOptions [\"PLANE\",\"SPATIALE\"] sur EXEC MODE : la restriction n est pas ecrite dans le chapitre 10 mais au §2.11 du manuel, \"Le calcul des modes propres et donc celui des masses propres est disponible uniquement en option plane et spatiale\" [p.71]. Aucune restriction d option n est documentee pour EXEC FLAMBEMENT ni pour CARA SPECIAL : je n en ai donc pas ajoute.\n\n7. Coquilles OCR/manuel relevees et corrigees dans les exemples : \"PERIOD 2\" au lieu de \"PERIODE 2\" dans l exemple de spectre generique [p.203] ; l exemple ACCELEROGRAMME du manuel [p.207] omet le numero j (j est bien obligatoire dans la syntaxe) ; l exemple 19.6 du manuel ecrit \"VERTICAL AX 0.1*0.9 S 1.1\" alors que les formules du spectre vertical n utilisent que St - lecture probable \"ST 1.1\", coherente avec l exemple officiel p.203. J ai donc ecrit ST dans mon exemple plane.\n\n8. Formulation du pas de temps : le manuel p.208 est syntaxiquement fautif (\"un pas de temps dont la duree soit inferieure 40 fois la periode propre la plus courte\"). J ai retenu la lecture du memo (periode la plus courte / 40) en la signalant comme \"de l ordre de\" plutot que comme une regle exacte.\n\n9. Pages de EXEC SPECTRE REPONSE : l aide-memoire indique p205, le memo p205-206 (le §10.6 EXECUTION suit immediatement le §10.5 REPONSE SPECTRALE). J ai retenu [205,206]. Le renvoi \"voir exemple p305\" du manuel [p.205] correspond a l exemple 19.6 (reponse spectrale + ENV COMB +/-1) : cite dans la doc mais non ajoute aux pages de la commande.\n\n10. Retours d experience support (non documentes) explicitement marques comme tels dans les pitfalls : (a) CONS/MAT AMORTISSEMENT am attend un NUMERO de bloc AMORTISSEMENT, une valeur directe donne un amortissement nul sans message ; (b) EXEC FLAMBEMENT inactif si la composante VAR n induit pas d effort normal ; (c) accelerations transverses parasites ADY sous charge forcee verticale.\n\n11. Les lignes de concomitance EFFORT / DEPLA / CONTR / CONTRG / PRESS / REAC communes a ACCELEROGRAMME, DYNAMIQUE CONVOI et DYNAMIQUE CHARGE sont modelisees comme arguments de ces trois commandes plutot que comme 18 entrees bloc: separees, pour eviter le bruit. Elles relevent semantiquement de la famille \"enveloppes\" (ENV/ENV COMB, p.235-239) : a harmoniser avec cette famille lors du merge du catalogue.\n\n12. MASSE PROPRE (p.69-71), CONS/MAT AMORTISSEMENT (p.72-74), LISTER MASSE/AMORTISSEMENT/SPECTRE/HISTORIQUE (p.243), RESU MODE/SPECTRE/HISTORIQUE/FLAMBEMENT (p.244-246) et les mots-cles SPECTRE/HISTORIQUE de COMB/ENV/ENV COMB (p.234-239) sont des prerequis ou consommateurs directs de cette famille, mais appartiennent a d autres familles : non traites ici, seulement cites en prerequisites/pitfalls.",
+    "PAGINATION VERIFIEE : la pagination physique a ete recalee sur trois ancres independantes du manuel OCR (C:/Dev_assistant_IA/Chatbot_ST1_v4/Documentation/output/ST1_v24_FR.md), en comptant les separateurs de page \"---\" : sommaire \"CALCUL AU FEU (ST1 v2 SEULEMENT) ... 217\" et \"ENVELOPPES ET COMBINAISONS ... 234\" ; annexe B6 = p.390 (concorde avec le memo) ; exemple `RHO_FEU 2500.` = p.317 (concorde avec le memo). Correspondance obtenue : 12.1 p.217 | 12.2 MAT feu p.218-219 | 12.3 EXPOSITION FEU p.220-221 | 12.4 SECTION DALLE p.222-223, RECTANGLE p.223, PERIMETRE p.224-226 | 12.5 ACIER p.227 | 12.6 ARMATURE p.227-228 | 12.7 CARA p.228 | 12.8 LISTER p.228 | 12.9 CHARG COMB p.229 | 12.10 FEU p.229 | 12.11 INCENDIE p.230 | 12.12 ANALYSE FEU p.230-231 | 12.13 EXEC INCENDIE p.231 | 12.14 RESU feu p.232-233 | exemple 19.9 (feu 2D) p.316-318 | exemple 19.10 (raideur IPN, section PERIMETRE) p.323-325 | fichier PARAMETRES bloc ANALYSE_FEU p.332 | annexe B6 p.390 | annexe \"Conseils pour l utilisation du calcul au feu\" p.399-401.\n\nPOINTS INCERTAINS OU NON TRANCHES :\n1. `SPATIALE <OUI, NON>` dans ANALYSE FEU : present dans le memo (st1_reference.md l.778) et dans st1_commands.json, mais ABSENT de la ligne de syntaxe du manuel v24 §12.12 (p.230), du bloc ANALYSE_FEU du fichier PARAMETRES (p.332) et de tous les exemples. Entree conservee mais explicitement signalee comme non attestee par le manuel, sans valeur par defaut. A faire trancher par l editeur.\n2. `MAILLE dx` dans le bloc FEU : absent de la syntaxe §12.10 (p.229), atteste seulement par l annexe B6 (\"Definition du feu (parametres : duree, maille)\", p.390) et par l exemple de l annexe conseils (p.401). Entree conservee avec ces pages.\n3. `MAILLE` dans une SECTION DALLE : la syntaxe ne documente MAILLE que pour PERIMETRE (p.224), mais l exemple officiel 19.9 l utilise dans un bloc DALLE (p.317).\n4. `LARGEUR` de RECTANGLE : obligatoire selon le chapitre 12 (p.223, sans parentheses), optionnelle selon l aide-memoire de syntaxe. Modelisee required=true, avec un piege documentant l ecart. Aucune valeur par defaut n est documentee pour RECTANGLE (le defaut 1 n est documente que pour DALLE, p.222).\n5. Ordre des parois d une SECTION RECTANGLE : chapitre 12 p.223 = `(VY ej) (WY ek) (VZ el) (WZ eo)` ; l aide-memoire de syntaxe inverse les deux derniers en `(WZ el) (VZ eo)`. L ordre du chapitre 12 a ete retenu.\n6. `LAMINE` vs `LAMINES` : le chapitre 12 (p.227) et l exemple officiel (p.317) ecrivent `LAMINE` ; l aide-memoire ecrit `LAMINES`. `LAMINE` retenu.\n7. Formes abregees vues dans les exemples officiels mais non documentees dans les lignes de syntaxe : `EXPOSITION 5` sans le mot FEU et `EXPOSITION SUP 1 INF Expo` sans FEU (p.316-317) ; expositions tenant sur une seule ligne sans FIN (p.316) ; `MATERIAU` pour `MAT` (p.225, p.317) ; `ARMA` pour `ARMATURE` (p.318, p.400) ; `CARA 1 a 2 section 1` avec liste de barres (p.324). Signalees en aliases ou pieges, jamais promues en syntaxe principale.\n8. `GRANULAT <SILICE, CALCAIRE>` : aucune valeur par defaut n est documentee dans le manuel v24 ; aucun defaut n a donc ete renseigne.\n9. `RHO_FEU` : la ligne de syntaxe (p.218) attend une VALEUR suivie eventuellement de `EC2` ou `CTE`, alors que le texte explicatif (p.219) parle des commandes `RHO_FEU EC2` et `RHO_FEU CTE` comme de mots cles seuls. L exemple officiel ecrit `RHO_FEU 2500.` (p.317). La forme valeur + mot cle optionnel a ete retenue, l ambiguite est signalee en piege.\n10. Unites de `es` (ACIER E) et `fy` (ACIER FYK) : aucune unite n est imposee par le manuel (l unite n est imposee que pour les longueurs, en metre, p.218). Les exemples officiels sont coherents avec des MPa. Champ `unit` volontairement laisse vide.\n11. Hors perimetre de cette famille mais lies au feu, a rattacher a leurs familles respectives : `CHARG i COMB` (§12.9, p.229, famille chargements) ; `LISTER SECTION / MATERIAU / EXPOSITION / ACIER / ARMATURE` (§12.8, p.228, famille rappel des donnees) ; `RESU FEU SECTION (DUREE lstd)`, `RESU INCENDIE BARRE (CARA CHAUD) (TEMP (MAX)(MIN)(tmin))`, `RESU INCENDIE BARRE (EFFORT)(DEPLA)`, `RESU INCENDIE APPUI` (§12.14, p.232-233, famille resultats, generent des fichiers .vtp pour Paraview) ; `GET ... INCENDIE j` (famille pseudo-programmation) ; `BETA` (rotation de la section RECTANGLE/PERIMETRE, p.223, p.225).\n12. `TRACTION` a ete modelise comme argument de la ligne `E FEU EC2` (et non comme entree autonome), car il figure sur la meme ligne dans la syntaxe (p.218) et dans les exemples (`e 34077.0 fck Fcck TRACTION OUI`, p.400) ; ce dernier exemple montre aussi que TRACTION fonctionne avec la forme `E e FCK fck`, sans `FEU EC2`.",
+    "PAGINATION - methode et fiabilite : le manuel OCR ne porte des marqueurs de page que dans l aide-memoire (l.71-1058). J ai reconstruit les pages physiques du chapitre 8 en comptant les separateurs de saut de page \"---\" et en calant sur quatre ancres de renvoi internes concordantes : TABLIER p130, SURCH p140 / p146 / p170, ALG p160, CONV p164, EXEC SURCH p178. Les quatre ancres tombent exactement sur les pages calculees, et le debut du chapitre 8 tombe sur p127 (conforme au memo). Les pages listees sont donc verifiees, pas estimees.\n\nDIVERGENCES SOURCES NON TRANCHEES (a arbitrer avant usage en validation stricte) :\n1. Composantes DIR en OPTION GRILL : le manuel imprime \"mx, fz, mz\" pour ALG (p.161) ET pour CONV (p.165), alors que les degres de liberte GRILL sont RX/DZ/RY (donc MX, FZ, MY attendus). Le doublon exact sur deux pages empeche de conclure a une coquille OCR isolee. J ai conserve MZ dans les args (avec onlyOptions incluant GRILL) et signale le doute dans les pitfalls. Ne pas transformer en erreur bloquante dans le validateur.\n2. EFFORT en SPATIALE : tableau p.147 imprime \"tx, ty, tz, mx, my, mz\" ; tableau p.141 et lignes de syntaxe donnent N, TY, TZ, MX, MY, MZ. J ai retenu N.\n3. CONTR en SPATIALE : le tableau p.147 omet WYWZ dans l OCR ; les lignes de syntaxe p.140/p.146/p.170 la listent. J ai retenu les quatre coins.\n4. CV_C1 : absent de la liste de mots-cles de la syntaxe SURCH p.146, mais present dans l aide-memoire de syntaxe, decrit p.152 et reference VS27 dans le tableau VSJ p.172. J ai donc date l entree [152, 172] sans p.146. A confirmer aupres du support : mot-cle reellement accepte par le parser ?\n5. DEBORDVOIE : imprime \"DEBORDOVE\" p.170 (OCR) et \"debordvoie\" dans l aide-memoire. J ai retenu DEBORDVOIE.\n6. PAS_LIGNE : l aide-memoire imprime \"PAS LIGNE\" (espace), le chapitre detaille \"PAS_LIGNE\". J ai retenu PAS_LIGNE.\n7. Titre de paragraphe errone p.152 : \"CONVOI C2 ... MOT CLE CV_C1\" alors que le corps decrit bien C1.\n8. Exemple p.163 : le manuel ecrit \"AL 3 'charge equivalente a Al...'\" la ou ALG 3 est attendu. Coquille non propagee dans mes exemples.\n9. LM2 : la ligne de syntaxe imprime <CARA,FREQ> sans parentheses (choix apparemment obligatoire) alors que LM1 imprime <(CARA),FREQ>. Aucun defaut LM2 n est documente ailleurs ; j ai marque le choix required sans inventer de defaut.\n10. EUROCODE CLASSE : \"maximum 3 classes\" p.169, alors que p.168 definit les classes de trafic 4, 5 et 6 (limitations de tonnage) utilisables par TABLIER CLASSE TRAFIC. Contradiction apparente laissee telle quelle, signalee en pitfall.\n\nDEFAUTS VOLONTAIREMENT NON RENSEIGNES (aucun defaut documente, ne pas inventer) : SURCH ZONE, CONV LARG (xlarg), LM2 CARA/FREQ, EUROCODE PSI FREQ / PSI COMB / POIDS / AJUSTEMENT (les valeurs citees dans \"doc\" sont les valeurs par defaut de ST1.par telles qu imprimees dans les tableaux p.167, pas des defauts de syntaxe), LM3 PONDVS et EXC.\n\nUNITES : conformement a la regle, \"unit\" n est renseigne que la ou la doc l impose - uniquement EUROCODE POIDS TS (kN) et POIDS UDL (kN/m2). Les rappels tonnes / kN (charges francaises vs Eurocode, p.127) sont places en doc et pitfalls, pas en \"unit\", car ST1 n impose pas d unite de longueur.\n\nALIAS ET TOLERANCE DE CASSE : BARRES (p.139), CONVOI (p.138, p.172), COEFF TRANS (p.138), MAX FILE (p.173) ne sont attestes que dans des exemples ou du texte courant, jamais dans une ligne de syntaxe normative. Ils sont declares en \"aliases\" pour la coloration/completion mais ne devraient pas etre proposes en premier choix. Les exemples du manuel utilisent aussi les mots-cles en minuscules (surch, tablier, zone_trans, classe trafic, barre, essieu), ce qui suggere un parser insensible a la casse - non affirme explicitement par le manuel.\n\nRETOURS D EXPERIENCE MARQUES NON DOCUMENTES (repris du memo, signales comme tels dans le texte des pitfalls) : comportement des zones Eurocode comme separateurs systematiques (1 zone chargee ~ 1 voie) et necessite de fusionner les zones contigues d une meme chaussee, puis de restreindre le vehicule special via LM3 ... ZONEVS kvs YVS yvs1 yvs2. Presents sur SURCH, ZONE, ZONE_TRANS et LM1.\n\nPERIMETRE : les entrees SURCH de type \"composante privilegiee\" (EFFORT, DEPLA, CONTR, CONTRG, PRESS, REAC) portent les restrictions PLANE/GRILL/SPATIALE au niveau de chaque composante via onlyOptions, ce qui permet une validation fine. REP_TRANS, KBARRE et KTRANS portent restrictedToOptions [\"PLANE\"]."
+  ]
+}

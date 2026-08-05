@@ -1,0 +1,24 @@
+# Dépendances
+node_modules/
+server/node_modules/
+
+# Build
+dist/
+out/
+*.vsix
+*.tsbuildinfo
+
+# Éditeurs / OS
+.vscode-test/
+.DS_Store
+Thumbs.db
+
+# Données locales de l'extension
+.vs-st1/
+
+# Sources documentaires ST1 (licence : ne pas versionner)
+Documentation/
+*.pdf
+
+# Fichier de parametres livre avec ST1 (sous licence, ne pas versionner)
+ST1.INI

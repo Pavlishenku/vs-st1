@@ -1,0 +1,210 @@
+/* Rapport de l'etude — l'apparence suit integralement le theme de
+   l'utilisateur : aucune couleur en dur, uniquement des variables VS Code. */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+  color: var(--vscode-foreground);
+  background: var(--vscode-editor-background);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+#toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--vscode-panel-border);
+  background: var(--vscode-editorWidget-background, var(--vscode-editor-background));
+}
+
+#title {
+  font-weight: 600;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+button {
+  padding: 3px 10px;
+  border: 1px solid var(--vscode-button-border, transparent);
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--vscode-button-secondaryForeground);
+  background: var(--vscode-button-secondaryBackground);
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--vscode-button-secondaryHoverBackground);
+}
+
+#summary {
+  color: var(--vscode-descriptionForeground);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+#inventory {
+  padding: 5px 12px;
+  border-bottom: 1px solid var(--vscode-panel-border);
+  color: var(--vscode-descriptionForeground);
+  font-size: 12px;
+}
+
+#families {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding-bottom: 8px;
+}
+
+details > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px 3px;
+  cursor: pointer;
+  user-select: none;
+  list-style-position: inside;
+}
+
+.family-name {
+  font-weight: 600;
+}
+
+.family-meta {
+  color: var(--vscode-descriptionForeground);
+  font-size: 12px;
+}
+
+.badge {
+  border-radius: 8px;
+  padding: 0 8px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.badge.error {
+  color: var(--vscode-inputValidation-errorForeground, var(--vscode-editorError-foreground));
+  background: var(--vscode-inputValidation-errorBackground, transparent);
+  border: 1px solid var(--vscode-editorError-foreground);
+}
+
+.badge.warn {
+  border: 1px solid var(--vscode-editorWarning-foreground);
+  color: var(--vscode-editorWarning-foreground);
+}
+
+.badge.ok {
+  color: var(--vscode-charts-green, #89d185);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+td {
+  padding: 4px 8px;
+  border-top: 1px solid var(--vscode-editorIndentGuide-background, var(--vscode-panel-border));
+  vertical-align: top;
+}
+
+td.label {
+  width: 32%;
+  padding-left: 26px;
+  font-family: var(--vscode-editor-font-family);
+}
+
+td.line {
+  width: 84px;
+  text-align: right;
+  color: var(--vscode-textLink-foreground);
+  white-space: nowrap;
+}
+
+tr.clickable {
+  cursor: pointer;
+}
+
+tr.clickable:hover {
+  background: var(--vscode-list-hoverBackground);
+}
+
+.chip {
+  white-space: nowrap;
+  color: var(--vscode-descriptionForeground);
+}
+
+.chip.ok {
+  color: var(--vscode-charts-green, #89d185);
+}
+
+.chip.warn,
+.detail.warn {
+  color: var(--vscode-editorWarning-foreground);
+}
+
+.chip.error,
+.detail.error {
+  color: var(--vscode-editorError-foreground);
+}
+
+.chip.na {
+  opacity: 0.55;
+}
+
+.detail {
+  font-size: 12px;
+}
+
+.error > td.label {
+  border-left: 2px solid var(--vscode-editorError-foreground);
+}
+
+.warn > td.label {
+  border-left: 2px solid var(--vscode-editorWarning-foreground);
+}
+
+#summary .error {
+  color: var(--vscode-editorError-foreground);
+  font-weight: 600;
+}
+
+#summary .warn {
+  color: var(--vscode-editorWarning-foreground);
+}
+
+.empty {
+  padding: 16px;
+  color: var(--vscode-descriptionForeground);
+}
+
+#legend {
+  display: flex;
+  gap: 14px;
+  padding: 4px 12px;
+  border-top: 1px solid var(--vscode-panel-border);
+  color: var(--vscode-descriptionForeground);
+  font-size: 11px;
+}
+
+#legend .ok { color: var(--vscode-charts-green, #89d185); }
+#legend .warn { color: var(--vscode-editorWarning-foreground); }
+#legend .error { color: var(--vscode-editorError-foreground); }
+#legend .na { opacity: 0.6; }

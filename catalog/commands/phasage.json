@@ -1,0 +1,1721 @@
+{
+  "commands": [
+    {
+      "name": "ACTIVER APPUI",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Active une liste d appuis au cours du phasage ; l appui est pose sur la structure deformee.",
+      "syntax": [
+        "ACTIVER APPUI liste"
+      ],
+      "pages": [
+        186
+      ],
+      "doc": "Active les appuis au cours d un phasage [p.186].\n\nD une maniere generale, l activation des elements d une structure doit se derouler selon la logique qu imposerait la construction reelle : en particulier **les appuis doivent etre actives avant les barres dont ils sont les supports** [p.186].\n\nDans le cas ou le noeud support de l appui appartient deja a la structure activee, l appui est positionne **sur la structure deformee**. Pour imposer un deplacement nul au nouvel appui, il faut completer l activation par `VERINER APPUI` (les deplacements des degres de liberte actifs sont ramenes a 0) [p.186].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des appuis a activer. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p' ; TOUT admis pour les listes d elements.",
+          "pages": [
+            186
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les appuis doivent avoir ete definis par la commande APPUI (p.47)"
+      ],
+      "forbidden": [
+        "Compter sur une activation par defaut : dans un phasage il n y a pas d activation par defaut, en debut de phasage la structure est vide [p.186]",
+        "Activer un appui apres les barres qu il supporte [p.181, p.186]"
+      ],
+      "pitfalls": [
+        "ACTIVER APPUI pose l appui sur la structure DEFORMEE : sans VERINER APPUI, le deplacement acquis du noeud est conserve [p.186].",
+        "L activation d un element a l interieur d un phasage n a d effet que lors de l execution de ce phasage ; l etat d activation courant pris en compte par EXEC CHARG (p.125) n est pas modifie [p.186].",
+        "Ne pas confondre avec la commande ACTIVER hors phasage (activation selective globale, p.99-100)."
+      ],
+      "examples": [
+        "# Activation d un appui puis verinage [p.186]\nPHASAGE 1\nACTIVER APPUI 3\nVERINER APPUI 3\nFIN PHASAGE",
+        "# Appuis avant barres [p.185]\nPHASAGE 1 'construction du fleau 1'\nACTIVER APPUI 1\nDATE 12\nACTIVER BARRE 10,11 AGE 12 MODE ABS\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "ACTIVER BARRE",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Active une liste de barres au cours du phasage, avec l age du materiau et le mode de rattrapage geometrique.",
+      "syntax": [
+        "ACTIVER BARRE liste (AGE age) (MODE <REL,ABS>)"
+      ],
+      "pages": [
+        187,
+        188
+      ],
+      "doc": "Active les barres au cours d un phasage [p.187].\n\n**AGE** : age du materiau constituant la barre. Cette donnee ne sert que dans le cas d un **materiau vieillissant**. Par defaut `AGE` vaut 0, c est a dire l age initial du beton, a l activation de la barre ; l age initial est independant de la DATE d activation des barres [p.185, p.187].\n- Phasage sans evolution de temps : si l age n est pas defini (ou vaut 0), le module d Young du materiau sera le module instantane.\n- Phasage avec evolution du temps : si la barre porte un materiau dont le module E n est pas defini directement mais calcule par ST1, il faut definir un `age` **strictement positif** dans le cas general ; le module E calcule sera celui de l age fixe.\n- Pour une participation reduite du beton d une barre, definir un age tres faible mais strictement positif.\n\n**MODE** : type d activation en fonction de l etat de deformation des noeuds extremites [p.187].\n- `MODE REL` (mode par defaut) : activation suivant le prolongement de la partie de structure deja activee. Utilise pour les voussoirs prefabriques d un pont construit par encorbellements.\n- `MODE ABS` : activation qui rattrape la geometrie non deformee. Utilise pour les voussoirs coules en place (par exemple pour obtenir les contreflaches de construction).\n- Si les deux extremites de la barre sont deja deformees, les modes relatif et absolu sont equivalents [p.187].\n\nLa commande `VERINER APPUI` peut aussi etre utile en complement, selon le phasage de construction reel [p.187].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des barres devant etre activees. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            187
+          ]
+        },
+        {
+          "name": "AGE",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "0",
+          "min": 0,
+          "doc": "Age du materiau constituant la barre a son activation (age initial du beton). Ne sert que pour un materiau vieillissant. Independant de la DATE d activation.",
+          "pages": [
+            185,
+            187
+          ]
+        },
+        {
+          "name": "MODE",
+          "kind": "keyword",
+          "type": "enum",
+          "required": false,
+          "default": "REL",
+          "values": [
+            "REL",
+            "ABS"
+          ],
+          "doc": "Mode d activation geometrique : REL (prolongement de la partie deja activee, voussoirs prefabriques) ou ABS (rattrape la geometrie non deformee, voussoirs coules en place).",
+          "pages": [
+            187
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les appuis supports doivent avoir ete actives avant (ACTIVER APPUI p.186)",
+        "Les barres doivent etre definies (BARRE) et porter des caracteristiques (CARA) et des constantes (CONS / MAT)",
+        "Un materiau MAT vieillissant est necessaire pour que AGE ait un sens"
+      ],
+      "forbidden": [
+        "Activer des barres non supportees avant les barres qui les supportent [p.181]",
+        "Compter sur une activation par defaut : en debut de phasage la structure est vide [p.188]",
+        "Charger immediatement une barre activee avec un age tres faible (rigidite quasi nulle, matrice non inversible) [p.187]"
+      ],
+      "pitfalls": [
+        "L activation d une barre ne genere pas automatiquement son poids propre : il doit etre genere par une commande de chargement, par exemple CHARG POIDS PROPRE liste [p.188].",
+        "Dans un phasage avec evolution du temps, si le module E est calcule par ST1 (materiau MAT), un AGE strictement positif est necessaire ; AGE 0 renverrait au module instantane [p.187].",
+        "Participation reduite du beton : age tres faible mais STRICTEMENT positif ; ne pas charger ces barres immediatement sous peine d instabilite numerique (barre quasiment sans rigidite, matrice non inversible) [p.187].",
+        "MODE REL est le defaut : oublier MODE ABS sur des voussoirs coules en place fausse les contreflaches de construction [p.187].",
+        "L activation ou la desactivation dans un phasage n a d effet que pendant l execution de ce phasage ; l etat d activation utilise par EXEC CHARG n est pas modifie [p.188].",
+        "Pour la pretension, il est imperatif d activer la barre AVANT TENDRE_BANC et avec un age positif quasi nul, par exemple AGE 0.01 [p.193]."
+      ],
+      "examples": [
+        "# Activation avec age et rattrapage de geometrie [p.185]\nPHASAGE 1 'construction du fleau 1'\nACTIVER APPUI 1\nDATE 12\nACTIVER BARRE 10,11 AGE 12 MODE ABS\nCHARG POIDS PROPRE 10,11\nFIN PHASAGE",
+        "# Activation avec prise en compte du poids propre [p.188]\nPHASAGE 1\nACTIVER BARRE 2\nCHARG POIDS PROPRE 2\nFIN PHASAGE",
+        "# Mode relatif (encorbellement, voussoirs prefabriques) [p.187]\nPHASAGE 2\nACTIVER BARRE 3 MODE REL\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "ACTIVER ENV",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Reactive la prise en compte des extremes pour une liste d enveloppes de phasage precedemment desactivees.",
+      "syntax": [
+        "ACTIVER ENV liste"
+      ],
+      "pages": [
+        183,
+        184
+      ],
+      "doc": "Des enveloppes desactivees par `DESACTIVER ENV` peuvent etre reactivees par cette commande [p.184]. Les enveloppes sont actives des leur definition ; `ACTIVER ENV` ne sert qu apres une desactivation.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des enveloppes de phasage a reactiver. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            184
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les enveloppes visees doivent avoir ete definies par ENV dans le meme phasage (p.183)"
+      ],
+      "forbidden": [
+        "Emploi hors d une description de phasage [p.183]"
+      ],
+      "pitfalls": [
+        "Ne pas confondre avec ACTIVER APPUI / ACTIVER BARRE (activation d elements de structure) ni avec la commande ACTIVER hors phasage (p.99-100)."
+      ],
+      "examples": [
+        "# Reprise de l enveloppe apres une periode exclue [p.184]\nPHASAGE 1 'Exemple phasage'\nENV 1\nDATE 180\nDESACTIVER ENV 1\nDATE 200\nACTIVER ENV 1\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "CHARG",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Applique une sollicitation a la structure a l interieur d un phasage, avec la meme syntaxe que le chapitre CHARGEMENT.",
+      "syntax": [
+        "CHARG",
+        "   definition des sollicitations",
+        "FIN",
+        "CHARG (definition d une sollicitation)"
+      ],
+      "terminator": "FIN",
+      "pages": [
+        190
+      ],
+      "doc": "Definit une sollicitation a l interieur d un phasage. Deux formes existent [p.190] :\n- forme bloc : `CHARG` ... `FIN` ;\n- forme en ligne : `CHARG` suivi directement de la definition d une sollicitation (par exemple `CHARG POIDS PROPRE 2`).\n\nLes instructions permettant de definir les sollicitations pendant un phasage sont **identiques aux instructions de chargement** ; se reporter au chapitre CHARGEMENT (commande `CHARG` p.106) pour le detail des sous-commandes (POIDS PROPRE, NOEUD, BARRE, DEPLA, TEMP, CABLE...).\n\nLa charge s applique a la structure telle qu elle est activee a cet instant du phasage.",
+      "args": [
+        {
+          "name": "definition des sollicitations",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Sous-commandes de chargement identiques a celles du chapitre CHARGEMENT (cf. commande CHARG p.106) : POIDS PROPRE, NOEUD, BARRE, etc. Les listes designent les elements actives a l execution.",
+          "pages": [
+            190
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les elements charges doivent avoir ete actives au prealable dans le phasage (ACTIVER BARRE / ACTIVER APPUI)"
+      ],
+      "forbidden": [
+        "Chainer un chargement et une activation de barres par le mot cle ET : on ne fait pas de chargement et on active des barres a la suite [p.180]",
+        "Charger immediatement une barre activee avec un age tres faible (instabilite numerique) [p.187]",
+        "POIDS PROPRE en OPTION GRILL (section non definie) [p.108]"
+      ],
+      "pitfalls": [
+        "Le poids propre d une barre activee n est PAS genere automatiquement : il faut ecrire CHARG POIDS PROPRE liste apres ACTIVER BARRE [p.188].",
+        "Deux CHARG consecutifs sans ETAT intermediaire sont cumules en un seul calcul et une enveloppe de phasage ne voit que le cumul : inserer un ETAT si on veut capter l effet intermediaire [p.184].",
+        "A date constante et sans le mot cle ET, l application d une nouvelle charge fixe provoque des pertes de tension supplementaires par deformation elastique sur les cables deja tendus (K=1, une seule iteration) [p.181].",
+        "Le bloc CHARG imbrique se ferme par FIN (et non FIN PHASAGE, qui ferme le phasage) [p.190]."
+      ],
+      "examples": [
+        "# Formes en ligne et en bloc [p.190]\nPHASAGE 1\nACTIVER BARRE 2 AGE 12\nCHARG POIDS PROPRE 2\nCHARG\nBARRE 5 CON XL 0.2 REL FX 12.\nNOEUD 3 FY 0.2\nFIN\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "DATE",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Fixe la nouvelle date courante du phasage, en jours ; tout changement de date declenche un calcul et l avancement des effets differes.",
+      "syntax": [
+        "DATE date"
+      ],
+      "pages": [
+        185
+      ],
+      "doc": "Dans le cas ou l on desire prendre en compte l effet du comportement a long terme des materiaux (fluage, relaxation), il est necessaire de definir les dates des differentes phases de la construction [p.185].\n\n- La date est exprimee **en jours**.\n- En debut de phasage la date courante est **0 jour**.\n- Au cours d un phasage la chronologie doit etre **croissante** : toute nouvelle date doit etre superieure a l ancienne date courante.\n- Un changement de date declenche un calcul (avec ETAT et FIN PHASAGE) [p.180].\n\nDans le cas d un chantier comportant plusieurs postes simultanes, il peut etre utile de decrire chaque poste dans un phasage independant, ces phasages etant ensuite rappeles dans un phasage final de clavage (cf. `SUITE PHASAGE` p.182).",
+      "args": [
+        {
+          "name": "date",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "unit": "jour",
+          "min": 0,
+          "doc": "Nouvelle date courante du phasage exprimee en jours. Doit etre superieure a l ancienne date courante.",
+          "pages": [
+            185
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "MAT (materiau vieillissant) pour que le changement de date produise des effets differes ; les constantes CONS directes n evoluent pas dans le temps"
+      ],
+      "forbidden": [
+        "Emploi hors d une description de phasage : la definition d une date courante ne peut etre utilisee qu entre les commandes PHASAGE et FIN PHASAGE [p.185]",
+        "Chronologie decroissante ou date egale a la date courante [p.185]"
+      ],
+      "pitfalls": [
+        "Pour les effets a long terme, ne pas passer directement d une date initiale a une date finale tres eloignee : la loi de comportement etant non lineaire entre 2 dates, il faut une sequence progressive du type DATE 300 / DATE 1000 / DATE 3000 / DATE 10000 / DATE 30000, plutot que DATE 300 puis DATE 30000 [p.185].",
+        "L age initial du beton d une barre (AGE de ACTIVER BARRE) est independant de la date d activation des barres : AGE vaut 0 par defaut quelle que soit la DATE courante [p.185, p.187].",
+        "Chaque changement de DATE declenche un calcul : multiplier les dates multiplie les pas de calcul (methode incrementale des temps equivalents, manuel p.338-339)."
+      ],
+      "examples": [
+        "# Sequence progressive pour les effets a long terme [p.185]\nPHASAGE 3 'effets differes'\nDATE 300\nDATE 1000\nDATE 3000\nDATE 10000\nDATE 30000\nFIN PHASAGE",
+        "# Definition temporelle des phases [p.185]\nPHASAGE 1 'construction du fleau 1'\nACTIVER APPUI 1\nDATE 12\nACTIVER BARRE 10,11 AGE 12 MODE ABS\nCHARG POIDS PROPRE 10,11\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "DESACTIVER APPUI",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Desactive une liste d appuis, ce qui equivaut a leur suppression sur la structure reelle.",
+      "syntax": [
+        "DESACTIVER APPUI liste"
+      ],
+      "pages": [
+        189
+      ],
+      "doc": "La desactivation d un appui est equivalente a sa suppression sur la structure reelle [p.189].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des appuis devant etre desactives. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            189
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les appuis doivent avoir ete actives au prealable dans le phasage (ACTIVER APPUI p.186)"
+      ],
+      "forbidden": [
+        "Emploi hors d une description de phasage",
+        "Supprimer le seul appui bloque en X sur une structure precontrainte (la precontrainte serait sans effet et la structure instable, cf. APPUI p.48)"
+      ],
+      "pitfalls": [
+        "La desactivation a l interieur d un phasage n a d effet que lors de l execution de ce phasage : l etat d activation courant pris en compte par EXEC CHARG (p.125) n est pas modifie [p.189].",
+        "A date constante et sans le mot cle ET, une desactivation d appui est une nouvelle action fixe : les cables deja tendus subissent des pertes supplementaires de tension par deformation elastique [p.181]."
+      ],
+      "examples": [
+        "# Suppression d un appui en cours de phasage [p.189]\nPHASAGE 1\nDESACTIVER APPUI 2\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "DESACTIVER BARRE",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Desactive une liste de barres, ce qui equivaut a leur suppression sur la structure reelle.",
+      "syntax": [
+        "DESACTIVER BARRE liste"
+      ],
+      "pages": [
+        189
+      ],
+      "doc": "La desactivation d une barre est equivalente a sa suppression sur la structure reelle [p.189].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des barres devant etre desactivees. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            189
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les barres doivent avoir ete activees au prealable dans le phasage (ACTIVER BARRE p.187)"
+      ],
+      "forbidden": [
+        "Emploi hors d une description de phasage"
+      ],
+      "pitfalls": [
+        "La desactivation a l interieur d un phasage n a d effet que lors de l execution de ce phasage : l etat d activation courant pris en compte par EXEC CHARG (p.125) n est pas modifie [p.189].",
+        "A date constante et sans le mot cle ET, une desactivation de barre est une nouvelle action fixe : les cables deja tendus subissent des pertes supplementaires de tension par deformation elastique [p.181]."
+      ],
+      "examples": [
+        "# Suppression de barres en cours de phasage [p.189]\nPHASAGE 1\nDESACTIVER BARRE 3,4\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "DESACTIVER ENV",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Interrompt la prise en compte des extremes pour une liste d enveloppes de phasage.",
+      "syntax": [
+        "DESACTIVER ENV liste"
+      ],
+      "pages": [
+        183,
+        184
+      ],
+      "doc": "La prise en compte des extremes au cours d un phasage peut etre interrompue pour une liste d enveloppes par cette commande. Les enveloppes desactivees peuvent ensuite etre reactivees par `ACTIVER ENV` [p.184].\n\nUsage type : exclure d une enveloppe les phases comprises entre deux dates.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des enveloppes de phasage a suspendre. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            184
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les enveloppes visees doivent avoir ete definies par ENV dans le meme phasage (p.183)"
+      ],
+      "forbidden": [
+        "Emploi hors d une description de phasage [p.183]"
+      ],
+      "pitfalls": [
+        "Le manuel n enonce aucune regle de positionnement ; d apres le seul exemple donne p.184, la suspension est placee apres la commande DATE qui ouvre la periode a exclure (DATE 180 / DESACTIVER ENV 1 / DATE 200 / ACTIVER ENV 1)."
+      ],
+      "examples": [
+        "# Enveloppe de toutes les phases sauf celles comprises entre 180 et 200 jours [p.184]\nPHASAGE 1 'Exemple phasage'\nENV 1\nDATE 180\nDESACTIVER ENV 1\nDATE 200\nACTIVER ENV 1\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "DETENDRE CABLE",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Detend une liste de cables deja tendus a l interieur d un phasage.",
+      "syntax": [
+        "DETENDRE CABLE liste"
+      ],
+      "pages": [
+        192
+      ],
+      "doc": "Detend une liste de cables a l interieur d un phasage [p.192].\n\nPour pouvoir etre detendu, un cable doit deja etre tendu (cf. `TENDRE CABLE` p.191).\n\nLe detail de la prise en compte de la precontrainte est donne aux chapitres EFFETS INSTANTANES DE LA PRECONTRAINTE (p.334) et EFFETS DIFFERES - CAS D UN PHASAGE (p.338).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des cables devant etre detendus. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            192
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les cables vises doivent deja etre tendus (TENDRE CABLE p.191)"
+      ],
+      "forbidden": [
+        "Detendre un cable qui n a pas ete tendu au prealable [p.192]",
+        "Emploi hors d une description de phasage"
+      ],
+      "pitfalls": [
+        "Ne pas confondre avec RELACHER_BANC CABLE, qui concerne la pretension sur banc et non la detension d un cable de post-tension [p.192, p.193]."
+      ],
+      "examples": [
+        "# Detension d un cable provisoire [p.192]\nPHASAGE 1\nTENDRE CABLE 5\nDATE 30\nDETENDRE CABLE 5\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "ENV",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Definit une enveloppe interne au phasage qui retient les extremes des efforts, contraintes, deplacements, pressions ou reactions rencontres au cours de l execution.",
+      "syntax": [
+        "ENV i ('Titre de l''enveloppe')",
+        "   ( < EFFORT <N, TY, TZ, MX, MY, MZ>,",
+        "       DEPLA <DX, DY, DZ, RX, RY, RZ>,",
+        "       CONTR <VY, VZ, WY, WZ, VYVZ, VYWZ, WYVZ, WYWZ>,",
+        "       CONTRG c,",
+        "       PRESS <PX, PY, PZ, MX> > )",
+        "   (REAC <FX, FY, FZ, MX, MY, MZ>)"
+      ],
+      "pages": [
+        183
+      ],
+      "doc": "Definit une enveloppe a l interieur d un phasage, de maniere a prendre en compte les extremes des efforts, contraintes ou deplacements qui ont lieu au cours de l execution du phasage [p.183].\n\nLes commandes `EFFORT`, `DEPLA`, `CONTR`, `CONTRG` ou `REAC` permettent de definir une **composante privilegiee** : l enveloppe cherche les deux extremes de cette composante et les valeurs concomitantes des autres composantes. Sans composante, l enveloppe est sans concomitance. Une concomitance peut etre demandee a la fois sur les reactions d appui et sur les sections d etude [p.183].\n\n**Mots cles utilisables selon l option de structure** [p.183] :\n\n| | EFFORT | DEPLA | CONTR | PRESS | REAC |\n| --- | --- | --- | --- | --- | --- |\n| PLANE | N, TY, MZ | DX, DY, RZ | VY, WY | PX, PY | FX, FY, MZ |\n| GRILL | MX, TZ, MY | RX, DZ, RY | VZ, WZ | PZ, MX | FZ, MY |\n| SPATIALE | N, TY, TZ, MX, MY, MZ | DX, DY, DZ, RX, RY, RZ | VYVZ, VYWZ, WYVZ, WYWZ | PX, PY, PZ | FX, FY, FZ, MX, MY, MZ |\n\nL enveloppe est active des sa definition et jusqu a la fin du phasage, sauf suspension par `DESACTIVER ENV` [p.184].",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero de l enveloppe a creer (note 'v' dans l aide-memoire p.179).",
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "'Titre de l''enveloppe'",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Titre libre entre apostrophes simples ; une apostrophe interne au titre se double.",
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "EFFORT",
+          "kind": "keyword",
+          "type": "enum",
+          "required": false,
+          "doc": "Composante privilegiee sur les efforts R.D.M. aux sections d etude.",
+          "values": [
+            "N",
+            "TY",
+            "TZ",
+            "MX",
+            "MY",
+            "MZ"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "DEPLA",
+          "kind": "keyword",
+          "type": "enum",
+          "required": false,
+          "doc": "Composante privilegiee sur les deplacements.",
+          "values": [
+            "DX",
+            "DY",
+            "DZ",
+            "RX",
+            "RY",
+            "RZ"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "CONTR",
+          "kind": "keyword",
+          "type": "enum",
+          "required": false,
+          "doc": "Composante privilegiee sur les contraintes aux fibres extremes.",
+          "values": [
+            "VY",
+            "VZ",
+            "WY",
+            "WZ",
+            "VYVZ",
+            "VYWZ",
+            "WYVZ",
+            "WYWZ"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "CONTRG",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "doc": "Composante privilegiee sur une contrainte generalisee : c est le numero d une contrainte generalisee definie par la commande CONTRG (p.103-105).",
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "PRESS",
+          "kind": "keyword",
+          "type": "enum",
+          "required": false,
+          "doc": "Composante privilegiee sur les pressions (poutres sur sol elastique).",
+          "values": [
+            "PX",
+            "PY",
+            "PZ",
+            "MX"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "REAC",
+          "kind": "keyword",
+          "type": "enum",
+          "required": false,
+          "doc": "Composante privilegiee sur les reactions d appui. Peut etre cumulee avec une composante sur les sections d etude.",
+          "values": [
+            "FX",
+            "FY",
+            "FZ",
+            "MX",
+            "MY",
+            "MZ"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "EFFORT N",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Effort normal.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "EFFORT TY",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Effort tranchant suivant OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "EFFORT TZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Effort tranchant suivant OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "EFFORT MX",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Moment de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "EFFORT MY",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Moment flechissant autour de OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "EFFORT MZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Moment flechissant autour de OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "DEPLA DX",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Deplacement suivant X.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "DEPLA DY",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Deplacement suivant Y.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "DEPLA DZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Deplacement suivant Z.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "DEPLA RX",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Rotation autour de X.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "DEPLA RY",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Rotation autour de Y.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "DEPLA RZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Rotation autour de Z.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "CONTR VY",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Contrainte a la fibre superieure VY.",
+          "onlyOptions": [
+            "PLANE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "CONTR WY",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Contrainte a la fibre inferieure WY.",
+          "onlyOptions": [
+            "PLANE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "CONTR VZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Contrainte a la fibre VZ.",
+          "onlyOptions": [
+            "GRILL"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "CONTR WZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Contrainte a la fibre WZ.",
+          "onlyOptions": [
+            "GRILL"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "CONTR VYVZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Contrainte au coin de fibres VY/VZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "CONTR VYWZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Contrainte au coin de fibres VY/WZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "CONTR WYVZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Contrainte au coin de fibres WY/VZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "CONTR WYWZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Contrainte au coin de fibres WY/WZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "PRESS PX",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Pression de sol suivant X.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "PRESS PY",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Pression de sol suivant Y.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "PRESS PZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Pression de sol suivant Z.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "PRESS MX",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Pression de sol en torsion.",
+          "onlyOptions": [
+            "GRILL"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "REAC FX",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Reaction d appui suivant X.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "REAC FY",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Reaction d appui suivant Y.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "REAC FZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Reaction d appui suivant Z.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "REAC MX",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Reaction d appui en moment autour de X.",
+          "onlyOptions": [
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "REAC MY",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Reaction d appui en moment autour de Y.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        },
+        {
+          "name": "REAC MZ",
+          "kind": "choice",
+          "type": "enum",
+          "required": false,
+          "doc": "Reaction d appui en moment autour de Z.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            183
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "ETUDE (sections d etude) pour les composantes EFFORT / DEPLA / CONTR / PRESS",
+        "CONTRG defini au prealable si CONTRG c est utilise (p.103-105)"
+      ],
+      "forbidden": [
+        "Emploi hors d une description de phasage : la definition d une enveloppe de phasage ne peut etre utilisee qu entre les mots cles PHASAGE et FIN PHASAGE [p.183]",
+        "Utiliser une composante non admise par l OPTION de structure courante (cf. tableau p.183)"
+      ],
+      "pitfalls": [
+        "Les enveloppes prennent en compte les etapes essentielles du calcul (ETAT, DATE) et NON les stades intermediaires : si on applique 2 chargements a la suite dans une meme phase sans ETAT intermediaire, seul l effet du cumul des 2 charges est pris en compte [p.184]. Exemple : CHARG BARRE 1 UNI FY 1 puis CHARG BARRE 1 UNI FY -1 sans ETAT intermediaire donne un effet nul sur l enveloppe.",
+        "Les mots cles de composante dependent de l OPTION : VY/WY en PLANE, VZ/WZ en GRILL, VYVZ/VYWZ/WYVZ/WYWZ en SPATIALE ; MX de PRESS n existe qu en GRILL et MX de REAC qu en SPATIALE [p.183].",
+        "Le bloc de syntaxe p.179, comme l aide-memoire des commandes projet (partie I), imprime la ligne REAC sous la forme <FX,FY,FZ,RX,RY,RZ> ; le paragraphe detaille et le tableau des composantes p.183 donnent <FX,FY,FZ,MX,MY,MZ>, qui est la forme a retenir."
+      ],
+      "examples": [
+        "# Enveloppes internes a un phasage [p.183]\nPHASAGE 1 'Exemple phasage'\nENV 1                  # enveloppe sans concomitance\nENV 2 EFFORT MZ        # enveloppe sur les efforts mz\nFIN PHASAGE",
+        "# Enveloppe avec concomitance sur les reactions [p.183]\nPHASAGE 2 'poussage'\nENV 10 'extremes des reactions verticales' REAC FY\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "ET",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Chaine plusieurs commandes de phasage en une seule action, pour eviter un calcul intermediaire.",
+      "syntax": [
+        "ET commande_de_phasage"
+      ],
+      "pages": [
+        180
+      ],
+      "doc": "Certaines actions doivent etre decrites par plusieurs commandes. Pour eviter qu un calcul intermediaire soit effectue, ces commandes peuvent etre chainees par le mot cle `ET` [p.180].\n\nNeanmoins, **dans la plupart des cas cette commande n est pas necessaire, car elle est en general implicite, voire interdite** : en particulier on ne fait pas un chargement puis une activation de barres a la suite [p.180].\n\nIl faut se rappeler que **le calcul est fait au moment de la commande `ETAT`, a la fin du `PHASAGE` et au changement de `DATE`**. Il vaut donc mieux gerer les calculs en definissant la liste des etats pertinents et omettre la commande `ET` [p.180].\n\nEffet de bord de l omission de `ET` : a date constante, chaque nouvelle action fixe applique aux cables deja tendus des pertes de tension supplementaires par deformation elastique, `dSigma_p = K * (Ep/Eij) * dSigma_b` avec K=1 en cours de chargement [p.181].",
+      "args": [
+        {
+          "name": "commande_de_phasage",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Commande de phasage a chainer a la precedente sans calcul intermediaire (par exemple MODIFIER APPUI, VERINER APPUI).",
+          "pages": [
+            180
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Une commande de phasage doit preceder immediatement"
+      ],
+      "forbidden": [
+        "Chainer un chargement et une activation de barres : on ne fait pas de chargement et on active des barres a la suite [p.180]"
+      ],
+      "pitfalls": [
+        "Dans la plupart des cas ET est inutile (implicite) voire interdit : preferer piloter les calculs par la liste des ETAT pertinents [p.180].",
+        "Omettre ET a date constante n est pas neutre sur une structure precontrainte : les cables deja tendus subissent des pertes supplementaires par deformation elastique [p.181].",
+        "Cas d usage documente : deplacer une liste d appuis (MODIFIER APPUI ... ET MODIFIER APPUI ... ET VERINER APPUI) [p.180]."
+      ],
+      "examples": [
+        "# Deplacer une liste d appuis sans calcul intermediaire [p.180]\nPHASAGE 1 'Exemple phasage'\nMODIFIER APPUI 1 NOEUD 2\nET MODIFIER APPUI 2 NOEUD 3\nET MODIFIER APPUI 3 NOEUD 4\nET VERINER APPUI 1 a 3\nFIN PHASAGE",
+        "# Forme equivalente et plus simple [p.180]\nPHASAGE 1 'Exemple phasage'\nMODIFIER APPUI 1 a 3 NOEUD 2 a 4\nET VERINER APPUI 1 a 3\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "ETAT",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Sauvegarde l etat des contraintes et deformations a cet instant du phasage et declenche un calcul.",
+      "syntax": [
+        "ETAT i ('Titre de l etat')"
+      ],
+      "pages": [
+        194
+      ],
+      "doc": "Sauvegarde l etat des contraintes et deformations a l interieur d un phasage [p.194].\n\nLa sauvegarde permet d utiliser les resultats sauvegardes pour une **edition** (`RESU`), une **combinaison** (`COMB`) ou une **enveloppe** (`ENV`) [p.194].\n\nD une maniere generale, **les resultats contenus dans un etat sont homogenes aux resultats d un chargement** [p.194].\n\nLa commande `ETAT` declenche un calcul, au meme titre que le changement de `DATE` et la fin du phasage [p.180].",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero de l etat (note 'e' dans l aide-memoire p.179).",
+          "pages": [
+            194
+          ]
+        },
+        {
+          "name": "'Titre de l etat'",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Titre libre de l etat, entre apostrophes simples.",
+          "pages": [
+            194
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "EXEC PHASAGE pour que les resultats de l etat existent reellement en base (p.196)"
+      ],
+      "forbidden": [
+        "Emploi hors d une description de phasage"
+      ],
+      "pitfalls": [
+        "Sans ETAT intermediaire, plusieurs actions successives d une meme phase sont cumulees en un seul calcul et les enveloppes de phasage ne voient que le cumul (deux chargements opposes successifs donnent un effet nul) [p.184].",
+        "La commande ETAT declenche un calcul : c est le levier principal pour choisir les instants calcules, plutot que le mot cle ET [p.180].",
+        "Les etats ne sont exploitables par RESU / COMB / ENV qu apres EXEC PHASAGE [p.196]."
+      ],
+      "examples": [
+        "# Sauvegarde d etats puis exploitation [p.194]\nPHASAGE 1 'Exemple phasage'\nDATE 125\nACTIVER BARRE 2 AGE 3 MODE ABS\nCHARG POIDS PROPRE 2\nETAT 1 'Etat 1'\nDATE 130\nACTIVER BARRE 3 AGE 3 MODE ABS\nCHARG POIDS PROPRE 3\nETAT 2 'Etat 2'\nFIN PHASAGE\n# execution du phasage\nEXEC PHASAGE 1\n# creation d une enveloppe contenant les etats 1 et 2\nENV 1 'enveloppe des etats aux dates 125 et 130 jours'\nETAT 1,2\nFIN\n# edition des resultats\nRESU\nNOEUD BARRE APPUI ETAT 1,2\nENV 1\nFIN"
+      ]
+    },
+    {
+      "name": "EXEC PHASAGE",
+      "family": "phasage",
+      "context": "exec",
+      "requiresV2": true,
+      "summary": "Execute les phasages definis et stocke les resultats en base de donnees.",
+      "syntax": [
+        "EXEC PHASAGE (liste)"
+      ],
+      "exec": "EXEC PHASAGE",
+      "pages": [
+        196
+      ],
+      "doc": "Execute les phasages precedemment definis [p.196].\n\n- Par defaut, **tous les phasages definis** seront executes.\n- La `liste` peut etre remplacee par le mot `TOUT` : l instruction agit alors sur tous les phasages definis (equivalent a ne pas mettre de liste).\n- La commande declenche l appel du module executable contenant les procedures de resolution et **stocke les resultats en base de donnees**.\n- Citation litterale du manuel : 'Un phasage defini comme la suite d un autre phasage (cf. commande SUITE PHASAGE p182) doit etre execute avant ce dernier' [p.196]. La formulation est ambigue et contre-intuitive, et le manuel ne l explicite nulle part ailleurs ; le seul autre element ecrit est que `SUITE PHASAGE` porte sur une 'liste des phasages deja executes' [p.182].\n\nLes effets differes sont traites par la methode incrementale des temps equivalents (ACKER-EYMARD, LCPC ; BPEL99 annexe 1), calculee pas a pas a chaque `DATE` (manuel p.338-339) ; la relaxation sous deformation variable passe aussi par le temps equivalent (p.345).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": false,
+          "default": "tous les phasages definis",
+          "doc": "Liste de numeros de phasages precedemment definis. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'. Le mot TOUT est admis et equivaut a l absence de liste.",
+          "pages": [
+            196
+          ]
+        },
+        {
+          "name": "TOUT",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Remplace la liste : agit sur tous les phasages definis (equivalent a ne pas mettre de liste).",
+          "pages": [
+            196
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Au moins un bloc PHASAGE ... FIN PHASAGE defini (p.179)",
+        "Les phasages repris par SUITE PHASAGE sont designes par le manuel comme la 'liste des phasages deja executes' (p.182)",
+        "ETUDE (sections d etude) avec DEPLA et un pas fin pour les phasages avec fluage ou precontrainte (p.101-102)",
+        "ST1 version 2"
+      ],
+      "forbidden": [
+        "Non accessible avec ST1 version 1 [p.179]"
+      ],
+      "pitfalls": [
+        "Sans EXEC PHASAGE, la description du phasage ne produit aucun resultat : rien a editer par RESU ni a combiner par COMB / ENV [p.181, p.196].",
+        "Ordre d execution avec SUITE PHASAGE : le manuel ecrit textuellement 'Un phasage defini comme la suite d un autre phasage doit etre execute avant ce dernier' [p.196] ; cette phrase est ambigue et n est precisee nulle part ailleurs, le seul autre element ecrit etant que SUITE PHASAGE porte sur une 'liste des phasages deja executes' [p.182].",
+        "L etat d activation courant utilise par EXEC CHARG n est pas modifie par les activations du phasage [p.186, p.188, p.189].",
+        "Phasages avec fluage ou precontrainte : sans ETUDE ... DEPLA avec un pas suffisamment fin, les deplacements sortis sont insuffisants ou absents [p.101-102]."
+      ],
+      "examples": [
+        "# Execution d un phasage precis [p.196]\nEXEC PHASAGE 1",
+        "# Execution de tous les phasages definis [p.196]\nEXEC PHASAGE\nEXEC PHASAGE TOUT"
+      ]
+    },
+    {
+      "name": "EXEC PHASAGE PSE",
+      "family": "phasage",
+      "context": "exec",
+      "requiresV2": true,
+      "summary": "Execute les phasages dont le modele comporte des poutres sur sol pseudo-plastique et stocke les resultats en base.",
+      "syntax": [
+        "EXEC PHASAGE PSE (liste)"
+      ],
+      "exec": "EXEC PHASAGE PSE",
+      "pages": [
+        196
+      ],
+      "doc": "Execute les phasages precedemment definis **qui comportent dans le modele des poutres sur sols plastiques** [p.196].\n\n- Par defaut, tous les phasages definis (cf. commande `PHASAGE`) seront executes.\n- La `liste` peut etre remplacee par le mot `TOUT` : l instruction agit alors sur tous les phasages definis (equivalent a ne pas mettre de liste).\n- La commande stocke les resultats en base de donnees.",
+      "args": [
+        {
+          "name": "PSE",
+          "kind": "flag",
+          "type": "flag",
+          "required": true,
+          "doc": "Indique que le modele comporte des poutres sur sol pseudo-plastique (cf. CARA PSE p.60).",
+          "pages": [
+            196
+          ]
+        },
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": false,
+          "default": "tous les phasages definis",
+          "doc": "Liste de numeros de phasages. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'. Le mot TOUT est admis et equivaut a l absence de liste.",
+          "pages": [
+            196
+          ]
+        },
+        {
+          "name": "TOUT",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Remplace la liste : agit sur tous les phasages definis (equivalent a ne pas mettre de liste).",
+          "pages": [
+            196
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Au moins un bloc PHASAGE ... FIN PHASAGE defini (p.179)",
+        "Des barres sur sol pseudo-plastique definies par CARA PSE (p.60)",
+        "Les phasages repris par SUITE PHASAGE sont designes par le manuel comme la 'liste des phasages deja executes' (p.182)",
+        "ST1 version 2"
+      ],
+      "forbidden": [
+        "Definir SY ou SZ sur une barre CARA PSE [p.60]",
+        "Non accessible avec ST1 version 1 [p.179]"
+      ],
+      "pitfalls": [
+        "CARA PSE : une seule couche de sol par barre, plastification calculee sur la pression moyenne le long de la barre : il faut discretiser les poutres sur sol en troncons, d autant plus finement pres d appuis rigides ou pour de fortes raideurs de sol [p.60].",
+        "Non lineaire (sol pseudo-plastique, DECOL) : ne pas tout declarer plastique au premier calcul ; sans appui inconditionnellement stable le calcul diverge. Etudier d abord la structure avec des appuis/zones stables, puis introduire la non-linearite progressivement (retour d experience support, NON DOCUMENTE).",
+        "Les combinaisons lineaires (COMB) ne rejouent pas le calcul non lineaire : les resultats de phasages PSE ne se combinent pas librement [p.234]."
+      ],
+      "examples": [
+        "# Execution d un phasage avec poutres sur sol plastique [p.196]\nEXEC PHASAGE PSE 1",
+        "# Tous les phasages [p.196]\nEXEC PHASAGE PSE TOUT"
+      ]
+    },
+    {
+      "name": "INJECTER CABLE",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Injecte une liste de cables deja mis en tension, en general apres un changement de date.",
+      "syntax": [
+        "INJECTER CABLE liste"
+      ],
+      "pages": [
+        191
+      ],
+      "doc": "Realise l injection des cables apres leur mise en tension, a l interieur d un phasage [p.191].\n\nEn general, les cables sont injectes apres un changement de date suivant la mise en tension [p.191].\n\nUne fois le cable injecte, la modification de tension due a la deformation d une section a lieu **localement** ; avant injection elle se propage sur une longueur dependant du coefficient de frottement du cable sur sa gaine [p.191].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des cables devant etre injectes. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            191
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les cables doivent avoir ete tendus au prealable, typiquement par TENDRE CABLE liste NON INJECTE (p.191)"
+      ],
+      "forbidden": [
+        "Emploi hors d une description de phasage"
+      ],
+      "pitfalls": [
+        "Inutile apres un simple TENDRE CABLE : par defaut les cables sont deja tendus injectes [p.191].",
+        "L injection est generalement placee apres un changement de DATE suivant la mise en tension [p.191]."
+      ],
+      "examples": [
+        "# Injection differee [p.191]\nPHASAGE 2\nDATE 1\nACTIVER BARRE 2 AGE 12\nCHARG POIDS PROPRE 2\nTENDRE CABLE 1 NON INJECTE\nDATE 3\nINJECTER CABLE 1\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "MODIFIER APPUI",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Redefinit une liste d appuis en cours de phasage (deplacement, changement de blocages) ; la nouvelle definition s applique sur la structure deformee.",
+      "syntax": [
+        "MODIFIER APPUI liste (nouvelle definition)"
+      ],
+      "pages": [
+        195
+      ],
+      "doc": "Modifie une liste d appuis a l interieur d un phasage [p.195].\n\nLa nouvelle definition s effectue **selon la syntaxe utilisee pour la definition des appuis** (cf. commande `APPUI` p.47) : report sur un autre noeud par `NOEUD`, liste de degres de liberte bloques, etc.\n\n**La nouvelle definition d appui s applique sur la structure deformee.** Pour revenir a une deformation initiale nulle, il faut completer l instruction par la commande `VERINER APPUI` [p.195].\n\nExemples d effets [p.195] : `MODIFIER APPUI 3 NOEUD 2` deplace l appui 3 sur le noeud 2 en conservant la deformation du noeud 2 ; `MODIFIER APPUI 1 DX DY` supprime l encastrement de l appui 1 (seuls DX et DY restent bloques).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des appuis a modifier. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            195
+          ]
+        },
+        {
+          "name": "nouvelle definition",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Nouvelle definition de l appui, selon la syntaxe de la commande APPUI (p.47) : NOEUD listen, degres de liberte bloques, DECOL, repere local...",
+          "pages": [
+            195
+          ]
+        },
+        {
+          "name": "NOEUD",
+          "kind": "keyword",
+          "type": "list",
+          "required": false,
+          "doc": "Nouveau noeud support de l appui (syntaxe APPUI p.47). Deplace l appui en conservant la deformation du noeud d arrivee.",
+          "pages": [
+            195
+          ]
+        },
+        {
+          "name": "DX",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Degre de liberte bloque : translation suivant X (syntaxe APPUI p.47).",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            195
+          ]
+        },
+        {
+          "name": "DY",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Degre de liberte bloque : translation suivant Y (syntaxe APPUI p.47).",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            195
+          ]
+        },
+        {
+          "name": "DZ",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Degre de liberte bloque : translation suivant Z (syntaxe APPUI p.47).",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            195
+          ]
+        },
+        {
+          "name": "RX",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Degre de liberte bloque : rotation autour de X (syntaxe APPUI p.47).",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            195
+          ]
+        },
+        {
+          "name": "RY",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Degre de liberte bloque : rotation autour de Y (syntaxe APPUI p.47).",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            195
+          ]
+        },
+        {
+          "name": "RZ",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Degre de liberte bloque : rotation autour de Z (syntaxe APPUI p.47).",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            195
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les appuis vises doivent avoir ete definis par APPUI (p.47) et actives dans le phasage (ACTIVER APPUI p.186)"
+      ],
+      "forbidden": [
+        "Emploi hors d une description de phasage"
+      ],
+      "pitfalls": [
+        "La nouvelle definition s applique sur la structure DEFORMEE : completer par VERINER APPUI pour ramener le deplacement a 0 [p.195].",
+        "Pour deplacer plusieurs appuis d un coup sans calcul intermediaire, chainer les commandes par ET, puis terminer par ET VERINER APPUI ; il est souvent plus simple d ecrire une seule commande sur une liste : MODIFIER APPUI 1 a 3 NOEUD 2 a 4 [p.180].",
+        "L aide-memoire des commandes projet (partie I) renvoie a 'APPUI p116' pour la nouvelle definition, alors que le chapitre detaille p.195 renvoie a APPUI p.47, qui est la bonne reference ; le bloc de syntaxe p.179 ecrit seulement 'MODIFIER APPUI liste' sans renvoi.",
+        "A date constante et sans le mot cle ET, la modification d appui est une nouvelle action fixe : les cables deja tendus subissent des pertes de tension par deformation elastique [p.181]."
+      ],
+      "examples": [
+        "# Deplacement d un appui sur un autre noeud puis verinage [p.195]\nPHASAGE 1\nMODIFIER APPUI 3 NOEUD 2\nVERINER APPUI 3\nFIN PHASAGE",
+        "# Suppression d un encastrement [p.195]\nPHASAGE 1\nMODIFIER APPUI 1 DX DY\nFIN PHASAGE",
+        "# Deplacement d une liste d appuis en une seule action [p.180]\nPHASAGE 1 'Exemple phasage'\nMODIFIER APPUI 1 a 3 NOEUD 2 a 4\nET VERINER APPUI 1 a 3\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "PHASAGE",
+      "family": "phasage",
+      "context": "top",
+      "requiresV2": true,
+      "summary": "Ouvre la description chronologique d un phasage de construction (activations, dates, sollicitations, cables) ; la description ne produit aucun resultat.",
+      "syntax": [
+        "PHASAGE (i) ('Titre du phasage')",
+        "   (SUITE PHASAGE liste)",
+        "   ENV v ( < EFFORT <N,TY,TZ,MX,MY,MZ>, DEPLA <DX,DY,DZ,RX,RY,RZ>, CONTR <VY,VZ,WY,WZ,VYVZ,VYWZ,WYVZ,WYWZ>, CONTRG c, PRESS <PX,PY,PZ,MX> > ) (REAC <FX,FY,FZ,MX,MY,MZ>)",
+        "   (ACTIVER,DESACTIVER) ENV liste",
+        "   DATE d",
+        "   ACTIVER APPUI liste",
+        "   VERINER APPUI liste",
+        "   ACTIVER BARRE liste (AGE age) (MODE <ABS,REL>)",
+        "   DESACTIVER (BARRE liste, APPUI liste)",
+        "   CHARG",
+        "      ...",
+        "   FIN",
+        "   TENDRE CABLE liste (NON) (INJECTE)",
+        "   INJECTER CABLE liste",
+        "   DETENDRE CABLE liste",
+        "   TENDRE_BANC CABLE liste",
+        "   RELACHER_BANC CABLE liste",
+        "   ETAT e ('Titre de l etat')",
+        "   MODIFIER APPUI liste (nouvelle definition)",
+        "FIN PHASAGE"
+      ],
+      "terminator": "FIN PHASAGE",
+      "exec": "EXEC PHASAGE",
+      "pages": [
+        179,
+        180,
+        181
+      ],
+      "doc": "**Role.** Un phasage contient une description chronologique des activations et des sollicitations d une structure. Il permet de tenir compte de maniere precise des phases de construction et du comportement differe des materiaux (fluage, retrait, relaxation) [p.179].\n\n**Chapitre reserve a ST1 version 2** (version a convention annuelle renouvelable) ; ces commandes ne sont pas accessibles avec ST1 version 1 [p.179].\n\n**Quand le calcul a-t-il lieu ?** Le calcul est effectue au moment de la commande `ETAT`, a la fin du `PHASAGE` et au changement de `DATE` [p.180]. Il vaut donc mieux piloter les calculs en definissant la liste des etats pertinents.\n\n**Aucun resultat n est genere par la description** : elle se limite au stockage de la definition en base de donnees. C est `EXEC PHASAGE` qui genere les resultats [p.181, p.196].\n\n**Ordre de construction obligatoire.** Un phasage doit contenir l activation de tous les elements qui composent la structure (pas d activation par defaut) dans un ordre logique de construction : activer les appuis avant les barres dont ils sont les supports, et activer les barres supportees avant les barres non supportees [p.181].\n\n**Pertes elastiques implicites.** A date constante, lorsqu une nouvelle action fixe est appliquee a une structure deja precontrainte (charge, activation ou desactivation d appui ou de barre, mise en tension d un cable) et que le mot cle `ET` est omis, les cables deja tendus subissent des pertes supplementaires de tension par deformation elastique : `dSigma_p = K * (Ep/Eij) * dSigma_b`, avec K=0 a la mise en tension et K=1 en cours de chargement. Le calcul est fait avec une seule iteration [p.181].\n\n**Effets differes.** Le fluage en phasage est traite par la methode incrementale des temps equivalents (ACKER-EYMARD, LCPC ; BPEL99 annexe 1), calculee pas a pas a chaque `DATE` (manuel p.338-339) ; la relaxation sous deformation variable passe aussi par le temps equivalent (p.345).",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "required": false,
+          "doc": "Numero du phasage.",
+          "default": "1",
+          "pages": [
+            179
+          ]
+        },
+        {
+          "name": "'Titre du phasage'",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Titre libre du phasage, entre apostrophes simples.",
+          "pages": [
+            179
+          ]
+        }
+      ],
+      "prerequisites": [
+        "OPTION <PLANE,GRILL,SPATIALE> et geometrie definies (NOEUD, BARRE, APPUI)",
+        "CARA definies ; en phasage le calcul du fluage depend des fibres extremes VY et WY (p.60-66)",
+        "CONS ou MAT : les constantes physiques definies directement par CONS ne peuvent pas evoluer avec le temps au cours d un phasage, il faut passer par MAT (renvoi manuel : MAT p74 et PHASAGE p179)",
+        "PREC (p.92) et CABLE (p.95) definis si le phasage tend, injecte, detend ou relache des cables",
+        "ETUDE avec DEPLA et un pas suffisamment fin pour les phasages avec fluage ou precontrainte (p.101-102)",
+        "ST1 version 2"
+      ],
+      "forbidden": [
+        "Non accessible avec ST1 version 1 [p.179]",
+        "Supposer une activation par defaut : en debut de phasage la structure est vide [p.181, p.186, p.188]",
+        "Activer les barres avant les appuis qui les supportent, ou les barres non supportees avant les barres supportees [p.181]",
+        "Dates decroissantes ou egales a la date courante (cf. DATE p.185)"
+      ],
+      "pitfalls": [
+        "Aucune activation par defaut : en debut de phasage la structure est vide. Il faut activer TOUS les elements, appuis avant les barres qu ils supportent et barres supportees avant barres non supportees, sous peine de ### ERREUR ### [p.181, p.186, p.188].",
+        "L activation d une barre ne genere pas automatiquement son poids propre : il doit etre cree par une commande de chargement, par exemple CHARG POIDS PROPRE liste [p.188].",
+        "La description du phasage ne calcule rien : sans EXEC PHASAGE aucun resultat n existe en base [p.181, p.196].",
+        "ACTIVER / DESACTIVER a l interieur d un phasage n a d effet que lors de l execution de ce phasage : l etat d activation courant pris en compte par EXEC CHARG n est pas modifie [p.186, p.188, p.189].",
+        "Le calcul n est declenche qu a ETAT, au changement de DATE et a FIN PHASAGE : plusieurs actions consecutives sans ETAT intermediaire sont cumulees en un seul calcul, et les enveloppes de phasage ne voient que le cumul [p.180, p.184].",
+        "A date constante et sans le mot cle ET, chaque nouvelle action fixe provoque des pertes de tension supplementaires par deformation elastique sur les cables deja tendus (K=1) [p.181].",
+        "Les constantes physiques declarees directement par CONS ne peuvent pas evoluer dans le temps au cours d un phasage : utiliser MAT pour un materiau vieillissant (memo section 5 ; manuel renvoie MAT p74 / PHASAGE p179).",
+        "Pour les phasages avec fluage ou precontrainte, il faut obligatoirement definir des sections d etude des deplacements avec un pas suffisamment fin (ETUDE ... DEPLA), sinon les deplacements sont absents ou trop grossiers [p.101-102].",
+        "Numeros d elements ou de cables trop grands (retour d experience support, NON DOCUMENTE) : le manuel autorise 8 chiffres par numero de noeud/barre (p.29), mais en pratique des indices superieurs a 65536 (viser <= 32768) provoquent des messages 'erreur : lecture/ecriture en base de donnees' et 'mot clef mal place' en phasage et sur les cables ; renumeroter les elements resout le probleme."
+      ],
+      "examples": [
+        "# Phasage avec definition temporelle des phases [p.185]\nPHASAGE 1 'construction du fleau 1'\nACTIVER APPUI 1\nDATE 12                          # nouvelle date courante\nACTIVER BARRE 10,11 AGE 12 MODE ABS\nCHARG POIDS PROPRE 10,11\nTENDRE CABLE 101,201\nDATE 15                          # nouvelle date courante\nACTIVER BARRE 9,12 AGE 3 MODE ABS\nCHARG POIDS PROPRE 9,12\nTENDRE CABLE 102,202\nFIN PHASAGE\nEXEC PHASAGE 1",
+        "# Squelette d un phasage [p.179]\nPHASAGE 1 'Exemple phasage'\nDATE 125\nACTIVER BARRE 12 AGE 3\nTENDRE CABLE 8\nDATE 150\nMODIFIER APPUI 12 DY\nTENDRE CABLE 11\nFIN PHASAGE\nEXEC PHASAGE 1"
+      ]
+    },
+    {
+      "name": "RELACHER_BANC CABLE",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Relache le banc : les cables s appliquent par pretension sur les barres concernees.",
+      "syntax": [
+        "RELACHER_BANC CABLE liste"
+      ],
+      "pages": [
+        193
+      ],
+      "doc": "Met en pretension les poutres a partir d une liste de cables deja tendus sur banc [p.193].\n\nPour pouvoir etre relache, un cable doit deja etre tendu sur banc (cf. `TENDRE_BANC`).\n\nLorsque l on relache le banc, les cables de precontrainte s appliquent par pretension sur les barres concernees : ces barres se deforment, ce qui induit une baisse de tension de la precontrainte. Idealement l utilisateur devrait utiliser la **section nette** des barres pour un resultat plus proche du resultat theorique de la deformation finale (l ecart avec le calcul habituel en section brute reste generalement faible) [p.193].\n\nEn cas de traitement thermique, les pertes thermiques sur le cable de precontrainte sont prises en compte **au relachement du banc** [p.193].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des cables devant etre relaches du banc pour mise en pretension des poutres. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            193
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les cables doivent avoir ete tendus sur banc au prealable (TENDRE_BANC CABLE p.192)",
+        "La barre portant le cable doit avoir ete activee avant la mise sur banc, avec un age positif quasi nul [p.193]",
+        "En cas de traitement thermique : la date de relachement doit etre posterieure a la date de fin de cure definie dans la loi du materiau [p.193]"
+      ],
+      "forbidden": [
+        "Relacher un cable qui n a pas ete tendu sur banc [p.193]",
+        "Mettre en tension avant la date de fin de cure specifiee dans la loi du materiau en cas de traitement thermique [p.193]"
+      ],
+      "pitfalls": [
+        "Il est imperatif d activer la barre ou s applique le cable de pretension AVANT de tendre le cable sur banc, et de definir un age positif quasi nul a l activation (par exemple AGE 0.01) [p.193].",
+        "Le calcul se fait en section brute par defaut : utiliser idealement la section nette des barres pour approcher le resultat theorique de la deformation finale [p.193].",
+        "Les pertes thermiques sur le cable de precontrainte sont prises en compte au relachement du banc, pas a la mise sur banc [p.193]."
+      ],
+      "examples": [
+        "# Pretension par relachement du banc [p.193]\nPHASAGE 1\nDATE 1\nACTIVER BARRE 2 AGE 0.01\nTENDRE_BANC CABLE 1,2,3\nDATE 11\nRELACHER_BANC CABLE 1,2,3\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "SUITE PHASAGE",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Declare le phasage courant comme la suite d un ou plusieurs phasages deja executes.",
+      "syntax": [
+        "SUITE PHASAGE liste"
+      ],
+      "pages": [
+        182
+      ],
+      "doc": "Un phasage peut etre declare comme la suite d un ou plusieurs phasages. Cela permet de decrire dans des phasages separes les taches de postes de travail simultanes, puis de les reprendre dans un phasage final (clavage des troncons deja construits) [p.182, p.185].\n\nUn phasage peut contenir une suite non limitee d instructions : on pourrait en theorie decrire tout un chantier dans un seul phasage, mais le decoupage en phasages repris par `SUITE PHASAGE` est plus commode des qu il y a plusieurs postes simultanes [p.182].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des phasages deja executes qui sont repris. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            182
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les phasages repris doivent avoir ete definis ; le manuel les designe comme la 'liste des phasages deja executes' (p.182)"
+      ],
+      "forbidden": [
+        "Emploi hors d une description de phasage : la definition d une suite de phasage ne peut etre utilisee qu entre les mots cles PHASAGE et FIN PHASAGE [p.182]",
+        "Activer un meme element dans deux phasages distincts repris ensemble par un SUITE PHASAGE (ambiguite sur l etat de l element) [p.182]"
+      ],
+      "pitfalls": [
+        "Un element ne peut pas etre active a la fois dans le phasage 1 et dans le phasage 2 si le phasage 3 les reprend par SUITE PHASAGE 1,2 : cela conduirait a une ambiguite sur l etat de l element [p.182].",
+        "Ordre d execution : le manuel ecrit textuellement 'Un phasage defini comme la suite d un autre phasage doit etre execute avant ce dernier' [p.196] ; la formulation est ambigue et le paragraphe 9.2 p.182 n aborde pas l ordre d execution, il indique seulement que la liste designe des 'phasages deja executes'."
+      ],
+      "examples": [
+        "# Reprise de deux phasages [p.182]\nPHASAGE 1 'construction du fleau 1'\nFIN PHASAGE\nPHASAGE 2 'construction du fleau 2'\nFIN PHASAGE\nPHASAGE 3 'clavage des fleaux 1 et 2'\nSUITE PHASAGE 1,2\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "TENDRE CABLE",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Met en tension une liste de cables dans le phasage ; par defaut cables injectes et en post-tension.",
+      "syntax": [
+        "TENDRE CABLE liste ((NON) INJECTE)",
+        "TENDRE CABLE liste (NON) (INJECTE)"
+      ],
+      "pages": [
+        191
+      ],
+      "doc": "Met en tension une liste de cables a l interieur d un phasage [p.191].\n\n**Par defaut les cables sont tendus injectes et en post-tension** [p.191].\n\nUne fois qu un cable est tendu, la deformation d une section dans une barre contenant le cable induit une modification de la tension du cable : cette modification a lieu **localement si le cable est injecte**, et **sur une longueur dependant du coefficient de frottement du cable sur sa gaine si le cable n est pas injecte** [p.191].\n\nEn post-tension, le fait de tendre un cable sur une barre donne directement la situation apres relachement du cable sur la barre : la barre se contracte sous l action du cable mais la tension du cable est conservee (valeur de mise en tension controlee par l action du verin). En revanche **les pertes instantanees (recul d ancrage et frottement) sont appliquees immediatement** [p.191].\n\nLe detail de la prise en compte de la precontrainte est donne aux chapitres EFFETS INSTANTANES DE LA PRECONTRAINTE (p.334) et EFFETS DIFFERES - CAS D UN PHASAGE (p.338).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des cables devant etre tendus. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            191
+          ]
+        },
+        {
+          "name": "INJECTE",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "default": "INJECTE",
+          "doc": "Cable tendu injecte. C est le comportement par defaut (cables tendus injectes et en post-tension).",
+          "pages": [
+            191
+          ]
+        },
+        {
+          "name": "NON",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "S emploie avec INJECTE : 'NON INJECTE' met le cable en tension sans injection ; la variation de tension se propage alors sur une longueur dependant du coefficient de frottement sur la gaine. L injection ulterieure se fait par INJECTER CABLE.",
+          "pages": [
+            191
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Type de precontrainte defini par PREC (p.92) et cable defini par CABLE (p.95)",
+        "Les barres portant le cable doivent avoir ete activees au prealable"
+      ],
+      "forbidden": [
+        "Emploi hors d une description de phasage"
+      ],
+      "pitfalls": [
+        "Les pertes instantanees (recul d ancrage et frottement) sont appliquees immediatement a la mise en tension ; ne pas les recompter dans un chargement forfaitaire [p.191].",
+        "A date constante, chaque action fixe posterieure (charge, activation/desactivation, autre mise en tension) sans le mot cle ET provoque des pertes de tension supplementaires par deformation elastique sur les cables deja tendus [p.181].",
+        "En general on tend NON INJECTE puis on injecte apres un changement de date (INJECTER CABLE) [p.191].",
+        "Sur une structure precontrainte, un seul appui doit etre bloque en X, sinon la precontrainte est sans effet (cf. APPUI p.48).",
+        "Retour d experience support (NON DOCUMENTE) : des numeros de cables superieurs a 65536 provoquent des messages 'mot clef mal place' et des erreurs de base de donnees en phasage ; renumeroter."
+      ],
+      "examples": [
+        "# Mise en tension simple [p.191]\nPHASAGE 1\nACTIVER BARRE 2 AGE 12\nCHARG POIDS PROPRE 2\nTENDRE CABLE 1\nFIN PHASAGE",
+        "# Mise en tension non injectee puis injection apres changement de date [p.191]\nPHASAGE 2\nDATE 1\nACTIVER BARRE 2 AGE 12\nCHARG POIDS PROPRE 2\nTENDRE CABLE 1 NON INJECTE\nDATE 3\nINJECTER CABLE 1\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "TENDRE_BANC CABLE",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Met sur banc une liste de cables de pretension : cree la tension dans le cable sans appliquer d effort aux barres.",
+      "syntax": [
+        "TENDRE_BANC CABLE liste"
+      ],
+      "pages": [
+        192
+      ],
+      "doc": "Met sur banc une liste de cables de pretension dans un phasage [p.192].\n\nLa mise sur banc **cree une tension dans le cable, mais aucun effort n est applique a la liste de barres a laquelle le cable est affecte** [p.192].\n\nLes pertes instantanees dues au dispositif d ancrage au banc (pertes dues au peigne par exemple) sont **a calculer par l utilisateur** et a integrer soit dans la contrainte de mise sur banc, soit dans les pertes instantanees du dispositif de precontrainte [p.192].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des cables devant etre tendus sur banc. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            192
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Type de precontrainte defini par PREC (p.92) et cable defini par CABLE (p.95)",
+        "La barre ou s applique le cable de pretension doit avoir ete activee AVANT la mise sur banc, avec un age positif quasi nul [p.193]"
+      ],
+      "forbidden": [
+        "Tendre le cable sur banc avant d avoir active la barre sur laquelle il s applique [p.193]",
+        "Emploi hors d une description de phasage"
+      ],
+      "pitfalls": [
+        "Les pertes d ancrage au banc (peigne) ne sont pas calculees par ST1 : l utilisateur doit les integrer dans la contrainte de mise sur banc ou dans les pertes instantanees du dispositif de precontrainte [p.192].",
+        "Il est imperatif d activer la barre AVANT TENDRE_BANC, avec un age positif quasi nul (par exemple AGE 0.01) [p.193].",
+        "En cas de traitement thermique, la cure commence a l age 0 du beton et la resistance de fin de cure fcp n est atteinte qu a la date de fin de cure du materiau : la mise en tension ne doit se faire qu au dela de cette date [p.193]."
+      ],
+      "examples": [
+        "# Mise sur banc puis relachement [p.193]\nPHASAGE 1\nDATE 1\nACTIVER BARRE 2 AGE 0.01\nTENDRE_BANC CABLE 1,2,3\nDATE 11\nRELACHER_BANC CABLE 1,2,3\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "VERINER APPUI",
+      "family": "phasage",
+      "context": "bloc:PHASAGE",
+      "requiresV2": true,
+      "summary": "Ramene a zero les deplacements des degres de liberte actifs d une liste d appuis (verinage).",
+      "syntax": [
+        "VERINER APPUI liste"
+      ],
+      "pages": [
+        186
+      ],
+      "doc": "Le verinage des appuis ramene a 0 les deplacements des degres de liberte actifs des appuis vises [p.186].\n\nIl complete `ACTIVER APPUI` (l appui est sinon pose sur la structure deformee) et `MODIFIER APPUI` (la nouvelle definition s applique sur la structure deformee) [p.186, p.195].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des appuis a veriner. Notation de liste ST1 : '1,2', '5 a 9', 'i a j pas p'.",
+          "pages": [
+            186
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l interieur d un bloc PHASAGE ... FIN PHASAGE",
+        "Les appuis vises doivent etre actives (ACTIVER APPUI p.186) ou modifies (MODIFIER APPUI p.195)"
+      ],
+      "forbidden": [
+        "Emploi hors d une description de phasage"
+      ],
+      "pitfalls": [
+        "Seuls les degres de liberte ACTIFS de l appui sont ramenes a 0 [p.186].",
+        "Un deplacement d appuis en plusieurs commandes MODIFIER APPUI doit etre chaine par ET puis termine par ET VERINER APPUI pour eviter des calculs intermediaires [p.180].",
+        "Peut aussi etre utile en complement de ACTIVER BARRE selon le phasage de construction reel [p.187]."
+      ],
+      "examples": [
+        "# Verinage apres pose d un appui sur structure deformee [p.186]\nPHASAGE 1\nACTIVER APPUI 3\nVERINER APPUI 3\nFIN PHASAGE",
+        "# Deplacement d une liste d appuis sans calcul intermediaire [p.180]\nPHASAGE 1 'Exemple phasage'\nMODIFIER APPUI 1 a 3 NOEUD 2 a 4\nET VERINER APPUI 1 a 3\nFIN PHASAGE"
+      ]
+    }
+  ]
+}

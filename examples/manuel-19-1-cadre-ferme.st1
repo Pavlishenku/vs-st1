@@ -1,0 +1,84 @@
+#---
+#
+#     Exemple de fichier de donnees pour le calcul d'un cadre ferme
+#     Charges permanentes
+#
+#     Repris du manuel ST1 v24, exemple 19.1 (p.286 et suivantes).
+#     Sert de test de bout en bout : du ST1 reel, ecrit par l'editeur,
+#     entierement en minuscules, avec les formes bloc de noeud, barre,
+#     cara pse, etude et charg.
+#
+#---
+option plane
+
+#--- definition des noeuds ---
+noeud
+1 0. 0.
+2 0. 5.
+3 6. 5.
+4 6. 0.
+
+#--- definition des liaisons des barres ---
+barre
+1 1 2
+2 2 3
+3 3 4
+4 4 1
+
+#--- definition des caracteristiques des barres ---
+cara
+1,2,3 sx .35 iz 3.57e-3
+cara pse
+4     sx .37 iz 4.22e-3 zone 1 kfx 10. kfy 2000.
+
+#--- definition des constantes des materiaux ---
+cons
+tout e 1.e6 ro 2.5
+
+#--- definition des chargements ---
+charg 1 'poids propre du cadre et effet d''une charge repartie'
+poids propre tout
+barre
+2 uni fy -.300
+fin
+
+charg 2 'poussee des terres unitaire k=1'
+barre
+1 lin xl 0. 1. rel fx 10.  0.
+3 lin xl 0. 1. rel fx  0. -10.
+fin
+
+#--- definition des sections d'etude interieures aux barres ---
+etude effort
+tout se 0. a 1 pas 0.1
+fin
+
+exec charg
+
+env 1 'enveloppe de la poussee des terres : coef. : 0.25 et 0.50'
+charg
+2 .25
+2 .50
+fin
+
+env 2 comb 'combinaison ELS des charges permanentes'
+charg 1
+env 1
+fin
+
+env 3 comb 'combinaison ELU des charges permanentes'
+charg 1  1.00  1.35
+env   1  1.00  1.35
+fin
+
+#--- definition du fichier de sortie ---
+sortie 'exemple1.txt'
+
+#--- rappel de la geometrie ---
+lister geom
+
+#--- effort R.D.M. pour toutes les barres ---
+resu
+charg 1 env 1,2,3
+barre
+fin

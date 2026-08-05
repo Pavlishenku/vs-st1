@@ -1,0 +1,81 @@
+# ---------------------------------------------------------------------------
+# Portique plan encastre en pied - exemple de demonstration VS ST1
+#
+# Unites : metre, newton, pascal (ST1 n'impose aucune unite, sauf le metre
+# pour le calcul au feu ; il suffit d'etre coherent).
+# ---------------------------------------------------------------------------
+
+OPTION PLANE
+TITRE 'Portique plan - demonstration VS ST1'
+
+# --- Parametres de l'etude (pseudo-programmation, p.263)
+portee  = 12.
+hauteur = 6.
+
+# --- Geometrie
+NOEUD 1 0.      0.
+NOEUD 2 0.      hauteur
+NOEUD 3 portee  hauteur
+NOEUD 4 portee  0.
+
+BARRE 1 DE 1 A 2
+BARRE 2 DE 2 A 3
+BARRE 3 DE 3 A 4
+
+# Encastrements en pied : tous les DDL du plan sont bloques.
+APPUI 1 NOEUD 1 DX DY RZ
+APPUI 2 NOEUD 4 DX DY RZ
+
+# --- Caracteristiques R.D.M.
+# VY et WY sont indispensables pour obtenir les contraintes normales (p.66).
+CARA TOUT SX 0.12 IZ 2.4e-3 VY 0.20 WY 0.20
+
+# --- Constantes physiques (acier)
+CONS TOUT E 2.1e11 NU 0.3 RO 78500.
+
+# --- Sections d'etude
+# Sans DEPLA, seuls les efforts sont edites, et seulement aux extremites (p.101).
+ETUDE EFFORT DEPLA
+   TOUT SE 0. a 1. PAS 1/10 REL
+
+# --- Chargements
+CHARG 1 'Poids propre'
+   POIDS PROPRE TOUT
+FIN
+
+CHARG 2 'Charge d exploitation sur la traverse'
+   BARRE
+      2 UNI FY -15000. GLO
+FIN
+
+CHARG 3 'Vent sur le poteau gauche'
+   BARRE
+      1 UNI FX 4000. GLO
+FIN
+
+EXEC CHARG
+
+# --- Combinaisons
+COMB 1 'ELU 1.35 G + 1.5 Q'
+   CHARG 1 1.35
+   CHARG 2 1.5
+FIN
+
+COMB 2 'ELU 1.35 G + 1.5 Q + 0.9 W'
+   CHARG 1 1.35
+   CHARG 2 1.5
+   CHARG 3 0.9
+FIN
+
+# --- Enveloppe des combinaisons
+ENV 1 'Enveloppe ELU'
+   EFFORT MZ
+   COMB 1,2
+FIN
+
+# --- Edition
+RESU
+   ENV 1
+   BARRE EFFORT DEPLA CONTR
+   APPUI
+FIN

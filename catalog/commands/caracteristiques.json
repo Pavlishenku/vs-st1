@@ -1,0 +1,2558 @@
+{
+  "commands": [
+    {
+      "name": "BARRE",
+      "family": "caracteristiques",
+      "context": "bloc:MASSE PROPRE",
+      "summary": "Genere automatiquement les masses modales aux noeuds d'extremite des barres, ou ajoute des masses lineiques eventuellement excentrees.",
+      "syntax": [
+        "BARRE listeb < MASSE (SUP), MASSE (SUP) DI, MASSE NUL >",
+        "BARRE listeb (EXC (OR (X) x (Y) y (Z) z) (EX (X) x (Y) y (Z) z)) MASSE (SUP) < (UNI m1), (LIN m1 m2), (PARABOL m1 m2 m3) >"
+      ],
+      "pages": [
+        69,
+        70,
+        71
+      ],
+      "doc": "Generation des masses a partir des **barres** (p.69-71). ST1 calcule les masses modales et les affecte aux noeuds d'extremite des barres listees, a partir de la geometrie de la section et du poids volumique associe.\n\nFormulations : `MASSE` seule = matrice consistante (pleine) ; `MASSE DI` = matrice diagonale complete (deplacements et rotations) ; **par defaut** (barres selectionnees sans mot-cle particulier) les masses automatiques sont diagonales et **en deplacement seulement**. `MASSE NUL` annule les masses modales de la barre.\n\nLa seconde forme ajoute des **masses lineiques** : `UNI` uniforme, `LIN` lineaire, `PARABOL` parabolique. `EXC` permet d'excentrer ces masses par rapport a la barre sans que la barre elle-meme soit excentree ; les excentrements sont definis dans le **repere global**.",
+      "args": [
+        {
+          "name": "listeb",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des numeros de barres sur lesquelles les masses sont calculees. `TOUT` admis."
+        },
+        {
+          "name": "MASSE",
+          "kind": "keyword",
+          "type": "flag",
+          "required": true,
+          "doc": "Active le calcul automatique des masses modales (matrice consistante si employe seul)."
+        },
+        {
+          "name": "DI",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Matrice diagonale complete (deplacements et rotations)."
+        },
+        {
+          "name": "NUL",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Annule les masses modales de la barre (n'annule pas les masses definies aux noeuds)."
+        },
+        {
+          "name": "SUP",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Ajoute les masses a celles deja definies sur ces barres."
+        },
+        {
+          "name": "EXC",
+          "kind": "keyword",
+          "type": "bloc",
+          "required": false,
+          "doc": "Excentrement des masses additionnelles : `EXC (OR (X) x (Y) y (Z) z) (EX (X) x (Y) y (Z) z)`, dans le repere global."
+        },
+        {
+          "name": "UNI",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Masse lineique uniforme m1."
+        },
+        {
+          "name": "LIN",
+          "kind": "keyword",
+          "type": "list",
+          "required": false,
+          "doc": "Masse lineique lineaire m1 m2 (origine, extremite)."
+        },
+        {
+          "name": "PARABOL",
+          "kind": "keyword",
+          "type": "list",
+          "required": false,
+          "doc": "Masse lineique parabolique m1 m2 m3."
+        }
+      ],
+      "prerequisites": [
+        "Poids volumique des barres defini AVANT la commande (p.70)",
+        "G_DYN defini (p.70)"
+      ],
+      "examples": [
+        "MASSE PROPRE\n   BARRE TOUT MASSE DI\n   BARRE 3 a 7 MASSE NUL\nFIN",
+        "MASSE PROPRE\n   BARRE 1 a 100 MASSE UNI 0.4\n   BARRE 1 a 50 EXC OR 0 Y -2 Z 0 EX X 0 Y -2 Z 0 MASSE SUP UNI 0.2\nFIN"
+      ],
+      "pitfalls": [
+        "Sans poids volumique et sans G_DYN definis avant la commande, aucune masse n'est effectivement affectee aux noeuds d'extremite (p.70).",
+        "Les masses lineiques doivent etre fournies sous forme de masse lineique (masse par unite de longueur), pas de poids (p.70).",
+        "Des masses excentrees sur des barres sans masses non excentrees peuvent rendre la resolution des modes impossible (p.70).",
+        "`SUP` ne permet pas de cumuler plusieurs masses supplementaires avec des excentrements differents sur une meme barre (p.70)."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "CARA",
+      "family": "caracteristiques",
+      "context": "top",
+      "summary": "Definit les caracteristiques R.D.M. constantes (section, inerties, fibres extremes) des barres.",
+      "syntax": [
+        "CARA liste SX sx (SY sy) (SZ sz) (IX ix) (IY iy) (IZ iz) (IPOL ip) (VY vy) (WY wy) (VZ vz) (WZ wz) (EXTY exty) (EXTZ extz)",
+        "CARA",
+        "   liste SX sx (SY sy) ... (WZ wz) (EXTY exty) (EXTZ extz)",
+        "   ..."
+      ],
+      "pages": [
+        59,
+        60,
+        66
+      ],
+      "doc": "**Caracteristiques R.D.M. constantes d'une barre** (chapitre 2.10, p.59-68).\n\nDeux formes equivalentes : *instruction simple* (`CARA liste ...` sur une ligne) et *instruction de bloc* (`CARA` seul sur une ligne, puis une ligne `liste ...` par groupe de barres, repetable). Aucun terminateur `FIN` n'est documente pour la forme bloc.\n\n**Par defaut les caracteristiques des barres sont constantes** (p.66) : c'est cette forme qui s'applique tant qu'aucune variation (`VAR LIN Y/Z`, `VAR PARA`) ni sol elastique (`PSE`) n'est demande.\n\n`liste` peut etre remplacee par `TOUT` : la commande agit alors sur **toutes les barres deja definies** (pas de constantes par defaut, p.66).\n\n**Caracteristiques utilisables selon l'option** (p.60) :\n- `PLANE` : sx, sy, iz, vy, wy (+ kfx, kfy pour `CARA PSE`)\n- `GRILL` : ix, sz, iy, vz, wz (+ kmx, kfz pour `CARA PSE`)\n- `SPATIALE` : toutes\n\n**Contraintes normales calculees** (p.66-68) :\n- PLANE : `sigma = N/Sx - (Mz/Iz)*y`, avec `y` dans `[-wy ; vy]`\n- SPATIALE : `sigma = N/Sx + (My/Iy)*z - (Mz/Iz)*y`, avec `y` dans `[-wy ; vy]` et `z` dans `[-wz ; vz]`\n\nEn option PLANE ou SPATIALE, **l'effort normal N et la contrainte normale sont positifs en compression**, negatifs en traction (p.66).\n\nLa regle generale des commandes de description s'applique : CARA peut etre reutilisee, c'est la derniere description qui est prise en compte, les valeurs non redefinies restant inchangees (p.42).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des numeros de barres (`1,2,5 a 9`, `i a j pas p`). `TOUT` admis : toutes les barres deja definies."
+        },
+        {
+          "name": "SX",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Section droite (aire). Ecrit hors parentheses dans la syntaxe p.59 (donc attendu en PLANE/SPATIALE), mais ne figure pas dans les caracteristiques utilisables en GRILL (p.60) : les exemples GRILL ne definissent que IX et IY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SY",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Section reduite d'effort tranchant suivant l'axe OY. Non definie = deformation d'effort tranchant non prise en compte.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SZ",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Section reduite d'effort tranchant suivant l'axe OZ. Non definie = deformation d'effort tranchant non prise en compte.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IX",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Inertie de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IY",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Inertie de flexion autour de l'axe OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IZ",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Inertie de flexion autour de l'axe OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IPOL",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Inertie polaire d'axe OX, pour le calcul de l'inertie massique en rotation (dynamique). Ne figure pas dans le tableau des caracteristiques par option (p.60)."
+        },
+        {
+          "name": "VY",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Ordonnee de la fibre superieure suivant l'axe OY. Obligatoire pour le calcul des contraintes normales et du gradient thermique.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure suivant l'axe OY. Obligatoire pour les contraintes normales et le gradient thermique.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Ordonnee de la fibre superieure suivant l'axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure suivant l'axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "EXTY",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Excentrement du centre de torsion suivant l'axe oy local. Ne figure pas dans le tableau des caracteristiques par option (p.60)."
+        },
+        {
+          "name": "EXTZ",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Excentrement du centre de torsion suivant l'axe oz local. Ne figure pas dans le tableau des caracteristiques par option (p.60)."
+        }
+      ],
+      "prerequisites": [
+        "OPTION <PLANE,GRILL,SPATIALE> definie (elle conditionne les caracteristiques utilisables, p.60)",
+        "BARRE : les barres visees doivent etre deja definies (obligatoire pour l'emploi de TOUT, p.60)"
+      ],
+      "examples": [
+        "# section constante, option PLANE (notation Fortran .2d-3 admise)\nCARA 2,11 SX 1.25 IZ .2d-3",
+        "# fibres extremes indispensables pour obtenir les contraintes normales\nCARA 1 SX 1 IZ 1 VY 0.25 WY 0.25",
+        "# option SPATIALE : toutes les caracteristiques sont utilisables\nCARA TOUT SX 1.0 IX 1 IY 1 IZ 1.0\nCARA 11,12 SX 0.001 IX 0.001 IY 0.001 IZ 0.001",
+        "# instruction de bloc : un groupe de barres par ligne\nCARA\n   1 a 3 SX 0.5 IZ 0.02\n   4 a 8 SX 0.8 IZ 0.05"
+      ],
+      "pitfalls": [
+        "Il n'y a pas de caracteristiques par defaut (p.66).",
+        "Fibres extremes (VY, WY, VZ, WZ) obligatoires pour les contraintes normales (p.66) : une barre definie par `CARA 1 SX 1 IZ 1` n'edite que les efforts, `CONTR` ne sort aucune contrainte (rappele p.244). Le calcul du gradient thermique depend aussi de VY et WY (p.60).",
+        "En phasage (ST1 v2), le calcul du fluage depend des valeurs de VY et WY (p.60).",
+        "Ne pas definir SY/SZ revient a negliger l'effet du tranchant : c'est la solution recommandee plutot que des valeurs de Sy/Sz trop grandes, qui provoquent des problemes de convergence numerique a l'inversion de la matrice (p.61).",
+        "Eviter des ecarts trop importants dans les ordres de grandeur des inerties des barres (p.61).",
+        "Attention aux caracteristiques inutilisables dans l'option choisie : IZ/SY/VY/WY sont des caracteristiques PLANE, IY/SZ/VZ/WZ/IX des caracteristiques GRILL (p.60).",
+        "EXTY/EXTZ (excentrement du centre de torsion) : le MX edite par ST1 est exprime autour de la FIBRE NEUTRE, pas du centre de torsion. Sur une poutre symetrique sur appuis simples chargee transversalement a l'aplomb de la fibre neutre, RX devient non nul alors que MX reste nul sur toute la barre : c'est correct, ce n'est pas un bug (retour d'experience support, non documente dans le manuel).",
+        "Calcul au feu (ST1 v2) : redefinir avec un `CARA` classique une barre deja affectee par `CARA ib / SECTION i / FIN` invalide l'exposition au feu, l'incendie ne cree plus d'echauffement (p.228)."
+      ],
+      "aliases": [],
+      "examplesNote": null
+    },
+    {
+      "name": "CARA PSE",
+      "family": "caracteristiques",
+      "context": "top",
+      "summary": "Caracteristiques constantes de barres reposant sur un sol elastique ou pseudo plastique, decoupe en zones de raideur.",
+      "syntax": [
+        "CARA PSE liste SX sx ... (IZ iz) (IPOL ip) (VY vy) ... (WZ wz)",
+        "   ZONE 1 (KFX kfx) (KFY kfy) (KFZ kfz) (KMX kmx) XL xl",
+        "   ...",
+        "   ZONE n (KFX kfx) (KFY kfy) (KFZ kfz) (KMX kmx)",
+        "CARA PSE liste SX sx ... (IZ iz) (IPOL ip) (VY vy) ... (WZ wz)",
+        "   PLASTIQUE (POS) (NEG) (KFX ffx) (KFY ffy) (KFZ ffz) (KMX fmx)",
+        "   ZONE 1 (KFX kfx) (KFY kfy) (KFZ kfz) (KMX kmx)",
+        "CARA PSE",
+        "   liste SX sx ... (WZ wz)",
+        "   ZONE 1 ...",
+        "   ..."
+      ],
+      "pages": [
+        59,
+        60,
+        61,
+        65,
+        66
+      ],
+      "doc": "**Poutre sur sol elastique (PSE)** : caracteristiques constantes completees par des **zones de raideur de sol** le long de la barre (p.59-60, exemples p.65). Une variante **pseudo plastique** est obtenue en ajoutant la ligne `PLASTIQUE`, qui fixe les efforts seuils au-dela desquels la reaction du sol plafonne.\n\nRaideurs utilisables selon l'option (p.60) : `PLANE` -> kfx, kfy ; `GRILL` -> kmx, kfz ; `SPATIALE` -> toutes.\n\nLes pressions calculees sur les poutres sur sol elastique sont editees aux sections d'etude de **deplacement** (mot-cle `DEPLA` de `ETUDE`, p.101) et sont enveloppables (`PRESS PX PY PZ MX`).\n\nFormes simple et bloc disponibles ; `TOUT` admis a la place de `liste`. Aucun terminateur `FIN` documente.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des barres sur sol. `TOUT` admis (toutes les barres deja definies)."
+        },
+        {
+          "name": "SX",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Section droite (aire). Ecrit hors parentheses dans la syntaxe p.59.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IX",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Inertie de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IY",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Inertie de flexion autour de l'axe OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IZ",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Inertie de flexion autour de l'axe OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IPOL",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Inertie polaire d'axe OX (inertie massique en rotation, dynamique)."
+        },
+        {
+          "name": "VY",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Ordonnee de la fibre superieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Ordonnee de la fibre superieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "PLASTIQUE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Ligne facultative activant le sol pseudo plastique (efforts seuils POS/NEG et KFX/KFY/KFZ/KMX)."
+        },
+        {
+          "name": "ZONE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Une ligne par zone de sol : raideurs et abscisse de fin de zone."
+        }
+      ],
+      "forbidden": [
+        "SY : ne pas donner de section reduite d'effort tranchant dans CARA PSE (p.60)",
+        "SZ : ne pas donner de section reduite d'effort tranchant dans CARA PSE (p.60)",
+        "Plus d'une couche de sol par barre en sol pseudo plastique (p.60)"
+      ],
+      "prerequisites": [
+        "OPTION <PLANE,GRILL,SPATIALE> definie",
+        "BARRE : barres deja definies",
+        "ETUDE ... DEPLA pour obtenir les deplacements et les pressions le long de la barre (p.101)"
+      ],
+      "examples": [
+        "# poutre sur sol elastique, zones de raideur (application fascicule 62)\nCARA PSE numbarpieu SX 3.14*diam1**2/4*nbp IZ 3.14*(diam1/2)**4/4*nbp\n   ZONE 1 KFY KI1(1)*nbp XL lgt(1)\n   ZONE 2 KFY KI1(2)*nbp XL lgt(2)\n   ZONE 3 KFY KI1(3)*nbp",
+        "# sol pseudo plastique, option PLANE : reaction prise en compte en pression negative seulement\nCARA PSE numbarpieu SX 3.14*diam1**2/4*nbp IZ I0\n   PLASTIQUE NEG KFY ffy0*diam1*nbp\n   ZONE 1 KFY KI1(1)*nbp",
+        "# sol pseudo plastique, option SPATIALE\nCARA PSE numbarpieu SX 3.14*diam1**2/4*nbp IX I0*2 IY I0 IZ I0\n   PLASTIQUE POS NEG KFX ffx*diam1*nbp KFY ffy*diam1*nbp KFZ ffz*diam1*nbp KMX fmx*diam1*nbp\n   ZONE 1 KFX kfx*nbp KFY kfy*nbp KFZ kfz*nbp KMX kmx*nbp",
+        "# barre de sol discretisee\nCARA PSE 1 a nb pas 1 SX 1 IZ 10\n   ZONE 1 KFY 1000."
+      ],
+      "pitfalls": [
+        "Ne JAMAIS utiliser SY ni SZ dans CARA PSE (p.60). Noter que l'aide-memoire p.7 fait pourtant apparaitre `(SY sy)` dans la ligne CARA PSE : le chapitre detaille p.59-60 l'exclut et fait foi.",
+        "Fortes raideurs de sol : si la poutre est modelisee par une seule barre, ST1 peut fournir des valeurs erronees liees a la theorie mise en oeuvre. Discretiser la poutre en plusieurs troncons et appliquer CARA PSE sur chaque troncon (p.60).",
+        "Sol pseudo plastique : une seule couche de sol par barre, et la plastification n'est calculee que sur la PRESSION MOYENNE le long de la barre. Seule une discretisation importante donne des resultats fiables ; elle doit etre encore plus fine pres des appuis rigides (p.60).",
+        "La fin de la derniere zone comprend obligatoirement l'extremite de la barre (p.66) : XL de la derniere zone est facultatif et, meme fourni, les proprietes de la derniere zone s'appliquent jusqu'a l'extremite (p.61).",
+        "Non-lineaire (sol plastique comme DECOL) : ne pas tout declarer plastique au premier calcul. Sans appui inconditionnellement stable le calcul diverge ; etudier d'abord la structure avec des zones elastiques stables, observer deplacements et pressions, puis introduire la non-linearite progressivement (retour d'experience support, non documente).",
+        "Sans `ETUDE ... DEPLA` et sections d'etude sur les barres de sol, ni les deplacements ni les pressions ne sortent, meme si le calcul converge (p.101-102)."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "CARA VAR LIN Y",
+      "family": "caracteristiques",
+      "context": "top",
+      "summary": "Caracteristiques variant comme celles d'une section rectangulaire dont la dimension suivant l'axe oy local varie lineairement.",
+      "syntax": [
+        "CARA VAR LIN Y liste",
+        "   OR SX sx (SY sy) ... (IZ iz) (IPOL ip) (VY vy) ... (WZ wz) (EXTY exty) (EXTZ extz)",
+        "   EX SX sx (SY sy) ... (IZ iz) (IPOL ip) (VY vy) ... (WZ wz) (EXTY exty) (EXTZ extz)",
+        "CARA VAR LIN Y",
+        "   liste",
+        "   OR SX sx ...",
+        "   EX SX sx ...",
+        "   ..."
+      ],
+      "pages": [
+        59,
+        60
+      ],
+      "doc": "**Variation lineaire suivant oy** : les caracteristiques varient comme celles d'une poutre de section rectangulaire dont la dimension suivant l'**axe OY local** varie lineairement entre l'origine (`OR`) et l'extremite (`EX`) de la barre (p.59-60).\n\nConsequence sur les inerties :\n- option PLANE : `IZ` varie en degre 3 (`b*h(x)^3/12`) (exemple p.62)\n- option GRILL : `IY` varie lineairement (`b(x)*h^3/12`) (exemple p.63)\n- option SPATIALE : `IY` varie lineairement et `IZ` varie en degre 3 (exemple p.64)\n\nFormes simple et bloc disponibles ; `TOUT` admis a la place de `liste`. Aucun terminateur `FIN` documente.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des barres. `TOUT` admis (toutes les barres deja definies)."
+        },
+        {
+          "name": "OR",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Ligne des caracteristiques a l'origine de la barre."
+        },
+        {
+          "name": "EX",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Ligne des caracteristiques a l'extremite de la barre."
+        }
+      ],
+      "prerequisites": [
+        "OPTION <PLANE,GRILL,SPATIALE> definie",
+        "BARRE : barres deja definies"
+      ],
+      "examples": [
+        "# OPTION PLANE : IZ varie en degre 3 de 1.0 a 2.0\nCARA VAR LIN Y 3,8\n   OR SX 1.0 IZ 1.0\n   EX SX 1.5 IZ 2.0",
+        "# OPTION GRILL : IY varie lineairement de 1.0 a 2.0\nCARA VAR LIN Y 3,8\n   OR IX 1.0 IY 1.0\n   EX IX 1.5 IY 2.0",
+        "# OPTION SPATIALE : IY lineaire, IZ en degre 3\nCARA VAR LIN Y 3,8\n   OR SX 1.0 IY 1.0 IZ 0.5\n   EX SX 1.5 IY 2.0 IZ 1.5"
+      ],
+      "pitfalls": [
+        "Ne pas confondre `VAR LIN Y` et `VAR LIN Z` : c'est la dimension de la section qui varie suivant l'axe indique, pas l'inertie correspondante. En PLANE, `VAR LIN Y` fait varier IZ en degre 3, alors que `VAR LIN Z` fait varier IZ lineairement (p.62).",
+        "Les memes restrictions par option que pour CARA s'appliquent aux caracteristiques citees sur les lignes OR/EX (p.60)."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "CARA VAR LIN Z",
+      "family": "caracteristiques",
+      "context": "top",
+      "summary": "Caracteristiques variant comme celles d'une section rectangulaire dont la dimension suivant l'axe oz local varie lineairement.",
+      "syntax": [
+        "CARA VAR LIN Z liste",
+        "   OR SX sx (SY sy) ... (IZ iz) (IPOL ip) (VY vy) ... (WZ wz) (EXTY exty) (EXTZ extz)",
+        "   EX SX sx (SY sy) ... (IZ iz) (IPOL ip) (VY vy) ... (WZ wz) (EXTY exty) (EXTZ extz)",
+        "CARA VAR LIN Z",
+        "   liste",
+        "   OR SX sx ...",
+        "   EX SX sx ...",
+        "   ..."
+      ],
+      "pages": [
+        59,
+        60
+      ],
+      "doc": "**Variation lineaire suivant oz** : les caracteristiques varient comme celles d'une poutre de section rectangulaire dont la dimension suivant l'**axe OZ local** varie lineairement entre l'origine (`OR`) et l'extremite (`EX`) de la barre (p.59-60).\n\nConsequence sur les inerties :\n- option PLANE : `IZ` varie lineairement (`b(x)*h^3/12`) (exemple p.62)\n- option GRILL : `IY` varie en degre 3 (`b*h(x)^3/12`) (exemple p.63)\n- option SPATIALE : `IY` varie en degre 3 et `IZ` varie en degre 3 (exemple p.64)\n\nFormes simple et bloc disponibles ; `TOUT` admis a la place de `liste`. Aucun terminateur `FIN` documente.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des barres. `TOUT` admis (toutes les barres deja definies)."
+        },
+        {
+          "name": "OR",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Ligne des caracteristiques a l'origine de la barre."
+        },
+        {
+          "name": "EX",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Ligne des caracteristiques a l'extremite de la barre."
+        }
+      ],
+      "prerequisites": [
+        "OPTION <PLANE,GRILL,SPATIALE> definie",
+        "BARRE : barres deja definies"
+      ],
+      "examples": [
+        "# OPTION PLANE : IZ varie lineairement de 1.0 a 2.0\nCARA VAR LIN Z 3,8\n   OR SX 1.0 IZ 1.0\n   EX SX 1.5 IZ 2.0",
+        "# OPTION GRILL : IY varie en degre 3 de 1.0 a 2.0\nCARA VAR LIN Z 3,8\n   OR IX 1.0 IY 1.0\n   EX IX 1.5 IY 2.0",
+        "# OPTION SPATIALE\nCARA VAR LIN Z 3,8\n   OR SX 1.0 IY 1.0 IZ 0.5\n   EX SX 1.5 IY 2.0 IZ 1.5"
+      ],
+      "pitfalls": [
+        "Le degre de variation de l'inertie depend a la fois de l'axe (Y ou Z) et de l'option : verifier les exemples p.62 (PLANE), p.63 (GRILL) et p.64 (SPATIALE) avant de choisir.",
+        "Les memes restrictions par option que pour CARA s'appliquent aux caracteristiques citees sur les lignes OR/EX (p.60)."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "CARA VAR PARA",
+      "family": "caracteristiques",
+      "context": "top",
+      "summary": "Definit des poutres dont l'inverse des caracteristiques est interpolable par une parabole entre origine, milieu et extremite.",
+      "syntax": [
+        "CARA VAR PARA liste",
+        "   OR SX sx (SY sy) ... (IZ iz) (VY vy) ... (WZ wz) (EXTY exty) (EXTZ extz)",
+        "   MI SX sx (SY sy) ... (IZ iz) (VY vy) ... (WZ wz) (EXTY exty) (EXTZ extz)",
+        "   EX SX sx (SY sy) ... (IZ iz) (VY vy) ... (WZ wz) (EXTY exty) (EXTZ extz)",
+        "CARA VAR PARA",
+        "   liste",
+        "   OR SX sx ...",
+        "   MI SX sx ...",
+        "   EX SX sx ...",
+        "   ..."
+      ],
+      "pages": [
+        59,
+        60
+      ],
+      "doc": "**Variation parabolique** : definition des poutres dont **l'inverse des caracteristiques est interpolable par une parabole** (p.59-61). Trois jeux de valeurs sont fournis : origine (`OR`), milieu (`MI`) et extremite (`EX`) de la barre.\n\nFormes simple et bloc disponibles ; `TOUT` admis a la place de `liste`. Aucun terminateur `FIN` documente.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des barres. `TOUT` admis (toutes les barres deja definies)."
+        },
+        {
+          "name": "OR",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Ligne des caracteristiques a l'origine de la barre."
+        },
+        {
+          "name": "MI",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Ligne des caracteristiques au milieu de la barre."
+        },
+        {
+          "name": "EX",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Ligne des caracteristiques a l'extremite de la barre."
+        }
+      ],
+      "prerequisites": [
+        "OPTION <PLANE,GRILL,SPATIALE> definie",
+        "BARRE : barres deja definies"
+      ],
+      "examples": [
+        "# inverse des caracteristiques interpolable par une parabole\nCARA VAR PARA 4,100\n   OR SX 1.25 SY .2 IZ .2d-3\n   MI SX 1.00 SY .2 IZ .5d-3\n   EX SX 2.25 SY .3 IZ .4d-3"
+      ],
+      "pitfalls": [
+        "Incoherence documentaire sur IPOL : l'aide-memoire p.7 (et le memo de reference) ecrivent les lignes OR/MI/EX de `CARA VAR PARA` SANS `(IPOL ip)`, alors que le chapitre detaille p.59-60 les ecrit AVEC `(IPOL ip)`. Ne pas s'appuyer sur IPOL dans cette forme sans verification.",
+        "C'est l'INVERSE des caracteristiques qui est interpole par une parabole, pas la caracteristique elle-meme (p.59) : les valeurs OR/MI/EX ne doivent pas etre lues comme trois points d'une parabole sur SX ou IZ.",
+        "Les memes restrictions par option que pour CARA s'appliquent aux caracteristiques citees sur les lignes OR/MI/EX (p.60)."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "CONTRG",
+      "family": "caracteristiques",
+      "context": "top",
+      "summary": "Definit une contrainte generalisee, combinaison lineaire ponderee des efforts R.D.M. augmentee d'un terme constant.",
+      "syntax": [
+        "CONTRG i ('Titre de la contrainte generalisee')",
+        "   (CTE)",
+        "      liste (N cfn) (TY cfty) (TZ cftz) (MX cfmx) (MY cfmy) (MZ cfmz) (CST cst)",
+        "   VAR LIN",
+        "      liste OR (N cfn) ... (CST cst)",
+        "            EX (N cfn) ... (CST cst)",
+        "   VAR PARA",
+        "      liste OR (N cfn) ... (CST cst)",
+        "            MI (N cfn) ... (CST cst)",
+        "            EX (N cfn) ... (CST cst)",
+        "   ...",
+        "FIN"
+      ],
+      "pages": [
+        103,
+        104,
+        105
+      ],
+      "terminator": "FIN",
+      "doc": "**Contrainte generalisee** (p.103-105). L'etude des contraintes normales ou tangentes en un point quelconque (effet resal, etc.) se ramene generalement a une **combinaison lineaire des efforts R.D.M.** ; une telle combinaison est appelee contrainte generalisee.\n\nLe bloc porte le numero `i` et un titre optionnel, puis une ou plusieurs lignes de ponderation, et se termine par `FIN`.\n\n**Type de variation des coefficients le long de chaque barre** : `CTE` (par defaut les coefficients sont constants), `VAR LIN` (interpolation lineaire entre `OR` et `EX`), `VAR PARA` (interpolation parabolique entre `OR`, `MI` et `EX`). Le mode reste actif jusqu'a ce qu'un autre mot-cle de variation soit rencontre dans le bloc.\n\n**Coefficients utilisables selon l'option** (p.104) : `PLANE` -> cfn, cfty, cfmz, cst ; `GRILL` -> cfmx, cftz, cfmy, cst ; `SPATIALE` -> tous.\n\n**Formules d'interpolation** pour une section d'etude a l'abscisse fractionnaire `xx` variant de 0 a 1 (p.104-105) :\n- `VAR LIN` : `cf = cfor + (cfex - cfor)*xx`\n- `VAR PARA` : `cf = a*xx*xx + b*xx + c` avec `a = 2*(cfor - 2*cfmi + cfex)`, `b = -3*cfor + 4*cfmi - cfex`, `c = cfex`\n\nLes contraintes generalisees sont integrees aux resultats de chaque section d'etude au moment de l'execution des chargements et des surcharges (`EXEC CHARG` p.125, `EXEC SURCH` p.178) et sont ensuite utilisables dans les combinaisons et les enveloppes au meme titre que les autres resultats de la section.",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero de la contrainte generalisee."
+        },
+        {
+          "name": "titre",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Titre entre quotes simples. Pas de caractere accentue ; une quote interne se double."
+        },
+        {
+          "name": "CTE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Coefficients constants le long de chaque barre (mode par defaut)."
+        },
+        {
+          "name": "VAR LIN",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Coefficients interpoles lineairement entre OR et EX."
+        },
+        {
+          "name": "VAR PARA",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Coefficients interpoles par une parabole entre OR, MI et EX."
+        }
+      ],
+      "prerequisites": [
+        "OPTION <PLANE,GRILL,SPATIALE> definie (elle conditionne les coefficients utilisables, p.104)",
+        "BARRE : barres deja definies",
+        "A definir AVANT EXEC CHARG / EXEC SURCH, l'integration aux resultats ayant lieu a l'execution (p.105)",
+        "ETUDE : les contraintes generalisees sont evaluees aux sections d'etude (p.101)"
+      ],
+      "examples": [
+        "# coefficients constants le long de chaque barre\nCONTRG 10 'etude de la contrainte au point 1'\n   1 a 2 N 0.25 MZ 0.33\n   4 a 5 N 0.22 MZ 0.21 CST 0.5\nFIN",
+        "# coefficients variant lineairement\nCONTRG 11 'etude d''une contrainte tangente'\n   1 a 2 TZ 0.11 MX 0.44\n   VAR LIN\n   4 a 5 OR TZ 0.11 MX 0.44\n         EX TZ 0.15 MX 0.55\n   CTE\n   6 a 7 TZ 0.15 MX 0.55\nFIN",
+        "# coefficients interpoles par une parabole (effet resal)\nCONTRG 12 'contrainte tangente avec effet resal'\n   1 a 2 N 0.10 TZ 0.11 MY 0.44\n   VAR PARA\n   4 a 5 OR N 0.10 TZ 0.11 MY 0.44\n         MI N 0.16 TZ 0.12 MY 0.50\n         EX N 0.25 TZ 0.15 MY 0.55\n   CTE\n   6 a 7 N 0.25 TZ 0.15 MY 0.55\nFIN"
+      ],
+      "pitfalls": [
+        "Le terme constant `CST` n'est applicable qu'aux CHARGES : il n'est pas applicable aux surcharges (p.103). Une meme CONTRG donne donc des valeurs differentes selon que le cas est une charge ou une surcharge.",
+        "Coefficients limites par l'option : cfn/cfty/cfmz en PLANE, cfmx/cftz/cfmy en GRILL, tous en SPATIALE (p.104).",
+        "Les contraintes generalisees peuvent n'etre definies que sur une partie des barres et des chargements ; la ou elles ne sont pas definies, aucun resultat n'est produit (p.105).",
+        "Definir la CONTRG apres EXEC CHARG / EXEC SURCH est sans effet : l'integration aux sections d'etude a lieu au moment de l'execution (p.105).",
+        "Titre : ne pas utiliser de caracteres accentues et doubler toute quote interne (p.31)."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "CTE",
+      "family": "caracteristiques",
+      "context": "bloc:CONTRG",
+      "summary": "Bascule les lignes de ponderation suivantes en coefficients constants le long de chaque barre (mode par defaut).",
+      "syntax": [
+        "(CTE)",
+        "liste (N cfn) (TY cfty) (TZ cftz) (MX cfmx) (MY cfmy) (MZ cfmz) (CST cst)"
+      ],
+      "pages": [
+        103,
+        104
+      ],
+      "doc": "Mot-cle de type de variation, valide dans un bloc `CONTRG` (p.103-104). Les coefficients sont **constants le long de chaque barre** ; c'est le mode **par defaut**, `CTE` n'est donc necessaire que pour revenir a ce mode apres un `VAR LIN` ou un `VAR PARA`.\n\nChaque ligne suivante donne une `liste` de barres puis les coefficients ponderateurs des efforts R.D.M.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des barres dont les efforts R.D.M. seront ponderes par les coefficients qui suivent."
+        },
+        {
+          "name": "N",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "cfn : coefficient ponderateur de l'effort normal.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TY",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "cfty : coefficient ponderateur de l'effort tranchant ty.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TZ",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "cftz : coefficient ponderateur de l'effort tranchant tz.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "cfmx : coefficient ponderateur du moment de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "cfmy : coefficient ponderateur du moment flechissant my.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "cfmz : coefficient ponderateur du moment flechissant mz.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "CST",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "cst : constante ajoutee a la combinaison, applicable uniquement pour les charges, non applicable aux surcharges."
+        }
+      ],
+      "examples": [
+        "CONTRG 10 'etude de la contrainte au point 1'\n   1 a 2 N 0.25 MZ 0.33\n   4 a 5 N 0.22 MZ 0.21 CST 0.5\nFIN"
+      ],
+      "pitfalls": [
+        "`CST` est ignore pour les surcharges (p.103).",
+        "Le mode de variation reste actif pour toutes les lignes suivantes du bloc jusqu'au prochain mot-cle CTE / VAR LIN / VAR PARA (p.104)."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "ETUDE",
+      "family": "caracteristiques",
+      "context": "top",
+      "summary": "Definit les sections d'etude des barres et le type de resultats (efforts, deplacements) qui y sera calcule.",
+      "syntax": [
+        "ETUDE (SUP, SEUL) (EFFORT) (DEPLA)",
+        "   liste1 SE liste2 (PAS lpas) (ABS, REL)",
+        "   ..."
+      ],
+      "pages": [
+        101,
+        102
+      ],
+      "doc": "**Domaine d'etude** (p.101-102). Par defaut, toutes les barres contiennent une section d'etude **des efforts a chaque extremite**. `ETUDE` ajoute des sections en une abscisse quelconque des barres.\n\nTrois portees :\n- `ETUDE` : ajoute des sections d'etude **aux sections definies par defaut** ;\n- `ETUDE SUP` : ajoute des sections **aux sections deja definies** par des commandes ETUDE precedentes ;\n- `ETUDE SEUL` : definit les sections **sans tenir compte** des sections par defaut ni des sections precedemment definies.\n\nTypes de resultats :\n- `EFFORT` : les efforts R.D.M. et eventuellement les contraintes sont etudies ;\n- `DEPLA` : les deplacements et les pressions (poutres sur sol elastique) sont etudies.\n\n`liste1` peut etre remplacee par `TOUT` : la commande agit sur toutes les barres deja definies.",
+      "args": [
+        {
+          "name": "SUP",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Ajoute les sections aux sections deja definies (au lieu de repartir des sections par defaut)."
+        },
+        {
+          "name": "SEUL",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Ignore les sections par defaut et celles definies precedemment."
+        },
+        {
+          "name": "EFFORT",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Etudie les efforts R.D.M. et eventuellement les contraintes aux sections definies."
+        },
+        {
+          "name": "DEPLA",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Etudie les deplacements et, pour les poutres sur sol elastique, les pressions."
+        },
+        {
+          "name": "SE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Ligne(s) `liste1 SE liste2 (PAS lpas) (ABS,REL)` decrivant les barres et les abscisses d'etude."
+        }
+      ],
+      "prerequisites": [
+        "BARRE : barres deja definies (obligatoire pour l'emploi de TOUT, p.102)",
+        "A placer avant les chargements et l'execution (EXEC CHARG / EXEC SURCH), les resultats n'etant calcules qu'aux sections d'etude"
+      ],
+      "examples": [
+        "# efforts et deplacements tous les 1/10 de barre\nETUDE EFFORT DEPLA\n   1 a 2 SE 0. a 1. PAS .1\n   3 a 7 SE 0. a 1. PAS .1\nETUDE SUP DEPLA\n   9 SE .5 ABS\nETUDE SUP EFFORT\n   5 SE .25 REL",
+        "# toutes les barres, pas relatif de 1/10\nETUDE EFFORT DEPLA\n   TOUT SE 0. a 1. PAS 0.1",
+        "# on ignore les sections par defaut\nETUDE SEUL EFFORT DEPLA\n   1 a 10 SE 0. a 1. PAS .2"
+      ],
+      "pitfalls": [
+        "Piege le plus frequent : deplacements absents en sortie malgre la convergence. Les moments et efforts sont corrects mais aucun deplacement n'apparait ; l'erreur est dans la selection des sorties, pas dans le calcul. Sans `DEPLA`, seuls les efforts (aux extremites) sont edites. Definir `ETUDE EFFORT DEPLA` puis `TOUT SE 0. a 1. PAS lpas` sur les barres voulues, typiquement micropieux ou poutres sur sol discretisees (p.101-102).",
+        "En pas relatif, `lpas` doit etre une valeur fractionnaire entiere : 1/2, 1/5, 1/10 sont corrects, 1/3 et 1/7 sont incorrects (p.101).",
+        "Pour les phasages avec fluage ou precontrainte, il faut obligatoirement definir des sections d'etude des deplacements avec un pas suffisamment fin (p.101).",
+        "`ETUDE` n'a aucun effet sur le calcul des modes propres ni sur le flambement : ceux-ci ne sont calcules qu'aux noeuds, il faut discretiser la structure (p.197, p.215).",
+        "Pour les charges d'exploitation, l'enveloppe des deplacements ne s'effectue qu'aux sections d'etude definies sur les barres ; l'enveloppe des deplacements des noeuds n'est jamais etudiee (p.101, p.141).",
+        "Nombre de sections d'etude plafonne par les limites du programme (80000 a 200000 par defaut, modifiable par `mx_etude nse` dans st1.par) (p.29, p.332)."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "EX",
+      "family": "caracteristiques",
+      "context": "bloc:CARA VAR LIN Y",
+      "summary": "Ligne des caracteristiques a l'extremite de la barre dans une variation lineaire suivant oy.",
+      "syntax": [
+        "EX SX sx (SY sy) (SZ sz) (IX ix) (IY iy) (IZ iz) (IPOL ip) (VY vy) (WY wy) (VZ vz) (WZ wz) (EXTY exty) (EXTZ extz)"
+      ],
+      "pages": [
+        59,
+        60
+      ],
+      "doc": "Valeurs des caracteristiques R.D.M. **a l'extremite** de la barre (p.59-60). Memes mots-cles et memes restrictions par option que `CARA`.",
+      "args": [
+        {
+          "name": "SX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section droite.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IPOL",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie polaire d'axe OX (dynamique)."
+        },
+        {
+          "name": "VY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "EXTY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Excentrement du centre de torsion suivant oy local."
+        },
+        {
+          "name": "EXTZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Excentrement du centre de torsion suivant oz local."
+        }
+      ],
+      "examples": [
+        "CARA VAR LIN Y 3,8\n   OR IX 1.0 IY 1.0\n   EX IX 1.5 IY 2.0"
+      ],
+      "aliases": []
+    },
+    {
+      "name": "EX",
+      "family": "caracteristiques",
+      "context": "bloc:CARA VAR LIN Z",
+      "summary": "Ligne des caracteristiques a l'extremite de la barre dans une variation lineaire suivant oz.",
+      "syntax": [
+        "EX SX sx (SY sy) (SZ sz) (IX ix) (IY iy) (IZ iz) (IPOL ip) (VY vy) (WY wy) (VZ vz) (WZ wz) (EXTY exty) (EXTZ extz)"
+      ],
+      "pages": [
+        59,
+        60
+      ],
+      "doc": "Valeurs des caracteristiques R.D.M. **a l'extremite** de la barre (p.59-60). Memes mots-cles et memes restrictions par option que `CARA`.",
+      "args": [
+        {
+          "name": "SX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section droite.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IPOL",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie polaire d'axe OX (dynamique)."
+        },
+        {
+          "name": "VY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "EXTY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Excentrement du centre de torsion suivant oy local."
+        },
+        {
+          "name": "EXTZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Excentrement du centre de torsion suivant oz local."
+        }
+      ],
+      "examples": [
+        "CARA VAR LIN Z 3,8\n   OR SX 1.0 IY 1.0 IZ 0.5\n   EX SX 1.5 IY 2.0 IZ 1.5"
+      ],
+      "aliases": []
+    },
+    {
+      "name": "EX",
+      "family": "caracteristiques",
+      "context": "bloc:CARA VAR PARA",
+      "summary": "Ligne des caracteristiques a l'extremite de la barre dans une variation parabolique.",
+      "syntax": [
+        "EX SX sx (SY sy) (SZ sz) (IX ix) (IY iy) (IZ iz) (IPOL ip) (VY vy) (WY wy) (VZ vz) (WZ wz) (EXTY exty) (EXTZ extz)"
+      ],
+      "pages": [
+        59,
+        60
+      ],
+      "doc": "Valeurs des caracteristiques R.D.M. **a l'extremite** de la barre, pour l'interpolation parabolique de leur inverse (p.59-61). Memes restrictions par option que `CARA`.",
+      "args": [
+        {
+          "name": "SX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section droite.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IPOL",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie polaire d'axe OX, pour le calcul de l'inertie massique en rotation (dynamique). Present dans le chapitre detaille p.59, absent de l'aide-memoire p.7."
+        },
+        {
+          "name": "VY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "EXTY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Excentrement du centre de torsion suivant oy local."
+        },
+        {
+          "name": "EXTZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Excentrement du centre de torsion suivant oz local."
+        }
+      ],
+      "examples": [
+        "CARA VAR PARA 4,100\n   OR SX 1.25 SY .2 IZ .2d-3\n   MI SX 1.00 SY .2 IZ .5d-3\n   EX SX 2.25 SY .3 IZ .4d-3"
+      ],
+      "aliases": []
+    },
+    {
+      "name": "EX",
+      "family": "caracteristiques",
+      "context": "bloc:CONTRG",
+      "summary": "Coefficients ponderateurs a l'extremite de la barre dans une contrainte generalisee VAR LIN ou VAR PARA.",
+      "syntax": [
+        "EX (N cfn) (TY cfty) (TZ cftz) (MX cfmx) (MY cfmy) (MZ cfmz) (CST cst)"
+      ],
+      "pages": [
+        103,
+        104
+      ],
+      "doc": "Coefficients ponderateurs **a l'extremite** de la barre. Valide uniquement dans un bloc `CONTRG` apres `VAR LIN` ou `VAR PARA` (p.103-104).",
+      "args": [
+        {
+          "name": "N",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfn : coefficient de l'effort normal.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfty : coefficient de l'effort tranchant ty.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cftz : coefficient de l'effort tranchant tz.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfmx : coefficient du moment de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfmy : coefficient du moment flechissant my.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfmz : coefficient du moment flechissant mz.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "CST",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cst : constante, applicable uniquement pour les charges."
+        }
+      ],
+      "examples": [
+        "CONTRG 11 'contrainte tangente'\n   VAR LIN\n   4 a 5 OR TZ 0.11 MX 0.44\n         EX TZ 0.15 MX 0.55\nFIN"
+      ],
+      "aliases": []
+    },
+    {
+      "name": "MASSE PROPRE",
+      "family": "caracteristiques",
+      "context": "top",
+      "summary": "Bloc de definition des masses propres aux noeuds et des masses generees automatiquement sur les barres, pour le calcul dynamique.",
+      "syntax": [
+        "MASSE PROPRE",
+        "   (NOEUD liste MASSE (SUP) m1 ... mj1)",
+        "   (NOEUD liste MASSE (SUP) DI d1 ... dj1)",
+        "   (BARRE listeb (< MASSE (SUP), MASSE (SUP) DI, MASSE NUL >))",
+        "   (BARRE listeb (EXC (OR (X) x ... (Z) z) (EX (X) x ... (Z) z)) ... MASSE (SUP) < (UNI m1), (LIN m1 m2), (PARABOL m1 m2 m3) >)",
+        "   ...",
+        "FIN"
+      ],
+      "pages": [
+        69,
+        70,
+        71
+      ],
+      "terminator": "FIN",
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "**Masses propres (dynamique)** (p.69-71). Le bloc decrit les masses liees aux noeuds et/ou generees automatiquement a partir des barres. Il se termine par `FIN`.\n\nLes masses doivent avoir des dimensions homogenes a des **unites de masse et non de poids**, et sont exprimees dans le **repere global**. `Masse = Poids / g_dyn` (cf. `G_DYN` des commandes materiaux).\n\nDeux modes de description :\n- **aux noeuds** : l'utilisateur fournit directement la matrice de masse, pleine symetrique (`MASSE`) ou diagonale (`MASSE DI`) ;\n- **par les barres** : ST1 calcule les masses modales et les affecte aux noeuds d'extremite des barres selectionnees. Par defaut ces masses automatiques sont **diagonales et en deplacement seulement** ; `MASSE DI` active la matrice diagonale complete (deplacements et rotations) et `MASSE` seule la formulation consistante (matrice pleine).\n\n`MASSE NUL` annule les masses modales d'une barre, mais **pas** les masses definies directement aux noeuds.\n\nLe calcul des modes propres, et donc celui des masses propres, n'est disponible qu'en **option PLANE et SPATIALE** (p.69).",
+      "args": [
+        {
+          "name": "NOEUD",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Masses definies directement aux noeuds (matrice pleine symetrique ou diagonale)."
+        },
+        {
+          "name": "BARRE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Generation automatique des masses modales a partir des barres, ou masses lineiques additionnelles."
+        }
+      ],
+      "prerequisites": [
+        "OPTION PLANE ou SPATIALE (p.69)",
+        "NOEUD / BARRE : elements deja definis",
+        "Poids volumique des barres (RO via CONS ou MAT) defini AVANT la commande, pour la generation automatique sur barres (p.70)",
+        "G_DYN (acceleration de la pesanteur) defini, pour convertir le poids volumique en masse (p.70)",
+        "EXEC MODE pour exploiter les masses (calcul des modes propres)"
+      ],
+      "examples": [
+        "# masses modales diagonales completes sur toutes les barres, sauf 3 a 7\nMASSE PROPRE\n   BARRE TOUT MASSE DI\n   BARRE 3 a 7 MASSE NUL\nFIN",
+        "# option PLANE : 3 termes diagonaux par noeud\nMASSE PROPRE\n   NOEUD 1 a 5 MASSE DI 1000. 2000. 0.\nFIN",
+        "# masses lineiques additionnelles excentrees\nMASSE PROPRE\n   BARRE 1 a 100 MASSE UNI 0.4\n   BARRE 1 a 50 EXC OR 0 Y -2 Z 0 EX X 0 Y -2 Z 0 MASSE SUP UNI 0.2\n   BARRE 51 a 100 EXC OR 0 Y +2 Z 0 EX X 0 Y +2 Z 0 MASSE SUP UNI 0.2\nFIN"
+      ],
+      "pitfalls": [
+        "Masses en unite de MASSE, pas de poids : sans G_DYN defini, la generation automatique a partir du poids volumique est impossible (p.70).",
+        "Les masses propres sont affectees aux NOEUDS uniquement : il n'y a pas de masse aux sections d'etude intermediaires des barres. Il faut definir suffisamment de noeuds pour modeliser correctement le comportement dynamique (p.70). `ETUDE` n'a aucun effet sur les modes (p.197).",
+        "`MASSE NUL` n'annule que les masses modales generees pour la barre, pas les masses definies directement aux noeuds (p.69).",
+        "Creer des masses excentrees sur des barres depourvues de masses non excentrees peut rendre la resolution des modes impossible (p.69).",
+        "Il n'est pas possible d'utiliser `SUP` pour definir plusieurs masses supplementaires avec des excentrements differents sur une meme barre (p.69).",
+        "Le nombre de termes attendu depend de l'option et du mot-cle : 6 (PLANE) ou 21 (SPATIALE) pour la demi-matrice inferieure, 3 (PLANE) ou 6 (SPATIALE) avec `DI` (p.70)."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "MI",
+      "family": "caracteristiques",
+      "context": "bloc:CARA VAR PARA",
+      "summary": "Ligne des caracteristiques au milieu de la barre dans une variation parabolique.",
+      "syntax": [
+        "MI SX sx (SY sy) (SZ sz) (IX ix) (IY iy) (IZ iz) (IPOL ip) (VY vy) (WY wy) (VZ vz) (WZ wz)"
+      ],
+      "pages": [
+        59,
+        60
+      ],
+      "doc": "Valeurs des caracteristiques R.D.M. **au milieu** de la barre, troisieme point de l'interpolation parabolique de leur inverse (p.59-61). Le chapitre detaille n'ecrit pas `(EXTY exty) (EXTZ extz)` sur la ligne MI de la forme bloc, alors qu'il les ecrit sur OR et EX.",
+      "args": [
+        {
+          "name": "SX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section droite.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IPOL",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie polaire d'axe OX, pour le calcul de l'inertie massique en rotation (dynamique). Present dans le chapitre detaille p.59, absent de l'aide-memoire p.7."
+        },
+        {
+          "name": "VY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        }
+      ],
+      "examples": [
+        "CARA VAR PARA 4,100\n   OR SX 1.25 SY .2 IZ .2d-3\n   MI SX 1.00 SY .2 IZ .5d-3\n   EX SX 2.25 SY .3 IZ .4d-3"
+      ],
+      "aliases": []
+    },
+    {
+      "name": "MI",
+      "family": "caracteristiques",
+      "context": "bloc:CONTRG",
+      "summary": "Coefficients ponderateurs au milieu de la barre dans une contrainte generalisee VAR PARA.",
+      "syntax": [
+        "MI (N cfn) (TY cfty) (TZ cftz) (MX cfmx) (MY cfmy) (MZ cfmz) (CST cst)"
+      ],
+      "pages": [
+        103,
+        104
+      ],
+      "doc": "Coefficients ponderateurs **au milieu** de la barre. Valide uniquement dans un bloc `CONTRG` apres `VAR PARA` (p.103-104).",
+      "args": [
+        {
+          "name": "N",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfn : coefficient de l'effort normal.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfty : coefficient de l'effort tranchant ty.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cftz : coefficient de l'effort tranchant tz.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfmx : coefficient du moment de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfmy : coefficient du moment flechissant my.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfmz : coefficient du moment flechissant mz.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "CST",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cst : constante, applicable uniquement pour les charges."
+        }
+      ],
+      "examples": [
+        "CONTRG 12 'effet resal'\n   VAR PARA\n   4 a 5 OR N 0.10 TZ 0.11 MY 0.44\n         MI N 0.16 TZ 0.12 MY 0.50\n         EX N 0.25 TZ 0.15 MY 0.55\nFIN"
+      ],
+      "aliases": []
+    },
+    {
+      "name": "NOEUD",
+      "family": "caracteristiques",
+      "context": "bloc:MASSE PROPRE",
+      "summary": "Affecte directement une matrice de masse, pleine symetrique ou diagonale, a une liste de noeuds.",
+      "syntax": [
+        "NOEUD liste MASSE (SUP) m1 ... mj1",
+        "NOEUD liste MASSE (SUP) DI d1 ... dj1"
+      ],
+      "pages": [
+        69,
+        70,
+        71
+      ],
+      "doc": "Masses propres definies **directement aux noeuds**, dans le repere global, en unite de masse (p.69-71).\n\n- `MASSE m1 ... mj1` : demi-matrice de masse inferieure, soit **6 termes** en structure plane, **21 termes** en spatiale.\n- `MASSE DI d1 ... dj1` : termes diagonaux, soit **3 termes** en plane, **6 termes** en spatiale.\n\nRappel : une matrice de masse exprime les efforts en fonction des accelerations (`effort = matrice_masse x acceleration`). En plane, les 6 termes remplissent la matrice `[m1 m2 m4 / m2 m3 m5 / m4 m5 m6]` (p.71).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des numeros de noeuds."
+        },
+        {
+          "name": "MASSE",
+          "kind": "keyword",
+          "type": "list",
+          "required": true,
+          "doc": "Introduit les termes de la matrice de masse."
+        },
+        {
+          "name": "SUP",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Ajoute les masses a celles deja definies sur ces noeuds au lieu de les remplacer."
+        },
+        {
+          "name": "DI",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Les valeurs fournies sont les termes diagonaux (3 en plane, 6 en spatiale) au lieu de la demi-matrice inferieure (6 en plane, 21 en spatiale)."
+        }
+      ],
+      "examples": [
+        "# option PLANE : matrice diagonale 1000., 2000., 0.\nMASSE PROPRE\n   NOEUD 1 a 5 MASSE DI 1000. 2000. 0.\nFIN",
+        "# option SPATIALE : 6 termes diagonaux\nMASSE PROPRE\n   NOEUD 1 a 5 MASSE DI 1. 2. 3. 0. 0. 0.\nFIN",
+        "# option SPATIALE : demi-matrice inferieure, 21 termes\nMASSE PROPRE\n   NOEUD 7,8,9 MASSE\n   1.\n   2. 3.\n   4. 5. 6.\n   7. 8. 9. 10.\n   11. 12. 13. 14. 15.\n   16. 17. 18. 19. 20. 21.\nFIN"
+      ],
+      "pitfalls": [
+        "Nombre de termes strictement lie a l'option : 6/21 sans DI, 3/6 avec DI (p.71).",
+        "`MASSE NUL` sur des barres n'annule pas ces masses nodales (p.70).",
+        "Valeurs en unite de masse et non de poids (p.69)."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "OR",
+      "family": "caracteristiques",
+      "context": "bloc:CARA VAR LIN Y",
+      "summary": "Ligne des caracteristiques a l'origine de la barre dans une variation lineaire suivant oy.",
+      "syntax": [
+        "OR SX sx (SY sy) (SZ sz) (IX ix) (IY iy) (IZ iz) (IPOL ip) (VY vy) (WY wy) (VZ vz) (WZ wz) (EXTY exty) (EXTZ extz)"
+      ],
+      "pages": [
+        59,
+        60
+      ],
+      "doc": "Valeurs des caracteristiques R.D.M. **a l'origine** de la barre (p.59-60). Accepte les memes mots-cles que `CARA` avec les memes restrictions par option (PLANE : sx, sy, iz, vy, wy ; GRILL : ix, sz, iy, vz, wz ; SPATIALE : toutes).",
+      "args": [
+        {
+          "name": "SX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section droite.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IPOL",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie polaire d'axe OX (dynamique)."
+        },
+        {
+          "name": "VY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "EXTY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Excentrement du centre de torsion suivant oy local."
+        },
+        {
+          "name": "EXTZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Excentrement du centre de torsion suivant oz local."
+        }
+      ],
+      "examples": [
+        "CARA VAR LIN Y 3,8\n   OR SX 1.0 IZ 1.0\n   EX SX 1.5 IZ 2.0"
+      ],
+      "aliases": []
+    },
+    {
+      "name": "OR",
+      "family": "caracteristiques",
+      "context": "bloc:CARA VAR LIN Z",
+      "summary": "Ligne des caracteristiques a l'origine de la barre dans une variation lineaire suivant oz.",
+      "syntax": [
+        "OR SX sx (SY sy) (SZ sz) (IX ix) (IY iy) (IZ iz) (IPOL ip) (VY vy) (WY wy) (VZ vz) (WZ wz) (EXTY exty) (EXTZ extz)"
+      ],
+      "pages": [
+        59,
+        60
+      ],
+      "doc": "Valeurs des caracteristiques R.D.M. **a l'origine** de la barre (p.59-60). Memes mots-cles et memes restrictions par option que `CARA`.",
+      "args": [
+        {
+          "name": "SX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section droite.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IPOL",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie polaire d'axe OX (dynamique)."
+        },
+        {
+          "name": "VY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "EXTY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Excentrement du centre de torsion suivant oy local."
+        },
+        {
+          "name": "EXTZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Excentrement du centre de torsion suivant oz local."
+        }
+      ],
+      "examples": [
+        "CARA VAR LIN Z 3,8\n   OR SX 1.0 IZ 1.0\n   EX SX 1.5 IZ 2.0"
+      ],
+      "aliases": []
+    },
+    {
+      "name": "OR",
+      "family": "caracteristiques",
+      "context": "bloc:CARA VAR PARA",
+      "summary": "Ligne des caracteristiques a l'origine de la barre dans une variation parabolique.",
+      "syntax": [
+        "OR SX sx (SY sy) (SZ sz) (IX ix) (IY iy) (IZ iz) (IPOL ip) (VY vy) (WY wy) (VZ vz) (WZ wz) (EXTY exty) (EXTZ extz)"
+      ],
+      "pages": [
+        59,
+        60
+      ],
+      "doc": "Valeurs des caracteristiques R.D.M. **a l'origine** de la barre, pour l'interpolation parabolique de leur inverse (p.59-61). Memes restrictions par option que `CARA`.\n\nL'aide-memoire p.7 n'admet pas `IPOL` sur cette ligne alors que le chapitre detaille p.59 l'y fait figurer : ne pas s'appuyer sur IPOL ici sans verification.",
+      "args": [
+        {
+          "name": "SX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section droite.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "SZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie de flexion axe OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "IPOL",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Inertie polaire d'axe OX, pour le calcul de l'inertie massique en rotation (dynamique). Present dans le chapitre detaille p.59, absent de l'aide-memoire p.7."
+        },
+        {
+          "name": "VY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ordonnee de la fibre superieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur absolue de l'ordonnee de la fibre inferieure axe OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "EXTY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Excentrement du centre de torsion suivant oy local."
+        },
+        {
+          "name": "EXTZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Excentrement du centre de torsion suivant oz local."
+        }
+      ],
+      "examples": [
+        "CARA VAR PARA 4,100\n   OR SX 1.25 SY .2 IZ .2d-3\n   MI SX 1.00 SY .2 IZ .5d-3\n   EX SX 2.25 SY .3 IZ .4d-3"
+      ],
+      "aliases": []
+    },
+    {
+      "name": "OR",
+      "family": "caracteristiques",
+      "context": "bloc:CONTRG",
+      "summary": "Coefficients ponderateurs a l'origine de la barre dans une contrainte generalisee VAR LIN ou VAR PARA.",
+      "syntax": [
+        "liste OR (N cfn) (TY cfty) (TZ cftz) (MX cfmx) (MY cfmy) (MZ cfmz) (CST cst)"
+      ],
+      "pages": [
+        103,
+        104
+      ],
+      "doc": "Coefficients ponderateurs **a l'origine** de la barre. Valide uniquement dans un bloc `CONTRG` apres `VAR LIN` ou `VAR PARA` (p.103-104). Le mot-cle `OR` suit la liste des barres sur la meme ligne.",
+      "args": [
+        {
+          "name": "N",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfn : coefficient de l'effort normal.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfty : coefficient de l'effort tranchant ty.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cftz : coefficient de l'effort tranchant tz.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfmx : coefficient du moment de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfmy : coefficient du moment flechissant my.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cfmz : coefficient du moment flechissant mz.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "CST",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "cst : constante, applicable uniquement pour les charges."
+        }
+      ],
+      "examples": [
+        "CONTRG 11 'contrainte tangente'\n   VAR LIN\n   4 a 5 OR TZ 0.11 MX 0.44\n         EX TZ 0.15 MX 0.55\nFIN"
+      ],
+      "aliases": []
+    },
+    {
+      "name": "PLASTIQUE",
+      "family": "caracteristiques",
+      "context": "bloc:CARA PSE",
+      "summary": "Transforme le sol elastique d'une barre en sol pseudo plastique en fixant les efforts seuils et le signe de pression pris en compte.",
+      "syntax": [
+        "PLASTIQUE (POS) (NEG) (KFX ffx) (KFY ffy) (KFZ ffz) (KMX fmx)"
+      ],
+      "pages": [
+        59,
+        60,
+        65
+      ],
+      "doc": "Ligne facultative d'une commande `CARA PSE` (p.59-60, exemples p.65). Elle declare un **sol pseudo plastique** : les mots-cles KFX/KFY/KFZ/KMX y portent non pas des raideurs mais les **efforts seuils plastiques** (`ffx`, `ffy`, `ffz`, `fmx`) au-dela desquels la reaction du sol plafonne. Les raideurs elastiques restent definies par les lignes `ZONE` qui suivent.\n\n`POS` et `NEG` indiquent que la reaction du sol n'est prise en compte que si la pression est respectivement positive et/ou negative (p.60).",
+      "args": [
+        {
+          "name": "POS",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "La reaction du sol n'est prise en compte que si la pression est positive."
+        },
+        {
+          "name": "NEG",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "La reaction du sol n'est prise en compte que si la pression est negative."
+        },
+        {
+          "name": "KFX",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "ffx : effort seuil plastique du sol pour la barre suivant l'axe ox local.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "KFY",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "ffy : effort seuil plastique du sol pour la barre suivant l'axe oy local.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "KFZ",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "ffz : effort seuil plastique du sol pour la barre suivant l'axe oz local.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "KMX",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "fmx : effort seuil plastique du sol pour la barre a la torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        }
+      ],
+      "examples": [
+        "# option PLANE : reaction de sol seulement en pression negative\nCARA PSE numbarpieu SX 0.95 IZ 0.07\n   PLASTIQUE NEG KFY ffy0*diam1*nbp\n   ZONE 1 KFY KI1(1)*nbp"
+      ],
+      "pitfalls": [
+        "Sous PLASTIQUE, les mots-cles KFX/KFY/KFZ/KMX designent des efforts SEUILS (ffx, ffy, ffz, fmx), pas des raideurs : les raideurs restent portees par les lignes ZONE (p.60).",
+        "Une seule couche de sol par barre en pseudo plastique ; la plastification est calculee sur la pression moyenne le long de la barre, d'ou l'obligation de decomposer la structure en plusieurs barres (p.60).",
+        "Ne pas declarer tout le modele plastique au premier calcul : sans appui inconditionnellement stable, le calcul non lineaire diverge (retour d'experience support, non documente)."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "SE",
+      "family": "caracteristiques",
+      "context": "bloc:ETUDE",
+      "summary": "Ligne de definition des barres et des abscisses des sections d'etude, en pas relatif ou absolu.",
+      "syntax": [
+        "liste1 SE liste2 (PAS lpas) (ABS, REL)"
+      ],
+      "pages": [
+        101,
+        102
+      ],
+      "doc": "Ligne de description des sections d'etude, repetable, valide sous une commande `ETUDE` (p.101-102).\n\n`liste1` = liste des numeros de barres (`TOUT` admis), `liste2` = liste des abscisses d'etude (typiquement `0. a 1.` en relatif), `lpas` = pas du decoupage constant le long des barres.\n\nPar defaut l'abscisse est **relative** a la longueur de la barre (`REL`) ; `ABS` la donne en longueur reelle.",
+      "args": [
+        {
+          "name": "liste1",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des numeros de barres. `TOUT` admis (toutes les barres deja definies) ; la forme `TOUTES` est attestee dans l'exemple p.300."
+        },
+        {
+          "name": "SE",
+          "kind": "keyword",
+          "type": "list",
+          "required": true,
+          "doc": "Introduit `liste2`, la liste des abscisses d'etude. Forme longue `SECTION` attestee dans l'exemple p.138."
+        },
+        {
+          "name": "PAS",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Pas du decoupage constant le long des barres des points d'etude (relatif ou absolu). En relatif, doit etre une fraction entiere : .1, .2, .5 correctes, 1/3 et 1/7 incorrectes."
+        },
+        {
+          "name": "ABS",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "L'abscisse est donnee en longueur reelle."
+        },
+        {
+          "name": "REL",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "default": "REL",
+          "doc": "L'abscisse est donnee relativement a la longueur de la barre. Mode par defaut si ni ABS ni REL n'est precise. Forme longue `RELATIF` attestee dans l'exemple p.138."
+        }
+      ],
+      "examples": [
+        "ETUDE EFFORT DEPLA\n   1 a 2 SE 0. a 1. PAS .1",
+        "ETUDE SUP DEPLA\n   9 SE .5 ABS",
+        "ETUDE SUP EFFORT\n   5 SE .25 REL"
+      ],
+      "pitfalls": [
+        "En pas relatif, un pas non fractionnaire entier (1/3, 1/7) est incorrect (p.101).",
+        "Les barres excentrees ne peuvent pas porter de section d'etude sur leurs troncons rigides exterieurs (p.53).",
+        "Les exemples officiels emploient les formes longues `SECTION` (= SE) et `RELATIF` (= REL) (p.138), et `TOUTES` (= TOUT) (p.300). Le dictionnaire des mots-cles est modifiable par l'utilisateur via le fichier ST1.par (p.331-332)."
+      ],
+      "aliases": [
+        "SECTION"
+      ]
+    },
+    {
+      "name": "VAR LIN",
+      "family": "caracteristiques",
+      "context": "bloc:CONTRG",
+      "summary": "Bascule les lignes de ponderation suivantes en coefficients interpoles lineairement entre l'origine et l'extremite des barres.",
+      "syntax": [
+        "VAR LIN",
+        "liste OR (N cfn) (TY cfty) (TZ cftz) (MX cfmx) (MY cfmy) (MZ cfmz) (CST cst)",
+        "      EX (N cfn) (TY cfty) (TZ cftz) (MX cfmx) (MY cfmy) (MZ cfmz) (CST cst)"
+      ],
+      "pages": [
+        103,
+        104
+      ],
+      "doc": "Mot-cle de type de variation, valide dans un bloc `CONTRG` (p.103-104). Les coefficients varient **lineairement** le long de chaque barre entre les valeurs donnees en `OR` et en `EX`.\n\nPour une section d'etude a l'abscisse fractionnaire `xx` (de 0 a 1) : `cf = cfor + (cfex - cfor)*xx` (p.104).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des barres concernees, suivie sur la meme ligne du mot-cle OR."
+        },
+        {
+          "name": "OR",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Coefficients a l'origine de la barre."
+        },
+        {
+          "name": "EX",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Coefficients a l'extremite de la barre."
+        }
+      ],
+      "examples": [
+        "CONTRG 11 'etude d''une contrainte tangente'\n   VAR LIN\n   4 a 5 OR TZ 0.11 MX 0.44\n         EX TZ 0.15 MX 0.55\nFIN"
+      ],
+      "pitfalls": [
+        "L'interpolation se fait en fonction de la position de chaque section d'etude : sans sections d'etude intermediaires (cf. ETUDE p.101), la variation n'est visible qu'aux extremites."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "VAR PARA",
+      "family": "caracteristiques",
+      "context": "bloc:CONTRG",
+      "summary": "Bascule les lignes de ponderation suivantes en coefficients interpoles par une parabole entre origine, milieu et extremite.",
+      "syntax": [
+        "VAR PARA",
+        "liste OR (N cfn) (TY cfty) (TZ cftz) (MX cfmx) (MY cfmy) (MZ cfmz) (CST cst)",
+        "      MI (N cfn) (TY cfty) (TZ cftz) (MX cfmx) (MY cfmy) (MZ cfmz) (CST cst)",
+        "      EX (N cfn) (TY cfty) (TZ cftz) (MX cfmx) (MY cfmy) (MZ cfmz) (CST cst)"
+      ],
+      "pages": [
+        103,
+        104,
+        105
+      ],
+      "doc": "Mot-cle de type de variation, valide dans un bloc `CONTRG` (p.103-105). Les coefficients sont **interpoles par une parabole** le long de chaque barre a partir des valeurs `OR`, `MI` et `EX`.\n\nPour une section d'etude a l'abscisse fractionnaire `xx` (de 0 a 1) : `cf = a*xx*xx + b*xx + c` avec `a = 2*(cfor - 2*cfmi + cfex)`, `b = -3*cfor + 4*cfmi - cfex`, `c = cfex` (p.105).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des barres concernees, suivie sur la meme ligne du mot-cle OR."
+        },
+        {
+          "name": "OR",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Coefficients a l'origine de la barre."
+        },
+        {
+          "name": "MI",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Coefficients au milieu de la barre."
+        },
+        {
+          "name": "EX",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Coefficients a l'extremite de la barre."
+        }
+      ],
+      "examples": [
+        "CONTRG 12 'contrainte tangente avec effet resal'\n   VAR PARA\n   4 a 5 OR N 0.10 TZ 0.11 MY 0.44\n         MI N 0.16 TZ 0.12 MY 0.50\n         EX N 0.25 TZ 0.15 MY 0.55\nFIN"
+      ],
+      "pitfalls": [
+        "Les formules d'interpolation publiees p.105 donnent `c = cfex` : les reprendre telles quelles plutot que de supposer `c = cfor`.",
+        "Sans sections d'etude intermediaires (cf. ETUDE p.101), la variation parabolique n'est pas exploitee."
+      ],
+      "aliases": []
+    },
+    {
+      "name": "ZONE",
+      "family": "caracteristiques",
+      "context": "bloc:CARA PSE",
+      "summary": "Definit une zone de raideur de sol le long d'une barre sur sol elastique et son abscisse de fin.",
+      "syntax": [
+        "ZONE 1 (KFX kfx) (KFY kfy) (KFZ kfz) (KMX kmx) XL xl",
+        "...",
+        "ZONE n (KFX kfx) (KFY kfy) (KFZ kfz) (KMX kmx)"
+      ],
+      "pages": [
+        59,
+        60
+      ],
+      "doc": "Ligne de zone de sol, valide uniquement dans une commande `CARA PSE` (p.59-60). Les zones sont numerotees dans l'ordre croissant des abscisses le long de la barre ; chaque zone porte ses raideurs de sol et son abscisse de fin `XL`.\n\nRaideurs utilisables selon l'option (p.60) : `PLANE` -> KFX, KFY ; `GRILL` -> KFZ, KMX ; `SPATIALE` -> toutes.",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero de la zone (1 a n) le long de la barre."
+        },
+        {
+          "name": "KFX",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Reaction d'un sol elastique suivant l'axe ox local.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "KFY",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Reaction d'un sol elastique suivant l'axe oy local.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "KFZ",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Reaction d'un sol elastique suivant l'axe oz local.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "KMX",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Reaction d'un sol elastique a la torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "XL",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Abscisse de la fin de la zone de sol elastique. Obligatoire pour toutes les zones sauf la derniere (p.61)."
+        }
+      ],
+      "examples": [
+        "CARA PSE 10 a 20 SX 0.95 IZ 0.07\n   ZONE 1 KFY 1200. XL 1.20\n   ZONE 2 KFY 1800. XL 4.80\n   ZONE 3 KFY 900."
+      ],
+      "pitfalls": [
+        "XL de la derniere zone est facultatif ; meme si une valeur est fournie, les proprietes de la derniere zone s'appliquent jusqu'a l'extremite de la poutre, y compris au-dela de l'abscisse XL specifiee (p.61).",
+        "La fin de la derniere zone comprend obligatoirement l'extremite de la barre (p.66)."
+      ],
+      "aliases": []
+    }
+  ]
+}

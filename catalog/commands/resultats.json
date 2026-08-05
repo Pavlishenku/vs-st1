@@ -1,0 +1,5632 @@
+{
+  "commands": [
+    {
+      "name": "CHARG",
+      "family": "resultats",
+      "context": "bloc:COMB",
+      "summary": "Reprend des resultats de type CHARG dans le bloc COMB.",
+      "doc": "Chargements fixes calcules par EXEC CHARG.\n\nCOMB ne combine ni enveloppes ni surcharges : pour cela, utiliser ENV ou ENV COMB [p.234].",
+      "syntax": [
+        "CHARG liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Chargements fixes calcules par EXEC CHARG. « TOUT » est admis.",
+          "pages": [
+            234
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            234
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        234
+      ],
+      "examples": [
+        "CHARG 1,2 1.35"
+      ]
+    },
+    {
+      "name": "COMB",
+      "family": "resultats",
+      "context": "bloc:COMB",
+      "summary": "Reprend des resultats de type COMB dans le bloc COMB.",
+      "doc": "Combinaisons deja calculees.\n\nCOMB ne combine ni enveloppes ni surcharges : pour cela, utiliser ENV ou ENV COMB [p.234].",
+      "syntax": [
+        "COMB liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Combinaisons deja calculees. « TOUT » est admis.",
+          "pages": [
+            234
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            234
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        234
+      ],
+      "examples": [
+        "COMB 1,2 1.35"
+      ]
+    },
+    {
+      "name": "ETAT",
+      "family": "resultats",
+      "context": "bloc:COMB",
+      "summary": "Reprend des resultats de type ETAT dans le bloc COMB.",
+      "doc": "Etats sauvegardes par un phasage.\n\nCOMB ne combine ni enveloppes ni surcharges : pour cela, utiliser ENV ou ENV COMB [p.234].",
+      "syntax": [
+        "ETAT liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Etats sauvegardes par un phasage. « TOUT » est admis.",
+          "pages": [
+            234
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            234
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        234
+      ],
+      "examples": [
+        "ETAT 1,2 1.35"
+      ]
+    },
+    {
+      "name": "INCENDIE",
+      "family": "resultats",
+      "context": "bloc:COMB",
+      "summary": "Reprend des resultats de type INCENDIE dans le bloc COMB.",
+      "doc": "Resultats d'incendie calcules par EXEC INCENDIE.\n\nCOMB ne combine ni enveloppes ni surcharges : pour cela, utiliser ENV ou ENV COMB [p.234].",
+      "syntax": [
+        "INCENDIE liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Resultats d'incendie calcules par EXEC INCENDIE. « TOUT » est admis.",
+          "pages": [
+            234
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            234
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        234
+      ],
+      "examples": [
+        "INCENDIE 1,2 1.35"
+      ]
+    },
+    {
+      "name": "PHASAGE",
+      "family": "resultats",
+      "context": "bloc:COMB",
+      "summary": "Reprend des resultats de type PHASAGE dans le bloc COMB.",
+      "doc": "Resultats de phasage calcules par EXEC PHASAGE.\n\nCOMB ne combine ni enveloppes ni surcharges : pour cela, utiliser ENV ou ENV COMB [p.234].",
+      "syntax": [
+        "PHASAGE liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Resultats de phasage calcules par EXEC PHASAGE. « TOUT » est admis.",
+          "pages": [
+            234
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            234
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        234
+      ],
+      "examples": [
+        "PHASAGE 1,2 1.35"
+      ]
+    },
+    {
+      "name": "SPECTRE",
+      "family": "resultats",
+      "context": "bloc:COMB",
+      "summary": "Reprend des resultats de type SPECTRE dans le bloc COMB.",
+      "doc": "Reponses spectrales calculees par EXEC SPECTRE REPONSE.\n\nCOMB ne combine ni enveloppes ni surcharges : pour cela, utiliser ENV ou ENV COMB [p.234].",
+      "syntax": [
+        "SPECTRE liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Reponses spectrales calculees par EXEC SPECTRE REPONSE. « TOUT » est admis.",
+          "pages": [
+            234
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            234
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        234
+      ],
+      "examples": [
+        "SPECTRE 1,2 1.35"
+      ]
+    },
+    {
+      "name": "CENTR",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Recentre le dessin, la geometrie selectionnee, ou reinitialise l'echelle des efforts, deplacements, contraintes et pressions.",
+      "syntax": [
+        "CENTR",
+        "CENTR GEOM",
+        "CENTR < EFFORT <N, TY ... MZ>, DEPLA (DX, DY, DZ, RX, RY, RZ), CONTR <VY ... WZ>, CONTRG, PRESS <PX, PY, PZ, MX> > (MAX xmax)"
+      ],
+      "doc": "Centrage du dessin affiche a l'ecran [p.252].\n\n- `CENTR` seul : centrage du dessin total.\n- `CENTR GEOM` : centrage de la structure selectionnee lors de la derniere `SELEC`, de maniere a remplir tout l'ecran (equivaut a un zoom sur la selection).\n- `CENTR <grandeur> (MAX xmax)` : redessine les efforts, deplacements, contraintes, contraintes generalisees ou pressions de maniere que la **dimension maximale dessinee ne depasse pas `xmax` centimetres a l'ecran** ; l'echelle est reinitialisee a cette valeur. **Par defaut le maximum reste egal a ce qu'il etait precedemment** ; lors de la premiere utilisation, la valeur provient du fichier parametres `st1.par` [p.331].\n- Lors d'un premier dessin, le centrage s'effectue par defaut sur la geometrie de la structure.",
+      "args": [
+        {
+          "name": "GEOM",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Centrage sur la geometrie selectionnee."
+        },
+        {
+          "name": "EFFORT",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Centrage sur un effort R.D.M. (N, TY ... MZ selon l'option)."
+        },
+        {
+          "name": "DEPLA",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Centrage sur un deplacement (DX, DY, DZ, RX, RY, RZ selon l'option)."
+        },
+        {
+          "name": "CONTR",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Centrage sur une contrainte normale (VY ... WZ selon l'option)."
+        },
+        {
+          "name": "CONTRG",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Centrage sur une contrainte generalisee."
+        },
+        {
+          "name": "PRESS",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Centrage sur une pression (PX, PY, PZ, MX selon l'option)."
+        },
+        {
+          "name": "MAX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Dimension maximale du trace a l'ecran, en centimetres.",
+          "required": false,
+          "default": "maximum precedent (premiere fois : valeur de st1.par)",
+          "unit": "centimetre"
+        }
+      ],
+      "pitfalls": [
+        "L'aide-memoire imprime `PRESS <PX, PY, PZ, RX>` [p.252 aide-memoire] ; le chapitre donne `PRESS <PX, PY, PZ, MX>` [p.252]."
+      ],
+      "examples": [
+        "ZOOM 2\nCENTR",
+        "SELEC BARRE 20\nCENTR GEOM",
+        "CENTR EFFORT MZ MAX 5"
+      ],
+      "pages": [
+        252
+      ]
+    },
+    {
+      "name": "CLS",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Efface l'ecran en mode graphique.",
+      "syntax": [
+        "CLS"
+      ],
+      "doc": "Efface l'ecran en mode graphique [p.250]. Le bouton `Cls` en haut a gauche de l'ecran graphique produit le meme resultat [p.247].",
+      "examples": [
+        "CLS\nGEOM"
+      ],
+      "pages": [
+        250
+      ]
+    },
+    {
+      "name": "CONTR",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Dessine une contrainte normale en fibre extreme pour des chargements, combinaisons, enveloppes ou surcharges.",
+      "syntax": [
+        "CONTR <VY,WY,VZ,WZ,VYVZ,VYWZ,WYVZ,WYWZ> <CHARG,COMB,ENV,SURCH> liste (couleur)"
+      ],
+      "doc": "Dessine les contraintes normales de la structure [p.256].\n\nComposantes utilisables : **PLANE** `vy, wy` ; **GRILL** `vz, wz` ; **SPATIALE** `vyvz, vywz, wyvz, wywz`.\n\n- Le dessin visualise les resultats obtenus aux sections d'etude definies sur les barres (`ETUDE` p.101).\n- Le dessin d'une enveloppe comprend deux courbes : maximum et minimum.",
+      "args": [
+        {
+          "name": "VY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte en fibre superieure d'axe OY.",
+          "onlyOptions": [
+            "PLANE"
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte en fibre inferieure d'axe OY.",
+          "onlyOptions": [
+            "PLANE"
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte en fibre superieure d'axe OZ.",
+          "onlyOptions": [
+            "GRILL"
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte en fibre inferieure d'axe OZ.",
+          "onlyOptions": [
+            "GRILL"
+          ]
+        },
+        {
+          "name": "VYVZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte croisee fibres VY et VZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "VYWZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte croisee fibres VY et WZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WYVZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte croisee fibres WY et VZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WYWZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte croisee fibres WY et WZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "source",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Type de resultat a dessiner.",
+          "values": [
+            "CHARG",
+            "COMB",
+            "ENV",
+            "SURCH"
+          ],
+          "required": true
+        },
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des resultats a dessiner, deja en base.",
+          "required": true
+        },
+        {
+          "name": "couleur",
+          "kind": "positional",
+          "type": "enum",
+          "doc": "Couleur du trace.",
+          "values": [
+            "NOIR",
+            "INDIGO",
+            "VERT",
+            "CYAN",
+            "ROUGE",
+            "MAGENTA",
+            "MARRON",
+            "NEUTRE",
+            "GRIS",
+            "BLEU",
+            "PISTACHE",
+            "CIEL",
+            "CORAIL",
+            "MAUVE",
+            "JAUNE",
+            "BLANC"
+          ],
+          "required": false
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "prerequisites": [
+        "Fibres extremes definies dans CARA (VY, WY, VZ, WZ) [p.59-60].",
+        "Resultats en base et sections d'etude suffisantes [p.101, p.256]."
+      ],
+      "examples": [
+        "CONTR VY COMB 3",
+        "CONTR VYVZ ENV 5",
+        "VUE 0 -1 0\nSELEC BARRE 20 a 39\nCONTR VYVZ ENV 2"
+      ],
+      "pages": [
+        256
+      ]
+    },
+    {
+      "name": "CONTRG",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Dessine une contrainte generalisee pour des chargements, combinaisons, enveloppes ou surcharges.",
+      "syntax": [
+        "CONTRG i <CHARG,COMB,ENV,SURCH> liste (couleur)"
+      ],
+      "doc": "Dessine la contrainte generalisee numero `i` (definie par la commande `CONTRG` p.103) [p.257].\n\n- Le dessin visualise les resultats obtenus aux sections d'etude definies sur les barres (`ETUDE` p.101).\n- Le dessin d'une enveloppe comprend deux courbes : maximum et minimum.",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la contrainte generalisee a dessiner.",
+          "required": true
+        },
+        {
+          "name": "source",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Type de resultat a dessiner.",
+          "values": [
+            "CHARG",
+            "COMB",
+            "ENV",
+            "SURCH"
+          ],
+          "required": true
+        },
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des resultats a dessiner, deja en base.",
+          "required": true
+        },
+        {
+          "name": "couleur",
+          "kind": "positional",
+          "type": "enum",
+          "doc": "Couleur du trace.",
+          "values": [
+            "NOIR",
+            "INDIGO",
+            "VERT",
+            "CYAN",
+            "ROUGE",
+            "MAGENTA",
+            "MARRON",
+            "NEUTRE",
+            "GRIS",
+            "BLEU",
+            "PISTACHE",
+            "CIEL",
+            "CORAIL",
+            "MAUVE",
+            "JAUNE",
+            "BLANC"
+          ],
+          "required": false
+        }
+      ],
+      "prerequisites": [
+        "CONTRG i definie [p.103] et integree aux resultats lors de EXEC CHARG / EXEC SURCH [p.105]."
+      ],
+      "examples": [
+        "CONTRG 2 COMB 3",
+        "CONTRG 10 ENV 5 CIEL"
+      ],
+      "pages": [
+        257
+      ]
+    },
+    {
+      "name": "COUL",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Change la couleur par defaut des efforts, deplacements, contraintes, contraintes generalisees et pressions.",
+      "syntax": [
+        "COUL <EFFORT, DEPLA, CONTR, CONTRG, PRESS> (couleur)"
+      ],
+      "doc": "Changement des couleurs par defaut [p.253].\n\nCouleurs disponibles : `NOIR, INDIGO, VERT, CYAN, ROUGE, MAGENTA, MARRON, NEUTRE, GRIS, BLEU, PISTACHE, CIEL, CORAIL, MAUVE, JAUNE, BLANC`.\n\nA chaque couleur ecran correspond une **epaisseur et un type de trait** pour le dessin en noir et blanc sur imprimante laser ; la correspondance couleur / epaisseur de trait est definie dans le fichier parametres `st1.par` [p.331].",
+      "args": [
+        {
+          "name": "grandeur",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Grandeur dont on change la couleur par defaut.",
+          "values": [
+            "EFFORT",
+            "DEPLA",
+            "CONTR",
+            "CONTRG",
+            "PRESS"
+          ],
+          "required": true
+        },
+        {
+          "name": "couleur",
+          "kind": "positional",
+          "type": "enum",
+          "doc": "Mot-cle de la couleur choisie.",
+          "values": [
+            "NOIR",
+            "INDIGO",
+            "VERT",
+            "CYAN",
+            "ROUGE",
+            "MAGENTA",
+            "MARRON",
+            "NEUTRE",
+            "GRIS",
+            "BLEU",
+            "PISTACHE",
+            "CIEL",
+            "CORAIL",
+            "MAUVE",
+            "JAUNE",
+            "BLANC"
+          ],
+          "required": false
+        }
+      ],
+      "pitfalls": [
+        "L'aide-memoire omet CONTR dans la liste des grandeurs (`COUL <EFFORT, DEPLA, CONTRG, PRESS>`, p.253 aide-memoire) alors que le chapitre l'inclut [p.253]."
+      ],
+      "examples": [
+        "COUL DEPLA JAUNE",
+        "COUL EFFORT ROUGE"
+      ],
+      "pages": [
+        253
+      ]
+    },
+    {
+      "name": "DEPLA",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Dessine la deformee de la structure, globalement ou suivant une direction du repere global.",
+      "syntax": [
+        "DEPLA <CHARG,COMB,ENV,SURCH> liste (couleur)",
+        "DEPLA <DX ... RZ> <CHARG,COMB,ENV,SURCH> liste (couleur)"
+      ],
+      "doc": "Dessine la deformee de la structure [p.254].\n\nDirections utilisables : **PLANE** `dx, dy, rz` ; **GRILL** `rx, dz, ry` ; **SPATIALE** `dx, dy, dz, rx, ry, rz`.\n\n- Le dessin visualise les deplacements des **noeuds et des sections d'etude** definies sur les barres (`ETUDE` p.101) : la deformee d'une barre n'apparait que si l'on a defini assez de sections.\n- Le dessin d'une enveloppe comprend **deux courbes** : effets maximum et effets minimum.\n- Couleurs : `NOIR, INDIGO, VERT, CYAN, ROUGE, MAGENTA, MARRON, NEUTRE, GRIS, BLEU, PISTACHE, CIEL, CORAIL, MAUVE, JAUNE, BLANC`.",
+      "args": [
+        {
+          "name": "DX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Deplacement suivant OX.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "DY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Deplacement suivant OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "DZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Deplacement suivant OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "RX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Rotation autour de OX.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "RY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Rotation autour de OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "RZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Rotation autour de OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "source",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Type de resultat a dessiner.",
+          "values": [
+            "CHARG",
+            "COMB",
+            "ENV",
+            "SURCH"
+          ],
+          "required": true
+        },
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des chargements, combinaisons, enveloppes ou surcharges a dessiner, deja en base.",
+          "required": true
+        },
+        {
+          "name": "couleur",
+          "kind": "positional",
+          "type": "enum",
+          "doc": "Couleur du trace.",
+          "values": [
+            "NOIR",
+            "INDIGO",
+            "VERT",
+            "CYAN",
+            "ROUGE",
+            "MAGENTA",
+            "MARRON",
+            "NEUTRE",
+            "GRIS",
+            "BLEU",
+            "PISTACHE",
+            "CIEL",
+            "CORAIL",
+            "MAUVE",
+            "JAUNE",
+            "BLANC"
+          ],
+          "required": false
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "prerequisites": [
+        "Resultats en base : EXEC CHARG [p.125], COMB [p.234], ENV [p.235], EXEC SURCH [p.178].",
+        "Sections d'etude de deplacement suffisantes (ETUDE DEPLA) [p.101]."
+      ],
+      "pitfalls": [
+        "Sans sections d'etude en nombre suffisant, la deformee d'une barre n'est pas visualisable [p.254]."
+      ],
+      "examples": [
+        "DEPLA CHARG 2",
+        "GEOM\nSELEC BARRE 1 a 10\nDEPLA CHARG 11",
+        "DEPLA DY SURCH 1"
+      ],
+      "pages": [
+        254
+      ]
+    },
+    {
+      "name": "ECRAN",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Change le pilote (la taille) de l'ecran graphique, ou revient a la visualisation plein ecran apres une previsualisation traceur.",
+      "syntax": [
+        "ECRAN nom",
+        "ECRAN"
+      ],
+      "doc": "Modifie le pilote de l'ecran graphique [p.248]. Noms utilisables : `w800_600`, `w1024_768`, `w1280_1024`.\n\nLe type d'ecran est initialise dans le fichier parametres `st1.par` [p.331], ce qui permet une initialisation par defaut ; il peut cependant etre redefini dans le fichier de donnees.\n\n`ECRAN` seul ramene a la visualisation plein ecran apres une previsualisation traceur obtenue par `TRA` [p.249].",
+      "args": [
+        {
+          "name": "nom",
+          "kind": "positional",
+          "type": "enum",
+          "doc": "Nom du pilote d'ecran graphique.",
+          "values": [
+            "w800_600",
+            "w1024_768",
+            "w1280_1024"
+          ],
+          "required": false
+        }
+      ],
+      "examples": [
+        "ECRAN w1280_1024",
+        "TRA\nECRAN"
+      ],
+      "pages": [
+        248,
+        249
+      ]
+    },
+    {
+      "name": "EFFORT",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Dessine un effort R.D.M. pour des chargements, combinaisons, enveloppes ou surcharges.",
+      "syntax": [
+        "EFFORT <N,TY,TZ,MX,MY,MZ> <CHARG,COMB,ENV,SURCH> liste (couleur)"
+      ],
+      "doc": "Dessine les efforts R.D.M. de la structure [p.255].\n\nComposantes utilisables : **PLANE** `n, ty, mz` ; **GRILL** `mx, tz, my` ; **SPATIALE** `n, ty, tz, mx, my, mz`.\n\n- Le dessin visualise les resultats obtenus **aux sections d'etude** definies sur les barres (`ETUDE` p.101).\n- Le dessin d'une enveloppe comprend deux courbes : maximum et minimum.\n- A chaque couleur ecran correspond une epaisseur et un type de trait sur imprimante laser (`st1.par` p.331).",
+      "args": [
+        {
+          "name": "N",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Effort normal.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Effort tranchant suivant oy.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Effort tranchant suivant oz.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment flechissant autour de oy.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment flechissant autour de oz.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "source",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Type de resultat a dessiner.",
+          "values": [
+            "CHARG",
+            "COMB",
+            "ENV",
+            "SURCH"
+          ],
+          "required": true
+        },
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des resultats a dessiner, deja en base.",
+          "required": true
+        },
+        {
+          "name": "couleur",
+          "kind": "positional",
+          "type": "enum",
+          "doc": "Couleur du trace.",
+          "values": [
+            "NOIR",
+            "INDIGO",
+            "VERT",
+            "CYAN",
+            "ROUGE",
+            "MAGENTA",
+            "MARRON",
+            "NEUTRE",
+            "GRIS",
+            "BLEU",
+            "PISTACHE",
+            "CIEL",
+            "CORAIL",
+            "MAUVE",
+            "JAUNE",
+            "BLANC"
+          ],
+          "required": false
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "prerequisites": [
+        "Resultats en base : EXEC CHARG [p.125], COMB [p.234], ENV [p.235], EXEC SURCH [p.178].",
+        "Sections d'etude d'efforts suffisantes (ETUDE) [p.101]."
+      ],
+      "examples": [
+        "EFFORT N COMB 3",
+        "EFFORT TY ENV 5 ROUGE\nEFFORT MZ ENV 5 VERT",
+        "GEOM\nEFFORT MZ ENV 2\nCENTR"
+      ],
+      "pages": [
+        255
+      ]
+    },
+    {
+      "name": "GEOM",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Dessine la structure (les barres selectionnees).",
+      "syntax": [
+        "GEOM"
+      ],
+      "doc": "Dessine la structure [p.253]. Le dessin porte sur la selection courante : apres `SELEC BARRE 1 a 10`, `GEOM` execute le dessin des barres 1 a 10.",
+      "examples": [
+        "GEOM",
+        "SELEC BARRE 1 a 10 GEOM"
+      ],
+      "pages": [
+        253
+      ]
+    },
+    {
+      "name": "NUM",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Affiche la numerotation des noeuds et/ou des barres.",
+      "syntax": [
+        "NUM",
+        "NUM (NOEUD) (BARRE)"
+      ],
+      "doc": "Numerotation des noeuds et des barres de la structure [p.253]. `NUM` seul equivaut a `NUM NOEUD BARRE`.",
+      "args": [
+        {
+          "name": "NOEUD",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Numerotation des noeuds.",
+          "required": false
+        },
+        {
+          "name": "BARRE",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Numerotation des barres.",
+          "required": false
+        }
+      ],
+      "examples": [
+        "NUM",
+        "NUM NOEUD",
+        "NUM BARRE"
+      ],
+      "pages": [
+        253
+      ]
+    },
+    {
+      "name": "PRESS",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Dessine les pressions des barres sur sol elastique pour des chargements, combinaisons, enveloppes ou surcharges.",
+      "syntax": [
+        "PRESS <PX,PY,PZ,MX> <CHARG,COMB,ENV,SURCH> liste (couleur)"
+      ],
+      "doc": "Dessine les pressions des barres sur sol elastique (`CARA PSE` p.59) [p.258].\n\nComposantes utilisables : **PLANE** `px, py` ; **GRILL** `mx, pz` ; **SPATIALE** `px, py, pz, mx`.\n\n- Le dessin visualise les resultats obtenus **aux sections d'etude des deplacements** definies sur les barres (`ETUDE` p.101).\n- Le dessin d'une enveloppe comprend deux courbes : maximum et minimum.",
+      "args": [
+        {
+          "name": "PX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Pression tangente suivant ox.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "PY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Pression transversale suivant oy.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "PZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Pression transversale suivant oz.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Pression de torsion (raideur KMX).",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "source",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Type de resultat a dessiner.",
+          "values": [
+            "CHARG",
+            "COMB",
+            "ENV",
+            "SURCH"
+          ],
+          "required": true
+        },
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des resultats a dessiner, deja en base.",
+          "required": true
+        },
+        {
+          "name": "couleur",
+          "kind": "positional",
+          "type": "enum",
+          "doc": "Couleur du trace.",
+          "values": [
+            "NOIR",
+            "INDIGO",
+            "VERT",
+            "CYAN",
+            "ROUGE",
+            "MAGENTA",
+            "MARRON",
+            "NEUTRE",
+            "GRIS",
+            "BLEU",
+            "PISTACHE",
+            "CIEL",
+            "CORAIL",
+            "MAUVE",
+            "JAUNE",
+            "BLANC"
+          ],
+          "required": false
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "prerequisites": [
+        "Barres sur sol elastique definies par CARA PSE [p.59].",
+        "Sections d'etude de deplacement suffisantes (ETUDE DEPLA) [p.101]."
+      ],
+      "pitfalls": [
+        "La commande PRESS graphique ne figure pas dans l'aide-memoire des commandes graphiques (p.247-257) ; elle est decrite au paragraphe 16.20 [p.258]."
+      ],
+      "examples": [
+        "PRESS PY COMB 3",
+        "PRESS PX ENV 5 ROUGE"
+      ],
+      "pages": [
+        258
+      ]
+    },
+    {
+      "name": "PRINT",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Envoie le dessin affiche a l'ecran sur une imprimante Windows.",
+      "syntax": [
+        "PRINT 'boite'"
+      ],
+      "doc": "Le dessin affiche a l'ecran peut etre envoye sur toute imprimante figurant dans la liste des imprimantes Windows installees, via le menu `Fichier` > commande `Impression...`. La commande generee dans la zone de saisie graphique est `PRINT 'boite'` [p.249].\n\nLe bouton `Print` en haut a gauche de l'ecran graphique produit le meme resultat [p.247].",
+      "args": [
+        {
+          "name": "'boite'",
+          "kind": "positional",
+          "type": "string",
+          "doc": "Chaine generee par la boite de dialogue d'impression Windows.",
+          "required": true
+        }
+      ],
+      "pitfalls": [
+        "Commande normalement generee par le menu Windows et non saisie a la main ; elle ne figure pas dans l'aide-memoire des commandes [p.249]."
+      ],
+      "examples": [
+        "PRINT 'boite'"
+      ],
+      "pages": [
+        249
+      ]
+    },
+    {
+      "name": "RETOUR",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Sortie du mode graphique et retour au mode calcul.",
+      "syntax": [
+        "RETOUR"
+      ],
+      "doc": "La sortie du mode graphique s'effectue par `RETOUR`, ou par le choix 'Retour mode calcul' du menu 'Fichier' [p.247]. La forme abregee `RET` est employee dans la procedure de sauvegarde decrite p.249.\n\nLe bouton de fermeture a gauche du menu 'Fichier' equivaut a `QUITTER` : ST1 demande alors un nom de projet pour une sauvegarde eventuelle, `<ENTREE>` sans nom provoque la sortie sans sauvegarde [p.247].\n\nNB : la commande `RETOUR` du mode console (arret de la lecture d'un fichier, p.37-38) appartient a la famille des commandes generales.",
+      "aliases": [
+        "RET"
+      ],
+      "examples": [
+        "GEOM\nEFFORT MZ ENV 5 VERT\nRETOUR"
+      ],
+      "pages": [
+        247
+      ]
+    },
+    {
+      "name": "SAUV",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Sauvegarde le dessin affiche a l'ecran dans un fichier tampon dependant du traceur courant.",
+      "syntax": [
+        "SAUV"
+      ],
+      "doc": "Genere un fichier tampon contenant le dessin affiche a l'ecran, en vue d'une utilisation exterieure a ST1 [p.249]. Le contenu et le nom du fichier dependent du **traceur courant** (`TRA` p.248) :\n\n- `pos.st1` : imprimante utilisant le standard POSTSCRIPT\n- `dxf.st1` : echange de donnees suivant le standard DXF\n\nAu cours d'une meme session, l'utilisation de plusieurs pilotes graphiques genere un fichier tampon **par type de traceur** : postscript A4 + A3 ne donnent qu'un seul `pos.st1`, tandis que postscript + dxf donnent `pos.st1` et `dxf.st1`.\n\nProcedure complete [p.249] : choisir le format (menu Fichier > Langage pour sauvegarde dessin sur fichier), choisir le type de dessin (`GEOM`, `EFFORT`, ...), saisir le nom du fichier de sauvegarde avec son extension, taper `SAUV`, puis `RET` pour quitter le mode graphique. Plusieurs sauvegardes peuvent etre enchainees ; tant que le format n'est pas redefini, ST1 conserve celui en cours.",
+      "prerequisites": [
+        "Un dessin doit etre affiche a l'ecran ; le traceur courant est fixe par TRA [p.248]."
+      ],
+      "examples": [
+        "TRA post3 COULEUR\nGEOM\nEFFORT MZ ENV 5\nSAUV"
+      ],
+      "pages": [
+        249
+      ]
+    },
+    {
+      "name": "SELEC",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Selectionne la partie de la structure sur laquelle agissent les commandes graphiques suivantes.",
+      "syntax": [
+        "SELEC BARRE liste",
+        "SELEC NOEUD liste",
+        "SELEC TOUT",
+        "SELEC liste"
+      ],
+      "doc": "Selectionne une partie de la structure pour l'execution des commandes graphiques [p.251].\n\n- `SELEC BARRE 1 a 10` et `SELEC 1 a 10` sont equivalents : sans mot-cle, la liste porte sur les barres.\n- `SELEC TOUT` revient a toute la structure ; utile apres avoir etudie une partie.\n- **Par defaut, toute la structure est selectionnee.**",
+      "args": [
+        {
+          "name": "BARRE",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Selection par numeros de barres.",
+          "values": [
+            "BARRE",
+            "NOEUD",
+            "TOUT"
+          ]
+        },
+        {
+          "name": "NOEUD",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Selection par numeros de noeuds.",
+          "values": [
+            "BARRE",
+            "NOEUD",
+            "TOUT"
+          ]
+        },
+        {
+          "name": "TOUT",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Selection de toute la structure.",
+          "values": [
+            "BARRE",
+            "NOEUD",
+            "TOUT"
+          ]
+        },
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros ; sans mot-cle, il s'agit de barres.",
+          "required": false,
+          "default": "TOUT"
+        }
+      ],
+      "examples": [
+        "SELEC BARRE 1 a 10\nGEOM",
+        "SELEC BARRE 20\nCENTR GEOM",
+        "SELEC TOUT"
+      ],
+      "pages": [
+        251
+      ]
+    },
+    {
+      "name": "TRA",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Change le pilote de traceur graphique (postscript, DXF, Calcomp) ou previsualise le rendu sur traceur.",
+      "syntax": [
+        "TRA nom (COULEUR, MONOCHROME)",
+        "TRA",
+        "TRA 'nomfichier.ext'"
+      ],
+      "doc": "Modifie le traceur graphique courant [p.248]. Pilotes utilisables :\n\n| Pilote | Rendu |\n|---|---|\n| `post` | Postscript format A4 landscape |\n| `postp` | Postscript format A4 portrait |\n| `post3` | Postscript format A3 landscape |\n| `post3p` | Postscript format A3 portrait |\n| `dxf` | echange de donnees suivant la norme DXF |\n| `calc` | traceur electrostatique Calcomp |\n\n**Les pilotes ci-dessus sont monochromes par defaut** ; `COULEUR` active la couleur.\n\n- `TRA` seul previsualise le rendu sur le traceur courant ; `ECRAN` ramene au plein ecran [p.249].\n- `TRA 'nomfichier.ext'` est la commande generee par le menu Fichier pour nommer le fichier de sauvegarde ; ST1 n'ajoute pas d'extension, il faut donc ecrire `.PS` ou `.DXF` [p.249].\n- Le type de traceur est initialise dans `st1.par` [p.331].",
+      "args": [
+        {
+          "name": "nom",
+          "kind": "positional",
+          "type": "enum",
+          "doc": "Nom du pilote de traceur graphique.",
+          "values": [
+            "post",
+            "postp",
+            "post3",
+            "post3p",
+            "dxf",
+            "calc"
+          ],
+          "required": false
+        },
+        {
+          "name": "COULEUR",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Trace en couleur.",
+          "values": [
+            "COULEUR",
+            "MONOCHROME"
+          ],
+          "required": false,
+          "default": "MONOCHROME"
+        },
+        {
+          "name": "MONOCHROME",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Trace monochrome (valeur par defaut des pilotes).",
+          "values": [
+            "COULEUR",
+            "MONOCHROME"
+          ],
+          "required": false
+        }
+      ],
+      "pitfalls": [
+        "ST1 n'ajoute aucune extension au nom de fichier de sauvegarde : il faut ecrire explicitement .PS ou .DXF [p.249].",
+        "L'aide-memoire imprime 'MONOCHRONE' [p.248 aide-memoire] ; le chapitre ecrit MONOCHROME [p.248]."
+      ],
+      "examples": [
+        "TRA post3 COULEUR",
+        "TRA dxf\nSAUV"
+      ],
+      "pages": [
+        248,
+        249
+      ]
+    },
+    {
+      "name": "VUE",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Definit l'angle de vue du dessin par les coefficients directeurs de la direction de vue (options GRILL et SPATIALE).",
+      "syntax": [
+        "VUE (X ux) (Y uy) (Z uz)",
+        "VUE ux uy uz"
+      ],
+      "doc": "Modifie l'angle de vue du dessin affiche a l'ecran [p.250].\n\n- `ux, uy, uz` : coefficients directeurs suivant les axes X, Y, Z de la direction de vue. **Par defaut `ux=uy=uz=1`.**\n- Les coefficients doivent representer un **vecteur non nul** ; si `ux=uy=uz=0`, ST1 prend automatiquement `ux=uy=uz=1`.\n- **Cette commande n'est pas active pour l'option PLANE** [p.43, p.250].",
+      "args": [
+        {
+          "name": "X",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient directeur ux suivant OX.",
+          "required": false,
+          "default": "1"
+        },
+        {
+          "name": "Y",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient directeur uy suivant OY.",
+          "required": false,
+          "default": "1"
+        },
+        {
+          "name": "Z",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient directeur uz suivant OZ.",
+          "required": false,
+          "default": "1"
+        }
+      ],
+      "restrictedToOptions": [
+        "GRILL",
+        "SPATIALE"
+      ],
+      "pitfalls": [
+        "Sans effet en option PLANE [p.250].",
+        "Un vecteur de vue nul est silencieusement remplace par (1,1,1) [p.250]."
+      ],
+      "examples": [
+        "VUE 0 0 1",
+        "VUE Z 1",
+        "VUE 0 -1 0\nSELEC BARRE 20 a 39\nCONTR VYVZ ENV 2"
+      ],
+      "pages": [
+        250
+      ]
+    },
+    {
+      "name": "ZOOM",
+      "family": "resultats",
+      "context": "bloc:DESS",
+      "summary": "Agrandit ou reduit le dessin affiche, par rapport au centre de l'ecran ou a un point de reference.",
+      "syntax": [
+        "ZOOM cf (xc yc)"
+      ],
+      "doc": "Agrandissement / reduction du dessin affiche a l'ecran [p.250].\n\nD'apres les exemples du manuel :\n- `ZOOM 2` : le dessin est **agrandi deux fois par rapport au centre de l'ecran**.\n- `ZOOM .5 .2 .3` : le dessin est **reduit d'un facteur 0.5 par rapport au point de coordonnees 0.2, 0.3 de l'ecran**.\n\nDonc `cf` est le facteur de zoom et `xc yc` le point de reference exprime en coordonnees d'ecran. `CENTR` permet de recentrer ensuite.",
+      "args": [
+        {
+          "name": "cf",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Facteur de zoom (>1 agrandissement, <1 reduction), d'apres les exemples p.250.",
+          "required": true
+        },
+        {
+          "name": "xc",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Abscisse du point de reference dans les coordonnees de l'ecran.",
+          "required": false,
+          "default": "centre de l'ecran"
+        },
+        {
+          "name": "yc",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Ordonnee du point de reference dans les coordonnees de l'ecran.",
+          "required": false,
+          "default": "centre de l'ecran"
+        }
+      ],
+      "pitfalls": [
+        "Le manuel decrit par erreur cf, xc et yc comme des 'coefficients directeurs suivant les axes X, Y, Z de la direction de vue' [p.250] : c'est un copier-coller de la commande VUE. Seuls les exemples de la meme page donnent la signification reelle."
+      ],
+      "examples": [
+        "ZOOM 2\nCENTR",
+        "ZOOM .5 .2 .3"
+      ],
+      "pages": [
+        250
+      ]
+    },
+    {
+      "name": "CHARG",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Reprend des resultats de type CHARG dans le bloc ENV COMB.",
+      "doc": "Chargements fixes calcules par EXEC CHARG.\n\nENV COMB herite du type de concomitance de l'enveloppe qu'elle contient [p.238].",
+      "syntax": [
+        "CHARG liste (cfmin) (cfmax)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Chargements fixes calcules par EXEC CHARG. « TOUT » est admis.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmin",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient applique lors de la recherche du minimum.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmax",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "cfmin",
+          "doc": "Coefficient applique lors de la recherche du maximum. Par defaut egal a cfmin.",
+          "pages": [
+            238,
+            239
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        238,
+        239
+      ],
+      "examples": [
+        "CHARG 1,2 1.0 1.35"
+      ]
+    },
+    {
+      "name": "COMB",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Reprend des resultats de type COMB dans le bloc ENV COMB.",
+      "doc": "Combinaisons deja calculees.\n\nENV COMB herite du type de concomitance de l'enveloppe qu'elle contient [p.238].",
+      "syntax": [
+        "COMB liste (cfmin) (cfmax)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Combinaisons deja calculees. « TOUT » est admis.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmin",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient applique lors de la recherche du minimum.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmax",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "cfmin",
+          "doc": "Coefficient applique lors de la recherche du maximum. Par defaut egal a cfmin.",
+          "pages": [
+            238,
+            239
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        238,
+        239
+      ],
+      "examples": [
+        "COMB 1,2 1.0 1.35"
+      ]
+    },
+    {
+      "name": "CONTR",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Declare la contrainte normale en fibre extreme servant de composante privilegiee de l'enveloppe.",
+      "syntax": [
+        "CONTR <VY,VZ,WY,WZ,VYVZ,VYWZ,WYVZ,WYWZ>"
+      ],
+      "doc": "Clause facultative du bloc `ENV` / `ENV i COMB`. Composantes par option [p.235, p.239] : **PLANE** `vy, wy` ; **GRILL** `vz, wz` ; **SPATIALE** `vyvz, vywz, wyvz, wywz` (contraintes croisees aux quatre coins).\n\nDans un bloc `ENV COMB`, la clause de composante privilegiee s'ecrit comme dans `ENV` ; seuls les coefficients changent de forme (`cfmin` puis `cfmax`) [p.238-239].",
+      "args": [
+        {
+          "name": "VY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte en fibre superieure d'axe OY.",
+          "onlyOptions": [
+            "PLANE"
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte en fibre inferieure d'axe OY.",
+          "onlyOptions": [
+            "PLANE"
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte en fibre superieure d'axe OZ.",
+          "onlyOptions": [
+            "GRILL"
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte en fibre inferieure d'axe OZ.",
+          "onlyOptions": [
+            "GRILL"
+          ]
+        },
+        {
+          "name": "VYVZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte croisee fibres VY et VZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "VYWZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte croisee fibres VY et WZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WYVZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte croisee fibres WY et VZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WYWZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte croisee fibres WY et WZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "prerequisites": [
+        "Les fibres extremes VY, WY (VZ, WZ en spatial) doivent etre definies dans CARA, sinon aucune contrainte n'est calculee [p.59-60, p.66, p.244]."
+      ],
+      "pitfalls": [
+        "Une barre definie par `CARA 1 SX 1 IZ 1` sans VY/WY n'edite que des efforts : l'enveloppe sur CONTR reste vide [p.66, p.244]."
+      ],
+      "examples": [
+        "ENV 2 'enveloppe sur la contrainte de fibre superieure'\n   CONTR VY\n   SURCH 1 a 3\nFIN"
+      ],
+      "pages": [
+        238,
+        239
+      ]
+    },
+    {
+      "name": "CONTRG",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Declare une contrainte generalisee (definie par la commande CONTRG) comme composante privilegiee de l'enveloppe.",
+      "syntax": [
+        "CONTRG ic"
+      ],
+      "doc": "Clause facultative du bloc `ENV` / `ENV i COMB` : l'enveloppe porte sur la contrainte generalisee numero `ic`, combinaison lineaire des efforts R.D.M. definie par la commande `CONTRG` [p.103-105]. Disponible dans les trois options de calcul.\n\nDans un bloc `ENV COMB`, la clause de composante privilegiee s'ecrit comme dans `ENV` ; seuls les coefficients changent de forme (`cfmin` puis `cfmax`) [p.238-239].",
+      "args": [
+        {
+          "name": "ic",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la contrainte generalisee (cf. commande CONTRG p.103).",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "La contrainte generalisee ic doit avoir ete definie par CONTRG [p.103] et integree aux resultats lors de EXEC CHARG / EXEC SURCH [p.105]."
+      ],
+      "examples": [
+        "ENV 10 'enveloppe sur la contrainte generalisee 10'\n   CONTRG 10\n   CHARG 1 a 5\nFIN"
+      ],
+      "pages": [
+        238,
+        239
+      ]
+    },
+    {
+      "name": "DEPLA",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Declare le deplacement servant de composante privilegiee de l'enveloppe.",
+      "syntax": [
+        "DEPLA <DX,DY,DZ,RX,RY,RZ>"
+      ],
+      "doc": "Clause facultative du bloc `ENV` / `ENV i COMB`. Composantes par option [p.235, p.239] : **PLANE** `dx, dy, rz` ; **GRILL** `rx, dz, ry` ; **SPATIALE** `dx, dy, dz, rx, ry, rz`.\n\nDans un bloc `ENV COMB`, la clause de composante privilegiee s'ecrit comme dans `ENV` ; seuls les coefficients changent de forme (`cfmin` puis `cfmax`) [p.238-239].",
+      "args": [
+        {
+          "name": "DX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Deplacement suivant OX.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "DY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Deplacement suivant OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "DZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Deplacement suivant OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "RX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Rotation autour de OX (radian).",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "unit": "radian"
+        },
+        {
+          "name": "RY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Rotation autour de OY (radian).",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "unit": "radian"
+        },
+        {
+          "name": "RZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Rotation autour de OZ (radian).",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "unit": "radian"
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "pitfalls": [
+        "Sous charges d'exploitation, l'enveloppe des deplacements ne porte que sur les sections d'etude des barres, jamais sur les noeuds [p.141].",
+        "Les deplacements ne sont edites que si ETUDE a ete declare avec le mot-cle DEPLA [p.101]."
+      ],
+      "examples": [
+        "ENV 11\n   DEPLA DY\n   CHARG 12 2.\n   ENV 10 1.2\nFIN"
+      ],
+      "pages": [
+        238,
+        239
+      ]
+    },
+    {
+      "name": "EFFORT",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Declare l'effort R.D.M. servant de composante privilegiee de l'enveloppe (extremes + valeurs concomitantes).",
+      "syntax": [
+        "EFFORT <N,TY,TZ,MX,MY,MZ>"
+      ],
+      "doc": "Clause facultative placee en tete du bloc `ENV` (ou `ENV i COMB`). L'enveloppe cherche les deux extremes de l'effort designe et edite les valeurs concomitantes de toutes les autres grandeurs.\n\nComposantes utilisables par option [p.235, p.239] : **PLANE** `n, ty, mz` ; **GRILL** `mx, tz, my` ; **SPATIALE** `n, ty, tz, mx, my, mz`.\n\nDans un bloc `ENV COMB`, la clause de composante privilegiee s'ecrit comme dans `ENV` ; seuls les coefficients changent de forme (`cfmin` puis `cfmax`) [p.238-239].",
+      "args": [
+        {
+          "name": "N",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Effort normal.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Effort tranchant suivant oy.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Effort tranchant suivant oz.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment flechissant autour de oy.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment flechissant autour de oz.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "pitfalls": [
+        "Une seule composante privilegiee de section a la fois (EFFORT, DEPLA, CONTR, CONTRG ou PRESS) ; REAC peut s'y ajouter [p.235]."
+      ],
+      "examples": [
+        "ENV 1 'concomitance des extremes de mz'\n   EFFORT MZ\n   CHARG 10 1.35\nFIN"
+      ],
+      "pages": [
+        238,
+        239
+      ]
+    },
+    {
+      "name": "ENV",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Reprend des resultats de type ENV dans le bloc ENV COMB.",
+      "doc": "Enveloppes deja calculees.\n\nENV COMB herite du type de concomitance de l'enveloppe qu'elle contient [p.238].",
+      "syntax": [
+        "ENV liste (cfmin) (cfmax)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Enveloppes deja calculees. « TOUT » est admis.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmin",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient applique lors de la recherche du minimum.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmax",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "cfmin",
+          "doc": "Coefficient applique lors de la recherche du maximum. Par defaut egal a cfmin.",
+          "pages": [
+            238,
+            239
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        238,
+        239
+      ],
+      "examples": [
+        "ENV 1,2 1.0 1.35"
+      ]
+    },
+    {
+      "name": "ETAT",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Reprend des resultats de type ETAT dans le bloc ENV COMB.",
+      "doc": "Etats sauvegardes par un phasage.\n\nENV COMB herite du type de concomitance de l'enveloppe qu'elle contient [p.238].",
+      "syntax": [
+        "ETAT liste (cfmin) (cfmax)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Etats sauvegardes par un phasage. « TOUT » est admis.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmin",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient applique lors de la recherche du minimum.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmax",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "cfmin",
+          "doc": "Coefficient applique lors de la recherche du maximum. Par defaut egal a cfmin.",
+          "pages": [
+            238,
+            239
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        238,
+        239
+      ],
+      "examples": [
+        "ETAT 1,2 1.0 1.35"
+      ]
+    },
+    {
+      "name": "HISTORIQUE",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Reprend des resultats de type HISTORIQUE dans le bloc ENV COMB.",
+      "doc": "Historiques calcules par EXEC HISTORIQUE.\n\nENV COMB herite du type de concomitance de l'enveloppe qu'elle contient [p.238].",
+      "syntax": [
+        "HISTORIQUE liste (cfmin) (cfmax)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Historiques calcules par EXEC HISTORIQUE. « TOUT » est admis.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmin",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient applique lors de la recherche du minimum.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmax",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "cfmin",
+          "doc": "Coefficient applique lors de la recherche du maximum. Par defaut egal a cfmin.",
+          "pages": [
+            238,
+            239
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        238,
+        239
+      ],
+      "examples": [
+        "HISTORIQUE 1,2 1.0 1.35"
+      ]
+    },
+    {
+      "name": "PHASAGE",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Reprend des resultats de type PHASAGE dans le bloc ENV COMB.",
+      "doc": "Resultats de phasage calcules par EXEC PHASAGE.\n\nENV COMB herite du type de concomitance de l'enveloppe qu'elle contient [p.238].",
+      "syntax": [
+        "PHASAGE liste (cfmin) (cfmax)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Resultats de phasage calcules par EXEC PHASAGE. « TOUT » est admis.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmin",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient applique lors de la recherche du minimum.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmax",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "cfmin",
+          "doc": "Coefficient applique lors de la recherche du maximum. Par defaut egal a cfmin.",
+          "pages": [
+            238,
+            239
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        238,
+        239
+      ],
+      "examples": [
+        "PHASAGE 1,2 1.0 1.35"
+      ]
+    },
+    {
+      "name": "PRESS",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Declare la pression de sol (poutre sur sol elastique) servant de composante privilegiee de l'enveloppe.",
+      "syntax": [
+        "PRESS <PX,PY,PZ,MX>"
+      ],
+      "doc": "Clause facultative du bloc `ENV` / `ENV i COMB`, reservee aux barres sur sol elastique ou pseudo-plastique (`CARA PSE`) [p.59-65].\n\nComposantes par option : **PLANE** `px, py` ; **GRILL** `pz, mx` ; **SPATIALE** `px, py, pz` d'apres le tableau [p.235, p.239] (les tableaux du dessin `PRESS` [p.258] et de `GET PRESS` [p.278] ajoutent `mx` en SPATIALE).\n\nDans un bloc `ENV COMB`, la clause de composante privilegiee s'ecrit comme dans `ENV` ; seuls les coefficients changent de forme (`cfmin` puis `cfmax`) [p.238-239].",
+      "args": [
+        {
+          "name": "PX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Pression tangente suivant ox.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "PY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Pression transversale suivant oy.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "PZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Pression transversale suivant oz.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Pression de torsion (raideur KMX).",
+          "onlyOptions": [
+            "GRILL"
+          ]
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "prerequisites": [
+        "Barres sur sol elastique definies par CARA PSE [p.59] et sections d'etude de deplacement (ETUDE DEPLA) [p.101]."
+      ],
+      "pitfalls": [
+        "Divergence documentaire : le tableau des composantes de ENV / ENV COMB [p.235, p.239] ne liste pas MX en SPATIALE, alors que la ligne de syntaxe `PRESS <PX,PY,PZ,MX>` et les tableaux du dessin PRESS [p.258] et de GET PRESS [p.278] l'admettent."
+      ],
+      "examples": [
+        "ENV 7 'enveloppe sur les pressions PY des poutres sur sol elastique'\n   PRESS PY\n   SURCH 1\nFIN"
+      ],
+      "pages": [
+        238,
+        239
+      ]
+    },
+    {
+      "name": "REAC",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Declare la reaction d'appui servant de composante privilegiee de l'enveloppe ; cumulable avec une composante de section.",
+      "syntax": [
+        "REAC <FX,FY,FZ,MX,MY,MZ>"
+      ],
+      "doc": "Clause facultative du bloc `ENV` / `ENV i COMB`. Une concomitance peut etre demandee **a la fois** sur les reactions d'appui (`REAC`) et sur les sections d'etude (`EFFORT`, `DEPLA`, `CONTR`, `CONTRG`, `PRESS`) [p.235].\n\nComposantes par option : **PLANE** `fx, fy, mz` ; **GRILL** `fz, my` d'apres le tableau [p.235] ; **SPATIALE** `fx, fy, fz, mx, my, mz`.\n\nDans un bloc `ENV COMB`, la clause de composante privilegiee s'ecrit comme dans `ENV` ; seuls les coefficients changent de forme (`cfmin` puis `cfmax`) [p.238-239].",
+      "args": [
+        {
+          "name": "FX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Reaction suivant OX.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "FY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Reaction suivant OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "FZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Reaction suivant OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment de reaction autour de OX.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment de reaction autour de OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment de reaction autour de OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "pitfalls": [
+        "Le tableau ENV [p.235] donne GRILL = `fz, my` alors que le tableau de GET REAC [p.276] donne `$fz, $mx, $my` : incoherence documentaire, MX en GRILL est physiquement coherent avec les ddl rx/dz/ry.",
+        "RESU APPUI LOC (repere local d'appui) n'est pertinent sur une enveloppe que si la concomitance est activee [p.245]."
+      ],
+      "examples": [
+        "ENV 3 'concomitance des extremes de mz et reactions fy'\n   EFFORT MZ\n   REAC FY\n   CHARG 10 1.35\n   SURCH 2 1.2\nFIN"
+      ],
+      "pages": [
+        238,
+        239
+      ]
+    },
+    {
+      "name": "SPECTRE",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Reprend des resultats de type SPECTRE dans le bloc ENV COMB.",
+      "doc": "Reponses spectrales calculees par EXEC SPECTRE REPONSE.\n\nENV COMB herite du type de concomitance de l'enveloppe qu'elle contient [p.238].",
+      "syntax": [
+        "SPECTRE liste (cfmin) (cfmax)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Reponses spectrales calculees par EXEC SPECTRE REPONSE. « TOUT » est admis.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmin",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient applique lors de la recherche du minimum.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmax",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "cfmin",
+          "doc": "Coefficient applique lors de la recherche du maximum. Par defaut egal a cfmin.",
+          "pages": [
+            238,
+            239
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        238,
+        239
+      ],
+      "examples": [
+        "SPECTRE 1,2 1.0 1.35"
+      ]
+    },
+    {
+      "name": "SURCH",
+      "family": "resultats",
+      "context": "bloc:ENV COMB",
+      "summary": "Reprend des resultats de type SURCH dans le bloc ENV COMB.",
+      "doc": "Surcharges calculees par EXEC SURCH.\n\nENV COMB herite du type de concomitance de l'enveloppe qu'elle contient [p.238].",
+      "syntax": [
+        "SURCH liste (cfmin) (cfmax)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Surcharges calculees par EXEC SURCH. « TOUT » est admis.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmin",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient applique lors de la recherche du minimum.",
+          "pages": [
+            238,
+            239
+          ]
+        },
+        {
+          "name": "cfmax",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "cfmin",
+          "doc": "Coefficient applique lors de la recherche du maximum. Par defaut egal a cfmin.",
+          "pages": [
+            238,
+            239
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        238,
+        239
+      ],
+      "examples": [
+        "SURCH 1,2 1.0 1.35"
+      ]
+    },
+    {
+      "name": "CHARG",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Reprend des resultats de type CHARG dans le bloc ENV.",
+      "doc": "Chargements fixes calcules par EXEC CHARG.\n\nLes enveloppes et surcharges reprises doivent avoir le meme type de concomitance que l'enveloppe qui les contient [p.235].",
+      "syntax": [
+        "CHARG liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Chargements fixes calcules par EXEC CHARG. « TOUT » est admis.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        235,
+        236,
+        237
+      ],
+      "examples": [
+        "CHARG 1,2 1.35"
+      ]
+    },
+    {
+      "name": "COMB",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Reprend des resultats de type COMB dans le bloc ENV.",
+      "doc": "Combinaisons deja calculees.\n\nLes enveloppes et surcharges reprises doivent avoir le meme type de concomitance que l'enveloppe qui les contient [p.235].",
+      "syntax": [
+        "COMB liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Combinaisons deja calculees. « TOUT » est admis.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        235,
+        236,
+        237
+      ],
+      "examples": [
+        "COMB 1,2 1.35"
+      ]
+    },
+    {
+      "name": "CONTR",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Declare la contrainte normale en fibre extreme servant de composante privilegiee de l'enveloppe.",
+      "syntax": [
+        "CONTR <VY,VZ,WY,WZ,VYVZ,VYWZ,WYVZ,WYWZ>"
+      ],
+      "doc": "Clause facultative du bloc `ENV` / `ENV i COMB`. Composantes par option [p.235, p.239] : **PLANE** `vy, wy` ; **GRILL** `vz, wz` ; **SPATIALE** `vyvz, vywz, wyvz, wywz` (contraintes croisees aux quatre coins).",
+      "args": [
+        {
+          "name": "VY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte en fibre superieure d'axe OY.",
+          "onlyOptions": [
+            "PLANE"
+          ]
+        },
+        {
+          "name": "WY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte en fibre inferieure d'axe OY.",
+          "onlyOptions": [
+            "PLANE"
+          ]
+        },
+        {
+          "name": "VZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte en fibre superieure d'axe OZ.",
+          "onlyOptions": [
+            "GRILL"
+          ]
+        },
+        {
+          "name": "WZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte en fibre inferieure d'axe OZ.",
+          "onlyOptions": [
+            "GRILL"
+          ]
+        },
+        {
+          "name": "VYVZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte croisee fibres VY et VZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "VYWZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte croisee fibres VY et WZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WYVZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte croisee fibres WY et VZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "WYWZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contrainte croisee fibres WY et WZ.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "prerequisites": [
+        "Les fibres extremes VY, WY (VZ, WZ en spatial) doivent etre definies dans CARA, sinon aucune contrainte n'est calculee [p.59-60, p.66, p.244]."
+      ],
+      "pitfalls": [
+        "Une barre definie par `CARA 1 SX 1 IZ 1` sans VY/WY n'edite que des efforts : l'enveloppe sur CONTR reste vide [p.66, p.244]."
+      ],
+      "examples": [
+        "ENV 2 'enveloppe sur la contrainte de fibre superieure'\n   CONTR VY\n   SURCH 1 a 3\nFIN"
+      ],
+      "pages": [
+        235,
+        239
+      ]
+    },
+    {
+      "name": "CONTRG",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Declare une contrainte generalisee (definie par la commande CONTRG) comme composante privilegiee de l'enveloppe.",
+      "syntax": [
+        "CONTRG ic"
+      ],
+      "doc": "Clause facultative du bloc `ENV` / `ENV i COMB` : l'enveloppe porte sur la contrainte generalisee numero `ic`, combinaison lineaire des efforts R.D.M. definie par la commande `CONTRG` [p.103-105]. Disponible dans les trois options de calcul.",
+      "args": [
+        {
+          "name": "ic",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la contrainte generalisee (cf. commande CONTRG p.103).",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "La contrainte generalisee ic doit avoir ete definie par CONTRG [p.103] et integree aux resultats lors de EXEC CHARG / EXEC SURCH [p.105]."
+      ],
+      "examples": [
+        "ENV 10 'enveloppe sur la contrainte generalisee 10'\n   CONTRG 10\n   CHARG 1 a 5\nFIN"
+      ],
+      "pages": [
+        235,
+        239
+      ]
+    },
+    {
+      "name": "DEPLA",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Declare le deplacement servant de composante privilegiee de l'enveloppe.",
+      "syntax": [
+        "DEPLA <DX,DY,DZ,RX,RY,RZ>"
+      ],
+      "doc": "Clause facultative du bloc `ENV` / `ENV i COMB`. Composantes par option [p.235, p.239] : **PLANE** `dx, dy, rz` ; **GRILL** `rx, dz, ry` ; **SPATIALE** `dx, dy, dz, rx, ry, rz`.",
+      "args": [
+        {
+          "name": "DX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Deplacement suivant OX.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "DY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Deplacement suivant OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "DZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Deplacement suivant OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "RX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Rotation autour de OX (radian).",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "unit": "radian"
+        },
+        {
+          "name": "RY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Rotation autour de OY (radian).",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "unit": "radian"
+        },
+        {
+          "name": "RZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Rotation autour de OZ (radian).",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "unit": "radian"
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "pitfalls": [
+        "Sous charges d'exploitation, l'enveloppe des deplacements ne porte que sur les sections d'etude des barres, jamais sur les noeuds [p.141].",
+        "Les deplacements ne sont edites que si ETUDE a ete declare avec le mot-cle DEPLA [p.101]."
+      ],
+      "examples": [
+        "ENV 11\n   DEPLA DY\n   CHARG 12 2.\n   ENV 10 1.2\nFIN"
+      ],
+      "pages": [
+        235,
+        239
+      ]
+    },
+    {
+      "name": "EFFORT",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Declare l'effort R.D.M. servant de composante privilegiee de l'enveloppe (extremes + valeurs concomitantes).",
+      "syntax": [
+        "EFFORT <N,TY,TZ,MX,MY,MZ>"
+      ],
+      "doc": "Clause facultative placee en tete du bloc `ENV` (ou `ENV i COMB`). L'enveloppe cherche les deux extremes de l'effort designe et edite les valeurs concomitantes de toutes les autres grandeurs.\n\nComposantes utilisables par option [p.235, p.239] : **PLANE** `n, ty, mz` ; **GRILL** `mx, tz, my` ; **SPATIALE** `n, ty, tz, mx, my, mz`.",
+      "args": [
+        {
+          "name": "N",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Effort normal.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Effort tranchant suivant oy.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "TZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Effort tranchant suivant oz.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment de torsion.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment flechissant autour de oy.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment flechissant autour de oz.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "pitfalls": [
+        "Une seule composante privilegiee de section a la fois (EFFORT, DEPLA, CONTR, CONTRG ou PRESS) ; REAC peut s'y ajouter [p.235]."
+      ],
+      "examples": [
+        "ENV 1 'concomitance des extremes de mz'\n   EFFORT MZ\n   CHARG 10 1.35\nFIN"
+      ],
+      "pages": [
+        235,
+        239
+      ]
+    },
+    {
+      "name": "ENV",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Reprend des resultats de type ENV dans le bloc ENV.",
+      "doc": "Enveloppes deja calculees.\n\nLes enveloppes et surcharges reprises doivent avoir le meme type de concomitance que l'enveloppe qui les contient [p.235].",
+      "syntax": [
+        "ENV liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Enveloppes deja calculees. « TOUT » est admis.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        235,
+        236,
+        237
+      ],
+      "examples": [
+        "ENV 1,2 1.35"
+      ]
+    },
+    {
+      "name": "ETAT",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Reprend des resultats de type ETAT dans le bloc ENV.",
+      "doc": "Etats sauvegardes par un phasage.\n\nLes enveloppes et surcharges reprises doivent avoir le meme type de concomitance que l'enveloppe qui les contient [p.235].",
+      "syntax": [
+        "ETAT liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Etats sauvegardes par un phasage. « TOUT » est admis.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        235,
+        236,
+        237
+      ],
+      "examples": [
+        "ETAT 1,2 1.35"
+      ]
+    },
+    {
+      "name": "HISTORIQUE",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Reprend des resultats de type HISTORIQUE dans le bloc ENV.",
+      "doc": "Historiques calcules par EXEC HISTORIQUE.\n\nLes enveloppes et surcharges reprises doivent avoir le meme type de concomitance que l'enveloppe qui les contient [p.235].",
+      "syntax": [
+        "HISTORIQUE liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Historiques calcules par EXEC HISTORIQUE. « TOUT » est admis.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        235,
+        236,
+        237
+      ],
+      "examples": [
+        "HISTORIQUE 1,2 1.35"
+      ]
+    },
+    {
+      "name": "PHASAGE",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Reprend des resultats de type PHASAGE dans le bloc ENV.",
+      "doc": "Resultats de phasage calcules par EXEC PHASAGE.\n\nLes enveloppes et surcharges reprises doivent avoir le meme type de concomitance que l'enveloppe qui les contient [p.235].",
+      "syntax": [
+        "PHASAGE liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Resultats de phasage calcules par EXEC PHASAGE. « TOUT » est admis.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        235,
+        236,
+        237
+      ],
+      "examples": [
+        "PHASAGE 1,2 1.35"
+      ]
+    },
+    {
+      "name": "PRESS",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Declare la pression de sol (poutre sur sol elastique) servant de composante privilegiee de l'enveloppe.",
+      "syntax": [
+        "PRESS <PX,PY,PZ,MX>"
+      ],
+      "doc": "Clause facultative du bloc `ENV` / `ENV i COMB`, reservee aux barres sur sol elastique ou pseudo-plastique (`CARA PSE`) [p.59-65].\n\nComposantes par option : **PLANE** `px, py` ; **GRILL** `pz, mx` ; **SPATIALE** `px, py, pz` d'apres le tableau [p.235, p.239] (les tableaux du dessin `PRESS` [p.258] et de `GET PRESS` [p.278] ajoutent `mx` en SPATIALE).",
+      "args": [
+        {
+          "name": "PX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Pression tangente suivant ox.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "PY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Pression transversale suivant oy.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "PZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Pression transversale suivant oz.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Pression de torsion (raideur KMX).",
+          "onlyOptions": [
+            "GRILL"
+          ]
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "prerequisites": [
+        "Barres sur sol elastique definies par CARA PSE [p.59] et sections d'etude de deplacement (ETUDE DEPLA) [p.101]."
+      ],
+      "pitfalls": [
+        "Divergence documentaire : le tableau des composantes de ENV / ENV COMB [p.235, p.239] ne liste pas MX en SPATIALE, alors que la ligne de syntaxe `PRESS <PX,PY,PZ,MX>` et les tableaux du dessin PRESS [p.258] et de GET PRESS [p.278] l'admettent."
+      ],
+      "examples": [
+        "ENV 7 'enveloppe sur les pressions PY des poutres sur sol elastique'\n   PRESS PY\n   SURCH 1\nFIN"
+      ],
+      "pages": [
+        235,
+        239
+      ]
+    },
+    {
+      "name": "REAC",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Declare la reaction d'appui servant de composante privilegiee de l'enveloppe ; cumulable avec une composante de section.",
+      "syntax": [
+        "REAC <FX,FY,FZ,MX,MY,MZ>"
+      ],
+      "doc": "Clause facultative du bloc `ENV` / `ENV i COMB`. Une concomitance peut etre demandee **a la fois** sur les reactions d'appui (`REAC`) et sur les sections d'etude (`EFFORT`, `DEPLA`, `CONTR`, `CONTRG`, `PRESS`) [p.235].\n\nComposantes par option : **PLANE** `fx, fy, mz` ; **GRILL** `fz, my` d'apres le tableau [p.235] ; **SPATIALE** `fx, fy, fz, mx, my, mz`.",
+      "args": [
+        {
+          "name": "FX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Reaction suivant OX.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "FY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Reaction suivant OY.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "FZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Reaction suivant OZ.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment de reaction autour de OX.",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment de reaction autour de OY.",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Moment de reaction autour de OZ.",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        }
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "GRILL",
+        "SPATIALE"
+      ],
+      "pitfalls": [
+        "Le tableau ENV [p.235] donne GRILL = `fz, my` alors que le tableau de GET REAC [p.276] donne `$fz, $mx, $my` : incoherence documentaire, MX en GRILL est physiquement coherent avec les ddl rx/dz/ry.",
+        "RESU APPUI LOC (repere local d'appui) n'est pertinent sur une enveloppe que si la concomitance est activee [p.245]."
+      ],
+      "examples": [
+        "ENV 3 'concomitance des extremes de mz et reactions fy'\n   EFFORT MZ\n   REAC FY\n   CHARG 10 1.35\n   SURCH 2 1.2\nFIN"
+      ],
+      "pages": [
+        235,
+        239
+      ]
+    },
+    {
+      "name": "SPECTRE",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Reprend des resultats de type SPECTRE dans le bloc ENV.",
+      "doc": "Reponses spectrales calculees par EXEC SPECTRE REPONSE.\n\nLes enveloppes et surcharges reprises doivent avoir le meme type de concomitance que l'enveloppe qui les contient [p.235].",
+      "syntax": [
+        "SPECTRE liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Reponses spectrales calculees par EXEC SPECTRE REPONSE. « TOUT » est admis.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        235,
+        236,
+        237
+      ],
+      "examples": [
+        "SPECTRE 1,2 1.35"
+      ]
+    },
+    {
+      "name": "SURCH",
+      "family": "resultats",
+      "context": "bloc:ENV",
+      "summary": "Reprend des resultats de type SURCH dans le bloc ENV.",
+      "doc": "Surcharges calculees par EXEC SURCH.\n\nLes enveloppes et surcharges reprises doivent avoir le meme type de concomitance que l'enveloppe qui les contient [p.235].",
+      "syntax": [
+        "SURCH liste (coef)"
+      ],
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Numeros des resultats a reprendre. Surcharges calculees par EXEC SURCH. « TOUT » est admis.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Coefficient de ponderation applique a chaque resultat de la liste.",
+          "pages": [
+            235,
+            236,
+            237
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les resultats repris doivent avoir ete calcules par la commande EXEC correspondante"
+      ],
+      "pages": [
+        235,
+        236,
+        237
+      ],
+      "examples": [
+        "SURCH 1,2 1.35"
+      ]
+    },
+    {
+      "name": "ACCELERATION",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Demande l'edition des accelerations (reponse spectrale sur barres, ou historique aux noeuds).",
+      "syntax": [
+        "ACCELERATION"
+      ],
+      "doc": "Mot-cle utilisable dans la clause `SPECTRE ... BARRE ...` et dans la clause `HISTORIQUE` (choix exclusif `<DEPLA, VITESSE, ACCELERATION>` pour les noeuds) [p.244].",
+      "examples": [
+        "RESU\n   HISTORIQUE 1 NOEUD 2 ACCELERATION\nFIN"
+      ],
+      "pages": [
+        244
+      ]
+    },
+    {
+      "name": "APPUI",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Edite les efforts aux appuis, eventuellement dans le repere local de l'appui (LOC).",
+      "syntax": [
+        "APPUI (LOC) (liste)"
+      ],
+      "doc": "Fournit les **efforts aux appuis** [p.245]. `LOC` donne les efforts dans le **repere local de l'appui** (utile pour les appuis tournes par `ROT` en appui elastique).",
+      "args": [
+        {
+          "name": "LOC",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Efforts exprimes dans le repere local de l'appui.",
+          "required": false,
+          "default": "repere general"
+        },
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros d'appuis.",
+          "required": false,
+          "default": "tous les appuis definis"
+        }
+      ],
+      "pitfalls": [
+        "Pour les ENVELOPPES, les valeurs en repere local ne sont pertinentes que si les concomitances sont activees : ST1 prend les maxima en directions globales puis les tourne, ce ne sont pas les maxima des directions locales [p.245]."
+      ],
+      "examples": [
+        "RESU\n   COMB 3\n   APPUI LOC 1 a 4\nFIN"
+      ],
+      "pages": [
+        244,
+        245
+      ]
+    },
+    {
+      "name": "BARRE",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Edite les resultats aux sections d'etude des barres (efforts par defaut).",
+      "syntax": [
+        "BARRE (liste) (EFFORT) (DEPLA) (CONTR) (CONTRG (liste)) (PRESS)"
+      ],
+      "doc": "Fournit les resultats a **toutes les sections d'etude** de la barre, aussi bien pour les CHARGEMENTS que pour les SURCHARGES [p.245].\n\nPar defaut, **les efforts sur barres sont edites** [p.244]. Les mots-cles `EFFORT`, `DEPLA`, `CONTR`, `CONTRG`, `PRESS` precisent les grandeurs voulues.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de barres.",
+          "required": false,
+          "default": "toutes les barres definies"
+        }
+      ],
+      "prerequisites": [
+        "Sections d'etude declarees par ETUDE [p.101] : ETUDE EFFORT pour EFFORT/CONTR/CONTRG, ETUDE DEPLA pour DEPLA/PRESS."
+      ],
+      "pitfalls": [
+        "Sans sections d'etude suffisantes, l'edition se limite aux extremites de barre [p.101, p.244]."
+      ],
+      "examples": [
+        "RESU\n   BARRE 1 a 10\nFIN",
+        "RESU\n   BARRE EFFORT DEPLA CONTR\nFIN"
+      ],
+      "pages": [
+        244,
+        245
+      ]
+    },
+    {
+      "name": "CABLE",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Edite les contraintes de tension et de perte dans les sections d'un cable de precontrainte, eventuellement a des abscisses curvilignes imposees.",
+      "syntax": [
+        "CABLE (liste) (XS <REL,ABS> listexs)"
+      ],
+      "doc": "Fournit les **contraintes de tension et de perte** dans les sections de calcul du cable, pour les `ETAT`, `PHASAGE` et `CHARG` [p.245].\n\n- Sans `XS`, l'edition se fait aux sections de calcul par defaut du cable (pas de discretisation `PAS CABLE`, defaut 0.25 [p.95]).\n- `XS REL` : abscisses relatives a la longueur du cable ; `XS ABS` : abscisses en longueur reelle.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de cables.",
+          "required": false,
+          "default": "tous les cables definis"
+        },
+        {
+          "name": "XS",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Liste des abscisses curvilignes le long du cable.",
+          "required": false
+        },
+        {
+          "name": "REL",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Abscisses relatives a la longueur du cable.",
+          "values": [
+            "REL",
+            "ABS"
+          ]
+        },
+        {
+          "name": "ABS",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Abscisses absolues (longueur reelle du cable).",
+          "values": [
+            "REL",
+            "ABS"
+          ]
+        }
+      ],
+      "prerequisites": [
+        "PREC [p.92] et CABLE [p.95] definis, action du cable calculee (CHARG CABLE [p.122] ou phasage TENDRE CABLE [p.191])."
+      ],
+      "pitfalls": [
+        "La longueur du cable est generalement plus grande que la longueur de la poutre : une abscisse ABS reprise de la geometrie de la barre est fausse [p.245]."
+      ],
+      "examples": [
+        "RESU\n   PHASAGE 31 CABLE 101 XS REL 0. a 1. PAS 0.1\nFIN",
+        "RESU\n   ETAT CABLE\nFIN"
+      ],
+      "pages": [
+        244,
+        245
+      ]
+    },
+    {
+      "name": "CHARG",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Selectionne les chargements fixes dont les resultats sont edites.",
+      "syntax": [
+        "CHARG (liste)"
+      ],
+      "doc": "Clause de selection du bloc `RESU`. Sans liste, tous les chargements presents en base sont edites ; `TOUT` est admis [p.244].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de chargements dont les resultats sont en base.",
+          "required": false,
+          "default": "tous les resultats en base"
+        }
+      ],
+      "examples": [
+        "RESU\n   CHARG 1 a 5\n   BARRE EFFORT\nFIN"
+      ],
+      "pages": [
+        244
+      ]
+    },
+    {
+      "name": "COMB",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Selectionne les combinaisons dont les resultats sont edites.",
+      "syntax": [
+        "COMB (liste)"
+      ],
+      "doc": "Clause de selection du bloc `RESU`. Sans liste, toutes les combinaisons en base sont editees ; `TOUT` est admis [p.244].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de combinaisons.",
+          "required": false,
+          "default": "tous les resultats en base"
+        }
+      ],
+      "examples": [
+        "RESU\n   COMB 3,4\n   BARRE EFFORT CONTR\nFIN"
+      ],
+      "pages": [
+        244
+      ]
+    },
+    {
+      "name": "CONTR",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Demande l'edition des contraintes normales en fibres extremes aux sections d'etude d'efforts.",
+      "syntax": [
+        "CONTR"
+      ],
+      "doc": "Mot-cle qualifiant `BARRE` (ou `SPECTRE BARRE`, `HISTORIQUE BARRE`). Edite les **contraintes normales** aux sections d'etude d'efforts, **pour les barres dont on a defini les fibres VY, ..., WZ** (cf. `CARA` p.59) [p.244].\n\nContraintes : PLANE `sigma = N/Sx - (Mz/Iz)*y` avec y dans [-wy ; vy] ; SPATIALE `sigma = N/Sx + (My/Iy)*z - (Mz/Iz)*y`. N est positif en compression [p.66].",
+      "prerequisites": [
+        "Fibres extremes definies dans CARA : VY, WY (et VZ, WZ en SPATIALE) [p.59-60, p.66].",
+        "ETUDE (EFFORT) declare sur les barres concernees [p.101]."
+      ],
+      "pitfalls": [
+        "Une poutre definie par `CARA 1 SX 1 IZ 1` (sans VY/WY) n'edite que les efforts : `CONTR` ne sort aucune contrainte et aucun message ne le signale [p.66, p.244]."
+      ],
+      "examples": [
+        "# les deux conditions reunies\nCARA 1 SX 1 IZ 1 VY 0.25 WY 0.25\nRESU\n   BARRE EFFORT DEPLA CONTR\nFIN"
+      ],
+      "pages": [
+        244
+      ]
+    },
+    {
+      "name": "CONTRG",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Demande l'edition des contraintes generalisees aux sections d'etude d'efforts.",
+      "syntax": [
+        "CONTRG (liste)"
+      ],
+      "doc": "Mot-cle qualifiant `BARRE` (ou `SPECTRE BARRE`, `HISTORIQUE BARRE`). Edite les contraintes generalisees definies par la commande `CONTRG` [p.103-105] aux sections d'etude d'efforts [p.244].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de contraintes generalisees.",
+          "required": false,
+          "default": "toutes les contraintes generalisees definies"
+        }
+      ],
+      "prerequisites": [
+        "CONTRG definie [p.103] et integree aux resultats lors de EXEC CHARG / EXEC SURCH [p.105]."
+      ],
+      "examples": [
+        "RESU\n   ENV 10 BARRE EFFORT CONTRG\nFIN",
+        "RESU\n   HISTORIQUE BARRE CONTRG EFFORT\nFIN"
+      ],
+      "pages": [
+        244
+      ]
+    },
+    {
+      "name": "DEPLA",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Demande l'edition des deformees aux sections d'etude de deplacement (ou des deplacements modaux / de flambement).",
+      "syntax": [
+        "DEPLA"
+      ],
+      "doc": "Mot-cle qualifiant `BARRE`, `MODE`, `SPECTRE BARRE`, `HISTORIQUE`, `FLAMBEMENT` ou `INCENDIE BARRE`. Edite les **deformees aux sections d'etude des deformees** (cf. `ETUDE` p.101) [p.244].",
+      "prerequisites": [
+        "ETUDE DEPLA declare sur les barres concernees, sinon aucun deplacement n'est edite [p.101-102]."
+      ],
+      "pitfalls": [
+        "Piege classique : efforts corrects mais aucun deplacement en sortie ; la cause est l'absence de `DEPLA` dans `ETUDE`, pas un defaut de convergence [p.101-102]."
+      ],
+      "examples": [
+        "RESU\n   BARRE EFFORT DEPLA\nFIN",
+        "RESU\n   MODE 1 DEPLA\nFIN"
+      ],
+      "pages": [
+        244
+      ]
+    },
+    {
+      "name": "EFFORT",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Demande l'edition des efforts R.D.M. aux sections d'etude d'efforts.",
+      "syntax": [
+        "EFFORT"
+      ],
+      "doc": "Mot-cle qualifiant `BARRE` (ou `SPECTRE BARRE`, `HISTORIQUE BARRE`, `INCENDIE BARRE`). Edite les efforts **aux sections d'etude d'efforts** (cf. `ETUDE` p.101) [p.244].\n\nEfforts edites : `N TY TZ MX MY MZ` selon l'option de calcul. C'est le comportement **par defaut** du bloc RESU pour les barres.",
+      "prerequisites": [
+        "ETUDE (EFFORT) declare sur les barres concernees [p.101]."
+      ],
+      "examples": [
+        "RESU\n   BARRE EFFORT\nFIN"
+      ],
+      "pages": [
+        244
+      ]
+    },
+    {
+      "name": "ENV",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Selectionne les enveloppes dont les resultats sont edites.",
+      "syntax": [
+        "ENV (liste)"
+      ],
+      "doc": "Clause de selection du bloc `RESU`. Une enveloppe edite deux jeux de valeurs (maximum et minimum) [p.244, p.235].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros d'enveloppes.",
+          "required": false,
+          "default": "tous les resultats en base"
+        }
+      ],
+      "examples": [
+        "RESU\n   BARRE EFFORT CONTR ENV 1\nFIN",
+        "RESU\n   ENV 10 BARRE EFFORT CONTRG\nFIN"
+      ],
+      "pages": [
+        244
+      ]
+    },
+    {
+      "name": "ETAT",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Selectionne les etats de phasage dont les resultats sont edites.",
+      "syntax": [
+        "ETAT (liste)"
+      ],
+      "doc": "Clause de selection du bloc `RESU` : edite les resultats des etats sauvegardes par la commande `ETAT` d'un phasage [p.194, p.244].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros d'etats.",
+          "required": false,
+          "default": "tous les resultats en base"
+        }
+      ],
+      "requiresV2": true,
+      "examples": [
+        "RESU\n   NOEUD BARRE APPUI ETAT 1,2\n   ENV 1\nFIN"
+      ],
+      "pages": [
+        244
+      ]
+    },
+    {
+      "name": "FEU",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Edite les profils de temperature des sections type d'un feu et genere les fichiers .vtp exploitables sous Paraview.",
+      "syntax": [
+        "FEU (liste) SECTION (lists) (DUREE lstd)"
+      ],
+      "doc": "Affiche les **temperatures de feu pour des sections type** [p.232]. Pour cette commande, `EXEC INCENDIE` peut ne pas avoir ete execute.\n\nCree un sous-repertoire `nomfichierst1` a l'emplacement du fichier ST1 et, dedans, des fichiers `feu(numfeu)section(numsection)duree(duree).vtp` (profil de temperature sur la section), lisibles par un editeur de texte mais prevus pour **Paraview** (paraview.org).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de feu (commande FEU p.229).",
+          "required": false
+        },
+        {
+          "name": "SECTION",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Liste de numeros de section type (commande SECTION p.220).",
+          "required": false
+        },
+        {
+          "name": "DUREE",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Liste des instants de calcul au feu ; meme unite que DUREE de la commande FEU, soit la minute.",
+          "required": false,
+          "default": "duree du feu",
+          "unit": "minute"
+        }
+      ],
+      "prerequisites": [
+        "Calcul au feu defini : MAT E FEU EC2 [p.218], EXPOSITION FEU [p.220], SECTION [p.220], CARA SECTION [p.228], FEU [p.229]."
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "pitfalls": [
+        "Le calcul au feu impose de travailler en metre [p.218].",
+        "La maille (MAILLE) doit rester >= ~1 cm et < 1/3 de la plus petite dimension de la section [p.399]."
+      ],
+      "examples": [
+        "RESU\n   FEU SECTION\nFIN",
+        "RESU\n   FEU 1 SECTION 1 DUREE 10,30,60\nFIN"
+      ],
+      "pages": [
+        232
+      ]
+    },
+    {
+      "name": "FLAMBEMENT",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Edite les facteurs d'amplification critiques (MODE) et les deformees (DEPLA) des modes de flambement lineaire elastique.",
+      "syntax": [
+        "FLAMBEMENT (listem) (MODE) (DEPLA)"
+      ],
+      "doc": "- `FLAMBEMENT MODE` fournit les **facteurs d'amplification critiques** des modes de flambement elastique calcules [p.245].\n- `FLAMBEMENT DEPLA` fournit les **deplacements des barres** pour les modes critiques specifies et deja calcules [p.245].",
+      "args": [
+        {
+          "name": "listem",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de modes critiques.",
+          "required": false,
+          "default": "tous les modes en base"
+        },
+        {
+          "name": "MODE",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Facteurs d'amplification critiques.",
+          "required": false
+        },
+        {
+          "name": "DEPLA",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Deformees des modes critiques.",
+          "required": false
+        }
+      ],
+      "prerequisites": [
+        "EXEC FLAMBEMENT prealable [p.215]."
+      ],
+      "pitfalls": [
+        "ETUDE est sans effet sur le flambement (calcul aux noeuds) [p.215].",
+        "Si la charge variable n'induit aucun effort normal, aucun facteur critique fini n'est obtenu [p.215-216]."
+      ],
+      "examples": [
+        "RESU\n   FLAMBEMENT MODE\nFIN",
+        "RESU\n   FLAMBEMENT MODE DEPLA\nFIN"
+      ],
+      "pages": [
+        244,
+        245
+      ]
+    },
+    {
+      "name": "HISTORIQUE",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Edite les resultats d'une analyse temporelle (accelerogramme, convoi dynamique, charge forcee) pas de temps par pas de temps.",
+      "syntax": [
+        "HISTORIQUE (listeh) (NOEUD (listen)) (<DEPLA, VITESSE, ACCELERATION>) (APPUI (LOC))",
+        "   (BARRE (listeb) (EFFORT) (CONTR) (PRESS) (CONTRG (lst)))"
+      ],
+      "doc": "Edite les resultats des historiques stockes en base [p.244-245].\n\n- Si `listeh` n'est pas accompagnee de la clause `NOEUD`, l'historique des deplacements est fourni **pour toute la structure a chaque pas de temps**.\n- `NOEUD listen` presente l'historique **par noeud** ; le choix `<DEPLA, VITESSE, ACCELERATION>` est alors exclusif.",
+      "args": [
+        {
+          "name": "listeh",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros d'historiques dont les resultats sont en base.",
+          "required": false,
+          "default": "tous les resultats en base"
+        },
+        {
+          "name": "listen",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de noeuds ; l'historique est alors presente par noeud.",
+          "required": false
+        },
+        {
+          "name": "listeb",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de barres.",
+          "required": false
+        }
+      ],
+      "prerequisites": [
+        "ACCELEROGRAMME [p.207], DYNAMIQUE CONVOI [p.209] ou DYNAMIQUE CHARGE [p.211] defini, puis EXEC HISTORIQUE [p.208, p.210, p.213]."
+      ],
+      "requiresV2": true,
+      "pitfalls": [
+        "EXEC HISTORIQUE TEMPS NON ne conserve que les enveloppes : l'edition pas a pas devient impossible [p.208]."
+      ],
+      "examples": [
+        "RESU\n   HISTORIQUE 1 NOEUD 2 DEPLA\n   HISTORIQUE 1 APPUI\n   HISTORIQUE 1 BARRE EFFORT CONTR PRESS\nFIN"
+      ],
+      "pages": [
+        244,
+        245
+      ]
+    },
+    {
+      "name": "INCENDIE",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Edite les sollicitations, temperatures et caracteristiques a chaud sous charge incendie, pour les barres ou les appuis.",
+      "syntax": [
+        "INCENDIE (liste) BARRE (listb) (CARA CHAUD) (TEMP (MAX) (MIN) (tmin))",
+        "INCENDIE (liste) BARRE (listb) (EFFORT) (DEPLA)",
+        "INCENDIE (liste) APPUI (lista)"
+      ],
+      "doc": "Edite les resultats d'une charge incendie [p.232-233].\n\n- `CARA CHAUD` : affiche les caracteristiques **a froid et a chaud** des barres (raideur axiale, inerties principales, effort normal, moments) ; les excentrements a chaud sont pris en compte. Cree `barre_chargeincendie(numincendie).vtp`.\n- `TEMP` : temperatures et contraintes dans chaque maille de section de barre (resultats au milieu de la poutre), avec generation des fichiers `Beton_barre(...)`, `Armature_barre(...)` et `Precontrainte_barre(...)` `.vtp`.\n- `EFFORT` / `DEPLA` : sollicitations et deplacements sous incendie.\n- `APPUI` : sollicitations sur les appuis.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de charge incendie (commande INCENDIE p.230).",
+          "required": false
+        },
+        {
+          "name": "BARRE",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Liste de numeros de barres.",
+          "required": false
+        },
+        {
+          "name": "CARA CHAUD",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Affiche les caracteristiques a froid et a chaud des barres.",
+          "required": false
+        },
+        {
+          "name": "TEMP",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Temperatures et contraintes par maille ; MAX / MIN ou temperature minimale du beton a afficher (tmin).",
+          "required": false
+        },
+        {
+          "name": "MAX",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Temperature maximale.",
+          "required": false
+        },
+        {
+          "name": "MIN",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Temperature minimale.",
+          "required": false
+        },
+        {
+          "name": "APPUI",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Liste de numeros d'appuis.",
+          "required": false
+        }
+      ],
+      "prerequisites": [
+        "INCENDIE defini [p.230] et EXEC INCENDIE execute [p.231]."
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "pitfalls": [
+        "Convergence non garantie : demarrer par un feu court (10 min) puis augmenter jusqu'a 120 min maximum ; TRACTION OUI peut servir a stabiliser en phase de mise au point [p.400-401]."
+      ],
+      "examples": [
+        "RESU\n   INCENDIE 1 BARRE 1 a 10 CARA CHAUD\nFIN",
+        "RESU\n   INCENDIE 1 BARRE EFFORT DEPLA\nFIN",
+        "RESU\n   INCENDIE 1 APPUI\nFIN"
+      ],
+      "pages": [
+        231,
+        232
+      ]
+    },
+    {
+      "name": "MODE",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Edite les frequences propres (FREQUENCE) et/ou les deplacements modaux (DEPLA) des modes calcules ; sert aussi a restreindre les modes d'une reponse spectrale.",
+      "syntax": [
+        "MODE (listem) (FREQUENCE) (DEPLA)",
+        "SPECTRE (liste) MODE (listem) ..."
+      ],
+      "doc": "- `MODE FREQUENCE` fournit les **frequences propres** des modes calcules, leur **facteur de participation modale** et leur **masse modale** [p.245].\n- `MODE DEPLA` fournit les **deplacements des barres** pour les modes propres specifies et deja calcules [p.245].\n- Dans la clause `SPECTRE`, `MODE listem` permet de specifier les modes a prendre en compte.\n\nRappel : les modes propres sont calcules uniquement aux noeuds ; `ETUDE` n'a aucun effet sur les modes [p.197].",
+      "args": [
+        {
+          "name": "listem",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de modes dont les resultats sont en base.",
+          "required": false,
+          "default": "tous les modes en base"
+        },
+        {
+          "name": "FREQUENCE",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Frequences propres, facteurs de participation et masses modales.",
+          "required": false
+        },
+        {
+          "name": "DEPLA",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Deplacements des barres pour les modes specifies.",
+          "required": false
+        }
+      ],
+      "prerequisites": [
+        "EXEC MODE prealable [p.198]."
+      ],
+      "examples": [
+        "RESU\n   MODE FREQUENCE\nFIN",
+        "RESU\n   MODE 1 DEPLA\nFIN"
+      ],
+      "pages": [
+        244,
+        245
+      ]
+    },
+    {
+      "name": "NOEUD",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Edite les deplacements aux noeuds ; utilisable uniquement avec les chargements.",
+      "syntax": [
+        "NOEUD (liste)"
+      ],
+      "doc": "Fournit les **deplacements des noeuds**. La commande s'utilise uniquement avec les CHARGEMENTS et non avec les SURCHARGES [p.245]. Sert egalement a designer les noeuds d'un `HISTORIQUE` (`HISTORIQUE listeh NOEUD listen`).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de noeuds.",
+          "required": false,
+          "default": "tous les noeuds definis"
+        }
+      ],
+      "forbidden": [
+        "Association avec SURCH : NOEUD ne s'utilise pas avec les surcharges [p.245]"
+      ],
+      "pitfalls": [
+        "Les modes propres et les enveloppes de deplacement sous charges d'exploitation ne sont pas disponibles aux noeuds pour les surcharges : passer par BARRE et les sections d'etude [p.141, p.245]."
+      ],
+      "examples": [
+        "RESU\n   CHARG 1\n   NOEUD 1 a 20\nFIN"
+      ],
+      "pages": [
+        244,
+        245
+      ]
+    },
+    {
+      "name": "PHASAGE",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Selectionne les phasages dont les resultats sont edites.",
+      "syntax": [
+        "PHASAGE (liste)"
+      ],
+      "doc": "Clause de selection du bloc `RESU` : edite les resultats des phasages executes par `EXEC PHASAGE` [p.196, p.244].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de phasages.",
+          "required": false,
+          "default": "tous les resultats en base"
+        }
+      ],
+      "requiresV2": true,
+      "examples": [
+        "RESU\n   PHASAGE CABLE\nFIN"
+      ],
+      "pages": [
+        244
+      ]
+    },
+    {
+      "name": "PRESS",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Demande l'edition des pressions de sol des barres sur sol elastique, aux sections d'etude de deplacement.",
+      "syntax": [
+        "PRESS"
+      ],
+      "doc": "Mot-cle qualifiant `BARRE` (ou `SPECTRE BARRE`, `HISTORIQUE BARRE`). Edite les **pressions** des poutres sur sol elastique ou pseudo-plastique (`CARA PSE` p.59) aux sections d'etude des deplacements [p.244, p.258].\n\nComposantes : PLANE `px, py` ; GRILL `pz, mx` ; SPATIALE `px, py, pz, mx`.",
+      "prerequisites": [
+        "Barres sur sol elastique definies par CARA PSE [p.59].",
+        "ETUDE DEPLA declare sur les barres concernees [p.101]."
+      ],
+      "examples": [
+        "RESU\n   CHARG 1 BARRE DEPLA PRESS\nFIN"
+      ],
+      "pages": [
+        244
+      ]
+    },
+    {
+      "name": "SPECTRE",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Edite les combinaisons quadratiques completes (CQC) de la reponse spectrale pour les barres et les appuis.",
+      "syntax": [
+        "SPECTRE (liste) (MODE (listem)) (APPUI (LOC))",
+        "   (BARRE (listeb)) (EFFORT) (DEPLA) (VITESSE) (ACCELERATION) (CONTR) (PRESS) (CONTRG (lst))"
+      ],
+      "doc": "Fournit les **combinaisons quadratiques completes (CQC)** des barres pour tous les modes propres deja calcules [p.245].\n\n- Necessite au prealable la commande `SPECTRE ... REPONSE` et son execution.\n- Si l'amortissement est nul (commande `AMORTISSEMENT` non definie), la combinaison **CQC degenere en SRSS** (racine carree de la somme des carres).\n- `MODE listem` permet de restreindre les modes pris en compte.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de reponses spectrales en base.",
+          "required": false,
+          "default": "tous les resultats en base"
+        },
+        {
+          "name": "listeb",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de barres pour le calcul spectral.",
+          "required": false
+        }
+      ],
+      "prerequisites": [
+        "SPECTRE ic REPONSE defini [p.205] puis EXEC SPECTRE REPONSE, lui-meme precede de EXEC MODE [p.206]."
+      ],
+      "pitfalls": [
+        "La reponse spectrale est un cas de charge, pas une enveloppe : pour l'effet +/- il faut une ENV COMB avec coefficients +1 et -1 [p.205].",
+        "Sans commande AMORTISSEMENT, la CQC degenere silencieusement en SRSS [p.245]."
+      ],
+      "examples": [
+        "RESU\n   SPECTRE BARRE TOUT EFFORT DEPLA\nFIN",
+        "RESU\n   MODE FREQUENCE\n   SPECTRE 10,20 BARRE EFFORT\n   ENV 10,1000 BARRE EFFORT\nFIN"
+      ],
+      "pages": [
+        244,
+        245
+      ]
+    },
+    {
+      "name": "SURCH",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Selectionne les surcharges (charges d'exploitation) dont les resultats sont edites.",
+      "syntax": [
+        "SURCH (liste)"
+      ],
+      "doc": "Clause de selection du bloc `RESU` [p.244]. `BARRE` fournit les resultats aux sections d'etude aussi bien pour les chargements que pour les surcharges ; `NOEUD` en revanche n'est pas utilisable avec les surcharges [p.245].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros de surcharges.",
+          "required": false,
+          "default": "tous les resultats en base"
+        }
+      ],
+      "forbidden": [
+        "NOEUD : la clause NOEUD s'utilise uniquement avec les chargements, pas avec les surcharges [p.245]"
+      ],
+      "examples": [
+        "RESU\n   SURCH 1 ENV 5,6\n   BARRE 2\nFIN"
+      ],
+      "pages": [
+        244,
+        245
+      ]
+    },
+    {
+      "name": "VITESSE",
+      "family": "resultats",
+      "context": "bloc:RESU",
+      "summary": "Demande l'edition des vitesses (reponse spectrale sur barres, ou historique aux noeuds).",
+      "syntax": [
+        "VITESSE"
+      ],
+      "doc": "Mot-cle utilisable dans la clause `SPECTRE ... BARRE ...` et dans la clause `HISTORIQUE` (choix exclusif `<DEPLA, VITESSE, ACCELERATION>` pour les noeuds) [p.244].",
+      "examples": [
+        "RESU\n   SPECTRE BARRE TOUT DEPLA VITESSE ACCELERATION\nFIN",
+        "RESU\n   HISTORIQUE 1 NOEUD 2 VITESSE\nFIN"
+      ],
+      "pages": [
+        244
+      ]
+    },
+    {
+      "name": "BRISER",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Interrompt l'execution d'une boucle POUR ; l'indice conserve sa valeur au moment de l'interruption.",
+      "syntax": [
+        "BRISER"
+      ],
+      "doc": "Interrompt l'execution d'une boucle `POUR` [p.273]. **L'indice de boucle conserve sa valeur au moment du `BRISER`** (a la difference de la sortie normale, ou il vaut la derniere valeur de la liste de controle).",
+      "pitfalls": [
+        "Apres BRISER, l'indice n'est pas la derniere valeur de la liste mais la valeur atteinte a l'interruption [p.273]."
+      ],
+      "examples": [
+        "POUR i=1 a 10\n<<\n   # instructions\n   SI(i==5) BRISER\n   # instructions ignorees a partir de i = 5\n>>"
+      ],
+      "pages": [
+        273
+      ]
+    },
+    {
+      "name": "COMB",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Combinaison lineaire de resultats deja en base (chargements, combinaisons, etats, phasages, spectres, incendies), calculee et stockee immediatement.",
+      "syntax": [
+        "COMB i ('Titre de la combinaison')",
+        "   CHARG liste1 (coef1)",
+        "   ...",
+        "   COMB liste2 (coef2)",
+        "   ...",
+        "   ETAT liste3 (coef3)",
+        "   ...",
+        "   PHASAGE liste4 (coef4)",
+        "   ...",
+        "   SPECTRE liste5 (coef5)",
+        "   ...",
+        "   INCENDIE liste6 (coef6)",
+        "   ...",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "doc": "Cree une combinaison **immediatement calculee et stockee en base de donnees** [p.234].\n\n- Chaque ligne interne est du type `<SOURCE> liste (coef)` ; le coefficient multiplicateur vaut **1.** par defaut.\n- Les lignes peuvent etre repetees autant de fois que necessaire entre `COMB i` et `FIN`.\n- On **ne peut pas** combiner directement des enveloppes (`ENV`) ni des surcharges (`SURCH`) : il faut `ENV COMB`.\n- Avertissement du manuel : la combinaison est **lineaire**, aucun calcul non lineaire n'est actualise (decollements d'appui, calculs au feu, barres sur ressort non lineaire restent ceux du cas de base).\n- Aucune unite imposee ; les coefficients sont sans dimension.",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la combinaison a creer.",
+          "required": true
+        },
+        {
+          "name": "'Titre de la combinaison'",
+          "kind": "positional",
+          "type": "string",
+          "doc": "Titre libre entre quotes simples ; une quote interne se double.",
+          "required": false
+        },
+        {
+          "name": "CHARG",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "CHARG liste (coef) : chargements unitaires dont les resultats sont en base.",
+          "default": "coef = 1."
+        },
+        {
+          "name": "COMB",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "COMB liste (coef) : combinaisons deja creees.",
+          "default": "coef = 1."
+        },
+        {
+          "name": "ETAT",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "ETAT liste (coef) : etats sauvegardes par un phasage.",
+          "default": "coef = 1."
+        },
+        {
+          "name": "PHASAGE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "PHASAGE liste (coef) : resultats de phasages executes.",
+          "default": "coef = 1."
+        },
+        {
+          "name": "SPECTRE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "SPECTRE liste (coef) : reponses spectrales calculees (EXEC SPECTRE REPONSE).",
+          "default": "coef = 1."
+        },
+        {
+          "name": "INCENDIE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "INCENDIE liste (coef) : charges incendie calculees (EXEC INCENDIE).",
+          "default": "coef = 1."
+        }
+      ],
+      "prerequisites": [
+        "Les resultats a combiner doivent deja etre en base : EXEC CHARG [p.125], EXEC PHASAGE [p.196], EXEC SPECTRE REPONSE [p.206], EXEC INCENDIE [p.231]."
+      ],
+      "forbidden": [
+        "SURCH : les surcharges ne sont pas combinables par COMB (utiliser ENV COMB) [p.234]",
+        "ENV : les enveloppes ne sont pas combinables par COMB (utiliser ENV COMB) [p.234]"
+      ],
+      "pitfalls": [
+        "COMB ne recalcule aucun effet non lineaire : decollements d'appui, calcul au feu, ressorts non lineaires restent figes sur le cas de base [p.234].",
+        "Ne pas confondre `COMB i` (combine des EFFETS deja calcules, plusieurs EXEC) et `CHARG i COMB` (charge combinee : une seule charge, un seul EXEC) [p.122, p.125, p.229].",
+        "Pour l'analyse au feu (non lineaire), la somme des effets (COMB) et l'effet d'une charge combinee (CHARG COMB) ne sont PAS equivalents ; utiliser CHARG COMB [p.229]."
+      ],
+      "examples": [
+        "# combinaison ELU de charges permanentes et d une charge d exploitation\nCOMB 3 'ELU fondamental'\n   CHARG 1 1.35\n   CHARG 2 1.5\n   COMB 2 2.77\nFIN",
+        "# ponderation calee sur un resultat recupere par GET\nGET CONTR BARRE 13 SEC 1 CHARG 12\nCOMB 122 ' efforts ponderes du chargement 12'\n   CHARG 12 35/$vyvz\nFIN"
+      ],
+      "pages": [
+        234
+      ]
+    },
+    {
+      "name": "DESS",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Passe du mode console au mode dessin interactif ; donne acces a toutes les commandes du module graphique.",
+      "syntax": [
+        "DESS"
+      ],
+      "terminator": "RETOUR",
+      "doc": "Sous le prompt `>` du mode console, `DESS` fait passer en **mode de saisie graphique** [p.247]. L'utilisateur peut alors utiliser toutes les commandes du module graphique ainsi que les commandes `TITRE` et `LIRE` du mode console.\n\n- `LIRE` permet de lancer un fichier contenant des instructions de dessin deja preparees [p.37, p.247].\n- La saisie se fait dans la ligne de texte en bas de la fenetre graphique, validee par `<ENTREE>` ; plusieurs commandes se separent par un point-virgule.\n- Un bouton a droite de la ligne de saisie rappelle les commandes precedentes.\n- Les boutons en haut a gauche (`Print`, `Sauve`, `Cls`, ...) equivalent aux commandes correspondantes.\n- La sortie du mode graphique se fait par `RETOUR` (ou menu Fichier > Retour mode calcul).",
+      "prerequisites": [
+        "Les resultats a dessiner doivent etre en base : EXEC CHARG [p.125], COMB [p.234], ENV [p.235], EXEC SURCH [p.178]."
+      ],
+      "pitfalls": [
+        "Certains renvois du manuel citent 'DESS (cf. p259)' [p.286+] alors que la commande est decrite p.247 ; p.259 est le chapitre ECRANS GRAPHIQUES."
+      ],
+      "examples": [
+        "DESS",
+        "# apres DESS, dessin des moments de l enveloppe 2\nGEOM\nEFFORT MZ ENV 2\nCENTR"
+      ],
+      "pages": [
+        247
+      ]
+    },
+    {
+      "name": "DIM",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Cree un tableau indice de variables de dimension n, utilisable ensuite sous la forme nom(i).",
+      "syntax": [
+        "DIM nom(n)"
+      ],
+      "doc": "Cree un tableau indice de variables [p.266]. `DIM tx1(100)` cree un tableau `tx1` de 100 variables. L'initialisation et l'utilisation des variables indicees se font comme pour les variables ordinaires : `tx1(1)=12 ; NOEUD 1 tx1(1) 3`.",
+      "args": [
+        {
+          "name": "nom",
+          "kind": "positional",
+          "type": "string",
+          "doc": "Nom du tableau indice.",
+          "required": true
+        },
+        {
+          "name": "n",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Dimension du tableau (nombre de variables).",
+          "required": true
+        }
+      ],
+      "forbidden": [
+        "Donner au tableau un nom de fonction mathematique [p.266]",
+        "Ecrire des caracteres blancs dans une variable indicee [p.266]"
+      ],
+      "examples": [
+        "ntrav = 4\nDIM nptr(ntrav)             # longueurs des travees\nnptr(1) = 15\nnptr(2) = 15\nnptr(3) = 15\nnptr(4) = 14"
+      ],
+      "pages": [
+        266
+      ]
+    },
+    {
+      "name": "ECRIRE",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Ecrit un commentaire et/ou une valeur dans la sortie courante.",
+      "syntax": [
+        "ECRIRE 'texte'",
+        "ECRIRE 'texte' valeur"
+      ],
+      "doc": "Ecrit un commentaire ou une valeur [p.281]. **Par defaut l'ecriture s'affiche a la console** ; si la commande `SORTIE` a ete utilisee prealablement, le resultat s'affiche dans la sortie specifiee [p.39, p.281].\n\nLe texte est une chaine entre quotes simples, sans caractere accentue ; une quote interne se double.",
+      "args": [
+        {
+          "name": "'texte'",
+          "kind": "positional",
+          "type": "string",
+          "doc": "Chaine de caracteres entre quotes simples.",
+          "required": false
+        },
+        {
+          "name": "valeur",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Valeur, variable, variable tampon $ ou expression a ecrire.",
+          "required": false
+        }
+      ],
+      "pitfalls": [
+        "Pas de caractere accentue dans les chaines ST1 [p.31]."
+      ],
+      "examples": [
+        "icas = 1\nECRIRE 'ICAS : ' icas",
+        "GET TENSION CABLE 101 SEC 2 PHASAGE 31\nECRIRE 'Contrainte' $sigp\nECRIRE 'Perte' $dsigp"
+      ],
+      "pages": [
+        281
+      ]
+    },
+    {
+      "name": "ENV",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Enveloppe (max et min) de chargements, surcharges, combinaisons, etats, phasages, spectres, historiques ou enveloppes, avec gestion des concomitances.",
+      "syntax": [
+        "ENV i ('Titre de l''enveloppe')",
+        "   ( < EFFORT <N,TY,TZ,MX,MY,MZ>,",
+        "       DEPLA <DX,DY,DZ,RX,RY,RZ>,",
+        "       CONTR <VY,VZ,WY,WZ,VYVZ,VYWZ,WYVZ,WYWZ>,",
+        "       CONTRG ic,",
+        "       PRESS <PX,PY,PZ,MX> > )",
+        "   (REAC <FX,FY,FZ,MX,MY,MZ>)",
+        "   CHARG liste1 (coef1)",
+        "   ...",
+        "   SURCH liste2 (coef2)",
+        "   ...",
+        "   COMB liste3 (coef3)",
+        "   ...",
+        "   ETAT liste4 (coef4)",
+        "   ...",
+        "   PHASAGE liste5 (coef5)",
+        "   ...",
+        "   SPECTRE liste6 (coef6)",
+        "   ...",
+        "   HISTORIQUE liste7 (coef7)",
+        "   ...",
+        "   ENV liste8 (coef8)",
+        "   ...",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "doc": "Cree une enveloppe **stockee en base de donnees** [p.235-237].\n\n- Les clauses `EFFORT`, `DEPLA`, `CONTR`, `CONTRG`, `PRESS` et `REAC` designent une **composante privilegiee** : ST1 cherche les deux extremes de cette composante et edite les valeurs **concomitantes** des autres. Une enveloppe contient donc deux fois plus de resultats qu'un cas de charge.\n- Une concomitance peut etre demandee **a la fois** sur les reactions d'appui (`REAC`) et sur les sections d'etude (`EFFORT`/`DEPLA`/`CONTR`/`CONTRG`/`PRESS`).\n- **Si aucune composante n'est declaree**, le type de concomitance est herite des enveloppes et surcharges contenues ; sans surcharge ni enveloppe (ou avec une enveloppe sans concomitance), l'etude se fait sans concomitance.\n- Coefficients multiplicateurs : **1.** par defaut.\n- L'enveloppe d'un `HISTORIQUE` est l'enveloppe des effets sur l'ensemble des pas de temps de l'accelerogramme.\n- Messages d'execution : `==> Resultats concomitants des extremes de l'effort Mz` ; en cas de melange de types, `==> ATTENTION : Resultats comportant des incoherences sur les concomitances`.",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de l'enveloppe a creer.",
+          "required": true
+        },
+        {
+          "name": "'Titre de l''enveloppe'",
+          "kind": "positional",
+          "type": "string",
+          "doc": "Titre libre entre quotes simples ; une quote interne se double.",
+          "required": false
+        },
+        {
+          "name": "CHARG",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "CHARG liste (coef) : chargements unitaires.",
+          "default": "coef = 1."
+        },
+        {
+          "name": "SURCH",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "SURCH liste (coef) : surcharges (charges d'exploitation) calculees par EXEC SURCH.",
+          "default": "coef = 1."
+        },
+        {
+          "name": "COMB",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "COMB liste (coef) : combinaisons deja creees.",
+          "default": "coef = 1."
+        },
+        {
+          "name": "ETAT",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "ETAT liste (coef) : etats de phasage.",
+          "default": "coef = 1."
+        },
+        {
+          "name": "PHASAGE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "PHASAGE liste (coef) : resultats de phasages.",
+          "default": "coef = 1."
+        },
+        {
+          "name": "SPECTRE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "SPECTRE liste (coef) : reponses spectrales.",
+          "default": "coef = 1."
+        },
+        {
+          "name": "HISTORIQUE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "HISTORIQUE liste (coef) : enveloppe sur tous les pas de temps de l'historique.",
+          "default": "coef = 1."
+        },
+        {
+          "name": "ENV",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "ENV liste (coef) : enveloppes deja creees.",
+          "default": "coef = 1."
+        }
+      ],
+      "prerequisites": [
+        "Les resultats enveloppes doivent etre en base : EXEC CHARG [p.125], EXEC SURCH [p.178], EXEC PHASAGE [p.196], EXEC SPECTRE REPONSE [p.206], EXEC HISTORIQUE [p.208]."
+      ],
+      "forbidden": [
+        "Melanger dans une meme enveloppe des enveloppes/surcharges de types de concomitance differents (ex. une ENV sur MZ et une ENV sur VY) : signale par 'ATTENTION : Resultats comportant des incoherences sur les concomitances' [p.237]"
+      ],
+      "pitfalls": [
+        "Les enveloppes ou surcharges contenues dans une meme enveloppe doivent toutes avoir le MEME type de concomitance [p.237].",
+        "Sans composante privilegiee declaree, l'enveloppe herite silencieusement du type de concomitance de ce qu'elle contient [p.236].",
+        "Une reponse spectrale est un cas de charge, pas une enveloppe : pour obtenir l'effet +/- il faut une ENV (ou ENV COMB) avec coefficients +1 et -1 [p.205].",
+        "L'enveloppe des deplacements sous charges d'exploitation ne porte que sur les sections d'etude des barres, jamais sur les noeuds [p.141].",
+        "RESU APPUI LOC sur une enveloppe n'est pertinent que si la concomitance est activee (les extremes sont calcules en directions globales puis tournes) [p.245]."
+      ],
+      "examples": [
+        "# concomitance des extremes de MZ\nENV 1 'concomitance des extremes de mz'\n   EFFORT MZ\n   CHARG 10 1.35\n   ENV 2 2.5\n   CHARG 9\n   COMB 3 2.77\nFIN",
+        "# concomitance sur MZ et sur les reactions FY\nENV 3 'concomitance des extremes de mz et reactions fy'\n   EFFORT MZ\n   REAC FY\n   CHARG 10 1.35\n   ENV 2 2.5\n   CHARG 9\n   SURCH 2 1.2\n   COMB 3 2.77\nFIN",
+        "# enveloppe d une meme charge affectee de deux coefficients\nENV 1 'enveloppe de la poussee des terres : coef. : 0.25 et 0.50'\n   CHARG\n   2 .25\n   2 .50\nFIN",
+        "# enveloppe des charges d exploitation\nENV 4 'enveloppe des charges d''exploitation'\n   SURCH 1 a 3\nFIN"
+      ],
+      "pages": [
+        235,
+        236,
+        237
+      ]
+    },
+    {
+      "name": "ENV COMB",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Combinaison d'enveloppes : chaque source recoit un coefficient minimum et un coefficient maximum, le resultat est une enveloppe stockee en base.",
+      "syntax": [
+        "ENV i COMB ('Titre de la combinaison d''enveloppe')",
+        "   ( < EFFORT <N,TY,TZ,MX,MY,MZ>,",
+        "       DEPLA <DX,DY,DZ,RX,RY,RZ>,",
+        "       CONTR <VY,VZ,WY,WZ,VYVZ,VYWZ,WYVZ,WYWZ>,",
+        "       CONTRG ic,",
+        "       PRESS <PX,PY,PZ,MX> > )",
+        "   (REAC <FX,FY,FZ,MX,MY,MZ>)",
+        "   CHARG liste1 (cfmin1) (cfmax1)",
+        "   ...",
+        "   SURCH liste2 (cfmin2) (cfmax2)",
+        "   ...",
+        "   COMB liste3 (cfmin3) (cfmax3)",
+        "   ...",
+        "   ETAT liste4 (cfmin4) (cfmax4)",
+        "   ...",
+        "   PHASAGE liste5 (cfmin5) (cfmax5)",
+        "   ...",
+        "   SPECTRE liste6 (cfmin6) (cfmax6)",
+        "   ...",
+        "   HISTORIQUE liste7 (cfmin7) (cfmax7)",
+        "   ...",
+        "   ENV liste8 (cfmin8) (cfmax8)",
+        "   ...",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "doc": "Seule commande capable de **combiner des enveloppes et des surcharges** [p.238-239].\n\n- Chaque ligne porte deux coefficients : `cfmin` (defaut **1.**) applique a la recherche du minimum et `cfmax` (defaut **= cfmin**) applique a la recherche du maximum. C'est ce qui permet d'ecrire directement une combinaison reglementaire du type `1.00 / 1.35`.\n- Les clauses de composante privilegiee (`EFFORT`, `DEPLA`, `CONTR`, `CONTRG ic`, `PRESS`, `REAC`) et la gestion des concomitances sont **identiques a celles de `ENV`** (entrees de contexte `bloc:ENV`).\n- Sans composante declaree, le type de concomitance est herite de l'enveloppe contenue.\n- Le couple `+1 -1` sur une reponse spectrale est la maniere documentee d'obtenir l'effet alterne d'un seisme.",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de l'enveloppe a creer.",
+          "required": true
+        },
+        {
+          "name": "COMB",
+          "kind": "keyword",
+          "type": "flag",
+          "doc": "Mot-cle obligatoire, place apres le numero : `ENV i COMB`.",
+          "required": true
+        },
+        {
+          "name": "'Titre de la combinaison d''enveloppe'",
+          "kind": "positional",
+          "type": "string",
+          "doc": "Titre libre entre quotes simples.",
+          "required": false
+        },
+        {
+          "name": "CHARG",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "CHARG liste (cfmin) (cfmax).",
+          "default": "cfmin = 1. ; cfmax = cfmin"
+        },
+        {
+          "name": "SURCH",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "SURCH liste (cfmin) (cfmax).",
+          "default": "cfmin = 1. ; cfmax = cfmin"
+        },
+        {
+          "name": "COMB",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "COMB liste (cfmin) (cfmax) : ligne interne combinant des combinaisons.",
+          "default": "cfmin = 1. ; cfmax = cfmin"
+        },
+        {
+          "name": "ETAT",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "ETAT liste (cfmin) (cfmax).",
+          "default": "cfmin = 1. ; cfmax = cfmin"
+        },
+        {
+          "name": "PHASAGE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "PHASAGE liste (cfmin) (cfmax).",
+          "default": "cfmin = 1. ; cfmax = cfmin"
+        },
+        {
+          "name": "SPECTRE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "SPECTRE liste (cfmin) (cfmax).",
+          "default": "cfmin = 1. ; cfmax = cfmin"
+        },
+        {
+          "name": "HISTORIQUE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "HISTORIQUE liste (cfmin) (cfmax).",
+          "default": "cfmin = 1. ; cfmax = cfmin"
+        },
+        {
+          "name": "ENV",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "ENV liste (cfmin) (cfmax) : combinaison d'enveloppes.",
+          "default": "cfmin = 1. ; cfmax = cfmin"
+        }
+      ],
+      "prerequisites": [
+        "Les enveloppes, surcharges et combinaisons citees doivent deja etre en base (ENV [p.235], EXEC SURCH [p.178], COMB [p.234])."
+      ],
+      "pitfalls": [
+        "cfmax vaut cfmin par defaut : ecrire `CHARG 1 1.35` applique 1.35 au minimum ET au maximum ; pour un intervalle il faut les deux valeurs `CHARG 1 1.00 1.35` [p.239].",
+        "La ligne de syntaxe du manuel pour ENV COMB ecrit `(REAC <FX,FY,FZ,RX,RY,RZ>)` [p.238] ; c'est une coquille, les composantes de reaction sont FX,FY,FZ,MX,MY,MZ comme pour ENV [p.235, p.239 tableau].",
+        "ENV COMB herite du type de concomitance de l'enveloppe contenue : combiner deux enveloppes de concomitances differentes declenche le message d'incoherence [p.239]."
+      ],
+      "examples": [
+        "# combinaison ELU : coefficient min 1.00 et max 1.35\nENV 3 COMB 'combinaison ELU des charges permanentes'\n   CHARG 1  1.00  1.35\n   ENV   1  1.00  1.35\nFIN",
+        "# combinaison ELS permanentes + exploitation\nENV 5 COMB 'combinaison ELS charges permanentes + charges d''exploitation'\n   ENV 2\n   ENV 4 1.2\nFIN",
+        "# effet alterne des trois directions sismiques\nENV 1 COMB\n   SPECTRE 10 +1 -1\n   SPECTRE 20 +1 -1\n   SPECTRE 30 +1 -1\nFIN"
+      ],
+      "pages": [
+        238,
+        239
+      ]
+    },
+    {
+      "name": "GET",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Recupere un resultat de calcul dans des variables tampon prefixees par $, exploitables par la pseudo-programmation.",
+      "syntax": [
+        "GET DEPLA NOEUD i <CHARG,COMB,ETAT,PHASAGE,FLAMBEMENT,INCENDIE> j",
+        "GET DEPLA <MAX,MIN> NOEUD i ENV j",
+        "GET REAC APPUI i <CHARG,COMB,ETAT,PHASAGE,INCENDIE> j",
+        "GET REAC <MAX,MIN> APPUI i <ENV,SURCH> j",
+        "GET <EFFORT,DEPLA,CONTR,PRESS,CONTRG k> BARRE i SEC n <CHARG,COMB,ETAT,PHASAGE,INCENDIE> j",
+        "GET <EFFORT,DEPLA,CONTR,PRESS,CONTRG k> <MAX,MIN> BARRE i SEC n <ENV,SURCH> j",
+        "GET <ACCELERATION,VITESSE> <MAX,MIN> BARRE i SEC n HISTORIQUE j",
+        "GET TENSION CABLE i SEC n <CHARG,ETAT,PHASAGE> j",
+        "GET ALPHA FLAMBEMENT i"
+      ],
+      "doc": "Recupere un resultat deja en base dans des **variables tampon prefixees par `$`** (casse indifferente) [p.274-281].\n\n**Liste complete des variables tampon**\n\n| Forme de GET | Variables alimentees |\n|---|---|\n| `GET DEPLA NOEUD` / `GET DEPLA BARRE` | PLANE `$dx $dy $rz` ; GRILL `$rx $dz $rz` (cf. piege) ; SPATIALE `$dx $dy $dz $rx $ry $rz` |\n| `GET REAC APPUI` | PLANE `$fx $fy $mz` ; GRILL `$fz $mx $my` ; SPATIALE `$fx $fy $fz $mx $my $mz` |\n| `GET EFFORT BARRE` | PLANE `$n $ty $mz` ; GRILL `$mx $tz $mz` (cf. piege) ; SPATIALE `$n $ty $tz $mx $my $mz` |\n| `GET CONTR BARRE` | PLANE `$vy $wy` ; GRILL `$vz $wz` ; SPATIALE `$vyvz $wyvz $vywz $wywz` |\n| `GET PRESS BARRE` | PLANE `$px $py` ; GRILL `$mx $pz` ; SPATIALE `$px $py $pz $mx` |\n| `GET CONTRG k BARRE` | `$contrg` (toutes options) |\n| toute forme `... BARRE ...` | en plus : `$xl` (abscisse de la section d'etude), `$nsec` (nombre de sections d'etude de la barre) |\n| `GET ACCELERATION/VITESSE BARRE ... HISTORIQUE` | memes noms que DEPLA + `$xl`, `$nsec` |\n| `GET TENSION CABLE` | `$nsec` `$xl` `$sigp` `$dsigp` `$x` `$y` `$z` |\n| `GET ALPHA FLAMBEMENT` | `$alpha` |\n| toute forme | `$err` = 1 en cas d'erreur, 0 sinon |\n\n- Une erreur declenche un message et met `$ERR` a 1.\n- **Chaque `GET` ecrase les variables tampon utilisees** : pour conserver une valeur, la recopier dans une variable ordinaire (`toto=$dx`).",
+      "args": [
+        {
+          "name": "MAX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Extreme superieur, obligatoire pour ENV et SURCH.",
+          "values": [
+            "MAX",
+            "MIN"
+          ]
+        },
+        {
+          "name": "MIN",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Extreme inferieur, obligatoire pour ENV et SURCH.",
+          "values": [
+            "MAX",
+            "MIN"
+          ]
+        },
+        {
+          "name": "SEC",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero de la section d'etude (cf. commande ETUDE p.101) ou de la section du cable."
+        }
+      ],
+      "prerequisites": [
+        "Les resultats interroges doivent etre en base (EXEC ... prealable).",
+        "Pour les resultats de barre : sections d'etude declarees par ETUDE [p.101]."
+      ],
+      "pitfalls": [
+        "Chaque GET ecrase les variables tampon : stocker les valeurs a conserver dans des variables ordinaires [p.274].",
+        "Coquilles du manuel sur l'option GRILL : le tableau des deplacements donne `$rx, $dz, $rz` et celui des efforts `$mx, $tz, $mz` [p.275, p.277] alors que les ddl GRILL sont rx, dz, ry et les efforts mx, tz, my [p.43-44, p.235].",
+        "`MAX`/`MIN` est obligatoire des que la source est une enveloppe (ENV) ou une surcharge (SURCH), et interdit pour un chargement simple [p.275-277].",
+        "Aucun caractere blanc dans une expression : `SI($fy<0)` et non `SI( $fy < 0 )` [p.268]."
+      ],
+      "examples": [
+        "# desactivation d un appui si la reaction FY de la combinaison 10 est negative\nGET REAC APPUI 2 COMB 10\nSI($fy<0) DESACTIVER APPUI 2",
+        "# recherche du MZ maximal d une barre et de son abscisse\nGET EFFORT MAX BARRE 4 SEC 1 ENV 11\nv1 = $mz ; v2 = $xl\nPOUR i=2 a $nsec\n<<\n   GET EFFORT MAX BARRE 4 SEC i ENV 11\n   SI(v1<$mz) << v1=$mz ; v2=$xl >>\n>>",
+        "# conservation d une valeur avant ecrasement\nGET DEPLA NOEUD 1 CHARG 2\ntoto=$dx\nGET DEPLA NOEUD 2 CHARG 2"
+      ],
+      "pages": [
+        274,
+        275,
+        276,
+        277,
+        278,
+        279,
+        280
+      ]
+    },
+    {
+      "name": "GET ACCELERATION BARRE",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Recupere les accelerations enveloppes d'une section d'etude de barre pour un historique.",
+      "syntax": [
+        "GET ACCELERATION <MAX,MIN> BARRE i SEC n HISTORIQUE j"
+      ],
+      "doc": "Recuperation des resultats **enveloppes** d'une section d'etude de barre provenant specifiquement d'un historique [p.279].\n\nVariables alimentees (memes noms que les deplacements) : **PLANE** `$dx, $dy, $rz` ; **GRILL** `$rx, $dz, $rz` *(tel qu'imprime)* ; **SPATIALE** `$dx, $dy, $dz, $rx, $ry, $rz`. En plus : `$xl`, `$nsec`.",
+      "args": [
+        {
+          "name": "MAX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Extreme superieur ou inferieur de l'enveloppe temporelle.",
+          "values": [
+            "MAX",
+            "MIN"
+          ],
+          "required": true
+        },
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la barre.",
+          "required": true
+        },
+        {
+          "name": "SEC",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero de la section d'etude.",
+          "required": true
+        },
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de l'historique.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "EXEC HISTORIQUE prealable [p.208]."
+      ],
+      "requiresV2": true,
+      "pitfalls": [
+        "Les accelerations sont rangees dans des variables au nom de deplacement ($dx, $dy...) : le nom ne renseigne pas sur la grandeur [p.279]."
+      ],
+      "examples": [
+        "GET ACCELERATION MAX BARRE 12 SEC 5 HISTORIQUE 1\nECRIRE 'acceleration verticale max : ' $dy"
+      ],
+      "pages": [
+        279
+      ]
+    },
+    {
+      "name": "GET ALPHA FLAMBEMENT",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Recupere la valeur propre critique (effet critique) d'un mode de flambement dans $alpha.",
+      "syntax": [
+        "GET ALPHA FLAMBEMENT i"
+      ],
+      "doc": "Recuperation de l'effet critique (valeur propre) d'un mode de flambement [p.280]. Variable alimentee : `$alpha` (valeur propre critique).",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du mode de flambement critique.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "EXEC FLAMBEMENT prealable [p.215]."
+      ],
+      "examples": [
+        "GET ALPHA FLAMBEMENT 1\nECRIRE 'facteur critique du mode 1 : ' $alpha"
+      ],
+      "pages": [
+        280
+      ]
+    },
+    {
+      "name": "GET CONTR BARRE",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Recupere les contraintes normales d'une section d'etude de barre dans $vy, $wy, $vz, $wz ou $vyvz, $wyvz, $vywz, $wywz.",
+      "syntax": [
+        "GET CONTR BARRE i SEC n <CHARG,COMB,ETAT,PHASAGE,INCENDIE> j",
+        "GET CONTR <MAX,MIN> BARRE i SEC n <ENV,SURCH> j"
+      ],
+      "doc": "Cas d'une **section d'etude des efforts et d'une barre dont les fibres ont ete definies** [p.277-278].\n\n- **PLANE** `$vy, $wy` ; **GRILL** `$vz, $wz` ; **SPATIALE** `$vyvz, $wyvz, $vywz, $wywz`.\n\nEn plus : `$xl`, `$nsec`.",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la barre.",
+          "required": true
+        },
+        {
+          "name": "SEC",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero de la section d'etude.",
+          "required": true
+        },
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du resultat source.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "Fibres extremes VY/WY (VZ/WZ en spatial) definies dans CARA [p.59-60, p.66]."
+      ],
+      "examples": [
+        "GET CONTR BARRE 13 SEC 1 CHARG 12\nCOMB 122 ' efforts ponderes du chargement 12'\n   CHARG 12 35/$vyvz\nFIN"
+      ],
+      "pages": [
+        277,
+        278
+      ]
+    },
+    {
+      "name": "GET CONTRG BARRE",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Recupere la contrainte generalisee k d'une section d'etude de barre dans $contrg (+ $xl, $nsec).",
+      "syntax": [
+        "GET CONTRG k BARRE i SEC n <CHARG,COMB,ETAT,PHASAGE,INCENDIE> j",
+        "GET CONTRG k <MAX,MIN> BARRE i SEC n <ENV,SURCH> j"
+      ],
+      "doc": "Cas d'une **section d'etude des efforts et d'une barre pour laquelle la contrainte generalisee `k` a ete definie** [p.277-278]. La variable alimentee est `$contrg` dans les trois options de calcul. En plus : `$xl`, `$nsec`.",
+      "args": [
+        {
+          "name": "k",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la contrainte generalisee (cf. commande CONTRG p.103).",
+          "required": true
+        },
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la barre.",
+          "required": true
+        },
+        {
+          "name": "SEC",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero de la section d'etude.",
+          "required": true
+        },
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du resultat source.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "CONTRG k definie [p.103] et calculee lors de EXEC CHARG / EXEC SURCH [p.105]."
+      ],
+      "examples": [
+        "GET CONTRG 10 MAX BARRE 4 SEC 1 ENV 11\nECRIRE 'contrainte generalisee : ' $contrg"
+      ],
+      "pages": [
+        277,
+        278
+      ]
+    },
+    {
+      "name": "GET DEPLA BARRE",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Recupere les deplacements d'une section d'etude de barre dans $dx, $dy, $dz, $rx, $ry, $rz (+ $xl, $nsec).",
+      "syntax": [
+        "GET DEPLA BARRE i SEC n <CHARG,COMB,ETAT,PHASAGE,INCENDIE> j",
+        "GET DEPLA <MAX,MIN> BARRE i SEC n <ENV,SURCH> j"
+      ],
+      "doc": "Cas d'une **section d'etude des deplacements** [p.277-278].\n\n- **PLANE** `$dx, $dy, $rz` ; **GRILL** `$rx, $dz, $rz` *(tel qu'imprime)* ; **SPATIALE** `$dx, $dy, $dz, $rx, $ry, $rz`.\n\nEn plus : `$xl`, `$nsec`.",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la barre.",
+          "required": true
+        },
+        {
+          "name": "SEC",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero de la section d'etude.",
+          "required": true
+        },
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du resultat source.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "ETUDE DEPLA declare sur la barre, sinon aucune section d'etude de deplacement n'existe [p.101]."
+      ],
+      "examples": [
+        "GET DEPLA BARRE 5 SEC 3 COMB 2\nECRIRE 'fleche : ' $dy"
+      ],
+      "pages": [
+        277,
+        278
+      ]
+    },
+    {
+      "name": "GET DEPLA NOEUD",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Recupere les deplacements d'un noeud dans les variables tampon $dx, $dy, $dz, $rx, $ry, $rz.",
+      "syntax": [
+        "GET DEPLA NOEUD i <CHARG,COMB,ETAT,PHASAGE,FLAMBEMENT,INCENDIE> j",
+        "GET DEPLA <MAX,MIN> NOEUD i ENV j"
+      ],
+      "doc": "Affecte les deplacements du noeud `i` dans les variables tampon [p.275] :\n\n- **PLANE** `$dx, $dy, $rz`\n- **GRILL** `$rx, $dz, $rz` *(tel qu'imprime dans le manuel ; les ddl GRILL sont rx, dz, ry)*\n- **SPATIALE** `$dx, $dy, $dz, $rx, $ry, $rz`\n\n`MAX`/`MIN` est obligatoire pour une source `ENV`.",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du noeud.",
+          "required": true
+        },
+        {
+          "name": "MAX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Extreme superieur (obligatoire avec ENV).",
+          "values": [
+            "MAX",
+            "MIN"
+          ]
+        },
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du chargement, de la combinaison, de l'etat, du phasage, du mode de flambement, de l'incendie ou de l'enveloppe.",
+          "required": true
+        }
+      ],
+      "pitfalls": [
+        "Le manuel imprime `$rz` pour GRILL la ou les ddl GRILL sont rx, dz, ry [p.275] : verifier la valeur obtenue avant de l'exploiter."
+      ],
+      "examples": [
+        "GET DEPLA MAX NOEUD 3 ENV 10\nv1 = $dx ; v2 = $dy ; v3 = $rz"
+      ],
+      "pages": [
+        275
+      ]
+    },
+    {
+      "name": "GET EFFORT BARRE",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Recupere les efforts R.D.M. d'une section d'etude de barre dans $n, $ty, $tz, $mx, $my, $mz (+ $xl, $nsec).",
+      "syntax": [
+        "GET EFFORT BARRE i SEC n <CHARG,COMB,ETAT,PHASAGE,INCENDIE> j",
+        "GET EFFORT <MAX,MIN> BARRE i SEC n <ENV,SURCH> j"
+      ],
+      "doc": "Cas d'une **section d'etude des efforts** [p.277-278].\n\n- **PLANE** `$n, $ty, $mz`\n- **GRILL** `$mx, $tz, $mz` *(tel qu'imprime ; les efforts GRILL sont mx, tz, my)*\n- **SPATIALE** `$n, $ty, $tz, $mx, $my, $mz`\n\nEn plus : `$xl` (abscisse de la section sur la barre) et `$nsec` (nombre de sections d'etude de la barre).",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la barre.",
+          "required": true
+        },
+        {
+          "name": "SEC",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero de la section d'etude (cf. ETUDE p.101).",
+          "required": true
+        },
+        {
+          "name": "MAX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Extreme superieur (obligatoire avec ENV ou SURCH).",
+          "values": [
+            "MAX",
+            "MIN"
+          ]
+        },
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du resultat source.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "Sections d'etude d'efforts declarees par ETUDE [p.101]."
+      ],
+      "examples": [
+        "GET EFFORT BARRE 2 SEC 1 CHARG 3\nECRIRE 'effort normal : ' $n"
+      ],
+      "pages": [
+        277,
+        278
+      ]
+    },
+    {
+      "name": "GET PRESS BARRE",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Recupere les pressions de sol d'une section d'etude de barre dans $px, $py, $pz, $mx (+ $xl, $nsec).",
+      "syntax": [
+        "GET PRESS BARRE i SEC n <CHARG,COMB,ETAT,PHASAGE,INCENDIE> j",
+        "GET PRESS <MAX,MIN> BARRE i SEC n <ENV,SURCH> j"
+      ],
+      "doc": "Cas d'une **section d'etude des deplacements et d'une barre sur sol elastique** [p.278].\n\n- **PLANE** `$px, $py` ; **GRILL** `$mx, $pz` ; **SPATIALE** `$px, $py, $pz, $mx`.\n\nEn plus : `$xl`, `$nsec`.",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la barre.",
+          "required": true
+        },
+        {
+          "name": "SEC",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero de la section d'etude.",
+          "required": true
+        },
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du resultat source.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "Barre sur sol elastique (CARA PSE) [p.59] et ETUDE DEPLA [p.101]."
+      ],
+      "examples": [
+        "GET PRESS BARRE 7 SEC 2 CHARG 1\nECRIRE 'pression : ' $py"
+      ],
+      "pages": [
+        278
+      ]
+    },
+    {
+      "name": "GET REAC APPUI",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Recupere les reactions d'un appui dans les variables tampon $fx, $fy, $fz, $mx, $my, $mz.",
+      "syntax": [
+        "GET REAC APPUI i <CHARG,COMB,ETAT,PHASAGE,INCENDIE> j",
+        "GET REAC <MAX,MIN> APPUI i <ENV,SURCH> j"
+      ],
+      "doc": "Affecte les reactions de l'appui `i` dans les variables tampon [p.276] :\n\n- **PLANE** `$fx, $fy, $mz`\n- **GRILL** `$fz, $mx, $my`\n- **SPATIALE** `$fx, $fy, $fz, $mx, $my, $mz`\n\n`MAX`/`MIN` est obligatoire pour les sources `ENV` et `SURCH`.",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de l'appui.",
+          "required": true
+        },
+        {
+          "name": "MAX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Extreme superieur (obligatoire avec ENV ou SURCH).",
+          "values": [
+            "MAX",
+            "MIN"
+          ]
+        },
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du chargement, combinaison, etat, phasage, incendie, enveloppe ou surcharge.",
+          "required": true
+        }
+      ],
+      "pitfalls": [
+        "Le tableau REAC de ENV [p.235] ne liste que fz et my en GRILL, alors que GET REAC alimente aussi $mx [p.276]."
+      ],
+      "examples": [
+        "GET REAC MIN APPUI 4 ENV 11\nSI($fy<0) APPUI 4 DX"
+      ],
+      "pages": [
+        276
+      ]
+    },
+    {
+      "name": "GET TENSION CABLE",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Recupere la tension et la perte dans une section de cable ainsi que ses coordonnees globales.",
+      "syntax": [
+        "GET TENSION CABLE i SEC n <CHARG,ETAT,PHASAGE> j"
+      ],
+      "doc": "Recuperation des resultats d'une section de cable [p.280]. Variables tampon alimentees :\n\n- `$nsec` nombre de sections du cable\n- `$xl` abscisse curviligne a la section etudiee\n- `$sigp` contrainte totale a la section etudiee\n- `$dsigp` contrainte de perte a la section etudiee\n- `$x`, `$y`, `$z` coordonnees de la section du cable dans le repere global",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du cable.",
+          "required": true
+        },
+        {
+          "name": "SEC",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero de la section du cable.",
+          "required": true
+        },
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de l'etat, du phasage ou du chargement.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "PREC [p.92] et CABLE [p.95] definis ; action du cable calculee (CHARG CABLE [p.122] ou TENDRE CABLE en phasage [p.191])."
+      ],
+      "examples": [
+        "GET TENSION CABLE 101 SEC 2 PHASAGE 31\nECRIRE 'nb section' $nsec\nECRIRE 'abs curviligne' $xl\nECRIRE 'Contrainte' $sigp\nECRIRE 'Perte' $dsigp\nECRIRE 'X :' $x\nECRIRE 'Y :' $y\nECRIRE 'Z :' $z"
+      ],
+      "pages": [
+        280
+      ]
+    },
+    {
+      "name": "GET VITESSE BARRE",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Recupere les vitesses enveloppes d'une section d'etude de barre pour un historique.",
+      "syntax": [
+        "GET VITESSE <MAX,MIN> BARRE i SEC n HISTORIQUE j"
+      ],
+      "doc": "Recuperation des resultats **enveloppes** d'une section d'etude de barre provenant d'un historique [p.279].\n\nVariables alimentees : **PLANE** `$dx, $dy, $rz` ; **GRILL** `$rx, $dz, $rz` *(tel qu'imprime)* ; **SPATIALE** `$dx, $dy, $dz, $rx, $ry, $rz`. En plus : `$xl`, `$nsec`.",
+      "args": [
+        {
+          "name": "MAX",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Extreme superieur ou inferieur de l'enveloppe temporelle.",
+          "values": [
+            "MAX",
+            "MIN"
+          ],
+          "required": true
+        },
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la barre.",
+          "required": true
+        },
+        {
+          "name": "SEC",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero de la section d'etude.",
+          "required": true
+        },
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de l'historique.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "EXEC HISTORIQUE prealable [p.208]."
+      ],
+      "requiresV2": true,
+      "examples": [
+        "GET VITESSE MIN BARRE 12 SEC 5 HISTORIQUE 1"
+      ],
+      "pages": [
+        279
+      ]
+    },
+    {
+      "name": "LISTER",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Rappelle (edite) les donnees deja lues : geometrie, caracteristiques, materiaux, precontrainte, chargements, charges d'exploitation, phasages, donnees dynamiques et donnees de calcul au feu.",
+      "syntax": [
+        "LISTER GEOM",
+        "LISTER NOEUD (liste)",
+        "LISTER BARRE (liste)",
+        "LISTER CARA (liste)",
+        "LISTER MAT (liste)",
+        "LISTER APPUI (liste)",
+        "LISTER CONTRG (liste)",
+        "LISTER ACTIVATION (APPUI) (BARRE)",
+        "LISTER PREC (liste)",
+        "LISTER CABLE (liste)",
+        "LISTER CARA CABLE (liste)",
+        "LISTER CHARG (liste)",
+        "LISTER TABLIER",
+        "LISTER ALG (liste)",
+        "LISTER CONV (liste)",
+        "LISTER SURCH (liste)",
+        "LISTER PHASAGE (liste)",
+        "LISTER MASSE",
+        "LISTER AMORTISSEMENT",
+        "LISTER SPECTRE",
+        "LISTER HISTORIQUE",
+        "LISTER SECTION liste",
+        "LISTER MATERIAU liste",
+        "LISTER EXPOSITION liste",
+        "LISTER ACIER liste",
+        "LISTER ARMATURE liste",
+        "LISTER PROJET"
+      ],
+      "doc": "Edite les donnees deja definies (pas les resultats : voir `RESU`). La sortie est dirigee par `SORTIE` [p.39].\n\n- Par defaut, l'edition porte sur **tous les elements definis** ; la liste peut etre remplacee par `TOUT` (equivalent a ne pas mettre de liste) [p.240-242].\n- Plusieurs objets peuvent etre demandes sur une meme commande : `LISTER NOEUD 1 a 10 BARRE 2` [p.241].\n- `LISTER GEOM` edite l'ensemble : numeros et coordonnees des noeuds, numeros et caracteristiques des appuis, numeros des barres avec noeuds de liaison, longueurs, excentrements et articulations, caracteristiques R.D.M., liste des appuis actives, liste des barres activees [p.240].\n- `LISTER CABLE` / `LISTER CARA CABLE` rappellent la geometrie et les parametres principaux des cables : longueur, coefficients de transmission, deviations angulaires cumulees [p.241].\n- `LISTER PHASAGE` ne contient pas le detail de chaque instruction : c'est un resume de chaque action [p.242].\n- `LISTER MASSE` presente les masses sous forme matricielle, aux noeuds ou aux extremites des barres concernees [p.243].\n- Complements calcul au feu : `LISTER SECTION | MATERIAU | EXPOSITION | ACIER | ARMATURE liste` [p.228].\n- `LISTER PROJET` (chapitre commandes generales) liste les projets presents sur disque [p.40].",
+      "args": [
+        {
+          "name": "GEOM",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Edition de toute la geometrie.",
+          "pages": [
+            240
+          ]
+        },
+        {
+          "name": "NOEUD",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Coordonnees des noeuds.",
+          "pages": [
+            240
+          ]
+        },
+        {
+          "name": "BARRE",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Caracteristiques geometriques des barres.",
+          "pages": [
+            240
+          ]
+        },
+        {
+          "name": "CARA",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Caracteristiques R.D.M. des barres.",
+          "pages": [
+            240
+          ]
+        },
+        {
+          "name": "MAT",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Proprietes des materiaux.",
+          "pages": [
+            240
+          ]
+        },
+        {
+          "name": "APPUI",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Caracteristiques des appuis.",
+          "pages": [
+            240
+          ]
+        },
+        {
+          "name": "CONTRG",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Contraintes generalisees.",
+          "pages": [
+            240
+          ]
+        },
+        {
+          "name": "ACTIVATION",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Appuis et/ou barres actives ; sous-mots APPUI et BARRE.",
+          "pages": [
+            240
+          ]
+        },
+        {
+          "name": "PREC",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Dispositifs de precontrainte.",
+          "pages": [
+            241
+          ]
+        },
+        {
+          "name": "CABLE",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Geometrie et parametres des cables.",
+          "pages": [
+            241
+          ]
+        },
+        {
+          "name": "CARA CABLE",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Caracteristiques des cables (longueur, transmission, deviations cumulees).",
+          "pages": [
+            241
+          ]
+        },
+        {
+          "name": "CHARG",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Chargements fixes definis.",
+          "pages": [
+            241
+          ]
+        },
+        {
+          "name": "TABLIER",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Definition du tablier (pas de liste).",
+          "pages": [
+            242
+          ]
+        },
+        {
+          "name": "ALG",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Charges de type A(l) generalise.",
+          "pages": [
+            242
+          ]
+        },
+        {
+          "name": "CONV",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Charges roulantes generalisees.",
+          "pages": [
+            242
+          ]
+        },
+        {
+          "name": "SURCH",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Surcharges definies.",
+          "pages": [
+            242
+          ]
+        },
+        {
+          "name": "PHASAGE",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Resume des actions de chaque phasage.",
+          "pages": [
+            242
+          ]
+        },
+        {
+          "name": "MASSE",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Masses dynamiques (forme matricielle).",
+          "pages": [
+            243
+          ]
+        },
+        {
+          "name": "AMORTISSEMENT",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Amortissements definis.",
+          "pages": [
+            243
+          ]
+        },
+        {
+          "name": "SPECTRE",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Spectres d'acceleration definis.",
+          "pages": [
+            243
+          ]
+        },
+        {
+          "name": "HISTORIQUE",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Accelerogrammes definis.",
+          "pages": [
+            243
+          ]
+        },
+        {
+          "name": "SECTION",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Sections type du calcul au feu.",
+          "pages": [
+            228
+          ]
+        },
+        {
+          "name": "MATERIAU",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Materiaux (complements feu).",
+          "pages": [
+            228
+          ]
+        },
+        {
+          "name": "EXPOSITION",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Expositions au feu.",
+          "pages": [
+            228
+          ]
+        },
+        {
+          "name": "ACIER",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Types d'acier passif du calcul au feu.",
+          "pages": [
+            228
+          ]
+        },
+        {
+          "name": "ARMATURE",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Types d'armature du calcul au feu.",
+          "pages": [
+            228
+          ]
+        },
+        {
+          "name": "PROJET",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Liste des projets presents sur disque (chapitre commandes generales).",
+          "pages": [
+            40
+          ]
+        },
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de numeros selon l'objet liste ; TOUT admis.",
+          "required": false,
+          "default": "tous les elements definis"
+        }
+      ],
+      "pitfalls": [
+        "LISTER edite des DONNEES, pas des resultats : les resultats passent par RESU [p.244].",
+        "LISTER PHASAGE ne donne qu'un resume de chaque action, pas le detail des instructions [p.242]."
+      ],
+      "examples": [
+        "LISTER GEOM",
+        "LISTER NOEUD 1 a 10 BARRE 2",
+        "LISTER SURCH 1 a 3",
+        "LISTER CARA CABLE TOUT"
+      ],
+      "pages": [
+        240,
+        241,
+        242,
+        243,
+        228,
+        40
+      ]
+    },
+    {
+      "name": "PASSER",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Ignore les instructions finales de l'iteration courante d'une boucle POUR et passe a l'iteration suivante.",
+      "syntax": [
+        "PASSER"
+      ],
+      "doc": "Les instructions finales contenues dans une boucle `POUR` peuvent etre ignorees a l'aide de `PASSER` [p.273]. Employe typiquement derriere un `SI`.",
+      "examples": [
+        "POUR i=1 a 10\n<<\n   # instructions executees a chaque iteration\n   SI(i==7) PASSER\n   # instructions ignorees quand i vaut 7\n>>"
+      ],
+      "pages": [
+        273
+      ]
+    },
+    {
+      "name": "PAUSE",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Arrete momentanement l'interpretation du fichier de commandes ; reprise par la touche ENTER.",
+      "syntax": [
+        "PAUSE"
+      ],
+      "doc": "Arrete momentanement l'interpretation d'un fichier de commandes pendant son execution, pour faciliter le debogage [p.281]. Pour continuer, valider avec la touche `<ENTER>`.",
+      "forbidden": [
+        "Placer PAUSE a l'interieur d'une commande : elle ne doit pas figurer dans la description d'une charge mais apres la fin de cette description [p.281]"
+      ],
+      "pitfalls": [
+        "PAUSE placee dans un bloc (entre CHARG et FIN par exemple) est invalide [p.281]."
+      ],
+      "examples": [
+        "EXEC CHARG 1\nPAUSE\nEXEC CHARG 2"
+      ],
+      "pages": [
+        281
+      ]
+    },
+    {
+      "name": "POUR",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Boucle de repetition d'instructions sur les valeurs d'une liste.",
+      "syntax": [
+        "POUR i=liste << ... instructions ... >>",
+        "POUR i=liste",
+        "<<",
+        "   ...",
+        "   instructions",
+        "   ...",
+        ">>"
+      ],
+      "doc": "Repete automatiquement une ou plusieurs instructions [p.269].\n\n- `ACTIVER APPUI 1 a 10` equivaut a `POUR i=1 a 10 << ACTIVER APPUI i >>` [p.263].\n- Les boucles sont **imbricables** ; le nombre maximum d'imbrications est fixe dans le fichier parametres `st1.par` [p.331].\n- **En sortie de boucle, l'indice vaut la derniere valeur de la liste de controle.**\n- Si la valeur de l'indice est changee a l'interieur de la boucle, elle est **reinitialisee a l'iteration suivante** et le deroulement n'est pas affecte.\n- L'execution peut etre modifiee par `PASSER` et `BRISER`.\n- Une boucle `POUR` ecrite sur une seule ligne est consideree comme une instruction simple (utilisable directement derriere un `SI`).",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "string",
+          "doc": "Nom de l'indice de boucle.",
+          "required": true
+        },
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de controle : `1 a 10`, `i a j pas p`, liste nommee, enumeration par virgules.",
+          "required": true
+        }
+      ],
+      "pitfalls": [
+        "Le nombre maximum d'imbrications est defini dans st1.par [p.269, p.331].",
+        "Modifier l'indice dans le corps de la boucle est sans effet sur son deroulement [p.269]."
+      ],
+      "examples": [
+        "k=0\nPOUR i=1 a 10\n<<\n   POUR j=1 a 5\n   <<\n      k=k+1 ; NOEUD k i j\n   >>\n>>",
+        "POUR i=1 a 10 << ACTIVER APPUI i >>"
+      ],
+      "pages": [
+        269,
+        273
+      ]
+    },
+    {
+      "name": "RESU",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Bloc d'edition des resultats stockes en base : chargements, combinaisons, enveloppes, surcharges, etats, phasages, modes, spectres, historiques, flambement et incendie.",
+      "syntax": [
+        "RESU",
+        "   (CHARG (liste)) (COMB (liste)) (ENV (liste)) (SURCH (liste))",
+        "   (ETAT (liste)) (PHASAGE (liste))",
+        "   (CABLE (liste) (XS (<REL,ABS>) listexs))",
+        "   (NOEUD (liste))",
+        "   (APPUI (LOC) (liste))",
+        "   (BARRE (liste)) (EFFORT) (DEPLA) (CONTR) (CONTRG (liste)) (PRESS)",
+        "   (MODE (listem) (FREQUENCE) (DEPLA))",
+        "   (SPECTRE (liste)) (MODE (listem)) (APPUI (LOC)) ...",
+        "   ... (BARRE (listeb) (EFFORT) (DEPLA) (VITESSE) (ACCELERATION) ...",
+        "   ... (CONTR) (PRESS) (CONTRG (lst)))",
+        "   (HISTORIQUE (listeh) (NOEUD (listen)) ...",
+        "   ... (<DEPLA, VITESSE, ACCELERATION>) (APPUI (LOC)) ...",
+        "   ... (BARRE (listeb) (EFFORT) (CONTR) (PRESS) (CONTRG (lst))))",
+        "   (FLAMBEMENT (listem) (MODE) (DEPLA))",
+        "FIN",
+        "",
+        "RESU",
+        "   FEU (liste) SECTION (lists) (DUREE lstd)",
+        "FIN",
+        "",
+        "RESU",
+        "   INCENDIE (liste) BARRE (listb) (CARA CHAUD) (TEMP (MAX) (MIN) (tmin))",
+        "FIN",
+        "",
+        "RESU",
+        "   INCENDIE (liste) BARRE (listb) (EFFORT) (DEPLA)",
+        "FIN",
+        "",
+        "RESU",
+        "   INCENDIE (liste) APPUI (lista)",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "doc": "La description de l'edition s'effectue **entre `RESU` et `FIN`** [p.244]. Toutes les clauses peuvent etre ecrites sur une seule ligne.\n\n- Par defaut, l'edition porte sur **tous les resultats presents en base de donnees** ; par defaut **les efforts sur barres sont edites**.\n- L'edition est dirigee par la commande `SORTIE` (console ou fichier) [p.39].\n- Les listes peuvent etre remplacees par `TOUT`.\n- `EFFORT` et `CONTR` sont edites aux **sections d'etude d'efforts**, `DEPLA` et `PRESS` aux **sections d'etude de deplacements** (cf. `ETUDE` p.101).",
+      "args": [
+        {
+          "name": "CHARG",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Selection des chargements a editer."
+        },
+        {
+          "name": "COMB",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Selection des combinaisons a editer."
+        },
+        {
+          "name": "ENV",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Selection des enveloppes a editer."
+        },
+        {
+          "name": "SURCH",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Selection des surcharges a editer."
+        },
+        {
+          "name": "ETAT",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Selection des etats de phasage a editer."
+        },
+        {
+          "name": "PHASAGE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Selection des phasages a editer."
+        },
+        {
+          "name": "NOEUD",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Deplacements aux noeuds (chargements seulement)."
+        },
+        {
+          "name": "APPUI",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Efforts aux appuis, option LOC pour le repere local."
+        },
+        {
+          "name": "CABLE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Tensions et pertes dans les cables, option XS pour des abscisses curvilignes."
+        },
+        {
+          "name": "BARRE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Resultats aux sections d'etude des barres."
+        },
+        {
+          "name": "MODE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Modes propres : FREQUENCE et/ou DEPLA."
+        },
+        {
+          "name": "SPECTRE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Combinaisons quadratiques completes (CQC) de la reponse spectrale."
+        },
+        {
+          "name": "HISTORIQUE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Resultats d'analyse temporelle pas de temps par pas de temps."
+        },
+        {
+          "name": "FLAMBEMENT",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Facteurs critiques (MODE) et deformees (DEPLA) des modes de flambement."
+        },
+        {
+          "name": "FEU",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Profils de temperature des sections type (calcul au feu, ST1 v2)."
+        },
+        {
+          "name": "INCENDIE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Sollicitations sous charge incendie (barres ou appuis)."
+        }
+      ],
+      "prerequisites": [
+        "Les resultats doivent avoir ete calcules : EXEC CHARG [p.125], EXEC SURCH [p.178], EXEC PHASAGE [p.196], EXEC MODE [p.198], EXEC SPECTRE REPONSE [p.206], EXEC HISTORIQUE [p.208], EXEC FLAMBEMENT [p.215], EXEC INCENDIE [p.231].",
+        "SORTIE 'fichier' pour rediriger l'edition vers un fichier [p.39]."
+      ],
+      "pitfalls": [
+        "Deplacements absents en sortie malgre la convergence : sans `DEPLA` dans `ETUDE`, seuls les efforts aux extremites de barre sont edites ; declarer `ETUDE EFFORT DEPLA` puis `TOUT SE 0. a 1. PAS lpas` [p.101-102].",
+        "`CONTR` n'edite rien si les fibres VY/WY (VZ/WZ en spatial) ne sont pas definies dans CARA [p.66, p.244].",
+        "`NOEUD` ne s'utilise qu'avec les CHARGEMENTS, pas avec les SURCHARGES [p.245].",
+        "Pour les enveloppes, `APPUI LOC` n'est pertinent qu'avec concomitance activee : les maxima sont obtenus en directions globales puis tournes vers le repere local [p.245]."
+      ],
+      "examples": [
+        "# efforts des barres 1 a 10 pour tous les chargements en base\nRESU\n   CHARG\n   BARRE 1 a 10\nFIN",
+        "# tout sur une seule ligne\nRESU\n   BARRE EFFORT DEPLA CONTR\nFIN",
+        "# plusieurs selections dans un meme bloc\nRESU\n   CHARG 1 ENV 1,2,3\n   BARRE\nFIN",
+        "# resultats d un phasage : etats, cables et un chargement\nRESU\n   ETAT BARRE 11,12\n   ETAT CABLE\n   PHASAGE CABLE\n   CHARG 110 BARRE 11,12\nFIN"
+      ],
+      "pages": [
+        244,
+        245,
+        246
+      ]
+    },
+    {
+      "name": "SI",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Debranchement conditionnel : execute une instruction simple ou un bloc << >> selon une expression logique.",
+      "syntax": [
+        "SI(expression logique) instruction simple",
+        "SI(expression logique)",
+        "<<",
+        "   ...",
+        "   instructions",
+        "   ...",
+        ">>"
+      ],
+      "doc": "Prend en compte ou ignore des instructions selon le resultat d'une expression logique [p.270-272].\n\n- Les debranchements sont **imbricables** ; le nombre maximum d'imbrications est fixe dans `st1.par` [p.331].\n- **Instruction simple** : les guillemets `<< >>` sont facultatifs. Est consideree comme simple une instruction sans fin de ligne ni separateur `;`. Une boucle `POUR` ecrite sur une seule ligne est une instruction simple.\n- **Bloc d'instructions** : les guillemets `<< >>` sont **obligatoires**.\n- Les expressions logiques ne sont utilisables que dans l'instruction `SI(...)`.",
+      "args": [
+        {
+          "name": "expression logique",
+          "kind": "positional",
+          "type": "string",
+          "doc": "Comparaisons (== = /= > < >= <=) combinees par NON, ET, OU ; syntaxe du langage GENFOR.",
+          "required": true
+        }
+      ],
+      "forbidden": [
+        "Utiliser une expression logique ailleurs que dans SI(...) [p.271]",
+        "Omettre << >> quand le debranchement porte sur plusieurs instructions [p.272]"
+      ],
+      "pitfalls": [
+        "Aucun caractere blanc dans une expression : ecrire `SI(a1>=2OU a2<3)` est valide, `SI(i<=12)` aussi, mais `1+2 +3` compte pour deux valeurs [p.268, p.271]."
+      ],
+      "examples": [
+        "SI(i<=12)\n<<\n   SI(j==2) NOEUD 12 5 6\n   SINON\n   <<\n      k=k+1\n      NOEUD k i j\n   >>\n>>",
+        "GET REAC APPUI 2 COMB 10\nSI($fy<0) DESACTIVER APPUI 2"
+      ],
+      "pages": [
+        270,
+        271,
+        272
+      ]
+    },
+    {
+      "name": "SINON",
+      "family": "resultats",
+      "context": "top",
+      "summary": "Branche alternative d'un debranchement conditionnel SI.",
+      "syntax": [
+        "SI(expression logique) instruction simple",
+        "SINON instruction simple",
+        "",
+        "SINON",
+        "<<",
+        "   ...",
+        "   instructions",
+        "   ...",
+        ">>"
+      ],
+      "doc": "Introduit la branche executee lorsque l'expression logique du `SI` est fausse [p.270, p.272]. Memes regles de guillemets que `SI` : `<< >>` facultatifs pour une instruction simple, obligatoires pour un bloc.",
+      "examples": [
+        "SI(i==j) SI(k==11) NOEUD i 12 11 ; SINON LIRE 'fichier1'",
+        "SI(i==j) << LIRE 'fichier1' ; POUR i=1 a 10 << NOEUD i xx(i) yy(i) >> >>\nSINON << jj = jj+1 ; POUR i=1 a 3 << NOEUD jj xx(i)**2 yy(i)**2 >> >>"
+      ],
+      "pages": [
+        270,
+        272
+      ]
+    }
+  ]
+}

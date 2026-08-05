@@ -1,0 +1,144 @@
+{
+ "problems": [
+  {
+   "command": "CABLE (context bloc:RESU)",
+   "field": "doc",
+   "verdict": "INVENTE",
+   "claim": "« Sans `XS`, l'edition se fait aux sections de calcul par defaut du cable (pas de discretisation `PAS_CABLE`, defaut 0.25 [p.95]) »",
+   "evidence": "Le mot-cle `PAS_CABLE` n'existe nulle part dans ST1_v24_FR.md (grep 'PAS_CABLE' => aucun resultat). Le manuel ecrit le mot-cle en DEUX mots dans le bloc CABLE (§4.2, p.95) : « (PAS CABLE `pas`) », et « `pas` pas de discretisation de l'action du cable sur la structure (par defaut `pas=0.25`) » (ST1_v24_FR.md l.4165 et l.4181). Les mots-cles reellement suffixes par un underscore dans ST1 sont PAS_CONV, PAS_TEMPS, PAS_LIGNE — pas PAS_CABLE.",
+   "correction": "Remplacer `PAS_CABLE` par `PAS CABLE` (deux mots, sous-commande du bloc CABLE, p.95). La valeur 0.25 et la page 95 sont correctes."
+  },
+  {
+   "command": "PRESS (context bloc:ENV)",
+   "field": "args[MX].onlyOptions",
+   "verdict": "FAUX",
+   "claim": "MX est utilisable en option SPATIALE (`onlyOptions: [\"GRILL\",\"SPATIALE\"]`), sur une commande dont `pages` = [235, 239]",
+   "evidence": "Le tableau de reference base.json `structureOptions.SPATIALE.surchargeComponents.PRESS` = [\"PX\",\"PY\",\"PZ\"] (pas de MX). Ce tableau reproduit fidelement les deux tableaux du manuel cites par la commande elle-meme : ENV §13.2 (ST1_v24_FR.md l.10173) et ENV COMB §13.4 (l.10336), tous deux « Option SPATIALE ... px, py, pz ». La restriction declaree contredit donc la source citee ET base.json. (Le catalogue le signale dans `pitfalls`, mais la donnee machine `onlyOptions` reste fausse : un validateur acceptera `ENV 7 / PRESS MX` en SPATIALE.)",
+   "correction": "Mettre `onlyOptions: [\"GRILL\"]` pour MX dans le contexte bloc:ENV (conforme a p.235/p.239 et a base.json), et conserver la note de divergence avec p.258/p.278 uniquement dans `pitfalls`. Sinon, corriger base.json et documenter le choix — mais les deux fichiers ne peuvent pas rester contradictoires."
+  },
+  {
+   "command": "REAC (context bloc:ENV)",
+   "field": "args[MX].onlyOptions",
+   "verdict": "FAUX",
+   "claim": "MX (moment de reaction autour de OX) est utilisable en option GRILL (`onlyOptions: [\"GRILL\",\"SPATIALE\"]`)",
+   "evidence": "base.json `structureOptions.GRILL.surchargeComponents.REAC` = [\"FZ\",\"MY\"]. Le tableau du manuel cite par la commande donne « Option GRILL ... (REAC) fz, my » (ST1_v24_FR.md l.10172 pour ENV p.235, l.10335 pour ENV COMB p.239, et l.7806 pour ENV de phasage p.183 — les trois tableaux concordent). Le doc de la commande dit d'ailleurs lui-meme « GRILL `fz, my` d'apres le tableau [p.235] », en contradiction directe avec ses propres `args`.",
+   "correction": "Mettre `onlyOptions: [\"SPATIALE\"]` pour MX en contexte bloc:ENV. La divergence avec GET REAC p.276 ($fz, $mx, $my) doit rester une note `pitfalls`, pas une autorisation dans le schema."
+  },
+  {
+   "command": "PRESS (contexts bloc:DESS et bloc:RESU)",
+   "field": "args[MX].onlyOptions / doc",
+   "verdict": "NON_SOURCE",
+   "claim": "« Composantes utilisables : ... **SPATIALE** `px, py, pz, mx` » avec MX `onlyOptions: [\"GRILL\",\"SPATIALE\"]`, sans aucun pitfall signalant la divergence",
+   "evidence": "Ces deux entrees sont bien conformes a §16.20 (l.11354 « Option SPATIALE px, py, pz, mx ») et a §18.7.3 GET PRESS (l.12188), mais elles contredisent le tableau de reference base.json (SPATIALE PRESS = PX, PY, PZ) sans le signaler, alors que l'entree homologue `PRESS (bloc:ENV)` porte, elle, un `pitfalls` explicite sur exactement cette divergence. Le catalogue expose donc trois traitements incoherents de la meme question.",
+   "correction": "Aligner : soit ajouter le meme `pitfalls` de divergence documentaire (p.235/239 vs p.258/278) sur PRESS bloc:DESS et PRESS bloc:RESU, soit trancher une bonne fois et rendre base.json et les trois entrees coherents."
+  },
+  {
+   "command": "GET (context top)",
+   "field": "pitfalls[2]",
+   "verdict": "NON_SOURCE",
+   "claim": "« `MAX`/`MIN` est obligatoire des que la source est une enveloppe (ENV) ou une surcharge (SURCH), et **interdit pour un chargement simple** [p.275-277] »",
+   "evidence": "§18.7.1 a §18.7.3 (ST1_v24_FR.md l.12064-12153) se contentent de donner deux lignes de syntaxe distinctes ; aucune phrase du manuel n'enonce une interdiction de MAX/MIN sur CHARG/COMB/ETAT/PHASAGE/INCENDIE. Le caractere obligatoire pour ENV/SURCH est deductible de la syntaxe, l'interdiction ne l'est pas (le manuel ne dit rien du comportement de `GET EFFORT MAX BARRE i SEC n CHARG j`).",
+   "correction": "Reformuler : « MAX/MIN figure dans la ligne de syntaxe des sources ENV et SURCH uniquement ; le manuel ne documente pas MAX/MIN avec un chargement simple » — et retirer le mot « interdit », non source."
+  },
+  {
+   "command": "GET (context top)",
+   "field": "pitfalls[3]",
+   "verdict": "FAUX",
+   "claim": "« Aucun caractere blanc dans une expression : `SI($fy<0)` et non `SI( $fy < 0 )` [p.268]. »",
+   "evidence": "La regle du manuel porte sur les FORMULES MATHEMATIQUES (§18.3.3 : « Une formule mathematique ne doit pas contenir de caracteres blancs », l.11659) et sur l'ECRITURE D'UNE VARIABLE INDICEE (§18.2.3, l.11584) — pas sur l'expression logique du SI. Le manuel lui-meme ecrit des expressions logiques AVEC blancs : « SI ($fy<0) DESACTIVER APPUI 2 » (l.12033, blanc entre SI et la parenthese) et « SI(a1==2 ET a1>2 OU a2<3) » (l.11816). L'affirmation generalise a tort une regle restreinte.",
+   "correction": "Restreindre le pitfall : « Une formule mathematique ne doit pas contenir de blanc (`1+2 +3` = deux valeurs) [§18.3.3] ; idem pour l'ecriture d'une variable indicee [§18.2.3]. Les operateurs logiques ET/OU/NON, eux, sont separes par des blancs dans les exemples du manuel. »"
+  },
+  {
+   "command": "APPUI (context bloc:RESU)",
+   "field": "doc",
+   "verdict": "NON_SOURCE",
+   "claim": "« `LOC` donne les efforts dans le **repere local de l'appui** (utile pour les appuis tournes par `ROT` en appui elastique) »",
+   "evidence": "Le manuel (l.10700, p.245) ecrit : « La commande `LOC` permet d'avoir les efforts dans le repere local de l'appui **pour des charges combinees** ». La justification « appuis tournes par ROT en appui elastique » n'apparait nulle part a p.245 ; `ROT alpha` existe bien (bloc APPUI EL, l.1924) mais le manuel ne fait jamais ce lien. Le catalogue a supprime la precision reellement ecrite (« pour des charges combinees ») et l'a remplacee par une glose personnelle.",
+   "correction": "Restituer le texte source : « LOC donne les efforts dans le repere local de l'appui, pour des charges combinees [p.245] » ; deplacer l'explication ROT/appui elastique dans un champ non normatif ou la supprimer."
+  },
+  {
+   "command": "BARRE (context bloc:RESU)",
+   "field": "doc",
+   "verdict": "NON_SOURCE",
+   "claim": "« Fournit les **resultats** a toutes les sections d'etude de la barre, aussi bien pour les CHARGEMENTS que pour les SURCHARGES [p.245] »",
+   "evidence": "Le manuel a la page citee ecrit precisement : « La commande `BARRE` fournit les **deplacements** de toutes les sections d'etude aussi bien pour CHARGE que pour SURCHARGE » (l.10701). Le catalogue a substitue « resultats » a « deplacements » sans marquer la reformulation.",
+   "correction": "Citer le texte reel et, si l'on juge que « deplacements » est une coquille du manuel (l'edition par defaut etant les efforts, cf. l.10678), le signaler explicitement dans `pitfalls` au lieu de reecrire silencieusement la source."
+  },
+  {
+   "command": "SELEC (context bloc:DESS)",
+   "field": "args[liste].default",
+   "verdict": "NON_SOURCE",
+   "claim": "L'argument positionnel `liste` a `required: false` et `default: \"TOUT\"`, ce qui rend `SELEC` seul syntaxiquement valide",
+   "evidence": "§16.11 (l.10992-11030) ne documente que quatre formes : `SELEC BARRE liste`, `SELEC NOEUD liste`, `SELEC TOUT`, et `SELEC liste` (liste seule = barres). La phrase « Par defaut toute la structure est selectionnee » (l.11030) decrit l'ETAT INITIAL du module graphique avant tout SELEC, pas une valeur par defaut d'un argument omis. Aucune forme `SELEC` sans argument n'est documentee.",
+   "correction": "Rendre l'argument obligatoire (ou modeliser explicitement les 4 formes de syntaxe) et deplacer « par defaut toute la structure est selectionnee » dans le `doc`/etat initial, hors du champ `default` de `liste`."
+  },
+  {
+   "command": "INCENDIE (context bloc:RESU)",
+   "field": "pages",
+   "verdict": "NON_SOURCE",
+   "claim": "`pages: [232, 233]`",
+   "evidence": "Le chapitre 12 (calcul au feu) est borne a p.217-232 par le memo distille (st1_reference.md l.678 : « Calcul au feu (ST1 V2 SEULEMENT) [p.217-232] »), qui situe explicitement §12.14 « EXEC INCENDIE / RESU feu [p.231-232] » (l.795). La page 233 n'est attestee par aucune source : ni le memo, ni l'aide-memoire (le bloc « EXECUTION DES CHARGES D INCENDIE », ST1_v24_FR.md l.803-821, ne porte aucun numero de page).",
+   "correction": "Ramener a `pages: [231, 232]` (ou [232]) conformement au memo ; la commande FEU du meme bloc, elle, cite correctement [232]."
+  },
+  {
+   "command": "ZOOM (context bloc:DESS)",
+   "field": "args[xc].default / args[yc].default",
+   "verdict": "NON_SOURCE",
+   "claim": "`default: \"centre de l'ecran\"` pour xc et yc",
+   "evidence": "Le bloc « avec : » de §16.10 (l.10967-10972) est corrompu (il recopie la description de VUE : « coefficients directeurs suivant les axes X, Y, Z ... par defaut ux=uy=uz=1 ») et ne donne aucune valeur par defaut pour xc/yc. La seule base est l'exemple `ZOOM 2` = « agrandi deux fois par rapport au centre de l'ecran » (l.10980) : c'est une deduction, pas une valeur par defaut documentee.",
+   "correction": "Marquer ces defauts comme deduits (ex. `default: \"centre de l'ecran (deduit de l'exemple p.250, non enonce)\"`), coherent avec le `pitfalls` deja present qui reconnait que le manuel est fautif a cet endroit."
+  },
+  {
+   "command": "POUR (context top)",
+   "field": "pages",
+   "verdict": "NON_SOURCE",
+   "claim": "`pages: [269]`",
+   "evidence": "Le seul numero de page attache a POUR dans les sources est p273, dans le sommaire aide-memoire « PSEUDO-PROGRAMMATION : RECUPERATION DES RESULTATS » (ST1_v24_FR.md l.951-955 : « SINON << >> / POUR i = liste << >> » suivi de « p273 »), alors que SI porte p270 (l.945-948). Le memo distille ne donne qu'un intervalle global [p.263-281]. La valeur 269 semble deduite de l'ordre des paragraphes (§18.4 POUR avant §18.5 SI) sans confirmation ; elle contredit la seule page imprimee.",
+   "correction": "Soit citer `pages: [273]` (seule page attestee), soit conserver 269 en signalant la contradiction avec l'aide-memoire p.273 dans `pitfalls`."
+  },
+  {
+   "command": "GET (context top)",
+   "field": "examples[1]",
+   "verdict": "NON_SOURCE",
+   "claim": "Exemple « GET EFFORT MAX BARRE 4 SEC 1 ENV 11 / v1=$mz ; v2=$xl / POUR i=2 a $nsec << GET EFFORT MAX BARRE 4 SEC **i** ENV 11 ... >> »",
+   "evidence": "L'exemple correspondant du manuel (§18.7.3, l.12212-12218) ecrit `SEC 1` DANS la boucle, pas `SEC i` : « pour i=2 a $nsec << GET EFFORT MAX BARRE 4 SEC 1 ENV 11 ... >> ». Le catalogue a corrige silencieusement une coquille du manuel et presente le resultat comme du contenu source (l'exemple est place sous `examples`, sans marqueur de reecriture).",
+   "correction": "Conserver la correction (elle est juste) mais l'expliciter dans `pitfalls` : « le manuel imprime `SEC 1` dans le corps de la boucle [p.277] ; il faut lire `SEC i` »."
+  }
+ ],
+ "missingCommands": [
+  "EFFORT / DEPLA / CONTR / CONTRG / PRESS / REAC en contexte \"bloc:ENV COMB\" — les six clauses de composante privilegiee sont documentees dans la ligne de syntaxe ET dans le tableau des mots-cles par option de ENV COMB (ST1_v24_FR.md l.10277-10282 et l.10332-10336, p.238-239), mais le catalogue ne les declare qu'en contexte \"bloc:ENV\". Un consommateur qui interroge le contexte \"bloc:ENV COMB\" ne trouve que CHARG, COMB, ENV, ETAT, HISTORIQUE, PHASAGE, SPECTRE, SURCH.",
+  "FREQUENCE en contexte \"bloc:RESU\" — mot-cle documente (\"La commande MODE FREQUENCE fournit les frequences propres des modes calcules, leur facteur de participation modale et leur masse modale\", l.10703, p.245 ; present dans la ligne de syntaxe RESU l.10659). Il n'existe que comme `flag` interne de MODE, alors que ses homologues VITESSE et ACCELERATION, de meme nature, ont chacun une entree autonome dans bloc:RESU — traitement incoherent.",
+  "Affectation de variable / liste nommee et liste VIDE (`nom = valeur`, `ls = 1,2,5 a 8`, `ls = VIDE`) — documentees en propre au chapitre 18 (§18.2.1 Variables l.11478-11496, §18.2.2 Listes nommees l.11500-11539) et listees dans l'aide-memoire \"PSEUDO-PROGRAMMATION\" avec page (`liste = vide` p265, l.933-936). `VIDE` figure d'ailleurs dans base.json `lexical.controlKeywords`, mais aucune entree de la famille resultats ne le decrit, alors que DIM, POUR, SI, SINON, PASSER, BRISER, ECRIRE et PAUSE du meme chapitre y figurent."
+ ],
+ "skipped": [
+  {
+   "command": "CONTRG (pitfalls[0])",
+   "reason": "Correction deja presente dans le fichier : le pitfall cite deja \"(p.103)\" pour le terme constant CST non applicable aux surcharges. Aucune occurrence de \"[p.125]\" a cet endroit. Verifie p.103 du manuel (\"cst constante applicable uniquement pour les charges, non-applicable aux surcharges\")."
+  },
+  {
+   "command": "CONTRG (pitfalls[1])",
+   "reason": "Correction deja presente : le pitfall \"Definir la CONTRG apres EXEC CHARG / EXEC SURCH est sans effet...\" cite deja \"(p.105)\". Les seules mentions de p.125/p.178 sont dans le champ doc, ou elles reproduisent fidelement le renvoi interne du manuel p.105 (\"cf. commandes EXEC CHARG p125 et EXEC SURCH p178\"). Rien a corriger. (La partie \"Meme correction pour EXEC SURCH\" concerne la famille exploitation, hors perimetre.)"
+  },
+  {
+   "command": "EXEC MODE (field restrictedToOptions / prerequisites)",
+   "reason": "Correction du verificateur FAUSSE. Il affirme que la restriction PLANE/SPATIALE du calcul des modes propres n'est documentee nulle part et que la seule exclusion de GRILL du manuel est p.217 (calcul au feu). Verification faite dans ST1_v24_FR.md / OCR page imprimee 69 (chapitre 2.11 - MASSES PROPRES (DYNAMIQUE)) : le manuel ecrit litteralement « Le calcul des modes propres et donc celui des masses propres est disponible uniquement en option plane et spatiale. » La restriction est donc bien documentee ; seul le numero de page cite par le catalogue etait faux. J'ai donc CONSERVE restrictedToOptions [PLANE, SPATIALE] et corrige uniquement la citation p.71 -> p.69 en reprenant la phrase litterale du manuel. Le reste de la correction proposee (suppression de restrictedToOptions, requalification en deduction non documentee) n'a pas ete applique."
+  },
+  {
+   "command": "EFFORT (bloc:CARA SPECIAL)",
+   "reason": "Cette entree n existe pas dans exploitation.json. Le seul EFFORT du fichier est EFFORT (bloc:SURCH), qui ne cite jamais p.214 ni la regle '0 = elastique'. L entree EFFORT (bloc:CARA SPECIAL) se trouve dans catalog/commands/dynamique.json : correction hors perimetre (interdiction de toucher un autre fichier)."
+  },
+  {
+   "command": "POND (bloc:SPECTRE REPONSE)",
+   "reason": "Cette entree n existe pas dans exploitation.json. Le seul POND du fichier est POND (bloc:SURCH), dont les pitfalls ne citent ni p.304 ni les ponderations signees X/Y. L entree POND (bloc:SPECTRE REPONSE) est dans catalog/commands/dynamique.json : correction hors perimetre."
+  },
+  {
+   "command": "BARRE (bloc:DYNAMIQUE CHARGE)",
+   "reason": "Cette commande n'existe pas dans geometrie.json. Le fichier ne contient que 12 entrees (APPUI, APPUI EL, APPUI EL DI, ART, BARRE, BETA, DECOL, EXC, GENER BARRE, GENER NOEUD, NOEUD, OPTION) et l'entree BARRE de contexte 'top' n'a aucun argument FX/FY/FZ/MX/MY/MZ. La sous-commande BARRE du bloc DYNAMIQUE CHARGE se trouve dans catalog/commands/dynamique.json (ligne 400), fichier que je n'ai pas le droit de modifier. Correction a rediriger vers la famille 'dynamique'."
+  },
+  {
+   "command": "RELACHER_BANC CABLE",
+   "reason": "Correction refusee (le verificateur se trompe). Le manuel p.193 (§9.12, section RELACHER_BANC) ecrit : 'La valeur de resistance de fin de cure fcp ne sera obtenue qu a la date de fin de cure specifiee dans la loi du materiau, la mise en tension ne doit se faire qu au dela de cette date.' Le verificateur assimile cette 'mise en tension' a TENDRE_BANC, ce que le manuel contredit : (1) la phrase figure dans le paragraphe consacre au relachement du banc (§9.12 'MISE EN PRETENSION DES BARRES PAR RELACHEMENT DU BANC'), qui est la mise en tension des poutres ; (2) l exemple de fichier de donnees du manuel (chapitre EXEMPLES DE FICHIERS DE DONNEES, phasage 101 'Mise tension pretension cab 101 lin') fait TENDRE_BANC a DATE 0 avec ACTIVER BARRE ... AGE 0.01, puis ecrit explicitement 'DATE 5 # date superieure a la date de fin de cure' avant RELACHER_BANC : la mise sur banc est donc anterieure a la fin de cure et c est bien le relachement qui doit lui etre posterieur ; (3) les lois de materiau du manuel definissent fcp/tp comme 'resistance / age du beton a la fin de la cure (mise en tension)', ou 'mise en tension' designe le transfert de la precontrainte. Le prerequisite et le forbidden de RELACHER_BANC CABLE ont donc ete laisses inchanges, de meme que le pitfall litteral de TENDRE_BANC CABLE."
+  }
+ ],
+ "applied": 62
+}

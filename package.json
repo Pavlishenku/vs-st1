@@ -1,0 +1,393 @@
+{
+  "name": "vs-st1-demo",
+  "displayName": "VS ST1 Demo",
+  "description": "Coloration syntaxique pour les fichiers ST1 (.st1).",
+  "version": "0.3.1",
+  "publisher": "AnasHAFID",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pavlishenku/vs-st1.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Pavlishenku/vs-st1/issues"
+  },
+  "homepage": "https://github.com/Pavlishenku/vs-st1#readme",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "ST1",
+    "CEREMA"
+  ],
+  "icon": "icons/vs-st1.png",
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:st1"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "st1",
+        "aliases": [
+          "ST1",
+          "st1"
+        ],
+        "extensions": [
+          ".st1",
+          ".ST1"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/st1-file.svg",
+          "dark": "./icons/st1-file.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "st1",
+        "scopeName": "source.st1",
+        "path": "./syntaxes/st1.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "st1",
+        "path": "./snippets/st1.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "st1.run",
+        "title": "ST1 : executer le calcul",
+        "icon": "$(play)"
+      },
+      {
+        "command": "st1.validate",
+        "title": "ST1 : valider l'etude courante",
+        "icon": "$(check-all)"
+      },
+      {
+        "command": "st1.openViewer",
+        "title": "ST1 : ouvrir le visualiseur de modele",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "st1.studyReport",
+        "title": "ST1 : rapport de l'etude",
+        "icon": "$(checklist)"
+      },
+      {
+        "command": "st1.newStudy",
+        "title": "ST1 : nouvelle etude a partir d'un modele"
+      },
+      {
+        "command": "st1.restartServer",
+        "title": "ST1 : redemarrer le serveur de langage"
+      },
+      {
+        "command": "st1.showOutput",
+        "title": "ST1 : afficher le journal de l'extension"
+      },
+      {
+        "command": "st1.insertCommand",
+        "title": "ST1 : inserer une commande du catalogue"
+      },
+      {
+        "command": "st1.clearSolverProblems",
+        "title": "ST1 : effacer les messages du solveur"
+      },
+      {
+        "command": "st1.revealLine",
+        "title": "ST1 : aller a la ligne"
+      },
+      {
+        "command": "st1.insertCommandByName",
+        "title": "ST1 : inserer cette commande"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "st1.run",
+          "when": "resourceLangId == st1",
+          "group": "navigation@1"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "st1.openViewer",
+          "when": "resourceLangId == st1",
+          "group": "navigation@2"
+        },
+        {
+          "command": "st1.studyReport",
+          "when": "resourceLangId == st1",
+          "group": "navigation@3"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "st1.run",
+          "when": "resourceLangId == st1",
+          "group": "st1@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "st1.run",
+          "when": "resourceLangId == st1"
+        },
+        {
+          "command": "st1.validate",
+          "when": "resourceLangId == st1"
+        },
+        {
+          "command": "st1.openViewer",
+          "when": "resourceLangId == st1"
+        },
+        {
+          "command": "st1.studyReport",
+          "when": "resourceLangId == st1"
+        },
+        {
+          "command": "st1.revealLine",
+          "when": "false"
+        },
+        {
+          "command": "st1.insertCommandByName",
+          "when": "false"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "st1",
+          "title": "ST1",
+          "icon": "icons/st1-activity.svg"
+        }
+      ]
+    },
+    "views": {
+      "st1": [
+        {
+          "id": "st1.commands",
+          "name": "Commandes ST1",
+          "contextualTitle": "Catalogue des commandes ST1"
+        },
+        {
+          "id": "st1.model",
+          "name": "Modele courant",
+          "contextualTitle": "Resume du modele ST1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "VS ST1",
+      "properties": {
+        "st1.solverPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Chemin complet de l'executable ST1. Vide = l'extension cherche `st1` dans le `PATH`.",
+          "scope": "machine-overridable"
+        },
+        "st1.solverArguments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "markdownDescription": "Arguments passes au solveur avant le nom du fichier. `${file}` et `${workspaceFolder}` sont substitues."
+        },
+        "st1.runCommand": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Ligne de commande complete remplacant `st1.solverPath` (equivalent de l'« Alias For Run » de VS Code Aster). `${file}`, `${fileBasename}`, `${fileDirname}` et `${workspaceFolder}` sont substitues."
+        },
+        "st1.errorFile": {
+          "type": "string",
+          "default": "erreur.txt",
+          "markdownDescription": "Nom du fichier de messages produit par ST1, surveille en continu pour alimenter le panneau **Problems**. Correspond a la ligne `ERREUR 'erreur.txt'` de `st1.par`."
+        },
+        "st1.saveBeforeRun": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enregistrer le fichier avant de lancer le calcul."
+        },
+        "st1.autoQuit": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Envoyer `QUITTER` puis un retour chariot apres l'interpretation du fichier. ST1 s'arrete alors seul **sans sauvegarder de projet**. Laisser desactive pour garder la main sur le prompt `>`."
+        },
+        "st1.validation.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Activer les diagnostics a la frappe."
+        },
+        "st1.validation.level": {
+          "type": "string",
+          "enum": [
+            "lexical",
+            "structurel",
+            "complet"
+          ],
+          "enumDescriptions": [
+            "Uniquement les regles lexicales du manuel (accents, casse, quotes, commentaires).",
+            "Lexical + structure des blocs, prerequis et interdits documentes.",
+            "Structurel + coherence du modele (noeuds/barres references, caracteristiques manquantes, pieges documentes)."
+          ],
+          "default": "complet",
+          "description": "Profondeur de la validation."
+        },
+        "st1.validation.maxProblems": {
+          "type": "number",
+          "default": 500,
+          "description": "Nombre maximum de diagnostics remontes par fichier."
+        },
+        "st1.catalogPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Catalogue de commandes a utiliser (vide = catalogue embarque). Permet d'aligner l'assistance sur une version particuliere de ST1."
+        },
+        "st1.viewer.defaultView": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "XY",
+            "XZ",
+            "YZ",
+            "3D"
+          ],
+          "default": "auto",
+          "markdownDescription": "Vue initiale du visualiseur. `auto` deduit la vue de l'`OPTION` du fichier."
+        },
+        "st1.viewer.showNodeNumbers": {
+          "type": "boolean",
+          "default": false,
+          "description": "Afficher les numeros de noeuds au demarrage du visualiseur."
+        },
+        "st1.viewer.showBarNumbers": {
+          "type": "boolean",
+          "default": false,
+          "description": "Afficher les numeros de barres au demarrage du visualiseur."
+        },
+        "st1.viewer.showCables": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Afficher les cables de precontrainte (blocs `CABLE`) au demarrage du visualiseur. La case **Cables** de la barre d'outils permet de les masquer a la volee."
+        },
+        "st1.viewer.showReleases": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Dessiner les articulations (`ART`, cercle vide a l'extremite liberee) et les excentrements (`EXC`, double trait) au demarrage du visualiseur. La case **Rotules/exc.** de la barre d'outils permet de les masquer a la volee."
+        },
+        "st1.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Tracer les echanges avec le serveur de langage (diagnostic)."
+        }
+      }
+    },
+    "configurationDefaults": {
+      "[st1]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 3,
+        "editor.wordBasedSuggestions": "off",
+        "files.trimTrailingWhitespace": true
+      },
+      "editor.tokenColorCustomizations": {
+        "textMateRules": [
+          {
+            "scope": "constant.language.st1",
+            "settings": {
+              "fontStyle": "bold"
+            }
+          }
+        ]
+      }
+    },
+    "problemMatchers": [
+      {
+        "name": "st1-erreur",
+        "label": "Erreurs ST1 (erreur.txt)",
+        "owner": "st1",
+        "source": "ST1",
+        "severity": "error",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": [
+          {
+            "regexp": "^-{2,}\\s*fichier\\s*:\\s*>*\\s*(.+?)\\s*-*$",
+            "file": 1
+          },
+          {
+            "regexp": "^-{2,}\\s*ligne\\s*:\\s*(\\d+)\\s*-*$",
+            "line": 1
+          },
+          {
+            "regexp": "^\\s*erreur\\s*:\\s*(.+)$",
+            "message": 1
+          }
+        ]
+      },
+      {
+        "name": "st1-attention",
+        "label": "Avertissements ST1 (erreur.txt)",
+        "owner": "st1",
+        "source": "ST1",
+        "severity": "warning",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": [
+          {
+            "regexp": "^-{2,}\\s*fichier\\s*:\\s*>*\\s*(.+?)\\s*-*$",
+            "file": 1
+          },
+          {
+            "regexp": "^-{2,}\\s*ligne\\s*:\\s*(\\d+)\\s*-*$",
+            "line": 1
+          },
+          {
+            "regexp": "^\\s*attention\\s*:\\s*(.+)$",
+            "message": 1
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "gen": "node scripts/build-catalog.mjs && node scripts/gen-grammar.mjs && node scripts/gen-snippets.mjs",
+    "compile": "npm run gen && node scripts/build.mjs",
+    "watch": "npm run gen && node scripts/build.mjs --watch",
+    "vscode:prepublish": "npm run gen && node scripts/build.mjs --production",
+    "check-types": "tsc --noEmit -p . && tsc --noEmit -p server",
+    "test": "npm run gen && node scripts/build.mjs --tests && node --test \"dist/test/**/*.test.mjs\"",
+    "package": "vsce package --no-dependencies --allow-missing-repository"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.12"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.2.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.7.0"
+  }
+}

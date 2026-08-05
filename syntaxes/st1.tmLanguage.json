@@ -1,0 +1,144 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "ST1",
+  "scopeName": "source.st1",
+  "fileTypes": [
+    "st1",
+    "ST1"
+  ],
+  "patterns": [
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#string"
+    },
+    {
+      "include": "#terminator"
+    },
+    {
+      "include": "#exec"
+    },
+    {
+      "include": "#command"
+    },
+    {
+      "include": "#control"
+    },
+    {
+      "include": "#structure-option"
+    },
+    {
+      "include": "#function"
+    },
+    {
+      "include": "#list-keyword"
+    },
+    {
+      "include": "#color"
+    },
+    {
+      "include": "#reserved"
+    },
+    {
+      "include": "#argument"
+    },
+    {
+      "include": "#enum"
+    },
+    {
+      "include": "#variable"
+    },
+    {
+      "include": "#number"
+    },
+    {
+      "include": "#operator"
+    }
+  ],
+  "repository": {
+    "comment": {
+      "match": "#.*$",
+      "name": "comment.line.number-sign.st1"
+    },
+    "string": {
+      "begin": "'",
+      "end": "'",
+      "name": "string.quoted.single.st1",
+      "patterns": [
+        {
+          "match": "''",
+          "name": "constant.character.escape.st1"
+        }
+      ]
+    },
+    "terminator": {
+      "match": "^\\s*(FIN\\s+PHASAGE|fin\\s+phasage|RETOUR|retour|FIN|fin)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.control.terminator.st1"
+        }
+      }
+    },
+    "exec": {
+      "match": "^\\s*(EXEC\\s+SPECTRE\\s+REPONSE|exec\\s+spectre\\s+reponse|EXEC\\s+PHASAGE\\s+PSE|exec\\s+phasage\\s+pse|EXEC\\s+FLAMBEMENT|exec\\s+flambement|EXEC\\s+HISTORIQUE|exec\\s+historique|EXEC\\s+CHARG\\s+PSE|exec\\s+charg\\s+pse|EXEC\\s+INCENDIE|exec\\s+incendie|EXEC\\s+PHASAGE|exec\\s+phasage|EXEC\\s+CHARG|exec\\s+charg|EXEC\\s+SURCH|exec\\s+surch|EXEC\\s+MODE|exec\\s+mode)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.control.exec.st1"
+        }
+      }
+    },
+    "command": {
+      "match": "(?:^|;)\\s*(CHALEUR_SPECIFIQUE_MASSIQUE|chaleur_specifique_massique|GET\\s+ACCELERATION\\s+BARRE|get\\s+acceleration\\s+barre|GET\\s+ALPHA\\s+FLAMBEMENT|get\\s+alpha\\s+flambement|RELACHER_BANC\\s+CABLE|relacher_banc\\s+cable|ENREGISTRER\\s+PROJET|enregistrer\\s+projet|AL\\s+PLANCHER\\s+FREIN|al\\s+plancher\\s+frein|GET\\s+TENSION\\s+CABLE|get\\s+tension\\s+cable|GET\\s+VITESSE\\s+BARRE|get\\s+vitesse\\s+barre|TENDRE_BANC\\s+CABLE|tendre_banc\\s+cable|DESACTIVER\\s+APPUI|desactiver\\s+appui|DESACTIVER\\s+BARRE|desactiver\\s+barre|DYNAMIQUE\\s+CHARGE|dynamique\\s+charge|DYNAMIQUE\\s+CONVOI|dynamique\\s+convoi|GET\\s+CONTRG\\s+BARRE|get\\s+contrg\\s+barre|GET\\s+EFFORT\\s+BARRE|get\\s+effort\\s+barre|QUANTITE_AGREGAT|quantite_agregat|EUROCODE\\s+REDUIT|eurocode\\s+reduit|GET\\s+CONTR\\s+BARRE|get\\s+contr\\s+barre|GET\\s+DEPLA\\s+BARRE|get\\s+depla\\s+barre|GET\\s+DEPLA\\s+NOEUD|get\\s+depla\\s+noeud|GET\\s+PRESS\\s+BARRE|get\\s+press\\s+barre|QUANTITE_CIMENT|quantite_ciment|SPECTRE\\s+REPONSE|spectre\\s+reponse|ACCELEROGRAMME|accelerogramme|CARA\\s+VAR\\s+LIN\\s+Y|cara\\s+var\\s+lin\\s+y|CARA\\s+VAR\\s+LIN\\s+Z|cara\\s+var\\s+lin\\s+z|DESACTIVER\\s+ENV|desactiver\\s+env|DETENDRE\\s+CABLE|detendre\\s+cable|EXPOSITION\\s+FEU|exposition\\s+feu|GET\\s+REAC\\s+APPUI|get\\s+reac\\s+appui|INJECTER\\s+CABLE|injecter\\s+cable|MODIFIER\\s+APPUI|modifier\\s+appui|NEWTON_RAPHSON|newton_raphson|PARA_STRUCTURE|para_structure|ACTIVER\\s+APPUI|activer\\s+appui|ACTIVER\\s+BARRE|activer\\s+barre|AMORTISSEMENT|amortissement|CARA\\s+VAR\\s+PARA|cara\\s+var\\s+para|LISTER\\s+PROJET|lister\\s+projet|RIGIDITE\\s+CARA|rigidite\\s+cara|SUITE\\s+PHASAGE|suite\\s+phasage|VERINER\\s+APPUI|veriner\\s+appui|ACCELERATION|acceleration|CARA\\s+SPECIAL|cara\\s+special|CONDUCTIVITE|conductivite|LIRE\\s+CONSOLE|lire\\s+console|MASSE\\s+PROPRE|masse\\s+propre|POIDS\\s+PROPRE|poids\\s+propre|QUANTITE_EAU|quantite_eau|TENDRE\\s+CABLE|tendre\\s+cable|ACTIVER\\s+ENV|activer\\s+env|ADIABATIQUE|adiabatique|AL\\s+PLANCHER|al\\s+plancher|ANALYSE\\s+FEU|analyse\\s+feu|APPUI\\s+EL\\s+DI|appui\\s+el\\s+di|AUTOMATIQUE|automatique|COEFF\\s+TRANS|coeff\\s+trans|ENREGISTRER|enregistrer|GENER\\s+BARRE|gener\\s+barre|GENER\\s+NOEUD|gener\\s+noeud|VS_108_GRUE|vs_108_grue|VS_1946_3CL|vs_1946_3cl|VS_1946_4CL|vs_1946_4cl|AJUSTEMENT|ajustement|CHARG\\s+COMB|charg\\s+comb|COEF\\s+TRANS|coef\\s+trans|CONSTANTES|constantes|CONVECTION|convection|DESACTIVER|desactiver|EMISSIVITE|emissivite|FLAMBEMENT|flambement|HISTORIQUE|historique|PAGINATION|pagination|PRETENSION|pretension|PROTECTION|protection|VS_120_OAE|vs_120_oae|VS_120_OAN|vs_120_oan|VS_48_GRUE|vs_48_grue|VS_72_GRUE|vs_72_grue|VS_94_GRUE|vs_94_grue|ZONE_TRANS|zone_trans|AL\\s+PIETON|al\\s+pieton|BARRE\\s+CON|barre\\s+con|BARRE\\s+LIN|barre\\s+lin|BARRE\\s+UNI|barre\\s+uni|DEFOR\\s+CON|defor\\s+con|DEFOR\\s+LIN|defor\\s+lin|DEFOR\\s+UNI|defor\\s+uni|E\\s+FEU\\s+EC2|e\\s+feu\\s+ec2|FREQUENCE|frequence|LARG\\s+VOIE|larg\\s+voie|LOI_PAROI|loi_paroi|PAS\\s+CABLE|pas\\s+cable|PAS_LIGNE|pas_ligne|PAS_TEMPS|pas_temps|PERIMETRE|perimetre|PLASTIQUE|plastique|RECTANGLE|rectangle|REP_TRANS|rep_trans|VS_72_OAE|vs_72_oae|VS_72_OAN|vs_72_oan|VS_94_OAE|vs_94_oae|VS_94_OAN|vs_94_oan|AL\\s+FREIN|al\\s+frein|APPUI\\s+EL|appui\\s+el|ARMATURE|armature|BC\\s+FREIN|bc\\s+frein|CARA\\s+PSE|cara\\s+pse|DIAMETRE|diametre|ENV\\s+COMB|env\\s+comb|EUROCODE|eurocode|GRANULAT|granulat|INCENDIE|incendie|LG\\s+GAINE|lg\\s+gaine|MATERIAU|materiau|MAX\\s+FILE|max\\s+file|MAX_FILE|max_file|MX_ETUDE|mx_etude|PAS_CONV|pas_conv|PSI\\s+COMB|psi\\s+comb|PSI\\s+FREQ|psi\\s+freq|TEMP\\s+UNI|temp\\s+uni|TROT_LM1|trot_lm1|VAR\\s+PARA|var\\s+para|VS_F61_D|vs_f61_d|VS_F61_E|vs_f61_e|ACTIVER|activer|CH_23M3|ch_23m3|CH_34M3|ch_34m3|CV_D2F1|cv_d2f1|CV_D3F1|cv_d3f1|CV_D3F2|cv_d3f2|CV_E2F1|cv_e2f1|CV_E3F1|cv_e3f1|CV_E3F2|cv_e3f2|DIR\\s+GLO|dir\\s+glo|DIR\\s+LOC|dir\\s+loc|ENERGIE|energie|K_FORME|k_forme|LOI_GAZ|loi_gaz|MAX_CAM|max_cam|MESSAGE|message|METHODE|methode|PERIODE|periode|PHASAGE|phasage|QUITTER|quitter|RETRAIT|retrait|RHO_FEU|rho_feu|SECTION|section|SPECTRE|spectre|T_THERM|t_therm|TABLIER|tablier|TEMP\\s+GY|temp\\s+gy|TEMP\\s+GZ|temp\\s+gz|TENSION|tension|TROT_EC|trot_ec|VAR\\s+LIN|var\\s+lin|VITESSE|vitesse|ALIGNE|aligne|AVANCE|avance|BARRES|barres|CIMENT|ciment|CLASSE|classe|CONTRG|contrg|CONVOI|convoi|EFFORT|effort|ESSIEU|essieu|FLUAGE|fluage|K_CURE|k_cure|KBARRE|kbarre|KTRANS|ktrans|LAMINE|lamine|LISTER|lister|MAILLE|maille|OPTION|option|PROJET|projet|RETOUR|retour|SILICE|silice|SORTIE|sortie|ACIER|acier|APPUI|appui|BARRE|barre|CABLE|cable|CENTR|centr|CHARG|charg|CONTR|contr|CV_C1|cv_c1|CV_C2|cv_c2|DALLE|dalle|DECOL|decol|DEPLA|depla|DUREE|duree|ECRAN|ecran|ETUDE|etude|LMF3B|lmf3b|MC120|mc120|ME120|me120|NOEUD|noeud|PENTE|pente|PERTE|perte|POIDS|poids|PRESS|press|PRINT|print|R1000|r1000|RAYON|rayon|RECUL|recul|RM_EC|rm_ec|SELEC|selec|SEUIL|seuil|SURCH|surch|TEMPS|temps|TITRE|titre|TRACE|trace|ARMA|arma|BETA|beta|CARA|cara|COEF|coef|COMB|comb|CONS|cons|CONV|conv|COUL|coul|DATE|date|DENS|dens|DESS|dess|ETAT|etat|GEOM|geom|LARG|larg|LDIF|ldif|LIRE|lire|LMF3|lmf3|LONG|long|MC80|mc80|ME80|me80|MODE|mode|POND|pond|PREC|prec|QUIT|quit|REAC|reac|RESU|resu|ROBS|robs|SAUV|sauv|SENS|sens|SRSS|srss|TEMP|temp|TROT|trot|ZONE|zone|ZOOM|zoom|ALG|alg|ART|art|CLS|cls|CQC|cqc|CTE|cte|ENV|env|EXC|exc|FEU|feu|FPK|fpk|FYK|fyk|GET|get|GIS|gis|HCM|hcm|LIN|lin|LM1|lm1|LM2|lm2|LM3|lm3|LM4|lm4|LOI|loi|MAT|mat|NUM|num|PHI|phi|RET|ret|ROH|roh|ROS|ros|TRA|tra|VUE|vue|AL|al|BC|bc|BT|bt|CN|cn|EA|ea|EX|ex|HC|hc|MI|mi|OR|or|RG|rg|RH|rh|RM|rm|SE|se|UU|uu|E|e|H|h|Y|y)\\b",
+      "captures": {
+        "1": {
+          "name": "entity.name.function.command.st1"
+        }
+      }
+    },
+    "control": {
+      "match": "\\b(BRISER|briser|ECRIRE|ecrire|PASSER|passer|PAUSE|pause|SINON|sinon|POUR|pour|VIDE|vide|DIM|dim|NON|non|ET|et|OU|ou|SI|si)\\b",
+      "name": "keyword.control.flow.st1"
+    },
+    "structure-option": {
+      "match": "\\b(SPATIALE|spatiale|GRILL|grill|PLANE|plane)\\b",
+      "name": "support.class.structure-option.st1"
+    },
+    "function": {
+      "match": "\\b(ACOS|acos|ASIN|asin|ATAN|atan|COSH|cosh|SINH|sinh|SQRT|sqrt|TANH|tanh|ABS|abs|COS|cos|EXP|exp|INT|int|LOG|log|SIN|sin|TAN|tan)\\s*(?=\\()",
+      "name": "support.function.math.st1"
+    },
+    "list-keyword": {
+      "match": "(?<=[\\s,])(TOUTES|toutes|TOUS|tous|TOUT|tout|PAS|pas|A|a)(?=[\\s,])",
+      "name": "keyword.operator.range.st1"
+    },
+    "color": {
+      "match": "\\b(PISTACHE|pistache|MAGENTA|magenta|CORAIL|corail|INDIGO|indigo|MARRON|marron|NEUTRE|neutre|BLANC|blanc|JAUNE|jaune|MAUVE|mauve|ROUGE|rouge|BLEU|bleu|CIEL|ciel|CYAN|cyan|GRIS|gris|NOIR|noir|VERT|vert)\\b",
+      "name": "support.constant.color.st1"
+    },
+    "reserved": {
+      "match": "\\b(W1280_1024|w1280_1024|W1024_768|w1024_768|W640_480|w640_480|W800_600|w800_600|HPGL3P|hpgl3p|LJET3P|ljet3p|PJET3P|pjet3p|POST3P|post3p|POSTEN|posten|POSTEW|postew|CALCP|calcp|GDISB|gdisb|HPGL3|hpgl3|HPGLP|hpglp|LJET3|ljet3|LJETP|ljetp|PJET3|pjet3|PJETP|pjetp|POST3|post3|POSTC|postc|POSTP|postp|CALC|calc|HPGL|hpgl|KYOP|kyop|LJET|ljet|PJET|pjet|POST|post|BGL|bgl|DXF|dxf|GDI|gdi|KYO|kyo|PI|pi)\\b",
+      "name": "constant.language.st1"
+    },
+    "argument": {
+      "match": "\\b(K_RETRAIT_ENDOGENE_CINETIQUE|k_retrait_endogene_cinetique|K_FLUAGE_ENDOGENE_CINETIQUE|k_fluage_endogene_cinetique|K_RETRAIT_DESSIC_CINETIQUE|k_retrait_dessic_cinetique|K_FLUAGE_DESSIC_CINETIQUE|k_fluage_dessic_cinetique|K_RETRAIT_DESSICATION|k_retrait_dessication|K_FLUAGE_DESSICATION|k_fluage_dessication|K_FLUAGE_CINETIQUE|k_fluage_cinetique|K_RETRAIT_ENDOGENE|k_retrait_endogene|K_FLUAGE_ENDOGENE|k_fluage_endogene|ACTIVATION|activation|DEBORDVOIE|debordvoie|EXPOSITION|exposition|HORIZONTAL|horizontal|MONOCHROME|monochrome|TEMPS_CURE|temps_cure|EPAISSEUR|epaisseur|MAX_LIGNE|max_ligne|ASC_PAGE|asc_page|CALCAIRE|calcaire|ENROBAGE|enrobage|K_MODULE|k_module|LINEAIRE|lineaire|MAX_ITER|max_iter|RIGIDITE|rigidite|TRACTION|traction|CONSOLE|console|CORRELE|correle|COULEUR|couleur|FICHIER|fichier|INJECTE|injecte|LARGEUR|largeur|LG_SCEL|lg_scel|LGEXCLU|lgexclu|PARABOL|parabol|REPONSE|reponse|CENTRE|centre|CHARGE|charge|GARDER|garder|IMPACT|impact|LAMBDA|lambda|NOMBRE|nombre|PONDVS|pondvs|TRAFIC|trafic|ZONEVS|zonevs|ALPHA|alpha|CHAUD|chaud|FROID|froid|G_DYN|g_dyn|GAMMA|gamma|LIBRE|libre|LOCAL|local|MASSE|masse|RATIO|ratio|RELAX|relax|SIMUL|simul|SUITE|suite|THETA|theta|EXTY|exty|EXTZ|extz|FC28|fc28|FCMP|fcmp|FREQ|freq|INST|inst|IPOL|ipol|KFDC|kfdc|KFEC|kfec|KNM2|knm2|KPHI|kphi|KRDC|krdc|KREC|krec|SEUL|seul|VOIE|voie|VYVZ|vyvz|VYWZ|vywz|WYVZ|wyvz|WYWZ|wywz|ZERO|zero|ABS|abs|AGE|age|CON|con|CST|cst|DTP|dtp|EC1|ec1|EC2|ec2|ETA|eta|FCK|fck|FCP|fcp|GLO|glo|INF|inf|KFC|kfc|KFD|kfd|KFE|kfe|KFX|kfx|KFY|kfy|KFZ|kfz|KMX|kmx|KRD|krd|KRE|kre|KSI|ksi|LOC|loc|MAX|max|MIN|min|MPA|mpa|NEG|neg|NUL|nul|POS|pos|PRO|pro|PSE|pse|REL|rel|ROT|rot|SEC|sec|SUP|sup|TM2|tm2|UDL|udl|UNI|uni|VAR|var|VSJ|vsj|YVS|yvs|AN|an|AX|ax|AY|ay|AZ|az|DE|de|DI|di|DX|dx|DY|dy|DZ|dz|EL|el|ER|er|FX|fx|FY|fy|FZ|fz|GY|gy|GZ|gz|ID|id|IX|ix|IY|iy|IZ|iz|KP|kp|MU|mu|MX|mx|MY|my|MZ|mz|NU|nu|PX|px|PY|py|PZ|pz|RO|ro|RX|rx|RY|ry|RZ|rz|ST|st|SX|sx|SY|sy|SZ|sz|TS|ts|TY|ty|TZ|tz|VY|vy|VZ|vz|WY|wy|WZ|wz|XL|xl|XS|xs|YL|yl|F|f|N|n|Q|q|S|s|X|x|Z|z)\\b",
+      "name": "variable.parameter.st1"
+    },
+    "enum": {
+      "match": "\\b(BILINEAIRE|bilineaire|EXTERIEUR|exterieur|INTERIEUR|interieur|EC2_2027|ec2_2027|EC2_BHP1|ec2_bhp1|EC2_BHP2|ec2_bhp2|FIB_2010|fib_2010|PISTACHE|pistache|VERTICAL|vertical|BPEL_BL|bpel_bl|MAGENTA|magenta|ACI_B3|aci_b3|CORAIL|corail|INDIGO|indigo|MARRON|marron|NEUTRE|neutre|NORMAL|normal|REDUIT|reduit|AUCUN|aucun|BLANC|blanc|JAUNE|jaune|MAUVE|mauve|ROUGE|rouge|BHP1|bhp1|BHP2|bhp2|BLEU|bleu|BPEL|bpel|CIEL|ciel|CYAN|cyan|GRIS|gris|NOIR|noir|VERT|vert|BHP|bhp|CEB|ceb|OUI|oui|RS|rs|SL|sl|R|r)\\b",
+      "name": "support.constant.st1"
+    },
+    "variable": {
+      "match": "\\$[A-Za-z_][A-Za-z0-9_]*",
+      "name": "variable.other.readwrite.st1"
+    },
+    "number": {
+      "match": "(?<![A-Za-z0-9_])[-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:[eEdD][-+]?\\d+)?\\b",
+      "name": "constant.numeric.st1"
+    },
+    "operator": {
+      "match": "\\*\\*|<=|>=|==|/=|<>|[-+*/=<>]",
+      "name": "keyword.operator.st1"
+    }
+  }
+}

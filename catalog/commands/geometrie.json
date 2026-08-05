@@ -1,0 +1,1043 @@
+{
+  "commands": [
+    {
+      "name": "APPUI",
+      "family": "geometrie",
+      "context": "top",
+      "summary": "Definit des appuis rigides en bloquant des degres de liberte dans le repere general, avec numerotation d'appui distincte de la numerotation de noeud.",
+      "syntax": [
+        "APPUI liste1 (NOEUD liste2) (DECOL <NON, <X,Y,Z> <POS,NEG> >) (DX) (DY) (DZ) (RX) (RY) (RZ)",
+        "APPUI",
+        "   liste1 (NOEUD liste2) (DECOL <NON, <X,Y,Z> <POS,NEG> >) (DX) (DY) (DZ) (RX) (RY) (RZ)",
+        "   ..."
+      ],
+      "pages": [
+        47,
+        48
+      ],
+      "doc": "Definit les directions bloquees d'un appui rigide **dans le repere general de la structure** (p.47). Existe en forme ligne et en forme bloc.\n\n- `liste1` : liste des **numeros d'appui**\n- `liste2` (apres `NOEUD`) : liste des **numeros de noeud** portant ces appuis ; par defaut `liste1 = liste2` (p.47)\n\nDDL bloquables selon l'option (p.47) :\n- `Option PLANE` : dx, dy, rz\n- `Option GRILL` : rx, dz, ry\n- `Option SPATIALE` : dx, dy, dz, rx, ry, rz\n\nChaque mot-cle de DDL present bloque la direction correspondante ; les DDL non cites restent libres.\n\nInteret des numeros distincts appui/noeud (p.48) : facilite la description du phasage de certaines structures (ponts pousses) et permet de definir **deux types d'appui sur un meme noeud**.\n\nLa liste peut etre remplacee par le mot `TOUT` : l'instruction agit alors sur tous les noeuds deja definis (p.48).\n\nUn meme bloc `APPUI` peut contenir a la fois des appuis rigides et des appuis elastiques (p.48, p.51).\n\nLe mot-cle optionnel `DECOL` introduit une condition de decollement (voir l'entree `DECOL`).",
+      "args": [
+        {
+          "name": "liste1",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des numeros d'appui. Remplacable par `TOUT` (agit sur tous les noeuds deja definis).",
+          "required": true
+        },
+        {
+          "name": "NOEUD",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Liste des numeros de noeud sur lesquels seront places les appuis. Doit avoir exactement la meme longueur que liste1.",
+          "required": false,
+          "default": "liste1"
+        },
+        {
+          "name": "DECOL",
+          "kind": "keyword",
+          "type": "enum",
+          "doc": "Condition de decollement de l'appui dans une direction. Voir l'entree DECOL. Syntaxe : `DECOL <NON, <X,Y,Z> <POS,NEG> >`.",
+          "required": false,
+          "values": [
+            "NON",
+            "X",
+            "Y",
+            "Z"
+          ]
+        },
+        {
+          "name": "DX",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Bloque la translation suivant l'axe X du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "DY",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Bloque la translation suivant l'axe Y du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "DZ",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Bloque la translation suivant l'axe Z du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "RX",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Bloque la rotation autour de l'axe X du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "RY",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Bloque la rotation autour de l'axe Y du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "RZ",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Bloque la rotation autour de l'axe Z du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        }
+      ],
+      "prerequisites": [
+        "OPTION (les DDL bloquables dependent de l'option, p.47)",
+        "NOEUD : les noeuds porteurs doivent etre definis ; le mot TOUT agit sur les noeuds deja definis (p.48)"
+      ],
+      "forbidden": [
+        "Listes d'appuis et de noeuds de longueurs differentes : les longueurs des deux listes doivent etre identiques (p.48).",
+        "Utiliser un DDL etranger a l'option courante (par exemple RZ en GRILL, ou DZ en PLANE) (p.47).",
+        "DECOL avec les charges mobiles (commande SURCH) : reserve aux calculs de charges statiques (p.47, p.49)."
+      ],
+      "pitfalls": [
+        "**Stabilite** : au moins un appui doit etre bloque en X pour rendre la structure stable (p.48).",
+        "**Precontrainte** : s'il existe une precontrainte, **un seul** appui doit etre bloque en X, sinon la precontrainte ne produit aucun effet (p.48).",
+        "Le mot-cle APPUI existe aussi ailleurs avec un sens different : `APPUI liste (DX dx) ... (RZ rz)` entre CHARG et FIN = deplacements d'appuis imposes (p.116) ; `ACTIVER APPUI` / `DESACTIVER APPUI` (p.99-100) ; `VERINER APPUI` et `MODIFIER APPUI` en phasage (p.186, p.195) ; `APPUI` dans RESU (p.244). Attention aussi : ici les mots-cles DDL sont des drapeaux sans valeur, alors que dans CHARG ils sont suivis d'une valeur.",
+        "Regle generale de la geometrie (p.42) : c'est la derniere description qui compte. Redeclarer un appui sans un DDL a pour effet de **liberer** ce DDL (cf. `MODIFIER APPUI 1 DX DY` qui supprime un encastrement, p.195 (chapitre PHASAGE)).",
+        "Non-lineaire (DECOL) : ne pas declarer tous les appuis decollables au premier calcul ; sans appui inconditionnellement stable le calcul diverge. Etudier d'abord la structure avec des appuis stables puis introduire la non-linearite progressivement (retour d'experience support, NON DOCUMENTE).",
+        "Forme bloc : le manuel ne montre pas de terminateur dans la syntaxe (p.47) ; les exemples officiels ferment par `FIN` (p.300, p.314) ou implicitement par la commande suivante.",
+        "L'instruction de bloc ne se ferme par aucun terminateur : elle s'acheve implicitement a la commande suivante (manuel p.46, « INSTRUCTION DE BLOC »)."
+      ],
+      "examples": [
+        "APPUI 1 a 5 DX RZ            # p.48 : noeuds 1 a 5 bloques suivant X et en rotation Z",
+        "APPUI 1 a 5 NOEUD 11 a 15 DY # p.48 : appuis 1 a 5 portes par les noeuds 11 a 15, bloques suivant Y",
+        "# forme bloc, option SPATIALE (exemple p.300)\nAPPUI\n11 NOEUD 1 DY DZ\n12 NOEUD 2 RX\n13 NOEUD 3 DY DZ\n22 NOEUD 2 DX RX\nFIN",
+        "# appui unilateral : colle si la reaction Y est positive, decolle sinon\nAPPUI 3 DECOL Y POS DX DY",
+        "# option SPATIALE (exemple p.138)\nAPPUI 1 NOEUD 1 DX DY DZ\nAPPUI 2 NOEUD 2 DX DZ\nAPPUI 3 NOEUD 3 DX DZ"
+      ]
+    },
+    {
+      "name": "APPUI EL",
+      "family": "geometrie",
+      "context": "top",
+      "summary": "Definit un appui elastique par la demi-matrice de rigidite complete (6 termes en plane, 21 en spatiale), eventuellement orientee par une rotation ROT.",
+      "syntax": [
+        "APPUI liste1 (NOEUD liste2) (DECOL <NON, <X,Y,Z> <POS,NEG> >) (ROT alpha) EL m1 ... mj1",
+        "APPUI",
+        "   liste1 (NOEUD liste2) (DECOL <NON, <X,Y,Z> <POS,NEG> >) (ROT alpha) EL m1 ... mj1",
+        "   ..."
+      ],
+      "pages": [
+        49,
+        50,
+        51
+      ],
+      "doc": "Definit un appui elastique par une **demi-matrice de rigidite**, exprimee par defaut dans le repere general de la structure (p.49).\n\n**Contradiction documentaire (p.49)** : la phrase d'introduction annonce « la demi-matrice de rigidite **superieure** d'un appui elastique est definie par defaut dans le repere general », alors que la legende des parametres de la meme page ecrit « `m1 ... mj1` demi-matrice de rigidite **inferieure** ». Le rangement effectif donne p.51 (`m1` ; `m2 m3` ; `m4 m5 m6` ...) est celui d'une **triangulaire inferieure lue par lignes** : c'est ce rangement qui fait foi.\n\nNombre de termes attendus (p.49) :\n- structures **planes** : **6 termes** (`m1 ... m6`)\n- structures **spatiales** : **21 termes** (`m1 ... m21`)\n\nRangement des termes (rappel p.51) — la matrice exprime les efforts en fonction des deplacements, `effort = matrice_rigidite x deplacement` :\n\nStructure plane :\n```\n( fx )   ( m1 m2 m4 )   ( dx )\n( fy ) = ( m2 m3 m5 ) x ( dy )\n( mz )   ( m4 m5 m6 )   ( rz )\n```\nGrill de poutres (meme rangement 3x3, p.51) :\n```\n( mx )   ( m1 m2 m4 )   ( rx )\n( fz ) = ( m2 m3 m5 ) x ( dz )\n( my )   ( m4 m5 m6 )   ( ry )\n```\nStructure spatiale (6x6, p.51) : ligne 1 `m1` ; ligne 2 `m2 m3` ; ligne 3 `m4 m5 m6` ; ligne 4 `m7 m8 m9 m10` ; ligne 5 `m11 ... m15` ; ligne 6 `m16 ... m21`, appliquee a `(dx, dy, dz, rx, ry, rz)`.\n\n`ROT alpha` (p.49) : angle de rotation autour de l'axe des z, **exprime en radians**, defini dans le repere general et **compte dans le sens trigonometrique** (cas des ponts courbes). La matrice est alors definie dans le repere local oriente de `alpha` par rapport au repere global.\n\n`liste2` (apres `NOEUD`) : noeuds porteurs ; par defaut `liste1 = liste2` (p.49). La liste peut etre remplacee par `TOUT` (p.51).\n\nUn meme bloc `APPUI` peut melanger appuis rigides et appuis elastiques (p.51).",
+      "args": [
+        {
+          "name": "liste1",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des numeros d'appui. Remplacable par `TOUT`.",
+          "required": true
+        },
+        {
+          "name": "NOEUD",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Liste des numeros de noeud portant les appuis. Meme longueur que liste1 obligatoire.",
+          "required": false,
+          "default": "liste1"
+        },
+        {
+          "name": "DECOL",
+          "kind": "keyword",
+          "type": "enum",
+          "doc": "Condition de decollement de l'appui elastique. Voir l'entree DECOL.",
+          "required": false,
+          "values": [
+            "NON",
+            "X",
+            "Y",
+            "Z"
+          ]
+        },
+        {
+          "name": "ROT",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Angle de rotation de l'appui autour de l'axe des z, en radians, sens trigonometrique, defini dans le repere general. La demi-matrice est alors exprimee dans le repere local ainsi oriente (ponts courbes).",
+          "required": false,
+          "unit": "radian"
+        },
+        {
+          "name": "EL",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Demi-matrice de rigidite inferieure : 6 termes m1..m6 en structure plane (et pour un grill de poutres, matrice 3x3), 21 termes m1..m21 en structure spatiale. Les termes peuvent etre repartis sur plusieurs lignes.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "OPTION (le nombre de termes de la matrice depend de l'option, p.49)",
+        "NOEUD : les noeuds porteurs doivent etre definis (p.51)"
+      ],
+      "forbidden": [
+        "Fournir un nombre de termes different de 6 (plane) ou 21 (spatiale) (p.49).",
+        "Listes d'appuis et de noeuds de longueurs differentes (p.51).",
+        "DECOL avec les charges mobiles (commande SURCH) : reserve aux calculs de charges statiques (p.49)."
+      ],
+      "pitfalls": [
+        "L'ordre des termes n'est pas ligne par ligne d'une matrice pleine mais **demi-matrice inferieure** : en plane la 3e valeur est m3 = terme (dy,dy), et non le couplage (dx,rz) (p.49, p.51). Une saisie 'naive' en lecture de matrice pleine produit une raideur fausse sans message d'erreur.",
+        "`ROT alpha` est en **radians** et non en degres (p.49). Ecrire `ROT 30` au lieu de `ROT 0.5236` oriente l'appui de 30 radians.",
+        "La rotation `ROT` n'existe que pour les appuis **elastiques** : la syntaxe des appuis rigides (p.47) ne comporte pas ROT.",
+        "La longue liste de 21 valeurs peut depasser la limite de 128 caracteres par ligne du fichier de donnees (p.29) : les exemples officiels la repartissent sur plusieurs lignes (p.293).",
+        "Non-lineaire (DECOL) : ne pas declarer tous les appuis decollables au premier calcul ; commencer par des appuis elastiques stables, observer deplacements et pressions, puis introduire la non-linearite (retour d'experience support, NON DOCUMENTE).",
+        "Comme pour les appuis rigides : au moins un appui bloque en X pour la stabilite, un seul si une precontrainte existe (p.48).",
+        "L'instruction de bloc ne se ferme par aucun terminateur : elle s'acheve implicitement a la commande suivante (manuel p.46, « INSTRUCTION DE BLOC »)."
+      ],
+      "examples": [
+        "# option PLANE : 6 termes de la demi-matrice inferieure\nAPPUI 1 a 5 EL 1000. 0. 2000. 0. 0. 500.",
+        "# option PLANE, appui oriente de 0.5236 radian (30 degres) autour de OZ\nAPPUI 10 ROT 0.5236 EL 1000. 0. 2000. 0. 0. 500.",
+        "# option SPATIALE : 21 termes repartis sur plusieurs lignes (exemple p.293)\nAPPUI 1,3 EL 26924.\n0. 5521.\n27855. 0. 66523.\n0. 707. 0. 8862.\n-6512.5 0. -12962. 0. 21025.\n0. 0. 0. 0. 0. 10.",
+        "# option SPATIALE, appuis 1 a 3 portes par les noeuds 7, 8, 9 (exemple p.50)\nAPPUI 1 a 3 NOEUD 7,8,9 EL 1.\n2. 3.\n4. 5. 6.\n7. 8. 9. 10.\n11. 12. 13. 14. 15.\n16. 17. 18. 19. 20. 21."
+      ]
+    },
+    {
+      "name": "APPUI EL DI",
+      "family": "geometrie",
+      "context": "top",
+      "summary": "Definit un appui elastique par les seuls termes diagonaux de sa matrice de rigidite (3 termes en plane, 6 en spatiale).",
+      "syntax": [
+        "APPUI liste1 (NOEUD liste2) (DECOL <NON, <X,Y,Z> <POS,NEG> >) (ROT alpha) EL DI d1 ... dj2",
+        "APPUI",
+        "   liste1 (NOEUD liste2) (DECOL <NON, <X,Y,Z> <POS,NEG> >) (ROT alpha) EL DI d1 ... dj2",
+        "   ..."
+      ],
+      "pages": [
+        49,
+        50,
+        51
+      ],
+      "doc": "Variante simplifiee de `APPUI ... EL` : seuls les **termes diagonaux** de la matrice de rigidite sont donnes, les termes croises etant nuls (p.49).\n\nNombre de termes attendus (p.49) :\n- structures **planes** : **3 termes** (`d1 d2 d3`)\n- structures **spatiales** : **6 termes** (`d1 ... d6`)\n\nOrdre des termes = ordre des DDL de l'option :\n- `PLANE` : raideurs associees a dx, dy, rz\n- `GRILL` : raideurs associees a rx, dz, ry (matrice 3x3, p.51)\n- `SPATIALE` : raideurs associees a dx, dy, dz, rx, ry, rz\n\nExemple du manuel (p.50), en option PLANE : `APPUI 1 a 5 EL DI 1000. 2000. 0.` donne la matrice\n```\n1000.    0.    0.\n   0. 2000.    0.\n   0.    0.    0.\n```\n\n`ROT alpha` (p.49) : rotation autour de l'axe des z, **en radians**, sens trigonometrique (ponts courbes) ; la matrice est alors exprimee dans le repere local ainsi oriente.\n\nPar defaut `liste1 = liste2` (p.49) ; la liste peut etre remplacee par `TOUT` (p.51). Un bloc `APPUI` peut melanger appuis rigides et elastiques (p.51).",
+      "args": [
+        {
+          "name": "liste1",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des numeros d'appui. Remplacable par `TOUT`.",
+          "required": true
+        },
+        {
+          "name": "NOEUD",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Liste des numeros de noeud portant les appuis. Meme longueur que liste1 obligatoire.",
+          "required": false,
+          "default": "liste1"
+        },
+        {
+          "name": "DECOL",
+          "kind": "keyword",
+          "type": "enum",
+          "doc": "Condition de decollement de l'appui elastique. Voir l'entree DECOL.",
+          "required": false,
+          "values": [
+            "NON",
+            "X",
+            "Y",
+            "Z"
+          ]
+        },
+        {
+          "name": "ROT",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Angle de rotation de l'appui autour de l'axe des z, en radians, sens trigonometrique (ponts courbes).",
+          "required": false,
+          "unit": "radian"
+        },
+        {
+          "name": "EL DI",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Termes diagonaux de la matrice de rigidite : 3 termes en structure plane, 6 termes en structure spatiale, dans l'ordre des DDL de l'option.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "OPTION (le nombre de termes depend de l'option, p.49)",
+        "NOEUD : les noeuds porteurs doivent etre definis (p.51)"
+      ],
+      "forbidden": [
+        "Fournir un nombre de termes different de 3 (plane) ou 6 (spatiale) (p.49).",
+        "Listes d'appuis et de noeuds de longueurs differentes (p.51).",
+        "DECOL avec les charges mobiles (commande SURCH) : reserve aux calculs de charges statiques (p.49)."
+      ],
+      "pitfalls": [
+        "Un terme diagonal a 0. signifie **raideur nulle**, donc DDL totalement libre (voir la matrice du manuel p.50 avec un troisieme terme nul) — et non DDL bloque. Un appui elastique n'est jamais un appui rigide : pour bloquer, utiliser la forme rigide APPUI ... DX DY (p.47).",
+        "Confusion frequente entre `EL` (demi-matrice, 6 ou 21 termes) et `EL DI` (diagonale, 3 ou 6 termes) : en spatiale les deux formes acceptent des listes valides mais de tailles differentes ; en spatiale 6 valeurs derriere `EL` (sans DI) est une erreur de comptage (p.49).",
+        "`ROT alpha` est en **radians** (p.49).",
+        "Le manuel donne explicitement 3 termes (plane) et 6 termes (spatiale) mais ne precise pas le nombre de termes en option GRILL ; la matrice GRILL du rappel p.51 est de dimension 3.",
+        "Comme pour les appuis rigides : au moins un appui bloque en X pour la stabilite, un seul si une precontrainte existe (p.48).",
+        "L'instruction de bloc ne se ferme par aucun terminateur : elle s'acheve implicitement a la commande suivante (manuel p.46, « INSTRUCTION DE BLOC »)."
+      ],
+      "examples": [
+        "APPUI 1 a 5 EL DI 1000. 2000. 0.                 # p.50, option PLANE : kdx=1000, kdy=2000, krz=0",
+        "APPUI 6 a 9 EL DI 240. 240. 46000. 240. 240. 1.  # p.293, option SPATIALE : 6 termes diagonaux",
+        "APPUI 12 NOEUD 30 ROT 0.2618 EL DI 1e5 5e4 0.    # appui elastique oriente, option PLANE"
+      ]
+    },
+    {
+      "name": "ART",
+      "family": "geometrie",
+      "context": "top",
+      "summary": "Libere des rotations aux extremites des barres (articulations), dans le repere local de la barre.",
+      "syntax": [
+        "ART liste (OR (RY) (RZ)) (EX (RY) (RZ))",
+        "ART",
+        "   liste (OR (RY) (RZ)) (EX (RY) (RZ))",
+        "   ..."
+      ],
+      "pages": [
+        55,
+        56
+      ],
+      "doc": "Les extremites des barres peuvent contenir des articulations, **definies dans le repere local des barres** (p.55).\n\n- `OR` : articulation a l'**origine** de la barre\n- `EX` : articulation a l'**extremite** de la barre\n\nDDL liberables selon l'option (p.55) :\n- `Option PLANE` : rz\n- `Option GRILL` : ry\n- `Option SPATIALE` : ry, rz\n\n**Desactivation d'une articulation (p.55)** : pour rebloquer un degre de liberte, on redeclare la meme commande `ART` **sans specifier** le degre de liberte que l'on souhaite bloquer a nouveau. Exemple du manuel : `ART 1 A 3 EX RY RZ` puis `ART 3 EX RY` articule les barres 1, 2, 3 en RY et RZ a l'extremite, puis rebloque l'articulation en Z de la seule barre 3.\n\nLa liste peut etre remplacee par `TOUT` : l'instruction agit alors sur toutes les barres deja definies (p.55).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des numeros de barre concernes. Remplacable par `TOUT` (toutes les barres deja definies).",
+          "required": true
+        },
+        {
+          "name": "OR",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Introduit les articulations a l'origine de la barre : `OR (RY) (RZ)`.",
+          "required": false
+        },
+        {
+          "name": "EX",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Introduit les articulations a l'extremite de la barre : `EX (RY) (RZ)`.",
+          "required": false
+        },
+        {
+          "name": "RY",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Libere la rotation autour de l'axe y local de la barre (a placer apres OR ou apres EX).",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "RZ",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Libere la rotation autour de l'axe z local de la barre (a placer apres OR ou apres EX).",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        }
+      ],
+      "prerequisites": [
+        "OPTION (les DDL liberables dependent de l'option, p.55)",
+        "BARRE : les barres concernees doivent etre definies ; `TOUT` agit sur les barres deja definies (p.55)"
+      ],
+      "forbidden": [
+        "Utiliser RY en option PLANE ou RZ en option GRILL (p.55)."
+      ],
+      "pitfalls": [
+        "**Il n'existe pas de commande de suppression d'articulation** : on rebloque un DDL en redeclarant `ART` **sans** ce DDL (p.55). Ecrire `ART 3` sans OR ni EX rebloque donc tout, et une ligne ART incomplete peut annuler silencieusement des articulations definies plus haut.",
+        "ART est en repere **local** de la barre (p.55), contrairement a APPUI et EXC qui sont en repere general (p.47, p.53). L'orientation de ce repere local depend du sens DE ... A de la commande BARRE (p.52) et, en spatiale, de BETA (p.57).",
+        "Articuler les deux extremites de toutes les barres d'un noeud rend le noeud instable en rotation : verifier qu'au moins une barre reste encastree ou que le DDL est bloque par un appui (regle generale de stabilite rappelee p.48 pour la direction X).",
+        "La liste peut etre remplacee par TOUT, mais TOUT agit sur toutes les barres **deja definies** (p.55) : les barres declarees apres ne sont pas concernees.",
+        "Forme bloc : la syntaxe de bloc du manuel (p.55) est rendue de facon ambigue dans le texte ; par analogie avec les autres commandes de geometrie, le bloc s'ouvre par `ART` seul puis une ligne par definition.",
+        "L'instruction de bloc ne se ferme par aucun terminateur : elle s'acheve implicitement a la commande suivante (manuel p.46, « INSTRUCTION DE BLOC »)."
+      ],
+      "examples": [
+        "ART 1 A 3 EX RY RZ    # p.55 : barres 1, 2, 3 articulees en RY et RZ a leur extremite\nART 3 EX RY           # p.55 : rebloque l articulation RZ de la seule barre 3",
+        "ART 1 OR RZ EX RZ     # p.56, option PLANE : barre bi-articulee",
+        "# forme bloc\nART\n10 a 13 OR RZ\n20 EX RY RZ\nFIN"
+      ]
+    },
+    {
+      "name": "BARRE",
+      "family": "geometrie",
+      "context": "top",
+      "summary": "Relie deux noeuds par une barre ; le sens origine vers extremite fixe l'axe x du repere local de la barre.",
+      "syntax": [
+        "BARRE liste DE j1 A j2",
+        "BARRE liste j1 j2",
+        "BARRE",
+        "   liste DE j1 A j2",
+        "   liste j1 j2",
+        "   ..."
+      ],
+      "pages": [
+        52
+      ],
+      "doc": "Decrit les noeuds relies par une barre (p.52). Deux ecritures equivalentes, en forme ligne ou en forme bloc :\n\n- avec mots-cles : `BARRE liste DE j1 A j2`\n- positionnelle : `BARRE liste j1 j2`\n\n`j1` est le noeud **origine**, `j2` le noeud **extremite**.\n\n**La definition des noeuds relies par une barre determine l'orientation de l'axe x du repere local de cette barre** (p.52). C'est ce repere local qui sert ensuite pour `ART` (articulations), `BETA` (rotation autour de ox), les caracteristiques RDM (iy, iz, vy, wy...) et les charges en repere `LOC`.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des numeros de barre a definir. Accepte `1,2,5` , `i a j` , `i a j pas p` (p.31).",
+          "required": true
+        },
+        {
+          "name": "DE",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero du noeud origine de la barre (forme a mots-cles).",
+          "required": false
+        },
+        {
+          "name": "A",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero du noeud extremite de la barre (forme a mots-cles).",
+          "required": false
+        },
+        {
+          "name": "j1",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du noeud origine de la barre (forme positionnelle `BARRE liste j1 j2`).",
+          "required": false
+        },
+        {
+          "name": "j2",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du noeud extremite de la barre (forme positionnelle `BARRE liste j1 j2`).",
+          "required": false
+        }
+      ],
+      "prerequisites": [
+        "OPTION",
+        "NOEUD : les noeuds origine et extremite doivent etre definis"
+      ],
+      "forbidden": [],
+      "pitfalls": [
+        "Inverser origine et extremite retourne l'axe x local de la barre (p.52), donc le signe des efforts N/TY/TZ, la position des fibres VY/WY, le sens de `OR`/`EX` dans EXC et ART, et l'orientation des charges en repere LOC. Une barre 'a l'envers' dans un ensemble n'est pas une erreur mais fausse la lecture des resultats.",
+        "Le mot-cle BARRE est reutilise dans de nombreux contextes : `BARRE` sous-commande de CHARG (charges concentrees, uniformes, lineaires, p.110-115) ; `BARRE listeb` dans MASSE PROPRE (p.69) ; `BARRE liste` dans TABLIER (p.130) et CABLE (p.96) ; `ACTIVER / DESACTIVER BARRE` (p.99-100) ; `BARRE` dans RESU (p.244). La completion doit distinguer le contexte.",
+        "Regle generale de la geometrie (p.42) : redefinir une barre ecrase sa definition precedente ; c'est la derniere qui compte.",
+        "Il est vivement deconseille d'appliquer la precontrainte sur des barres definies par des excentrements ou discontinues entre elles : l'affectation des poussees peut etre ambigue pour ST1 et mal representee localement ; specifier directement les coordonnees reelles des noeuds (p.96).",
+        "Le manuel autorise 8 chiffres pour un numero de barre (p.29), mais en pratique des numeros superieurs a 65536 provoquent des erreurs de base de donnees (retour d'experience support, NON DOCUMENTE).",
+        "Forme bloc : le manuel ne montre pas de terminateur (p.52) ; les exemples officiels ferment par `FIN` (p.300, p.314) ou implicitement par la commande suivante (p.286).",
+        "L'instruction de bloc ne se ferme par aucun terminateur : elle s'acheve implicitement a la commande suivante (manuel p.46, « INSTRUCTION DE BLOC »)."
+      ],
+      "examples": [
+        "BARRE 1 DE 1 A 2      # forme a mots-cles\nBARRE 1 1 2           # forme positionnelle equivalente",
+        "# forme bloc, cadre ferme (exemple p.286)\nBARRE\n1 1 2\n2 2 3\n3 3 4\n4 4 1",
+        "# forme bloc contenant une generation, fermee par FIN (exemple p.300)\nBARRE\nGENER 2 BARRE ID 11 1 DE 1 1 A 2 1\nFIN",
+        "# option SPATIALE (exemple p.292)\nBARRE 5 DE 1 A 3\nBARRE 6 DE 2 A 4"
+      ]
+    },
+    {
+      "name": "BETA",
+      "family": "geometrie",
+      "context": "top",
+      "summary": "Applique aux barres une rotation d'angle beta, en radians, autour de leur axe local OX (structures spatiales).",
+      "syntax": [
+        "BETA liste beta",
+        "BETA",
+        "   liste beta",
+        "   ..."
+      ],
+      "pages": [
+        57,
+        58
+      ],
+      "restrictedToOptions": [
+        "SPATIALE"
+      ],
+      "doc": "Rotation d'angle `beta` autour de l'axe local ox de la barre, **dans le cas d'une structure spatiale** (p.57). L'angle est **exprime en radians** (p.57).\n\nPosition d'origine (`beta = 0`), qui depend de l'orientation de l'axe ox de la fibre neutre par rapport a l'axe OZ du repere general (p.57-58) :\n- **Cas 1** — l'axe ox de la poutre **n'est pas parallele** a l'axe OZ du repere general : pour beta = 0, l'axe oy de la barre appartient au plan oXY (l'axe OY est horizontal).\n- **Cas 2** — l'axe ox de la poutre **est parallele** a l'axe OZ du repere general : pour beta = 0, l'axe oy de la barre est confondu avec l'axe OY du repere general.\n\nLa liste peut etre remplacee par `TOUT` : l'instruction agit alors sur toutes les barres deja definies (p.57).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des numeros de barre concernes. Remplacable par `TOUT` (toutes les barres deja definies).",
+          "required": true
+        },
+        {
+          "name": "beta",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Angle de rotation autour de l'axe local ox de la barre, en radians, par rapport a la position d'origine.",
+          "required": true,
+          "unit": "radian"
+        }
+      ],
+      "prerequisites": [
+        "OPTION SPATIALE (la commande est documentee pour les structures spatiales, p.57)",
+        "BARRE : les barres concernees doivent etre definies ; `TOUT` agit sur les barres deja definies (p.57)"
+      ],
+      "forbidden": [],
+      "pitfalls": [
+        "`beta` est en **radians** (p.57, regle generale p.30) : `BETA 1 A 3 1.3` est une rotation de 1.3 radian, pas de 1.3 degre. Saisir une valeur en degres oriente completement de travers les inerties IY/IZ et les fibres VY/WY/VZ/WZ.",
+        "La position d'origine (beta = 0) n'est pas la meme selon que l'axe ox de la barre est ou non parallele a OZ (p.57-58) : les poteaux verticaux et les poutres horizontales n'ont donc pas la meme reference d'orientation, ce qui surprend sur les portiques spatiaux.",
+        "Le mot-cle BETA existe aussi, avec un sens totalement different, dans les blocs de dynamique : `BETA beta` dans SPECTRE = angle dans le plan horizontal en radians (p.202-204), et dans ACCELEROGRAMME (p.207-208). La completion doit distinguer le contexte : ici il s'agit de la geometrie des barres.",
+        "Le manuel ne documente BETA que pour les structures spatiales (titre du paragraphe 2.9, p.57).",
+        "Comme toute commande de geometrie, la derniere declaration l'emporte (p.42).",
+        "L'instruction de bloc ne se ferme par aucun terminateur : elle s'acheve implicitement a la commande suivante (manuel p.46, « INSTRUCTION DE BLOC »)."
+      ],
+      "examples": [
+        "BETA 1 A 3 1.3    # p.57 : barres 1, 2, 3 tournees de 1.3 radian autour de leur axe local ox",
+        "BETA TOUT 0.      # remet toutes les barres deja definies a leur position d origine",
+        "# forme bloc\nBETA\n1 a 10 0.\n11 a 20 1.5708\nFIN"
+      ]
+    },
+    {
+      "name": "DECOL",
+      "family": "geometrie",
+      "context": "bloc:APPUI",
+      "summary": "Clause optionnelle de la commande APPUI qui rend un appui unilateral : l'appui se decolle lorsque la reaction change de signe dans la direction surveillee.",
+      "syntax": [
+        "DECOL <NON, <X,Y,Z> <POS,NEG> >"
+      ],
+      "pages": [
+        47,
+        48,
+        49
+      ],
+      "doc": "`DECOL` n'est pas une commande autonome : c'est le mot-cle de **decollement d'un appui dans une direction** (p.47), utilisable dans la commande `APPUI`, aussi bien en forme ligne qu'en forme bloc, pour les appuis **rigides** (p.47) comme pour les appuis **elastiques** `EL` / `EL DI` (p.49). Il se place apres `liste1` (et apres `NOEUD liste2` s'il est present) et avant les mots-cles de DDL ou avant `ROT` / `EL`.\n\nSyntaxe : `DECOL <NON, <X,Y,Z> <POS,NEG> >`\n- `X`, `Y`, `Z` : direction de la **reaction** surveillee (p.47).\n- `POS` / `NEG` : signe du degre de liberte concerne par la condition de decollement. **Par defaut `POS`**, c'est-a-dire que l'appui est colle si la reaction est positive et decolle si la reaction est negative (p.47, p.49).\n- `NON` : alternative prevue par la ligne de syntaxe pour ne pas appliquer de condition de decollement.\n\nComportement (p.47, p.49) :\n- Le critere de decollement concerne **uniquement le degre de liberte active** (reaction X, Y ou Z).\n- Lorsque le critere est verifie sur ce seul degre de liberte, **tous les degres de liberte sont liberes**.\n\nDomaine d'emploi (p.47, p.49) : calculs de **charges statiques** uniquement (la precontrainte est consideree simultanee). **Ne pas utiliser avec les charges mobiles** (commande surcharges).",
+      "args": [
+        {
+          "name": "NON",
+          "kind": "choice",
+          "type": "flag",
+          "doc": "Alternative de la ligne de syntaxe : pas de condition de decollement.",
+          "required": false
+        },
+        {
+          "name": "direction",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Direction de la reaction surveillee pour le critere de decollement.",
+          "required": false,
+          "values": [
+            "X",
+            "Y",
+            "Z"
+          ]
+        },
+        {
+          "name": "signe",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Signe du degre de liberte concerne par la condition de decollement. `POS` : appui colle si la reaction est positive, decolle si elle est negative. `NEG` : comportement inverse.",
+          "required": false,
+          "default": "POS",
+          "values": [
+            "POS",
+            "NEG"
+          ]
+        }
+      ],
+      "prerequisites": [
+        "APPUI : DECOL ne s'ecrit qu'a l'interieur d'une instruction APPUI, rigide ou elastique (p.47, p.49)"
+      ],
+      "forbidden": [
+        "Utiliser DECOL avec les charges mobiles / la commande SURCH : DECOL est reserve aux calculs de charges statiques (p.47, p.49).",
+        "Attendre un decollement partiel : le critere ne porte que sur un seul DDL, mais sa verification libere TOUS les DDL de l'appui (p.47, p.49)."
+      ],
+      "pitfalls": [
+        "Le critere ne porte que sur **un** degre de liberte, mais son declenchement libere **tous** les degres de liberte de l'appui (p.47, p.49) : un appui declare DECOL Y POS DX DY libere aussi DX quand il decolle.",
+        "DECOL rend le calcul non lineaire. Ne pas declarer tous les appuis decollables au premier calcul : sans appui inconditionnellement stable le calcul diverge. Etudier d'abord la structure avec des appuis stables (fixes ou elastiques), observer deplacements et reactions, puis introduire la non-linearite progressivement (retour d'experience support, NON DOCUMENTE).",
+        "Par defaut `POS` : appui colle si reaction positive (p.47). Se tromper de convention de signe inverse completement le comportement unilateral.",
+        "Interdit avec les charges mobiles (SURCH) ; la precontrainte, elle, est consideree simultanee (p.47, p.49).",
+        "Les combinaisons COMB / ENV sont des combinaisons lineaires de resultats deja calcules : elles ne recalculent pas les decollements (p.234). Un decollement doit etre traite dans un chargement combine CHARG COMB, pas par une combinaison a posteriori."
+      ],
+      "examples": [
+        "APPUI 3 DECOL Y POS DX DY        # colle si la reaction Y est positive, decolle sinon",
+        "APPUI 4 DECOL Z NEG DZ           # colle si la reaction Z est negative",
+        "APPUI 5 DECOL NON DX DY RZ       # appui rigide sans condition de decollement",
+        "# appui elastique unilateral, option PLANE\nAPPUI 7 NOEUD 21 DECOL Y POS EL DI 1e5 5e4 0."
+      ]
+    },
+    {
+      "name": "EXC",
+      "family": "geometrie",
+      "context": "top",
+      "summary": "Definit les excentrements des liaisons barre/noeud aux extremites des barres, dans le repere general, sous forme de barres infiniment rigides.",
+      "syntax": [
+        "EXC liste (OR (X) ox1 (Y) ox2 (Z) ox3) (EX (X) ex1 (Y) ex2 (Z) ex3)",
+        "EXC liste (OR ox1 ox2 ox3) (EX ex1 ex2 ex3)",
+        "EXC liste",
+        "   (OR X ox1 Y ox2 Z ox3)",
+        "   (EX X ex1 Y ex2 Z ex3)",
+        "EXC",
+        "   liste (OR X ox1 Y ox2 Z ox3) (EX X ex1 Y ex2 Z ex3)",
+        "   ..."
+      ],
+      "pages": [
+        53,
+        54
+      ],
+      "doc": "Les excentrements des liaisons barres/noeuds sont definis **a partir des noeuds, suivant les axes du repere general de la structure** (p.53).\n\n- `OR` : excentrement a l'**origine** de la barre\n- `EX` : excentrement a l'**extremite** de la barre\n\nLes composantes peuvent s'ecrire avec les mots-cles `X`, `Y`, `Z` ou de facon positionnelle (`OR ox1 ox2 ox3`). Coordonnees utilisables (p.53) : `PLANE` x, y ; `GRILL` x, y ; `SPATIALE` x, y, z.\n\nInterpretation (p.53) : la barre est reliee au noeud de la structure par une **barre infiniment rigide** dont l'origine est le noeud et l'extremite le point deduit des coordonnees du noeud par la translation donnee. Exemple du manuel : `EXC 2,3,4 A 6 OR Y 2.5` translate l'origine des barres 2 a 6 du vecteur (0, 2.5).\n\nLa liste peut etre remplacee par `TOUT` : l'instruction agit alors sur toutes les barres deja definies (p.53).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des numeros de barre concernes. Remplacable par `TOUT` (toutes les barres deja definies).",
+          "required": true
+        },
+        {
+          "name": "OR",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Introduit l'excentrement a l'origine de la barre : `OR (X) ox1 (Y) ox2 (Z) ox3` ou `OR ox1 ox2 ox3`.",
+          "required": false
+        },
+        {
+          "name": "EX",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Introduit l'excentrement a l'extremite de la barre : `EX (X) ex1 (Y) ex2 (Z) ex3` ou `EX ex1 ex2 ex3`.",
+          "required": false
+        },
+        {
+          "name": "X",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Composante de l'excentrement suivant l'axe X du repere general (a placer apres OR ou apres EX).",
+          "required": false
+        },
+        {
+          "name": "Y",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Composante de l'excentrement suivant l'axe Y du repere general (a placer apres OR ou apres EX).",
+          "required": false
+        },
+        {
+          "name": "Z",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Composante de l'excentrement suivant l'axe Z du repere general. Option SPATIALE uniquement.",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        }
+      ],
+      "prerequisites": [
+        "OPTION (le nombre de composantes depend de l'option, p.53)",
+        "BARRE : les barres concernees doivent etre definies ; `TOUT` agit sur les barres deja definies (p.53)"
+      ],
+      "forbidden": [
+        "Appliquer un chargement sur un excentrement : les excentrements restent exterieurs a la barre et ne peuvent recevoir ni chargement ni section d'etude (p.53).",
+        "Definir une section d'etude sur un excentrement (p.53).",
+        "Donner une composante Z en option PLANE ou GRILL (p.53)."
+      ],
+      "pitfalls": [
+        "Les excentrements **restent exterieurs a la barre** : ils ne peuvent recevoir ni chargement ni section d'etude (p.53).",
+        "Les excentrements eventuels des barres **ne sont pas pris en compte pour generer le poids propre** (p.108) : la masse du troncon excentre n'existe pas.",
+        "En dynamique, en revanche, l'excentrement rigide des barres **est** pris en compte pour l'excentrement des masses modales (les excentrements de torsion EXTY/EXTZ, eux, ne le sont pas) (p.197).",
+        "Il est vivement deconseille d'appliquer la precontrainte sur des barres definies par des excentrements ou discontinues entre elles : l'affectation des poussees de cable se fait aux elements les plus proches et peut etre ambigue ; specifier directement les coordonnees reelles des noeuds (p.96).",
+        "Les excentrements sont dans le **repere general** (p.53), pas dans le repere local de la barre — contrairement a ART qui, lui, est en repere local (p.55).",
+        "Regle generale de la geometrie (p.42) : une nouvelle instruction EXC sur les memes barres remplace la precedente.",
+        "L'instruction de bloc ne se ferme par aucun terminateur : elle s'acheve implicitement a la commande suivante (manuel p.46, « INSTRUCTION DE BLOC »)."
+      ],
+      "examples": [
+        "EXC 2,3,4 a 6 OR Y 2.5                # p.53 : origine des barres 2 a 6 translatee de (0 , 2.5)",
+        "EXC 1 OR X 1.9 Y 3.1 EX X 1.1 Y 2.6   # p.54 : excentrement aux deux extremites",
+        "# option SPATIALE, forme bloc (exemple p.292)\nEXC\n1 OR Y -0.195\n3 OR Y 0.195\n2 OR Y -0.250\n4 OR Y 0.250",
+        "# option SPATIALE, haubans (exemple p.293)\nEXC 40 OR X -0.1901 Z -0.1598 EX X -0.820 Z -0.3407"
+      ]
+    },
+    {
+      "name": "GENER BARRE",
+      "family": "geometrie",
+      "context": "top",
+      "summary": "Genere automatiquement une serie de barres a numerotation et noeuds origine/extremite regulierement incrementes.",
+      "syntax": [
+        "GENER n BARRE (ID) j (pas0) DE j1 (pas1) A j2 (pas2)"
+      ],
+      "pages": [
+        52
+      ],
+      "doc": "Genere `n` barres (p.52). La premiere barre porte le numero `j` et relie le noeud `j1` au noeud `j2` ; chaque barre suivante est deduite de la precedente en ajoutant `pas0` au numero de barre, `pas1` au numero du noeud origine et `pas2` au numero du noeud extremite.\n\nValeurs par defaut documentees (p.52) :\n- `pas0` (increment sur les numeros de barre) : **1**\n- `pas1` (increment sur le numero origine) : **0**\n- `pas2` (increment sur le numero extremite) : **0**\n\nExemple du manuel (p.52) : `GENER 5 BARRE ID 100 10 DE 4 2 A 14 7` est equivalent a\n```\nBARRE\n100  4 14\n110  6 21\n120  8 28\n130 10 35\n140 12 42\n```\n\nLe mot-cle `ID` est optionnel et precede le numero de la premiere barre. `GENER ... BARRE` peut s'ecrire a l'interieur d'un bloc `BARRE` (exemple p.300).",
+      "args": [
+        {
+          "name": "n",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Nombre de barres a generer.",
+          "required": true
+        },
+        {
+          "name": "BARRE",
+          "kind": "subcommand",
+          "type": "flag",
+          "doc": "Mot-cle obligatoire designant la generation de barres (par opposition a GENER ... NOEUD).",
+          "required": true
+        },
+        {
+          "name": "ID",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Mot-cle optionnel introduisant le numero de la premiere barre.",
+          "required": false
+        },
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la premiere barre generee.",
+          "required": true,
+          "max": 99999999
+        },
+        {
+          "name": "pas0",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Increment sur les numeros des barres generees.",
+          "required": false,
+          "default": "1"
+        },
+        {
+          "name": "DE",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero du noeud origine de la premiere barre, suivi optionnellement de l'increment pas1.",
+          "required": true
+        },
+        {
+          "name": "pas1",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Increment sur le numero du noeud origine, place juste apres la valeur donnee derriere DE.",
+          "required": false,
+          "default": "0"
+        },
+        {
+          "name": "A",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero du noeud extremite de la premiere barre, suivi optionnellement de l'increment pas2.",
+          "required": true
+        },
+        {
+          "name": "pas2",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Increment sur le numero du noeud extremite, place juste apres la valeur donnee derriere A.",
+          "required": false,
+          "default": "0"
+        }
+      ],
+      "prerequisites": [
+        "OPTION",
+        "NOEUD : tous les noeuds origine et extremite generes doivent exister"
+      ],
+      "forbidden": [],
+      "pitfalls": [
+        "Piege de lecture identique a GENER NOEUD : dans `GENER 5 BARRE ID 100 10 DE 4 2 A 14 7` (p.52), `10` est pas0, `4` le noeud origine de la 1re barre, `2` l'increment sur l'origine, `14` le noeud extremite de la 1re barre et `7` l'increment sur l'extremite.",
+        "Omettre `pas1` ou `pas2` ne genere pas d'erreur : l'increment vaut 0 (p.52) et toutes les barres partent du meme noeud (ou aboutissent au meme noeud). C'est d'ailleurs une utilisation legitime pour les haubans qui convergent tous vers un meme noeud de pylone : `GENER 8 BARRE ID 40 1 DE 23 2 A 5` (p.293).",
+        "Le sens DE ... A determine l'axe x local de toutes les barres generees (p.52) : une generation dans le mauvais sens retourne le repere local de toute une file de barres."
+      ],
+      "examples": [
+        "GENER 5 BARRE ID 100 10 DE 4 2 A 14 7   # p.52 : barres 100,110,...,140",
+        "GENER 20 BARRE ID 20 1 DE 20 1 A 21 1   # p.293 : file continue de 20 barres",
+        "GENER 8 BARRE ID 40 1 DE 23 2 A 5       # p.293 : pas2 omis, les 8 barres aboutissent au noeud 5",
+        "# generation a l interieur d un bloc BARRE (exemple p.300)\nBARRE\nGENER 2 BARRE ID 11 1 DE 1 1 A 2 1\nFIN"
+      ]
+    },
+    {
+      "name": "GENER NOEUD",
+      "family": "geometrie",
+      "context": "top",
+      "summary": "Genere automatiquement une serie de noeuds a numerotation et coordonnees regulierement incrementees.",
+      "syntax": [
+        "GENER n NOEUD (ID) j (pas0) X coor1 (pas1) Y coor2 (pas2) Z coor3 (pas3)"
+      ],
+      "pages": [
+        46
+      ],
+      "doc": "Genere `n` noeuds regulierement espaces (p.46). Le premier noeud porte le numero `j` et les coordonnees `coor1, coor2, coor3` ; chaque noeud suivant est deduit du precedent en ajoutant `pas0` au numero et `pas1 / pas2 / pas3` aux coordonnees.\n\nValeurs par defaut documentees (p.46) :\n- `pas0` (increment sur les numeros) : **1**\n- `pas1`, `pas2`, `pas3` (increments sur les coordonnees) : **0**\n\nCoordonnees utilisables selon l'option (p.46) : `PLANE` x, y ; `GRILL` x, y ; `SPATIALE` x, y, z.\n\nExemple du manuel (p.46) : `GENER 5 NOEUD ID 100 10 X 5. 2. Y 4` est equivalent a\n```\nNOEUD\n100 X 5.  Y 4.\n110 X 7.  Y 4.\n120 X 9.  Y 4.\n130 X 11. Y 4.\n140 X 13. Y 4.\n```\n\nLe mot-cle `ID` est optionnel et precede le numero du premier noeud.",
+      "args": [
+        {
+          "name": "n",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Nombre de noeuds a generer.",
+          "required": true
+        },
+        {
+          "name": "NOEUD",
+          "kind": "subcommand",
+          "type": "flag",
+          "doc": "Mot-cle obligatoire designant la generation de noeuds (par opposition a GENER ... BARRE).",
+          "required": true
+        },
+        {
+          "name": "ID",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Mot-cle optionnel introduisant le numero du premier noeud.",
+          "required": false
+        },
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du premier noeud genere.",
+          "required": true,
+          "max": 99999999
+        },
+        {
+          "name": "pas0",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Increment sur les numeros des noeuds generes.",
+          "required": false,
+          "default": "1"
+        },
+        {
+          "name": "X",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coordonnee x du premier noeud, suivie optionnellement de l'increment pas1 applique a chaque noeud suivant.",
+          "required": false
+        },
+        {
+          "name": "pas1",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Increment sur la coordonnee 1 (x), place juste apres la valeur donnee derriere X.",
+          "required": false,
+          "default": "0"
+        },
+        {
+          "name": "Y",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coordonnee y du premier noeud, suivie optionnellement de l'increment pas2.",
+          "required": false
+        },
+        {
+          "name": "pas2",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Increment sur la coordonnee 2 (y), place juste apres la valeur donnee derriere Y.",
+          "required": false,
+          "default": "0"
+        },
+        {
+          "name": "Z",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coordonnee z du premier noeud, suivie optionnellement de l'increment pas3. N'existe qu'en option SPATIALE.",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "pas3",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Increment sur la coordonnee 3 (z), place juste apres la valeur donnee derriere Z. Option SPATIALE uniquement.",
+          "required": false,
+          "default": "0",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        }
+      ],
+      "prerequisites": [
+        "OPTION (le nombre de coordonnees attendues depend de l'option, p.46)"
+      ],
+      "forbidden": [
+        "Donner une coordonnee Z en option PLANE ou GRILL (p.46)."
+      ],
+      "pitfalls": [
+        "Le piege le plus frequent est de confondre les increments : apres `X coor1` la valeur suivante n'est pas la coordonnee Y mais l'increment `pas1`. Dans `GENER 5 NOEUD ID 100 10 X 5. 2. Y 4` (p.46), `10` est pas0, `5.` est x du premier noeud, `2.` est l'increment sur x, et `4` est y (increment pas2 omis, donc 0).",
+        "Omettre un increment ne genere pas une erreur : il vaut 0 (coordonnees) ou 1 (numeros) par defaut (p.46) et tous les noeuds se retrouvent superposes sur cette coordonnee.",
+        "Meme regle d'optimisation que pour NOEUD : generer dans l'ordre des X croissants puis Y croissants pour limiter la largeur de bande de la matrice (p.46).",
+        "Le manuel autorise 8 chiffres pour un numero de noeud (p.29), mais en pratique des numeros superieurs a 65536 provoquent des erreurs de base de donnees (retour d'experience support, NON DOCUMENTE)."
+      ],
+      "examples": [
+        "GENER 5 NOEUD ID 100 10 X 5. 2. Y 4   # p.46 : noeuds 100,110,120,130,140 de x=5. a x=13., y=4.",
+        "# option SPATIALE : 11 noeuds numerotes 1 a 11, tous les 2.5 en x\nGENER 11 NOEUD ID 1 1 X 0. 2.5 Y 0. Z 0."
+      ]
+    },
+    {
+      "name": "NOEUD",
+      "family": "geometrie",
+      "context": "top",
+      "summary": "Definit les coordonnees des noeuds de la structure dans le repere global, en forme ligne, en forme bloc, avec ou sans mots-cles X/Y/Z.",
+      "syntax": [
+        "NOEUD liste coor1 coor2 coor3",
+        "NOEUD liste (X coor1) (Y coor2) (Z coor3)",
+        "NOEUD",
+        "   liste coor1 coor2 coor3",
+        "   liste (X coor1) (Y coor2) (Z coor3)",
+        "   ..."
+      ],
+      "pages": [
+        46
+      ],
+      "doc": "Decrit les noeuds **dans le repere global** (p.46). Trois ecritures equivalentes :\n\n1. Forme ligne positionnelle : `NOEUD liste coor1 coor2 coor3`\n2. Forme ligne a mots-cles : `NOEUD liste (X coor1) (Y coor2) (Z coor3)` — chaque coordonnee est optionnelle et identifiee par son mot-cle\n3. Forme bloc : `NOEUD` seul sur une ligne, puis autant de lignes `liste coor...` que necessaire\n\nCoordonnees utilisables selon l'option (p.46) :\n- `Option PLANE` : x, y\n- `Option GRILL` : x, y\n- `Option SPATIALE` : x, y, z\n\n**Aucune unite n'est imposee** (sauf calcul au feu, ou le metre est obligatoire, p.218) : les coordonnees sont dans le systeme d'unites coherent choisi par l'utilisateur.\n\n**Optimisation memoire (p.46)** : l'ordre de definition des noeuds influence directement la largeur de bande de la matrice de rigidite. Sur les gros modeles, generer les noeuds dans l'ordre des `X` croissants puis des `Y` croissants reduit notablement la memoire allouee et les temps de calcul (la numerotation elle-meme peut etre quelconque).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des numeros de noeuds a definir. Accepte les formes `1,2,5` , `i a j` , `i a j pas p` (p.31).",
+          "required": true
+        },
+        {
+          "name": "coor1",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Premiere coordonnee (x) du ou des noeuds, forme positionnelle.",
+          "required": true
+        },
+        {
+          "name": "coor2",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Deuxieme coordonnee (y) du ou des noeuds, forme positionnelle.",
+          "required": true
+        },
+        {
+          "name": "coor3",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Troisieme coordonnee (z) du ou des noeuds, forme positionnelle. N'existe qu'en option SPATIALE.",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "X",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coordonnee x du ou des noeuds (forme a mots-cles).",
+          "required": false
+        },
+        {
+          "name": "Y",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coordonnee y du ou des noeuds (forme a mots-cles).",
+          "required": false
+        },
+        {
+          "name": "Z",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coordonnee z du ou des noeuds (forme a mots-cles). N'existe qu'en option SPATIALE.",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        }
+      ],
+      "prerequisites": [
+        "OPTION (le nombre de coordonnees attendues depend de l'option, p.46)"
+      ],
+      "forbidden": [
+        "Donner une coordonnee Z (ou une 3e coordonnee positionnelle) en option PLANE ou GRILL : seules x et y existent (p.46)."
+      ],
+      "pitfalls": [
+        "Le mot-cle NOEUD est reutilise dans plusieurs contextes avec un sens totalement different : ici definition de geometrie (p.46) ; `NOEUD liste2` a l'interieur d'une commande APPUI = noeuds porteurs des appuis (p.47) ; `NOEUD liste (FX ...)` entre CHARG et FIN = forces nodales (p.109) ; `NOEUD liste MASSE ...` dans MASSE PROPRE = masses nodales (p.69) ; `NOEUD` dans RESU = edition des deplacements de noeuds (p.244). La completion doit tenir compte du contexte.",
+        "Regle generale de la geometrie (p.42) : les commandes de description peuvent etre utilisees plusieurs fois et dans un ordre quelconque, c'est la **derniere** description qui est prise en compte ; les valeurs non redefinies conservent leur valeur precedente. Redefinir un noeud ecrase donc silencieusement sa definition anterieure.",
+        "En activation selective, modifier les coordonnees d'un noeud doit etre suivi de la **reactivation de toutes les barres** qui y etaient liees, faute de quoi la modification n'est pas reellement prise en compte au moment des calculs de chargement (p.42).",
+        "Ordre de generation : generer les noeuds dans le desordre gonfle la largeur de bande de la matrice de rigidite et peut provoquer un `Place memoire insuffisante` a l'execution des chargements alors meme que les limites de 20000 noeuds / 40000 barres sont respectees (p.29, p.46).",
+        "Le manuel autorise 8 chiffres pour un numero de noeud (p.29), mais en pratique des numeros superieurs a 65536 (viser <= 32768) provoquent des erreurs de lecture/ecriture en base de donnees et des `mot clef mal place` ; renumeroter resout le probleme (retour d'experience support, NON DOCUMENTE).",
+        "Forme bloc : les syntaxes du manuel se terminent par `...` sans montrer de terminateur (p.46). Dans les exemples officiels le bloc est ferme par `FIN` (p.314), ou implicitement par la commande suivante (p.286, p.292, p.300). Ne pas signaler comme erreur un bloc NOEUD ferme par la commande suivante.",
+        "L'instruction de bloc ne se ferme par aucun terminateur : elle s'acheve implicitement a la commande suivante (manuel p.46, « INSTRUCTION DE BLOC »)."
+      ],
+      "examples": [
+        "# option PLANE, forme ligne positionnelle et forme a mots-cles\nNOEUD 1 0. 0.\nNOEUD 2 X 0. Y 5.",
+        "# option PLANE, forme bloc fermee par la commande suivante (exemple p.286)\nNOEUD\n1 0. 0.\n2 0. 5.\n3 6. 5.\n4 6. 0.\nBARRE\n1 1 2",
+        "# option SPATIALE, forme bloc fermee implicitement par la commande suivante (exemple p.300)\nNOEUD\n1 X 0.000 Y 0.000 Z 0\n2 X 10    Y 0.000 Z 0\n3 X 20    Y 0.000 Z 0",
+        "# option SPATIALE, forme positionnelle x y z (exemple p.137)\nNOEUD 1 0.00 0.000 0\nNOEUD 2 10.00 0.000 0\nNOEUD 11 0.00 3.000 0"
+      ]
+    },
+    {
+      "name": "OPTION",
+      "family": "geometrie",
+      "context": "top",
+      "summary": "Definit le type de structure (plane, grillage de poutres, spatiale) et fixe ainsi les coordonnees et les degres de liberte disponibles dans tout le reste du fichier.",
+      "syntax": [
+        "OPTION <PLANE, GRILL, SPATIALE>"
+      ],
+      "pages": [
+        43,
+        44,
+        332
+      ],
+      "doc": "Fixe le type de structure. C'est la commande la plus structurante du langage : elle determine les coordonnees de noeud, les DDL d'appui, les caracteristiques RDM, les composantes de charge et les composantes de resultat utilisables partout ailleurs.\n\n| Option | Coordonnees | Deplacements / DDL |\n|---|---|---|\n| `PLANE` | x, y | dx, dy, rz |\n| `GRILL` | x, y | rx, dz, ry |\n| `SPATIALE` | x, y, z | dx, dy, dz, rx, ry, rz |\n\n- `PLANE` (p.43) : la structure est plane et **chargee dans son plan**.\n- `GRILL` (p.44) : la structure est plane et **chargee perpendiculairement a son plan** (grillage de poutres).\n- `SPATIALE` (p.44) : structure et chargements decrits dans l'espace.\n\nL'option par defaut est celle inscrite dans le fichier parametres `st1.par` (p.43) ; l'extrait ST1.par reproduit dans le manuel porte le mot-cle `OPTION_PLANE` (p.332). Placee avant toute autre commande au debut des donnees, la commande `OPTION` remplace cette valeur par defaut (p.43).\n\nCommande d'une seule ligne, sans terminateur.",
+      "args": [
+        {
+          "name": "option",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Type de structure. `PLANE` = plan charge dans son plan ; `GRILL` = grillage de poutres charge perpendiculairement a son plan ; `SPATIALE` = structure et chargements dans l'espace.",
+          "required": true,
+          "values": [
+            "PLANE",
+            "GRILL",
+            "SPATIALE"
+          ]
+        }
+      ],
+      "prerequisites": [],
+      "forbidden": [],
+      "pitfalls": [
+        "OPTION ne remplace l'option par defaut de st1.par que si elle est placee avant toute autre commande (p.43). Le manuel enonce une condition d'efficacite, pas une interdiction.",
+        "L'option par defaut n'est PAS fixee par le langage mais par le fichier parametres st1.par (p.43) : l'extrait ST1.par livre avec le manuel porte le mot-cle `OPTION_PLANE` (p.332), mais ce fichier est modifiable par l'utilisateur. Toujours ecrire OPTION explicitement en tete de fichier.",
+        "Changer d'option change le sens des mots-cles de DDL, de caracteristiques et de charges : DX/DY/RZ n'existent qu'en PLANE et SPATIALE, RX/DZ/RY qu'en GRILL et SPATIALE (p.47-48). Une meme ligne APPUI valide en PLANE peut etre invalide en GRILL.",
+        "En option GRILL il n'y a pas de poids propre : la commande POIDS PROPRE est inutilisable (p.108).",
+        "Le calcul au feu n'est disponible qu'en PLANE et SPATIALE, pas en GRILL (p.217), et impose de travailler en metre (p.218).",
+        "La commande MASSE PROPRE (dynamique) n'est documentee qu'en PLANE et SPATIALE (p.69)."
+      ],
+      "examples": [
+        "OPTION PLANE     # portique plan charge dans son plan",
+        "OPTION GRILL     # grillage de poutres : charge perpendiculaire au plan",
+        "OPTION SPATIALE  # structure et chargements dans l espace"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+/* Visualiseur de modele ST1 — l'apparence suit integralement le theme de
+   l'utilisateur : aucune couleur en dur, uniquement des variables VS Code. */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+  color: var(--vscode-foreground);
+  background: var(--vscode-editor-background);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+#toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--vscode-panel-border);
+  background: var(--vscode-editorWidget-background, var(--vscode-editor-background));
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.group.toggles {
+  gap: 10px;
+  color: var(--vscode-descriptionForeground);
+}
+
+.group.toggles label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+button {
+  padding: 3px 10px;
+  border: 1px solid var(--vscode-button-border, transparent);
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--vscode-button-secondaryForeground);
+  background: var(--vscode-button-secondaryBackground);
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--vscode-button-secondaryHoverBackground);
+}
+
+button.active {
+  color: var(--vscode-button-foreground);
+  background: var(--vscode-button-background);
+}
+
+button:focus-visible,
+input:focus-visible,
+canvas:focus-visible {
+  outline: 1px solid var(--vscode-focusBorder);
+  outline-offset: 1px;
+}
+
+select {
+  max-width: 220px;
+  padding: 2px 4px;
+  border: 1px solid var(--vscode-dropdown-border, transparent);
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--vscode-dropdown-foreground);
+  background: var(--vscode-dropdown-background);
+}
+
+#phaseGroup label {
+  color: var(--vscode-descriptionForeground);
+}
+
+#summary {
+  color: var(--vscode-descriptionForeground);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Anomalies du modele (barres sans noeud, inclusion non resolue…). */
+#summary .warn {
+  color: var(--vscode-editorWarning-foreground, var(--vscode-charts-orange));
+}
+
+#canvas {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  display: block;
+}
+
+#tooltip {
+  position: fixed;
+  z-index: 10;
+  max-width: 340px;
+  /* Infobulle multi-lignes : une ligne par information (CARA, materiau…). */
+  white-space: pre-line;
+  line-height: 1.45;
+  padding: 4px 8px;
+  border: 1px solid var(--vscode-editorHoverWidget-border);
+  border-radius: 3px;
+  color: var(--vscode-editorHoverWidget-foreground);
+  background: var(--vscode-editorHoverWidget-background);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  font-family: var(--vscode-editor-font-family);
+  font-size: 12px;
+  pointer-events: none;
+}
+
+#tooltip[hidden] {
+  display: none;
+}
+
+#hint {
+  padding: 4px 10px;
+  border-top: 1px solid var(--vscode-panel-border);
+  color: var(--vscode-descriptionForeground);
+  font-size: 11px;
+}
+
+@media (max-width: 620px) {
+  .group.toggles,
+  #hint {
+    display: none;
+  }
+}

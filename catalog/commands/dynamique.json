@@ -1,0 +1,2695 @@
+{
+  "commands": [
+    {
+      "name": "ACCELERATION",
+      "family": "dynamique",
+      "context": "bloc:SPECTRE",
+      "summary": "Introduit la definition point par point d un spectre generique par des lignes PERIODE.",
+      "syntax": [
+        "ACCELERATION",
+        "   PERIODE tj AX axj AY ayj (AZ azj)",
+        "   ..."
+      ],
+      "pages": [
+        202,
+        203
+      ],
+      "doc": "Ouvre la definition d'un spectre generique : les lignes `PERIODE` qui suivent donnent les couples (periode, accelerations). Le spectre interpole entre ces points et prend la valeur limite en dehors du domaine defini [p.203].",
+      "args": [
+        {
+          "name": "PERIODE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Ligne repetable : PERIODE tj AX axj AY ayj (AZ azj).",
+          "required": true
+        }
+      ],
+      "pitfalls": [
+        "Forme exclusive de `EUROCODE` et `EUROCODE REDUIT` dans un meme bloc `SPECTRE` (notation `< , >`).",
+        "Au-dela de la derniere periode saisie, l'acceleration est maintenue constante a la derniere valeur [p.203]."
+      ],
+      "examples": [
+        "SPECTRE 1\nPOND 9.81\nACCELERATION\nPERIODE 0     AX 0.1 AY 0.1 AZ 0.01\nPERIODE 0.5   AX 0.5 AY 0.5 AZ 0.2\nPERIODE 1     AX 0.1 AY 0.1 AZ 0.01\nPERIODE 2     AX 0.0 AY 0.0 AZ 0.00\nFIN"
+      ]
+    },
+    {
+      "name": "ACCELERATION",
+      "family": "dynamique",
+      "context": "bloc:ACCELEROGRAMME",
+      "summary": "Ouvre la liste des accelerations au sol, une ligne par pas de temps.",
+      "syntax": [
+        "(ACCELERATION",
+        "   AX axj AY ayj (AZ azj)",
+        "   ... )"
+      ],
+      "pages": [
+        207
+      ],
+      "requiresV2": true,
+      "doc": "Chaque ligne `AX axj AY ayj (AZ azj)` donne les accelerations au sol dans la direction des axes locaux horizontaux Ox, Oy et vertical Oz, pour un pas de temps successif de duree `pas_temps` [p.207].",
+      "args": [
+        {
+          "name": "AX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Acceleration au sol suivant l'axe local horizontal Ox, au pas de temps j.",
+          "required": true
+        },
+        {
+          "name": "AY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Acceleration au sol suivant l'axe local horizontal Oy, au pas de temps j.",
+          "required": true
+        },
+        {
+          "name": "AZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Acceleration au sol suivant l'axe local vertical Oz, au pas de temps j.",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        }
+      ],
+      "pitfalls": [
+        "Contrairement au bloc `SPECTRE`, il n'y a PAS de mot-cle `PERIODE` ici : chaque ligne correspond a un pas de temps successif, la duree etant donnee par `PAS_TEMPS`.",
+        "La duree totale de l'analyse est donc `nombre de lignes * pas_temps`."
+      ],
+      "examples": [
+        "ACCELEROGRAMME 10\nPAS_TEMPS 0.01\nPOND 9.81\nACCELERATION\nAX 0.1 AY 0.1 AZ 0.01\nAX 0.5 AY 0.5 AZ 0.2\nAX 0.1 AY 0.1 AZ 0.01\nFIN"
+      ]
+    },
+    {
+      "name": "ACCELEROGRAMME",
+      "family": "dynamique",
+      "context": "top",
+      "summary": "Definit un historique d acceleration au sol pour une analyse temporelle lineaire elastique (ST1 v2).",
+      "syntax": [
+        "ACCELEROGRAMME j",
+        "   ( < EFFORT <N,TY,TZ,MX,MY,MZ>,",
+        "       DEPLA <DX,DY,DZ,RX,RY,RZ>,",
+        "       CONTR <VY,VZ,WY,WZ,VYVZ,VYWZ,WYVZ,WYWZ>,",
+        "       CONTRG ic,",
+        "       PRESS <PX,PY,PZ,MX> > )",
+        "   (REAC <FX,FY,FZ,MX,MY,MZ>)",
+        "   (METHODE < (1), 2, 3 (ALPHA alpha) >)",
+        "   (PAS_TEMPS pas_temps)",
+        "   (POND pond)",
+        "   (BETA beta)",
+        "   (ACCELERATION",
+        "      AX axj AY ayj (AZ azj)",
+        "      ... )",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "pages": [
+        207,
+        208
+      ],
+      "requiresV2": true,
+      "exec": "EXEC HISTORIQUE",
+      "doc": "**Role** : definir l'accelerogramme numero `j`, c'est-a-dire l'historique d'acceleration au sol qui alimente une analyse temporelle lineaire elastique [p.207].\n\n**Historique** : sous `ACCELERATION`, chaque ligne `AX axj AY ayj (AZ azj)` correspond a un pas de temps successif, de duree `pas_temps`.\n\n**Methodes d'integration temporelle** [p.207] :\n- `METHODE 1` : Newmark a acceleration moyenne — methode par defaut, generalement recommandee ;\n- `METHODE 2` : Newmark a acceleration lineaire ;\n- `METHODE 3 (ALPHA alpha)` : HHT-alpha (P. Paultre), amortissement numerique ; `alpha` compris entre 0 et -0.3 ; pour alpha = 0 la methode degenere en Newmark a acceleration moyenne.\n\n**Concomitance** : les lignes optionnelles `EFFORT / DEPLA / CONTR / CONTRG / PRESS` et `REAC` definissent une composante privilegiee. Une concomitance peut ainsi etre definie pour un historique ; elle servira pour le calcul d'enveloppe [p.207, p.235-236].",
+      "args": [
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de l'accelerogramme.",
+          "required": true
+        },
+        {
+          "name": "EFFORT",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante d'effort privilegiee pour la concomitance de l'historique. Exclusive de DEPLA, CONTR, CONTRG, PRESS.",
+          "required": false,
+          "values": [
+            "N",
+            "TY",
+            "TZ",
+            "MX",
+            "MY",
+            "MZ"
+          ]
+        },
+        {
+          "name": "DEPLA",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante de deplacement privilegiee. Exclusive de EFFORT, CONTR, CONTRG, PRESS.",
+          "required": false,
+          "values": [
+            "DX",
+            "DY",
+            "DZ",
+            "RX",
+            "RY",
+            "RZ"
+          ]
+        },
+        {
+          "name": "CONTR",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante de contrainte privilegiee. Exclusive de EFFORT, DEPLA, CONTRG, PRESS.",
+          "required": false,
+          "values": [
+            "VY",
+            "VZ",
+            "WY",
+            "WZ",
+            "VYVZ",
+            "VYWZ",
+            "WYVZ",
+            "WYWZ"
+          ]
+        },
+        {
+          "name": "CONTRG",
+          "kind": "subcommand",
+          "type": "int",
+          "doc": "Numero ic d'une contrainte generalisee privilegiee. Exclusive de EFFORT, DEPLA, CONTR, PRESS.",
+          "required": false
+        },
+        {
+          "name": "PRESS",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante de pression privilegiee (poutres sur sol elastique). Exclusive de EFFORT, DEPLA, CONTR, CONTRG.",
+          "required": false,
+          "values": [
+            "PX",
+            "PY",
+            "PZ",
+            "MX"
+          ]
+        },
+        {
+          "name": "REAC",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante de reaction d'appui privilegiee.",
+          "required": false,
+          "values": [
+            "FX",
+            "FY",
+            "FZ",
+            "MX",
+            "MY",
+            "MZ"
+          ]
+        },
+        {
+          "name": "METHODE",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Methode d'integration temporelle : 1 = Newmark acceleration moyenne (defaut) ; 2 = Newmark acceleration lineaire ; 3 = HHT-alpha.",
+          "required": false,
+          "values": [
+            "1",
+            "2",
+            "3"
+          ],
+          "default": "1"
+        },
+        {
+          "name": "ALPHA",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient de la methode 3 (HHT-alpha). Valeur comprise entre 0 et -0.3.",
+          "required": false,
+          "default": "0",
+          "min": -0.3,
+          "max": 0
+        },
+        {
+          "name": "PAS_TEMPS",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Pas de temps de l'accelerogramme, en seconde.",
+          "required": false,
+          "unit": "seconde"
+        },
+        {
+          "name": "POND",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Ponderation a appliquer aux accelerations ax, ay et az.",
+          "required": false,
+          "default": "1"
+        },
+        {
+          "name": "BETA",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Angle dans le plan horizontal de l'axe local Ox de l'acceleration au sol par rapport a la direction Ox du repere global. Uniquement en option spatiale.",
+          "required": false,
+          "unit": "radian",
+          "default": "0",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "ACCELERATION",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Ouvre la liste des accelerations au sol : une ligne AX axj AY ayj (AZ azj) par pas de temps.",
+          "required": false
+        }
+      ],
+      "prerequisites": [
+        "ST1 v2",
+        "Masses dynamiques definies aux noeuds (MASSE PROPRE) [p.208]",
+        "Un amortissement doit etre defini dans les barres avant EXEC HISTORIQUE [p.208]",
+        "ETUDE EFFORT DEPLA sur toutes les barres en debut et fin est necessaire pour la visualisation graphique [p.208]"
+      ],
+      "pitfalls": [
+        "Le pas de temps doit etre suffisamment petit ; le manuel relie sa duree a la periode propre la plus courte a prendre en compte, mais sa formulation est ambigue : « en general, il faut un pas de temps dont la duree soit inferieure 40 fois la periode propre la plus courte a prendre en compte du modele etudiee » [p.208]. Ne pas en deduire une regle numerique T/40 presentee comme documentee.",
+        "Il n'y a **pas d'analyse temporelle des sections d'etude** : seuls les noeuds et les extremites de barres sont exploitables [p.208].",
+        "`ALPHA` n'a de sens qu'avec `METHODE 3` et doit rester entre 0 et -0.3 (valeur NEGATIVE ou nulle) [p.207].",
+        "Une seule composante privilegiee peut etre choisie parmi EFFORT / DEPLA / CONTR / CONTRG / PRESS (notation `< , >`) ; `REAC` s'ajoute independamment.",
+        "Reserve a ST1 v2."
+      ],
+      "examples": [
+        "# Accelerogramme : 3 pas de temps de 0.01 s, accelerations en g ponderees par 9.81\nACCELEROGRAMME 10\nPAS_TEMPS 0.01\nPOND 9.81\nACCELERATION\nAX 0.1 AY 0.1 AZ 0.01\nAX 0.5 AY 0.5 AZ 0.2\nAX 0.1 AY 0.1 AZ 0.01\nFIN",
+        "# Historique spatial avec concomitance sur une contrainte generalisee\nCONTRG 10\n20,21 N 1 MY 1\nFIN\nACCELEROGRAMME 100\nCONTRG 10\nMETHODE 1\nPAS_TEMPS 0.01\nPOND 1\nACCELERATION\nAX -18 AY -18.0 AZ -18.0\nAX 0.0 AY 0.0  AZ 0\nFIN\nETUDE EFFORT DEPLA\nTOUT SE 0 A 1 PAS 1 REL\nEXEC HISTORIQUE 100"
+      ]
+    },
+    {
+      "name": "AMORTISSEMENT",
+      "family": "dynamique",
+      "context": "top",
+      "summary": "Definit un type d amortissement (Rayleigh, modal ou energetique) affecte ensuite aux barres par CONS ou MAT.",
+      "syntax": [
+        "AMORTISSEMENT i",
+        "   < AUTOMATIQUE MASSE alpha RIGIDITE beta,",
+        "     MODE j KSI ksij",
+        "     ... ,",
+        "     ENERGIE KSI ksij >",
+        "   (POND pond)",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "pages": [
+        200,
+        201
+      ],
+      "doc": "**Role** : definir un jeu d'amortissement numerote `i`, ensuite affecte aux barres via `CONS ... AMORTISSEMENT am` ou `MAT ... AMORTISSEMENT am` (ou `am` = `i`) [p.200, p.72-74].\n\n**Trois types d'amortissement** [p.200] :\n1. **Rayleigh** (`AUTOMATIQUE MASSE alpha RIGIDITE beta`) : matrice d'amortissement proportionnelle a la masse et a la rigidite.\n   `[C] = pond*(alpha*[M] + beta*[K])`\n   Fraction d'amortissement du mode n de pulsation wn : `ksin = pond*(alpha/(2*wn) + beta*wn/2)`.\n2. **Modal** (`MODE j KSI ksij`, repetable) : un coefficient d'amortissement par mode.\n3. **Energetique** (`ENERGIE KSI ksij`) : amortissement modal moyen calcule a partir des coefficients de chaque materiau et de l'energie de deformation des elements sous l'effet de chaque mode (EN 1998-2 §4.1.3).\n\nQuel que soit le type choisi, **ST1 se ramene dans tous les cas a un amortissement modal** [p.201].\n\n**Resultats** : les valeurs mode par mode ne sont obtenues qu'apres execution d'une analyse spectrale ou temporelle, et s'editent par `LISTER AMORTISSEMENT` [p.201, p.245].",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de l'amortissement. C'est ce numero que l'on reporte dans CONS/MAT via le mot-cle AMORTISSEMENT.",
+          "required": true
+        },
+        {
+          "name": "AUTOMATIQUE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Amortissement de Rayleigh : AUTOMATIQUE MASSE alpha RIGIDITE beta.",
+          "required": false
+        },
+        {
+          "name": "MODE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Amortissement modal : MODE j KSI ksij, ligne repetable ; j est une liste de numeros de modes ou TOUT.",
+          "required": false
+        },
+        {
+          "name": "ENERGIE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Amortissement modal moyen par calcul de l'energie de deformation : ENERGIE KSI ksij.",
+          "required": false
+        },
+        {
+          "name": "POND",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Ponderation appliquee sur les coefficients ksij ou sur alpha et beta.",
+          "required": false
+        }
+      ],
+      "prerequisites": [
+        "Doit etre situe AVANT la commande EXEC SPECTRE (REPONSE) ou EXEC HISTORIQUE [p.200]",
+        "L'affectation aux barres se fait par CONS ou MAT (mot-cle AMORTISSEMENT am) [p.200, p.72-74]"
+      ],
+      "forbidden": [
+        "Pour l'analyse spectrale et temporelle, si aucun amortissement par calcul energetique n'est precise, un SEUL type d'amortissement doit etre defini pour toutes les barres du modele [p.201]."
+      ],
+      "pitfalls": [
+        "**`CONS`/`MAT AMORTISSEMENT am` attend le NUMERO d'un bloc `AMORTISSEMENT`, pas un coefficient** [p.72, p.200] : saisir directement une valeur d'amortissement donne un amortissement nul, sans message d'erreur (retour d'experience support, non documente comme tel).",
+        "La commande `AMORTISSEMENT` placee APRES `EXEC SPECTRE REPONSE` ou `EXEC HISTORIQUE` n'est pas prise en compte : elle doit preceder l'execution [p.200].",
+        "Un amortissement est obligatoire pour la recombinaison `CQC` [p.205], pour l'analyse temporelle (`EXEC HISTORIQUE`) [p.208, p.210] et imperatif pour la charge forcee sous peine de resonance [p.213].",
+        "Melanger plusieurs types d'amortissement sur les barres du modele n'est admis que via le calcul energetique [p.201].",
+        "Dans les exemples du manuel, `KSI` est saisi en pourcentage apparent (`KSI 5`) et ramene en fraction par `POND 0.01` : verifier la coherence KSI / POND [p.201]."
+      ],
+      "examples": [
+        "# Amortissement de Rayleigh\nAMORTISSEMENT 1\nAUTOMATIQUE MASSE 0.1 RIGIDITE 0.01\nFIN",
+        "# Amortissement par mode\nAMORTISSEMENT 2\nMODE TOUT KSI 5\nMODE 2 a 3 KSI 3\nPOND 0.01\nFIN",
+        "# Amortissement par calcul energetique de deformation (EN1998-2)\nAMORTISSEMENT 3\nENERGIE KSI 2\nPOND 0.01\nFIN",
+        "# Affectation aux barres : am est le NUMERO du bloc AMORTISSEMENT\nCONS 20 E 1 RO 1400/264000*10 G_DYN 10 AMORTISSEMENT 10"
+      ]
+    },
+    {
+      "name": "AUTOMATIQUE",
+      "family": "dynamique",
+      "context": "bloc:AMORTISSEMENT",
+      "summary": "Sous-commande d amortissement de Rayleigh proportionnel a la masse et a la rigidite.",
+      "syntax": [
+        "AUTOMATIQUE MASSE alpha RIGIDITE beta"
+      ],
+      "pages": [
+        200,
+        201
+      ],
+      "doc": "Definit l'amortissement de Rayleigh : `[C] = pond*(alpha*[M] + beta*[K])`.\n\nLa fraction d'amortissement du mode n de pulsation `wn` vaut alors `ksin = pond*(alpha/(2*wn) + beta*wn/2)` [p.200].",
+      "args": [
+        {
+          "name": "MASSE",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient alpha affecte a la matrice de masse M.",
+          "required": true
+        },
+        {
+          "name": "RIGIDITE",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient beta affecte a la matrice de rigidite K.",
+          "required": true
+        }
+      ],
+      "pitfalls": [
+        "Ne pas confondre le mot-cle `RIGIDITE` (coefficient beta de Rayleigh) avec une rigidite physique de barre.",
+        "`MASSE` ici est un mot-cle de ponderation, sans rapport avec la commande `MASSE PROPRE`."
+      ],
+      "examples": [
+        "AMORTISSEMENT 1\nAUTOMATIQUE MASSE 0.1 RIGIDITE 0.01\nFIN",
+        "AMORTISSEMENT 10\nAUTOMATIQUE MASSE 1.3 RIGIDITE 0.001\nPOND 1\nFIN"
+      ]
+    },
+    {
+      "name": "BARRE",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CHARGE",
+      "summary": "Densites lineiques de charge forcee appliquees a une liste de barres.",
+      "syntax": [
+        "BARRE lstb (FX fx) (FY fy) (FZ fz) (MX mx) (MY my) (MZ mz) (GLO,LOC)",
+        "..."
+      ],
+      "pages": [
+        211,
+        212
+      ],
+      "requiresV2": true,
+      "doc": "Applique sur la liste de barres `lstb` des densites lineiques de charge (force ou couple) par direction, **dans le repere global par defaut** [p.212]. Ligne repetable.\n\nLa densite de charge massique doit etre definie en **unite de poids = masse * g, ramenee au ml**. Le poids est redistribue aux noeuds de la barre pour le calcul dynamique [p.212].\n\nLa charge est ensuite ponderee par le signe de la deformee du mode `nm` et par la pulsation sinusoidale [p.211].",
+      "args": [
+        {
+          "name": "lstb",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des barres ou s'appliquent les actions. Liste ST1 (`1 a 10`, `1,2,5 a 9`) ou TOUT.",
+          "required": true
+        },
+        {
+          "name": "FX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Densite lineique de force suivant X.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "FY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Densite lineique de force suivant Y.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "FZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Densite lineique de force suivant Z.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Densite lineique de couple autour de X.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Densite lineique de couple autour de Y.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Densite lineique de couple autour de Z.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "GLO",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Repere d'application des densites : GLO (global, defaut) ou LOC (local).",
+          "required": false,
+          "values": [
+            "GLO",
+            "LOC"
+          ],
+          "default": "GLO"
+        }
+      ],
+      "pitfalls": [
+        "Densite en unite de **poids** (masse * g) par ml, pas en masse [p.212].",
+        "Repere **global par defaut** : preciser `LOC` si l'on veut le repere local [p.212].",
+        "Les composantes disponibles dependent de l'option de structure (PLANE : FX FY MZ ; GRILL : FZ MX MY ; SPATIALE : les six) [p.43-44]."
+      ],
+      "examples": [
+        "DYNAMIQUE CHARGE 100\nPAS_TEMPS 0.05\nTEMPS 500\nMODE 1\nBARRE 1 a 10 FY +10\nFIN",
+        "DYNAMIQUE CHARGE 300\nPAS_TEMPS 0.02\nTEMPS 200\nMODE 2\nBARRE 1 a 20 FZ -0.7 GLO\nBARRE 21 a 30 FZ -0.4 GLO\nFIN"
+      ]
+    },
+    {
+      "name": "BETA",
+      "family": "dynamique",
+      "context": "bloc:SPECTRE",
+      "summary": "Angle en radian du repere local du spectre par rapport au repere global, en option spatiale.",
+      "syntax": [
+        "(BETA beta)"
+      ],
+      "pages": [
+        202
+      ],
+      "restrictedToOptions": [
+        "SPATIALE"
+      ],
+      "doc": "Angle, en radian, dans le plan horizontal, de l'axe local Ox du spectre par rapport a la direction Ox du repere global. **Uniquement en option spatiale.** Par defaut `beta` = 0 [p.202].",
+      "args": [
+        {
+          "name": "beta",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Angle dans le plan horizontal de l'axe local Ox par rapport a Ox global.",
+          "required": true,
+          "unit": "radian",
+          "default": "0",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        }
+      ],
+      "pitfalls": [
+        "**Ne pas confondre avec le `BETA beta0`** de la ligne `EUROCODE REDUIT`, qui est la limite inferieure du spectre de calcul Sd (defaut 0,2) [p.204].",
+        "Angle en RADIAN, comme tous les angles de ST1 [p.30]."
+      ],
+      "examples": [
+        "SPECTRE 1\nBETA 0.1\nPOND 9.81\nACCELERATION\nPERIODE 0   AX 0.1 AY 0.1 AZ 0.01\nFIN"
+      ]
+    },
+    {
+      "name": "BETA",
+      "family": "dynamique",
+      "context": "bloc:ACCELEROGRAMME",
+      "summary": "Angle en radian de la direction de l acceleration au sol par rapport au repere global, en option spatiale.",
+      "syntax": [
+        "(BETA beta)"
+      ],
+      "pages": [
+        207
+      ],
+      "requiresV2": true,
+      "restrictedToOptions": [
+        "SPATIALE"
+      ],
+      "doc": "Angle, en radian, dans le plan horizontal, de l'axe local Ox de l'acceleration au sol par rapport a la direction Ox du repere global. **Uniquement en option spatiale.** Par defaut `beta` = 0 [p.207].",
+      "args": [
+        {
+          "name": "beta",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Angle dans le plan horizontal de l'axe local Ox de l'acceleration au sol.",
+          "required": true,
+          "unit": "radian",
+          "default": "0",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        }
+      ],
+      "pitfalls": [
+        "Angle en RADIAN [p.30]."
+      ],
+      "examples": [
+        "ACCELEROGRAMME 10\nBETA 0\nPAS_TEMPS 0.01\nACCELERATION\nAX 0.1 AY 0.1 AZ 0.01\nFIN"
+      ]
+    },
+    {
+      "name": "CARA SPECIAL",
+      "family": "dynamique",
+      "context": "top",
+      "summary": "Definit un element special : barre RDM assortie de seuils limites par composante d effort (ST1 v2).",
+      "syntax": [
+        "CARA SPECIAL j",
+        "   RIGIDITE CARA",
+        "   sx sy (sz ix iy) iz (ip)",
+        "   EFFORT",
+        "   fx fy (fz mx my) mz",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "pages": [
+        386
+      ],
+      "requiresV2": true,
+      "doc": "**ATTENTION - commande non attestee dans le manuel v24** : ni `CARA SPECIAL` ni `RIGIDITE CARA` n'apparaissent dans le texte du manuel, et la page imprimee 214 est blanche. Seule reference du manuel : l'annexe B4.4 - ELEMENTS SPECIAUX [p.386], qui donne la methode de resolution mais aucune syntaxe de commande. La syntaxe ci-dessous provient uniquement du memo distille (st1_reference.md).\n\n**Role** : definir l'element special numero `j`, c'est-a-dire une barre RDM assortie de **seuils limites par composante d'effort**. Une composante de seuil laissee a 0 reste elastique ; sinon la composante est limitee a la valeur donnee (memo, non documente).\n\n**Numerotation** : l'element special porte un numero propre, distinct de celui des barres. Il doit etre associe a un materiau (`CONS`) (memo, non documente).\n\n**Ordre des valeurs selon l'option de structure** (memo, non documente) :\n- option PLANE : `sx sy iz` puis `fx fy mz` ;\n- option SPATIALE : `sx sy sz ix iy iz ip` puis `fx fy fz mx my mz`.\n\nLa methode de resolution incrementale pour l'analyse non lineaire correspondante est decrite en annexe B4.4 (prise en compte de l'effort normal limite, de l'effort de torsion limite et des moments limites, a partir des souplesses S1, S4, S5, S6) [p.386-387].",
+      "args": [
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de l'element special (numerotation propre, distincte de celle des barres).",
+          "required": true
+        },
+        {
+          "name": "RIGIDITE CARA",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Introduit la ligne de caracteristiques mecaniques : sx sy (sz ix iy) iz (ip).",
+          "required": true
+        },
+        {
+          "name": "EFFORT",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Introduit la ligne de seuils limites d'effort : fx fy (fz mx my) mz.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "ST1 v2",
+        "Association a un materiau via CONS (memo distille, non documente dans le manuel v24)"
+      ],
+      "pitfalls": [
+        "**Commande non attestee dans le manuel v24** : aucune occurrence de `CARA SPECIAL` ni de `RIGIDITE CARA` dans le texte, et la page imprimee 214 est blanche. Seule reference du manuel : annexe B4.4 - ELEMENTS SPECIAUX [p.386], sans syntaxe. Tout ce qui suit provient du memo distille.",
+        "Une composante de seuil laissee a **0 reste elastique** (non limitee) : ce n'est pas un seuil nul (memo, non documente).",
+        "Le numero `j` est propre aux elements speciaux et **ne doit pas etre confondu avec un numero de barre** (memo, non documente).",
+        "Le nombre de valeurs sur chaque ligne depend de l'option de structure (PLANE : 3 valeurs ; SPATIALE : 7 pour les rigidites et 6 pour les efforts) (memo, non documente).",
+        "Element non lineaire : comme pour `DECOL` ou les sols plastiques, introduire la non-linearite progressivement, apres avoir verifie le modele elastique (retour d'experience support).",
+        "Provenance : la SYNTAXE de cette commande n'est pas attestee dans le manuel ST1 v24 (recherche plein texte : « CARA SPECIAL » et « RIGIDITE CARA », zero occurrence ; la page 214 est blanche). Seule l'annexe B4.4 « Elements speciaux » documente la methode de resolution, sans en donner la syntaxe. A confirmer aupres de l'editeur avant usage."
+      ],
+      "examples": [
+        "# Element special en option plane : seuils sur N, TY et MZ\nCARA SPECIAL 1\nRIGIDITE CARA\n0.5 0.4 0.02\nEFFORT\n1500 0 800\nFIN"
+      ]
+    },
+    {
+      "name": "COEF",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CHARGE",
+      "summary": "Liste des coefficients des harmoniques de la sollicitation sinusoidale.",
+      "syntax": [
+        "(COEF lstcoef)"
+      ],
+      "pages": [
+        211,
+        212
+      ],
+      "requiresV2": true,
+      "doc": "Liste des coefficients `coeff1, coeff2, ...` (sans dimension) de la ponderation temporelle generale :\n`coeff1*sin(w0*t+phi1) + coeff2*sin(w0*t+phi2) + ...`\nPar defaut `lstcoef` vaut `coeff1 = 1` [p.211-212].",
+      "args": [
+        {
+          "name": "lstcoef",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de coefficients coeff1, coeff2, ...",
+          "required": true,
+          "default": "coeff1 = 1"
+        }
+      ],
+      "pitfalls": [
+        "`COEF` et `PHI` doivent etre coherents en nombre de termes [p.211]."
+      ],
+      "examples": [
+        "DYNAMIQUE CHARGE 200\nPAS_TEMPS 0.02\nTEMPS 300\nMODE 3\nCOEF 1,0.25\nPHI 0,1.5708\nBARRE 1 a 20 FZ -0.7\nFIN"
+      ]
+    },
+    {
+      "name": "CONVOI",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CONVOI",
+      "summary": "Designe le numero du convoi a faire circuler dans l analyse dynamique.",
+      "syntax": [
+        "CONVOI numc"
+      ],
+      "pages": [
+        209,
+        210
+      ],
+      "requiresV2": true,
+      "doc": "Numero `numc` du convoi, defini par ailleurs avec la commande `CONV` [p.209].\n\nSeuls certains parametres du convoi sont pris en compte : un seul camion centre sur les barres du tablier ; les impacts longitudinaux et les coefficients directeurs sont pris en compte, les positions transversales ne le sont pas [p.210].",
+      "args": [
+        {
+          "name": "numc",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de convoi (defini par la commande CONV).",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "Commande CONV numc definie au prealable"
+      ],
+      "pitfalls": [
+        "Le camion doit etre defini en unite de FORCE, pas de masse [p.210]."
+      ],
+      "examples": [
+        "DYNAMIQUE CONVOI 100\nCONVOI 12\nPAS_TEMPS 0.05\nVITESSE 1\nTEMPS 30\nFIN"
+      ]
+    },
+    {
+      "name": "CQC",
+      "family": "dynamique",
+      "context": "bloc:SPECTRE REPONSE",
+      "summary": "Recombinaison quadratique complete des modes ; impose un amortissement defini dans les barres.",
+      "syntax": [
+        "CQC"
+      ],
+      "pages": [
+        205
+      ],
+      "doc": "Combinaison quadratique complete (CQC) des effets modaux. **La commande `CQC` impose la definition prealable d'un amortissement dans les barres** [p.205]. Exclusif de `LIN` et `SRSS`.",
+      "prerequisites": [
+        "Bloc AMORTISSEMENT defini et affecte aux barres via CONS/MAT [p.200, p.205]"
+      ],
+      "pitfalls": [
+        "Si l'amortissement est nul (commande `AMORTISSEMENT` non definie, par exemple), la combinaison CQC degenere en combinaison SRSS [p.245].",
+        "Rappel : `CONS/MAT AMORTISSEMENT am` attend le NUMERO d'un bloc `AMORTISSEMENT` ; une valeur directe donne un amortissement nul sans message (retour d'experience support, non documente)."
+      ],
+      "examples": [
+        "AMORTISSEMENT 1\nAUTOMATIQUE MASSE 0.1 RIGIDITE 0.01\nFIN\nCONS TOUT E 1E6 RO 25 G_DYN 9.81 AMORTISSEMENT 1\nSPECTRE 10 REPONSE\nSPECTRE 1\nCQC\nPOND X 1\nFIN"
+      ]
+    },
+    {
+      "name": "DYNAMIQUE CHARGE",
+      "family": "dynamique",
+      "context": "top",
+      "summary": "Definit une charge forcee sinusoidale calee sur un mode propre, pour l analyse dynamique des passerelles (ST1 v2).",
+      "syntax": [
+        "DYNAMIQUE CHARGE j",
+        "   ( < EFFORT <N,TY,TZ,MX,MY,MZ>,",
+        "       DEPLA <DX,DY,DZ,RX,RY,RZ>,",
+        "       CONTR <VY,VZ,WY,WZ,VYVZ,VYWZ,WYVZ,WYWZ>,",
+        "       CONTRG ic,",
+        "       PRESS <PX,PY,PZ,MX> > )",
+        "   (REAC <FX,FY,FZ,MX,MY,MZ>)",
+        "   (METHODE < (1), 2, 3 (ALPHA alpha) >)",
+        "   PAS_TEMPS pas_temps",
+        "   TEMPS temps",
+        "   MODE nm",
+        "   (FREQUENCE f0)",
+        "   (PHI lstphi)",
+        "   (COEF lstcoef)",
+        "   BARRE lstb (FX fx) (FY fy) (FZ fz) (MX mx) (MY my) (MZ mz) (GLO,LOC)",
+        "   ...",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "pages": [
+        211,
+        212,
+        213
+      ],
+      "requiresV2": true,
+      "exec": "EXEC HISTORIQUE CHARGE",
+      "doc": "**Role** : solliciter la structure par un chargement de poids lineique uniforme defini par l'utilisateur. Application typique : dynamique des passerelles [p.211].\n\n**Ponderation spatiale** : le poids est pondere par le **signe de la deformee du mode selectionne** `nm`, selon la composante choisie (direction de l'action) [p.211].\n\n**Ponderation temporelle** : la charge est ponderee par une pulsation sinusoidale `sin(w0*t)` dans le cas par defaut, et dans le cas general par\n`coeff1*sin(w0*t+phi1) + coeff2*sin(w0*t+phi2) + ...` [p.211].\n- Si aucune frequence `f0` n'est specifiee, `w0` est la pulsation du mode selectionne `nm`.\n- Si `FREQUENCE f0` est specifiee, `w0 = 2*pi*f0`.\n\n**Unites** : la densite de charge massique doit etre definie en **unite de poids = masse * g, ramenee au ml**. Le poids est redistribue aux noeuds de la barre pour le calcul dynamique [p.212].\n\n**Repere** : `fx, fy, fz, mx, my, mz` sont des densites lineiques de charge (force ou couple) appliquees sur `lstb` **dans le repere global par defaut** ; `LOC` bascule en repere local [p.212].",
+      "args": [
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de charge forcee.",
+          "required": true
+        },
+        {
+          "name": "EFFORT",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante d'effort privilegiee pour la concomitance. Exclusive de DEPLA, CONTR, CONTRG, PRESS.",
+          "required": false,
+          "values": [
+            "N",
+            "TY",
+            "TZ",
+            "MX",
+            "MY",
+            "MZ"
+          ]
+        },
+        {
+          "name": "DEPLA",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante de deplacement privilegiee.",
+          "required": false,
+          "values": [
+            "DX",
+            "DY",
+            "DZ",
+            "RX",
+            "RY",
+            "RZ"
+          ]
+        },
+        {
+          "name": "CONTR",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante de contrainte privilegiee.",
+          "required": false,
+          "values": [
+            "VY",
+            "VZ",
+            "WY",
+            "WZ",
+            "VYVZ",
+            "VYWZ",
+            "WYVZ",
+            "WYWZ"
+          ]
+        },
+        {
+          "name": "CONTRG",
+          "kind": "subcommand",
+          "type": "int",
+          "doc": "Numero ic d'une contrainte generalisee privilegiee.",
+          "required": false
+        },
+        {
+          "name": "PRESS",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante de pression privilegiee.",
+          "required": false,
+          "values": [
+            "PX",
+            "PY",
+            "PZ",
+            "MX"
+          ]
+        },
+        {
+          "name": "REAC",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante de reaction d'appui privilegiee.",
+          "required": false,
+          "values": [
+            "FX",
+            "FY",
+            "FZ",
+            "MX",
+            "MY",
+            "MZ"
+          ]
+        },
+        {
+          "name": "METHODE",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Methode d'integration temporelle : 1 (defaut), 2 ou 3 (ALPHA alpha).",
+          "required": false,
+          "values": [
+            "1",
+            "2",
+            "3"
+          ],
+          "default": "1"
+        },
+        {
+          "name": "PAS_TEMPS",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Pas de temps de l'analyse dynamique.",
+          "required": true,
+          "unit": "seconde"
+        },
+        {
+          "name": "TEMPS",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Temps d'analyse.",
+          "required": true,
+          "unit": "seconde"
+        },
+        {
+          "name": "MODE",
+          "kind": "subcommand",
+          "type": "int",
+          "doc": "Numero du mode propre impose : sa deformee donne le signe de la charge et, sauf FREQUENCE, sa pulsation w0.",
+          "required": true
+        },
+        {
+          "name": "FREQUENCE",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Frequence de pulsation imposee. Si elle est donnee, w0 = 2*pi*f0 au lieu de la pulsation du mode nm.",
+          "required": false,
+          "unit": "Hz"
+        },
+        {
+          "name": "PHI",
+          "kind": "subcommand",
+          "type": "list",
+          "doc": "Liste de dephasages phi1, phi2, ... en radian. Par defaut lstphi vaut phi1 = 0.",
+          "required": false,
+          "unit": "radian",
+          "default": "phi1 = 0"
+        },
+        {
+          "name": "COEF",
+          "kind": "subcommand",
+          "type": "list",
+          "doc": "Liste de coefficients coeff1, coeff2, ... sans dimension. Par defaut lstcoef vaut coeff1 = 1.",
+          "required": false,
+          "default": "coeff1 = 1"
+        },
+        {
+          "name": "BARRE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "BARRE lstb (FX fx) ... (MZ mz) (GLO,LOC) : densites lineiques de charge sur la liste de barres lstb. Ligne repetable.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "ST1 v2",
+        "Masses dynamiques definies aux noeuds [p.213]",
+        "EXEC MODE realise avec un nombre de modes suffisant, c'est-a-dire allant jusqu'au numero du mode demande pour la charge forcee [p.213]",
+        "Un amortissement de la structure pour TOUTES les barres doit etre defini [p.213]",
+        "ETUDE EFFORT DEPLA sur toutes les barres en debut et fin pour la visualisation graphique [p.213]"
+      ],
+      "pitfalls": [
+        "**Un amortissement est obligatoire** : sans amortissement numerique, la structure risque d'entrer en resonance [p.213].",
+        "Le calcul de modes propres doit aller **jusqu'au numero du mode demande** `nm`, sinon la charge forcee ne peut pas etre calee [p.213].",
+        "La densite de charge est en unite de **poids** (masse * g) ramenee au **ml**, pas en masse [p.212].",
+        "Sans `(GLO,LOC)`, les charges sont dans le repere **global** [p.212].",
+        "`PAS_TEMPS`, `TEMPS`, `MODE` et au moins une ligne `BARRE` sont obligatoires (non parentheses dans la syntaxe) [p.211].",
+        "**Accelerations transverses parasites (retour d'experience support, non documente).** Une composante `ADY` non nulle sous excitation verticale n'est pas un bug : (1) les noeuds hors plan de symetrie repondent en miroir (`ADX ADZ ARY` egaux, `ADY ARX ARZ` opposes, nuls sur le plan de symetrie) ; (2) les modes quasi verticaux gardent une faible composante horizontale Y ; (3) le depart au repos genere un regime transitoire ou le mode vise n'est pas seul excite. Rappel documente : la charge est ponderee par le signe de la deformee du mode et par sin(w0*t) [p.211], et l'amortissement est obligatoire [p.213].",
+        "Reserve a ST1 v2."
+      ],
+      "examples": [
+        "# Structure 2 travees : charge forcee calee sur le mode 1\nDYNAMIQUE CHARGE 100\nPAS_TEMPS 0.05\nTEMPS 500\nMODE 1\nBARRE 1 a 10 FY +10\nFIN\nEXEC HISTORIQUE CHARGE 100",
+        "# Charge forcee a frequence imposee, avec dephasages et coefficients\nDYNAMIQUE CHARGE 200\nMETHODE 1\nPAS_TEMPS 0.02\nTEMPS 300\nMODE 3\nFREQUENCE 2.0\nPHI 0,1.5708\nCOEF 1,0.25\nBARRE 1 a 20 FZ -0.7 GLO\nFIN"
+      ]
+    },
+    {
+      "name": "DYNAMIQUE CONVOI",
+      "family": "dynamique",
+      "context": "top",
+      "summary": "Definit les parametres d une analyse temporelle du passage d un convoi sur le tablier (ST1 v2).",
+      "syntax": [
+        "DYNAMIQUE CONVOI j",
+        "   ( < EFFORT <N,TY,TZ,MX,MY,MZ>,",
+        "       DEPLA <DX,DY,DZ,RX,RY,RZ>,",
+        "       CONTR <VY,VZ,WY,WZ,VYVZ,VYWZ,WYVZ,WYWZ>,",
+        "       CONTRG ic,",
+        "       PRESS <PX,PY,PZ,MX> > )",
+        "   (REAC <FX,FY,FZ,MX,MY,MZ>)",
+        "   (METHODE < (1), 2, 3 (ALPHA alpha) >)",
+        "   CONVOI numc",
+        "   PAS_TEMPS pas_temps",
+        "   VITESSE vitesse",
+        "   TEMPS temps",
+        "   (POND pond)",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "pages": [
+        209,
+        210
+      ],
+      "requiresV2": true,
+      "exec": "EXEC HISTORIQUE CONVOI",
+      "doc": "**Role** : definir l'analyse dynamique numero `j` correspondant au passage du convoi `numc` a la vitesse `vitesse` sur les barres du tablier, pendant la duree `temps` [p.209].\n\n**Restrictions sur le convoi** [p.210] : le convoi doit avoir ete defini par ailleurs (`CONV`), mais seuls certains parametres sont pris en compte :\n- **un seul camion, centre sur les barres du tablier** ;\n- les zones transversales du tablier et les positions transversales des roues **ne sont pas prises en consideration** ;\n- en revanche les dimensions des impacts longitudinaux et les coefficients directeurs du convoi **le sont** ;\n- le camion doit etre defini en **unite de force** (cas general) et **non de masse**.\n\n**Methodes d'integration temporelle** : identiques a celles de `ACCELEROGRAMME` (1 = Newmark acceleration moyenne par defaut ; 2 = Newmark acceleration lineaire ; 3 = HHT-alpha avec `ALPHA` entre 0 et -0.3) [p.210].",
+      "args": [
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero d'analyse dynamique de convoi.",
+          "required": true
+        },
+        {
+          "name": "EFFORT",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante d'effort privilegiee pour la concomitance. Exclusive de DEPLA, CONTR, CONTRG, PRESS.",
+          "required": false,
+          "values": [
+            "N",
+            "TY",
+            "TZ",
+            "MX",
+            "MY",
+            "MZ"
+          ]
+        },
+        {
+          "name": "DEPLA",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante de deplacement privilegiee.",
+          "required": false,
+          "values": [
+            "DX",
+            "DY",
+            "DZ",
+            "RX",
+            "RY",
+            "RZ"
+          ]
+        },
+        {
+          "name": "CONTR",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante de contrainte privilegiee.",
+          "required": false,
+          "values": [
+            "VY",
+            "VZ",
+            "WY",
+            "WZ",
+            "VYVZ",
+            "VYWZ",
+            "WYVZ",
+            "WYWZ"
+          ]
+        },
+        {
+          "name": "CONTRG",
+          "kind": "subcommand",
+          "type": "int",
+          "doc": "Numero ic d'une contrainte generalisee privilegiee.",
+          "required": false
+        },
+        {
+          "name": "PRESS",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante de pression privilegiee.",
+          "required": false,
+          "values": [
+            "PX",
+            "PY",
+            "PZ",
+            "MX"
+          ]
+        },
+        {
+          "name": "REAC",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Composante de reaction d'appui privilegiee.",
+          "required": false,
+          "values": [
+            "FX",
+            "FY",
+            "FZ",
+            "MX",
+            "MY",
+            "MZ"
+          ]
+        },
+        {
+          "name": "METHODE",
+          "kind": "subcommand",
+          "type": "enum",
+          "doc": "Methode d'integration temporelle : 1 (defaut), 2 ou 3 (ALPHA alpha).",
+          "required": false,
+          "values": [
+            "1",
+            "2",
+            "3"
+          ],
+          "default": "1"
+        },
+        {
+          "name": "CONVOI",
+          "kind": "subcommand",
+          "type": "int",
+          "doc": "Numero numc du convoi (defini par ailleurs via CONV).",
+          "required": true
+        },
+        {
+          "name": "PAS_TEMPS",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Pas de temps de l'analyse dynamique.",
+          "required": true,
+          "unit": "seconde"
+        },
+        {
+          "name": "VITESSE",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Vitesse de deplacement du convoi, exprimee dans l'unite de longueur du projet par seconde.",
+          "required": true
+        },
+        {
+          "name": "TEMPS",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Temps d'analyse.",
+          "required": true,
+          "unit": "seconde"
+        },
+        {
+          "name": "POND",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Ponderation a appliquer aux charges du convoi.",
+          "required": false,
+          "default": "1"
+        }
+      ],
+      "prerequisites": [
+        "ST1 v2",
+        "Convoi defini par la commande CONV [p.210]",
+        "TABLIER defini (le camion est centre sur les barres du tablier) [p.210]",
+        "Masses dynamiques definies aux noeuds [p.210]",
+        "Un amortissement doit etre defini dans les barres avant EXEC HISTORIQUE CONVOI [p.210]",
+        "ETUDE EFFORT DEPLA sur toutes les barres en debut et fin pour la visualisation graphique [p.210]"
+      ],
+      "pitfalls": [
+        "**Un seul camion, centre** : les zones transversales du tablier et les positions transversales des roues sont ignorees [p.210].",
+        "**Le camion doit etre defini en unite de FORCE et non de masse** [p.210].",
+        "`VITESSE` est exprimee dans l'unite de longueur du PROJET par seconde, pas en km/h ni forcement en m/s [p.209].",
+        "`CONVOI`, `PAS_TEMPS`, `VITESSE` et `TEMPS` ne sont pas parentheses dans la syntaxe : ils sont obligatoires [p.209].",
+        "Pas d'analyse temporelle des sections d'etude [p.210].",
+        "Reserve a ST1 v2."
+      ],
+      "examples": [
+        "# Analyse dynamique du convoi 12\nDYNAMIQUE CONVOI 100\nCONVOI 12\nPAS_TEMPS 0.05\nVITESSE 1\nTEMPS 30\nFIN",
+        "# Chaine complete tablier / convoi / historique\nTABLIER\nBARRE 101 a 119\nFIN\nCONV 12 'convoi 12'\nDIR GLO FX 1 FZ -1\nESSIEU\n1 X1 0.00  Y1 0 POIDS 100.00 IMPACT 0.2 0.1\n2 X1 10.00 Y1 0 POIDS 100.00 IMPACT 2.0 0.1\nFIN\nDYNAMIQUE CONVOI 100\nCONVOI 12\nMETHODE 1\nPAS_TEMPS 0.05\nVITESSE 5\nTEMPS 400\nPOND 1\nFIN\nEXEC HISTORIQUE CONVOI 100"
+      ]
+    },
+    {
+      "name": "EFFORT",
+      "family": "dynamique",
+      "context": "bloc:CARA SPECIAL",
+      "summary": "Introduit la ligne des seuils limites d effort de l element special.",
+      "syntax": [
+        "EFFORT",
+        "fx fy (fz mx my) mz"
+      ],
+      "pages": [
+        386
+      ],
+      "requiresV2": true,
+      "doc": "**Sous-commande non attestee dans le manuel v24** (le bloc `CARA SPECIAL` n'y figure pas et la page imprimee 214 est blanche) : source unique = memo distille ; seule reference du manuel = annexe B4.4 [p.386], sans syntaxe.\n\nIntroduit la ligne des seuils limites par composante d'effort de l'element special. Une composante a 0 reste **elastique** ; sinon l'effort est limite a la valeur donnee (memo, non documente).\n\nOrdre impose par l'option de structure :\n- option PLANE : `fx fy mz` ;\n- option SPATIALE : `fx fy fz mx my mz`.",
+      "args": [
+        {
+          "name": "fx",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Seuil limite d'effort normal. 0 = composante elastique (non limitee).",
+          "required": true
+        },
+        {
+          "name": "fy",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Seuil limite d'effort tranchant suivant y. 0 = elastique.",
+          "required": true
+        },
+        {
+          "name": "fz",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Seuil limite d'effort tranchant suivant z. Option spatiale. 0 = elastique.",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "mx",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Seuil limite de moment de torsion. Option spatiale. 0 = elastique.",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "my",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Seuil limite de moment flechissant autour de y. Option spatiale. 0 = elastique.",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "mz",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Seuil limite de moment flechissant autour de z. 0 = elastique.",
+          "required": true
+        }
+      ],
+      "pitfalls": [
+        "**Une valeur 0 signifie composante ELASTIQUE (non limitee)** et non un seuil nul : regle issue du seul memo distille, non documentee dans le manuel v24 (la page imprimee 214 est blanche).",
+        "Ne pas confondre avec le mot-cle `EFFORT` des blocs `ACCELEROGRAMME`/`DYNAMIQUE CONVOI`/`DYNAMIQUE CHARGE`/`ENV`, qui designe une composante privilegiee de concomitance.",
+        "Provenance : la SYNTAXE de cette commande n'est pas attestee dans le manuel ST1 v24 (recherche plein texte : « CARA SPECIAL » et « RIGIDITE CARA », zero occurrence ; la page 214 est blanche). Seule l'annexe B4.4 « Elements speciaux » documente la methode de resolution, sans en donner la syntaxe. A confirmer aupres de l'editeur avant usage."
+      ],
+      "examples": [
+        "CARA SPECIAL 1\nRIGIDITE CARA\n0.5 0.4 0.02\nEFFORT\n1500 0 800\nFIN"
+      ]
+    },
+    {
+      "name": "ENERGIE",
+      "family": "dynamique",
+      "context": "bloc:AMORTISSEMENT",
+      "summary": "Sous-commande d amortissement modal moyen calcule a partir de l energie de deformation (EN1998-2).",
+      "syntax": [
+        "ENERGIE KSI ksij"
+      ],
+      "pages": [
+        200,
+        201
+      ],
+      "doc": "Amortissement modal moyen calcule a partir des coefficients d'amortissement de chaque materiau et de l'energie de deformation des elements structuraux sous l'effet de chaque mode (EN 1998-2 §4.1.3) [p.200].\n\nLe coefficient modal moyen du mode j vaut `ksi_eff,j = somme_k(ksi_k * Ed_j^k) / somme_k(Ed_j^k)`, k designant les sous-structures amorties par `ksi_k` [p.201].",
+      "args": [
+        {
+          "name": "KSI",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Fraction d'amortissement de la sous-structure (des barres) portant ce numero d'amortissement.",
+          "required": true,
+          "default": "0"
+        }
+      ],
+      "pitfalls": [
+        "C'est le SEUL mode d'emploi qui autorise plusieurs types/valeurs d'amortissement differents sur les barres du modele [p.201].",
+        "Les valeurs mode par mode ne sont disponibles qu'apres l'analyse spectrale ou temporelle (`LISTER AMORTISSEMENT`) [p.201]."
+      ],
+      "examples": [
+        "AMORTISSEMENT 3\nENERGIE KSI 2\nPOND 0.01\nFIN",
+        "# Deux sous-structures amorties differemment\nAMORTISSEMENT 10\nPOND 0.01\nENERGIE KSI 5\nFIN\nAMORTISSEMENT 11\nPOND 0.01\nENERGIE KSI 2\nFIN"
+      ]
+    },
+    {
+      "name": "EUROCODE",
+      "family": "dynamique",
+      "context": "bloc:SPECTRE",
+      "summary": "Spectre elastique reglementaire Se selon EN 1998-1, par lignes HORIZONTAL et VERTICAL.",
+      "syntax": [
+        "EUROCODE",
+        "   <HORIZONTAL(<X,Y>), VERTICAL> AX ax (S s) (ST st) (ALPHA alpha) (ETA eta) PERIODE tb tc td te",
+        "   ..."
+      ],
+      "pages": [
+        202,
+        203
+      ],
+      "doc": "Spectre elastique Se de l'EN 1998-1 (§3.2.2.2 horizontal, §3.2.2.3 vertical). Une ligne par direction ; en option spatiale on ecrit `HORIZONTAL X` et `HORIZONTAL Y`, en option plane `HORIZONTAL` suffit [p.203, exemple p.303].\n\n**Formules horizontales** [p.203] :\n- `0 <= T <= Tb : Se = ax*S*St*[1 + T/Tb*(alpha*eta - 1)]`\n- `Tb <= T <= Tc : Se = ax*S*St*alpha*eta`\n- `Tc <= T <= Td : Se = ax*S*St*alpha*eta*Tc/T`\n- `Td <= T <= Te : Se = ax*S*St*alpha*eta*Tc*Td/T^2`\n\n**Formules verticales** : identiques mais **sans le facteur S** [p.203].\n\n`eta` est recalcule pour chaque mode selon son amortissement ksi : `eta = max[0.55 ; sqrt(10/(5+ksi))]` ; Se est donc suppose defini pour 5 % d'amortissement [p.203]. La ponderation `pond` du bloc `SPECTRE` s'applique en plus sur Se.",
+      "args": [
+        {
+          "name": "HORIZONTAL",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Direction horizontale. En option spatiale, preciser X ou Y ; en option plane, HORIZONTAL seul.",
+          "required": true,
+          "values": [
+            "HORIZONTAL",
+            "HORIZONTAL X",
+            "HORIZONTAL Y",
+            "VERTICAL"
+          ]
+        },
+        {
+          "name": "AX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Acceleration Ag dans la direction associee.",
+          "required": true,
+          "default": "0"
+        },
+        {
+          "name": "S",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Parametre de sol S. N'intervient pas dans les formules du spectre vertical.",
+          "required": false,
+          "default": "1"
+        },
+        {
+          "name": "ST",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient d'amplification topographique.",
+          "required": false,
+          "default": "1"
+        },
+        {
+          "name": "ALPHA",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient reglementaire EN1998-1. Par defaut 2.5 en horizontal et 3 en vertical pour le spectre Eurocode Se.",
+          "required": false,
+          "default": "2.5 (horizontal) / 3 (vertical)"
+        },
+        {
+          "name": "ETA",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient de correction de l'amortissement.",
+          "required": false,
+          "default": "1.00"
+        },
+        {
+          "name": "PERIODE",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Les quatre periodes du spectre reglementaire EN1998-2 : tb tc td te, en seconde, avec 0 <= tb <= tc <= td < te.",
+          "required": true,
+          "unit": "seconde"
+        }
+      ],
+      "pitfalls": [
+        "Le spectre vertical n'utilise pas `S` : seul `ST` intervient [p.203].",
+        "`ALPHA` par defaut differe entre horizontal (2.5) et vertical (3) — uniquement pour Se ; pour `EUROCODE REDUIT` la valeur par defaut est 2.5 dans tous les cas [p.203].",
+        "Les quatre periodes `tb tc td te` sont obligatoires (non parenthesees dans la syntaxe)."
+      ],
+      "examples": [
+        "SPECTRE 2\nBETA 0.0\nPOND 9.81\nEUROCODE\nHORIZONTAL X AX 0.5  S 1 ST 1.2 PERIODE 0.03 0.2 2.5 4\nHORIZONTAL Y AX 0.5  S 1 ST 1.2 PERIODE 0.03 0.2 2.5 4\nVERTICAL     AX 0.25       ST 1.1 PERIODE 0.03 0.2 2.5 4\nFIN"
+      ]
+    },
+    {
+      "name": "EUROCODE REDUIT",
+      "family": "dynamique",
+      "context": "bloc:SPECTRE",
+      "summary": "Spectre de calcul reduit Sd selon EN 1998-1 3.2.2.5, avec coefficient de comportement q.",
+      "syntax": [
+        "EUROCODE REDUIT",
+        "   <HORIZONTAL(<X,Y>), VERTICAL> AX ax (S s) (ST st) (ALPHA alpha) (GAMMA gamma) (Q q) (BETA beta0) PERIODE tb tc td te",
+        "   ..."
+      ],
+      "pages": [
+        202,
+        204
+      ],
+      "doc": "Spectre de calcul Sd de l'EN 1998-1 §3.2.2.5, avec coefficient de comportement `q`.\n\n**Formules horizontales** [p.204] :\n- `0 <= T <= Tb : Sd = ax*S*St*[gamma + T/Tb*(alpha/q - gamma)]`\n- `Tb <= T <= Tc : Sd = ax*S*St*alpha/q`\n- `Tc <= T <= Td : Sd = max(ax*S*St*alpha/q*Tc/T ; beta0*ax)`\n- `Td <= T <= Te : Sd = max(ax*S*St*alpha/q*Tc*Td/T^2 ; beta0*ax)`\n\n**Formules verticales** : identiques **sans le facteur S** [p.204].\n\nLa ponderation `pond` du bloc `SPECTRE` s'applique en plus sur Sd [p.204].",
+      "args": [
+        {
+          "name": "HORIZONTAL",
+          "kind": "choice",
+          "type": "enum",
+          "doc": "Direction. En option spatiale, preciser X ou Y ; en option plane, HORIZONTAL seul.",
+          "required": true,
+          "values": [
+            "HORIZONTAL",
+            "HORIZONTAL X",
+            "HORIZONTAL Y",
+            "VERTICAL"
+          ]
+        },
+        {
+          "name": "AX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Acceleration Ag dans la direction associee.",
+          "required": true,
+          "default": "0"
+        },
+        {
+          "name": "S",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Parametre de sol S. N'intervient pas dans les formules du spectre vertical.",
+          "required": false,
+          "default": "1"
+        },
+        {
+          "name": "ST",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient d'amplification topographique.",
+          "required": false,
+          "default": "1"
+        },
+        {
+          "name": "ALPHA",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient reglementaire EN1998-1. Pour le spectre Eurocode SD reduit, la valeur par defaut est 2.5.",
+          "required": false,
+          "default": "2.5"
+        },
+        {
+          "name": "GAMMA",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient gamma du plateau initial de Sd.",
+          "required": false,
+          "default": "2/3"
+        },
+        {
+          "name": "Q",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient de comportement.",
+          "required": false,
+          "default": "1.0"
+        },
+        {
+          "name": "BETA",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "beta0 : coefficient correspondant a la limite inferieure du spectre de calcul Eurocode SD. ATTENTION : homonyme du BETA (angle) du bloc SPECTRE.",
+          "required": false,
+          "default": "0,2"
+        },
+        {
+          "name": "PERIODE",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Les quatre periodes du spectre reglementaire EN1998-2 : tb tc td te, en seconde, avec 0 <= tb <= tc <= td < te.",
+          "required": true,
+          "unit": "seconde"
+        }
+      ],
+      "pitfalls": [
+        "**`BETA` sur cette ligne = beta0, limite inferieure du spectre Sd (defaut 0,2)** ; le `BETA` place directement sous `SPECTRE isp` est un ANGLE en radian [p.202, p.204]. Confusion frequente.",
+        "Le spectre vertical n'utilise pas `S` [p.204].",
+        "`ETA` n'existe pas pour `EUROCODE REDUIT` (il est propre au spectre elastique Se).",
+        "Pour etendre le palier Sd (defini entre Tb et Tc) jusqu'a une periode nulle, imposer `Tb = 0` [p.204]."
+      ],
+      "examples": [
+        "SPECTRE 2\nBETA 0.0\nPOND 9.81\nEUROCODE REDUIT\nHORIZONTAL X AX 0.5  S 1 ST 1 Q 1.0 BETA 0.2 PERIODE 0.03 0.2 2.5 5\nHORIZONTAL Y AX 0.5  S 1 ST 1 Q 1.0 BETA 0.2 PERIODE 0.03 0.2 2.5 5\nVERTICAL     AX 0.25      ST 1 Q 1.0 BETA 0.2 PERIODE 0.03 0.2 2.5 5\nFIN"
+      ]
+    },
+    {
+      "name": "EXEC FLAMBEMENT",
+      "family": "dynamique",
+      "context": "exec",
+      "summary": "Calcule les modes critiques de flambement lineaire elastique d Euler a partir de la rigidite geometrique.",
+      "syntax": [
+        "EXEC FLAMBEMENT (nb) (METHODE <1,2>) (CTE <CHARG,COMB,ETAT,PHASAGE i>) (VAR <CHARG,COMB,ETAT,PHASAGE j>)"
+      ],
+      "pages": [
+        215,
+        216
+      ],
+      "exec": "EXEC FLAMBEMENT",
+      "doc": "**Role** : calculer les modes critiques de flambement lineaire elastique (flambement d'Euler) a partir de la rigidite geometrique KG de la structure, et stocker les resultats en base de donnees [p.215].\n\nLa resolution reprend la methode des modes propres en substituant la matrice de masse par la matrice de rigidite geometrique :\n`[K - KG(Nfix)] Phi = Lambda_c * [KG(Nvar)] Phi` [p.215].\n\n**Composantes** :\n- `CTE` : charge, combinaison, etat ou phase `i` dont on prend l'effort normal comme **composante statique fixe** (par exemple les charges permanentes) [p.216] ;\n- `VAR` : charge, combinaison, etat ou phase `j` dont l'effort normal est la **composante variable a amplifier** (par exemple une charge d'exploitation modelisee par un cas de charge specifique) [p.216].\n\n**Methodes** : `METHODE 1` = iteration inverse ; `METHODE 2` = iteration du sous-espace des vecteurs propres — **methode par defaut** [p.216].\n\nAucune donnee supplementaire par rapport a la matrice de rigidite classique n'est requise [p.215].",
+      "args": [
+        {
+          "name": "nb",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Nombre de modes critiques de flambement lineaire a calculer.",
+          "required": false,
+          "default": "2",
+          "min": 1
+        },
+        {
+          "name": "METHODE",
+          "kind": "keyword",
+          "type": "enum",
+          "doc": "Methode de resolution : 1 = iteration inverse ; 2 = iteration du sous-espace.",
+          "required": false,
+          "values": [
+            "1",
+            "2"
+          ],
+          "default": "2"
+        },
+        {
+          "name": "CTE",
+          "kind": "keyword",
+          "type": "enum",
+          "doc": "Origine de l'effort normal fixe (composante statique) : CHARG, COMB, ETAT ou PHASAGE, suivi du numero i.",
+          "required": false,
+          "values": [
+            "CHARG",
+            "COMB",
+            "ETAT",
+            "PHASAGE"
+          ]
+        },
+        {
+          "name": "VAR",
+          "kind": "keyword",
+          "type": "enum",
+          "doc": "Origine de l'effort normal a amplifier (composante variable) : CHARG, COMB, ETAT ou PHASAGE, suivi du numero j.",
+          "required": false,
+          "values": [
+            "CHARG",
+            "COMB",
+            "ETAT",
+            "PHASAGE"
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les cas de charge dits statique et variable doivent avoir ete calcules au prealable (EXEC CHARG, EXEC PHASAGE, ...) [p.216]"
+      ],
+      "pitfalls": [
+        "**La composante VARIABLE doit creer un effort normal.** On resout `[K - KG(Nfix)] Phi = Lambda_c [KG(Nvar)] Phi` [p.215-216] : si la charge variable n'induit aucun effort normal (tablier filaire charge transversalement par exemple), `KG(Nvar) = 0`, il n'existe pas de facteur critique fini et la fonction semble inactive. Modeliser la structure complete (retour d'experience support, non documente comme tel).",
+        "`ETUDE` n'a **aucun effet** sur le calcul des modes critiques : elle ne joue que sur le post-traitement [p.215].",
+        "Si l'on ne souhaite pas presolliciter la structure, appliquer une charge 0 pour la composante fixe. Si l'on met une charge 0 sur la composante **variable**, ST1 considere un effort normal uniforme de **compression** des barres [p.216].",
+        "Par defaut, l'effort de **traction** du aux charges appliquees n'est **pas** pris en compte ; le raidissage par traction s'active en modifiant le code correspondant dans `st1.par` (attention : peut rigidifier excessivement les parties tendues et provoquer des problemes de convergence) [p.216].",
+        "Comme pour la dynamique, la discretisation de la structure conditionne fortement la precision des resultats [p.215]."
+      ],
+      "examples": [
+        "# Premier mode critique : la charge 1 est la composante variable a amplifier\nEXEC CHARG 1\nEXEC FLAMBEMENT VAR CHARG 1",
+        "# 2 modes critiques, sans presollicitation fixe\nEXEC FLAMBEMENT 2 VAR CHARG 1 #CTE CHARG 0",
+        "# Permanentes fixes, exploitation amplifiee, iteration inverse\nEXEC FLAMBEMENT 3 METHODE 1 CTE COMB 10 VAR CHARG 20"
+      ]
+    },
+    {
+      "name": "EXEC HISTORIQUE",
+      "family": "dynamique",
+      "context": "exec",
+      "summary": "Execute l analyse temporelle lineaire elastique d un accelerogramme, d un convoi ou d une charge forcee (ST1 v2).",
+      "syntax": [
+        "EXEC HISTORIQUE (TEMPS <OUI,NON>) (lstj)",
+        "EXEC HISTORIQUE (TEMPS <OUI,NON>) CONVOI (lstj)",
+        "EXEC HISTORIQUE (TEMPS <OUI,NON>) CHARGE (lstj)"
+      ],
+      "pages": [
+        208,
+        210,
+        213
+      ],
+      "requiresV2": true,
+      "exec": "EXEC HISTORIQUE",
+      "doc": "**Role** : lancer l'analyse temporelle lineaire elastique et stocker les resultats en base de donnees [p.208, p.210, p.213].\n\n**Trois formes selon la source de l'historique** :\n- sans mot-cle : accelerogrammes (`ACCELEROGRAMME`) [p.208] ;\n- `CONVOI` : analyses dynamiques de convoi (`DYNAMIQUE CONVOI`) [p.210] ;\n- `CHARGE` : historiques de charge forcee (`DYNAMIQUE CHARGE`) [p.213].\n\n**Liste `lstj`** : par defaut, tous les historiques du type concerne deja definis avant la commande sont calcules [p.208, p.210, p.213].\n\n**Option `TEMPS`** : `TEMPS OUI` (defaut) conserve en base tous les resultats intermediaires a chaque pas de temps ; `TEMPS NON` supprime ce stockage et ne conserve que les resultats enveloppes [p.208, p.210, p.213].\n\nLes resultats s'exploitent ensuite avec `RESU HISTORIQUE ...` et dans les enveloppes (`ENV`/`ENV COMB`, mot-cle `HISTORIQUE liste`) [p.235-239].",
+      "args": [
+        {
+          "name": "TEMPS",
+          "kind": "keyword",
+          "type": "enum",
+          "doc": "OUI conserve tous les resultats intermediaires a chaque pas de temps ; NON ne conserve que les resultats enveloppes.",
+          "required": false,
+          "values": [
+            "OUI",
+            "NON"
+          ],
+          "default": "OUI"
+        },
+        {
+          "name": "CONVOI",
+          "kind": "choice",
+          "type": "flag",
+          "doc": "Cible les analyses dynamiques de convoi (blocs DYNAMIQUE CONVOI).",
+          "required": false
+        },
+        {
+          "name": "CHARGE",
+          "kind": "choice",
+          "type": "flag",
+          "doc": "Cible les historiques de charge forcee (blocs DYNAMIQUE CHARGE).",
+          "required": false
+        },
+        {
+          "name": "lstj",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des numeros d'historiques a prendre en compte. Par defaut, tous ceux du type concerne deja definis avant la commande.",
+          "required": false
+        }
+      ],
+      "prerequisites": [
+        "ST1 v2",
+        "Masses dynamiques definies aux noeuds [p.208, p.210, p.213]",
+        "Un amortissement doit etre defini dans les barres [p.208, p.210, p.213]",
+        "Bloc ACCELEROGRAMME, DYNAMIQUE CONVOI ou DYNAMIQUE CHARGE defini avant l'execution",
+        "Pour la charge forcee : EXEC MODE prealable avec assez de modes [p.213]",
+        "ETUDE EFFORT DEPLA sur toutes les barres en debut et fin pour la visualisation graphique [p.208, p.210, p.213]"
+      ],
+      "pitfalls": [
+        "**Le mot-cle `CONVOI` ou `CHARGE` se place APRES l'option `TEMPS`** et avant la liste : `EXEC HISTORIQUE TEMPS NON CONVOI 100` [p.210, p.213].",
+        "Sans `CONVOI` ni `CHARGE`, la commande vise les accelerogrammes : elle ne calculera pas les blocs `DYNAMIQUE CONVOI`/`DYNAMIQUE CHARGE` [p.208-213].",
+        "`TEMPS NON` fait perdre les resultats pas de temps par pas de temps : seules les enveloppes restent exploitables [p.208].",
+        "Il n'y a **pas d'analyse temporelle des sections d'etude** : seuls les noeuds et les extremites de barres sont exploitables [p.208, p.210, p.213].",
+        "Sans amortissement defini dans les barres, l'analyse temporelle n'est pas valide (et la charge forcee entre en resonance) [p.208, p.213].",
+        "Reserve a ST1 v2."
+      ],
+      "examples": [
+        "# Analyse temporelle de l'accelerogramme 10\nEXEC HISTORIQUE 10",
+        "# Analyse temporelle du convoi 100, enveloppes seules\nEXEC HISTORIQUE TEMPS NON CONVOI 100",
+        "# Analyse temporelle de la charge forcee 100\nEXEC HISTORIQUE CHARGE 100",
+        "# Tous les accelerogrammes deja definis\nEXEC HISTORIQUE"
+      ]
+    },
+    {
+      "name": "EXEC MODE",
+      "family": "dynamique",
+      "context": "exec",
+      "summary": "Calcule les modes propres de la structure a partir des masses aux noeuds et stocke les resultats en base de donnees.",
+      "syntax": [
+        "EXEC MODE (nb) (METHODE <1,2>)",
+        "EXEC MODE (METHODE <1,2>) (<FREQUENCE fq, RATIO rt>) (AVANCE nm)"
+      ],
+      "pages": [
+        197,
+        198,
+        199
+      ],
+      "exec": "EXEC MODE",
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "**Role** : resolution des modes propres (frequence, periode, deformee, facteur et taux de participation modale).\n\n**Deux formes exclusives** :\n- par nombre de modes : `EXEC MODE nb`\n- par critere d'arret : `FREQUENCE fq` (frequence de coupure a atteindre pour le dernier mode) **ou** `RATIO rt` (taux de participation modale cumule a atteindre, en pourcentage). Avec la methode 2, le solveur avance alors par paquets de `nm` modes (`AVANCE`).\n\n**Methodes** : `METHODE 1` = iteration inverse (calcul mode par mode) ; `METHODE 2` = iteration du sous-espace des vecteurs propres (calcule les `nb` premiers modes en meme temps, generalement plus rapide) — **c'est la methode par defaut** [p.198].\n\n**Normalisation** : les modes sont normalises vis-a-vis de la matrice de masse, la masse generalisee d'un mode vaut donc 1 [p.197].\n\n**Masses** : les masses doivent etre en unite de masse ; le facteur `G_DYN` du materiau convertit le poids volumique `RO` en masse (masse_vol = ro/g_dyn) [p.197, p.71-73].\n\n**Nombre d'iterations** de la methode 2 : fixe dans le fichier `st1.par` (50 par defaut) ; l'augmenter (100 p.ex.) ameliore la convergence au prix du temps de calcul [p.198].\n\n**Ordre de grandeur conseille par le manuel** : 10 a 30 modes suffisent souvent pour atteindre 70-80 % de la masse modale totale ; au-dela ce sont le plus souvent des modes locaux (> 20 Hz) [p.198].",
+      "args": [
+        {
+          "name": "nb",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Nombre de modes propres a calculer. Par defaut, au maximum 100 modes sont calcules.",
+          "required": false,
+          "default": "100",
+          "min": 1
+        },
+        {
+          "name": "METHODE",
+          "kind": "keyword",
+          "type": "enum",
+          "doc": "Methode de resolution : 1 = iteration inverse (mode par mode) ; 2 = iteration du sous-espace (les nb premiers modes ensemble).",
+          "required": false,
+          "values": [
+            "1",
+            "2"
+          ],
+          "default": "2"
+        },
+        {
+          "name": "FREQUENCE",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Frequence propre de coupure : frequence maximale a atteindre pour le dernier mode calcule. Exclusif de RATIO.",
+          "required": false,
+          "unit": "Hz"
+        },
+        {
+          "name": "RATIO",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Taux de participation modale cumule a atteindre, exprime en pourcentage. Exclusif de FREQUENCE.",
+          "required": false,
+          "unit": "pourcent"
+        },
+        {
+          "name": "AVANCE",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Increment : nombre de modes calcules a chaque passe pour atteindre le ratio modal ou la frequence de coupure.",
+          "required": false,
+          "default": "10"
+        }
+      ],
+      "prerequisites": [
+        "OPTION PLANE ou SPATIALE : « Le calcul des modes propres et donc celui des masses propres est disponible uniquement en option plane et spatiale » [p.69]",
+        "Masses dynamiques definies : MASSE PROPRE (noeuds et/ou barres) [p.69-71]",
+        "Pour la generation automatique des masses sur barres : poids volumique RO ET acceleration de pesanteur G_DYN definis via CONS ou MAT avant MASSE PROPRE [p.71-73]",
+        "Structure suffisamment discretisee en noeuds"
+      ],
+      "pitfalls": [
+        "Les modes ne sont calcules qu'a partir des NOEUDS de la structure : il faut discretiser (une travee isostatique 2D ne doit pas etre une seule barre mais une dizaine ; idem pour l'elevation d'une pile ou d'une culee) [p.197].",
+        "`ETUDE` n'a AUCUN effet sur le calcul des modes propres : elle ne joue que sur la representation en post-traitement [p.197, p.1017 memo].",
+        "Les masses sont en unite de MASSE et non de poids : oublier `G_DYN` fausse ou annule les masses generees automatiquement [p.197, p.71].",
+        "L'excentrement rigide des barres (`EXC`) est pris en compte pour l'excentrement des masses modales, mais PAS les excentrements de torsion (`EXTY`/`EXTZ`) [p.197].",
+        "Problemes de convergence sur les modes superieurs : ils viennent en general d'elements locaux trop rigides par rapport a l'ensemble. Utiliser des elements rigides avec K = E*I/L^2 et ne modifier qu'un seul parametre (E, I ou L) a la fois ; ne pas definir de sections d'effort tranchant plutot que de leur donner des valeurs tres elevees [p.199].",
+        "Les deux formes de la commande sont exclusives : `nb` d'un cote, `FREQUENCE`/`RATIO` (+ `AVANCE`) de l'autre.",
+        "`FREQUENCE` et `RATIO` sont mutuellement exclusifs (notation < , > du manuel)."
+      ],
+      "examples": [
+        "# Calcul des 5 premiers modes propres\nMASSE PROPRE\nBARRE TOUT MASSE DI\nFIN\nEXEC MODE 5",
+        "# Calculer les modes jusqu'a 70% de la masse modale totale\nEXEC MODE RATIO 70",
+        "# Calculer les modes jusqu'a la frequence de coupure 10 Hz\nEXEC MODE FREQUENCE 10",
+        "# Sous-espace, critere de participation, avancee par paquets de 20 modes\nEXEC MODE METHODE 2 RATIO 70 AVANCE 20"
+      ]
+    },
+    {
+      "name": "EXEC SPECTRE REPONSE",
+      "family": "dynamique",
+      "context": "exec",
+      "summary": "Execute le calcul des reponses spectrales listees et stocke les resultats en base de donnees.",
+      "syntax": [
+        "EXEC SPECTRE REPONSE list"
+      ],
+      "pages": [
+        205,
+        206
+      ],
+      "exec": "EXEC SPECTRE REPONSE",
+      "doc": "Lance le calcul des reponses spectrales dont les numeros figurent dans `list`. Les resultats sont stockes en base de donnees et exploitables ensuite par `RESU`, `COMB`, `ENV`, `ENV COMB` (mot-cle `SPECTRE liste`) [p.206, p.234-239].",
+      "args": [
+        {
+          "name": "list",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste des numeros de reponses spectrales a calculer. Liste ST1 : `10,20,30` ou `100 a 103`.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "EXEC MODE deja execute [p.206]",
+        "Definition prealable des reponses spectrales (blocs SPECTRE ic REPONSE) [p.206]",
+        "Definition prealable d'un amortissement si necessaire (obligatoire pour CQC) [p.205-206]"
+      ],
+      "pitfalls": [
+        "`EXEC SPECTRE REPONSE` echoue ou ne produit rien si `EXEC MODE` n'a pas ete execute au prealable [p.206].",
+        "Les resultats sont des cas de charge dynamiques : pour un effet enveloppe +/- il faut ensuite une `ENV ... COMB` avec coefficients +1 / -1 [p.206]."
+      ],
+      "examples": [
+        "EXEC SPECTRE REPONSE 10,20,30",
+        "EXEC SPECTRE REPONSE 100 a 103"
+      ]
+    },
+    {
+      "name": "FREQUENCE",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CHARGE",
+      "summary": "Frequence de pulsation imposee, qui remplace la pulsation du mode selectionne.",
+      "syntax": [
+        "(FREQUENCE f0)"
+      ],
+      "pages": [
+        211,
+        212
+      ],
+      "requiresV2": true,
+      "doc": "Frequence de pulsation imposee (Hz), optionnelle. Si elle est specifiee, la pulsation temporelle vaut `w0 = 2*pi*f0` ; sinon `w0` est la pulsation du mode selectionne `nm` [p.211].",
+      "args": [
+        {
+          "name": "f0",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Frequence de pulsation imposee.",
+          "required": true,
+          "unit": "Hz"
+        }
+      ],
+      "pitfalls": [
+        "Le signe de la charge reste pondere par la deformee du mode `nm` meme lorsque `FREQUENCE` impose une autre pulsation [p.211]."
+      ],
+      "examples": [
+        "DYNAMIQUE CHARGE 200\nPAS_TEMPS 0.02\nTEMPS 300\nMODE 3\nFREQUENCE 2.0\nBARRE 1 a 20 FZ -0.7\nFIN"
+      ]
+    },
+    {
+      "name": "LIN",
+      "family": "dynamique",
+      "context": "bloc:SPECTRE REPONSE",
+      "summary": "Recombinaison modale lineaire des effets du spectre.",
+      "syntax": [
+        "LIN"
+      ],
+      "pages": [
+        205
+      ],
+      "doc": "Recombine les effets modaux de maniere lineaire [p.205]. Exclusif de `SRSS` et `CQC`.",
+      "examples": [
+        "SPECTRE 10 REPONSE\nSPECTRE 1\nLIN\nPOND X 1\nFIN"
+      ]
+    },
+    {
+      "name": "METHODE",
+      "family": "dynamique",
+      "context": "bloc:ACCELEROGRAMME",
+      "summary": "Choisit la methode d integration temporelle de l analyse d accelerogramme.",
+      "syntax": [
+        "(METHODE < (1), 2, 3 (ALPHA alpha) >)"
+      ],
+      "pages": [
+        207
+      ],
+      "requiresV2": true,
+      "doc": "- `METHODE 1` : integration de Newmark a acceleration moyenne — methode par defaut, generalement recommandee ;\n- `METHODE 2` : integration de Newmark a acceleration lineaire ;\n- `METHODE 3 (ALPHA alpha)` : methode HHT-alpha decrite par P. Paultre, pour tenir compte d'un amortissement numerique. `alpha` est compris entre 0 et -0.3 ; pour alpha = 0 la methode degenere en Newmark a acceleration moyenne [p.207].",
+      "args": [
+        {
+          "name": "methode",
+          "kind": "positional",
+          "type": "enum",
+          "doc": "Numero de methode.",
+          "required": true,
+          "values": [
+            "1",
+            "2",
+            "3"
+          ],
+          "default": "1"
+        },
+        {
+          "name": "ALPHA",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient de la methode 3 (HHT-alpha), compris entre 0 et -0.3.",
+          "required": false,
+          "default": "0",
+          "min": -0.3,
+          "max": 0
+        }
+      ],
+      "pitfalls": [
+        "`ALPHA` est negatif ou nul : la borne est [-0.3 ; 0], pas [0 ; 0.3] [p.207].",
+        "`ALPHA` n'a de sens qu'avec `METHODE 3`."
+      ],
+      "examples": [
+        "ACCELEROGRAMME 10\nMETHODE 3 ALPHA -0.3\nPAS_TEMPS 0.01\nACCELERATION\nAX 0.1 AY 0.1\nFIN"
+      ]
+    },
+    {
+      "name": "METHODE",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CONVOI",
+      "summary": "Choisit la methode d integration temporelle de l analyse dynamique de convoi.",
+      "syntax": [
+        "(METHODE < (1), 2, 3 (ALPHA alpha) >)"
+      ],
+      "pages": [
+        210
+      ],
+      "requiresV2": true,
+      "doc": "- `METHODE 1` : Newmark a acceleration moyenne (defaut, generalement recommandee) ;\n- `METHODE 2` : Newmark a acceleration lineaire ;\n- `METHODE 3 (ALPHA alpha)` : HHT-alpha (P. Paultre), `alpha` entre 0 et -0.3 ; pour alpha = 0 la methode degenere en Newmark a acceleration moyenne [p.210].",
+      "args": [
+        {
+          "name": "methode",
+          "kind": "positional",
+          "type": "enum",
+          "doc": "Numero de methode.",
+          "required": true,
+          "values": [
+            "1",
+            "2",
+            "3"
+          ],
+          "default": "1"
+        },
+        {
+          "name": "ALPHA",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient de la methode 3 (HHT-alpha), compris entre 0 et -0.3.",
+          "required": false,
+          "default": "0",
+          "min": -0.3,
+          "max": 0
+        }
+      ],
+      "pitfalls": [
+        "`ALPHA` est negatif ou nul (borne [-0.3 ; 0]) [p.210]."
+      ],
+      "examples": [
+        "DYNAMIQUE CONVOI 100\nCONVOI 12\nMETHODE 1\nPAS_TEMPS 0.05\nVITESSE 5\nTEMPS 400\nFIN"
+      ]
+    },
+    {
+      "name": "METHODE",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CHARGE",
+      "summary": "Choisit la methode d integration temporelle de l analyse de charge forcee.",
+      "syntax": [
+        "(METHODE < (1), 2, 3 (ALPHA alpha) >)"
+      ],
+      "pages": [
+        212
+      ],
+      "requiresV2": true,
+      "doc": "- `METHODE 1` : Newmark a acceleration moyenne (defaut, generalement recommandee) ;\n- `METHODE 2` : Newmark a acceleration lineaire ;\n- `METHODE 3 (ALPHA alpha)` : HHT-alpha (P. Paultre), `alpha` entre 0 et -0.3 ; pour alpha = 0 la methode degenere en Newmark a acceleration moyenne [p.212].",
+      "args": [
+        {
+          "name": "methode",
+          "kind": "positional",
+          "type": "enum",
+          "doc": "Numero de methode.",
+          "required": true,
+          "values": [
+            "1",
+            "2",
+            "3"
+          ],
+          "default": "1"
+        },
+        {
+          "name": "ALPHA",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient de la methode 3 (HHT-alpha), compris entre 0 et -0.3.",
+          "required": false,
+          "default": "0",
+          "min": -0.3,
+          "max": 0
+        }
+      ],
+      "pitfalls": [
+        "`ALPHA` est negatif ou nul (borne [-0.3 ; 0]) [p.212]."
+      ],
+      "examples": [
+        "DYNAMIQUE CHARGE 100\nMETHODE 1\nPAS_TEMPS 0.05\nTEMPS 500\nMODE 1\nBARRE 1 a 10 FY +10\nFIN"
+      ]
+    },
+    {
+      "name": "MODE",
+      "family": "dynamique",
+      "context": "bloc:AMORTISSEMENT",
+      "summary": "Sous-commande d amortissement modal : fraction d amortissement affectee a une liste de modes.",
+      "syntax": [
+        "MODE j KSI ksij",
+        "..."
+      ],
+      "pages": [
+        200,
+        201
+      ],
+      "doc": "Affecte la fraction d'amortissement `ksij` aux modes de la liste `j`. La ligne est repetable ; `TOUT` est admis pour viser tous les modes [p.200-201].",
+      "args": [
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numero(s) de mode(s) propre(s). Liste ST1 (`1,2,5 a 9`) ou mot-cle TOUT.",
+          "required": true
+        },
+        {
+          "name": "KSI",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Fraction d'amortissement du mode j. Par defaut ksij = 0.",
+          "required": true,
+          "default": "0"
+        }
+      ],
+      "pitfalls": [
+        "Une ligne `MODE` ulterieure sur les memes modes redefinit la valeur : l'ordre compte (`MODE TOUT KSI 5` puis `MODE 2 a 3 KSI 3`).",
+        "`ksij` vaut 0 par defaut : un bloc `AMORTISSEMENT` sans `KSI` ne donne aucun amortissement."
+      ],
+      "examples": [
+        "AMORTISSEMENT 2\nMODE TOUT KSI 5\nMODE 2 a 3 KSI 3\nPOND 0.01\nFIN"
+      ]
+    },
+    {
+      "name": "MODE",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CHARGE",
+      "summary": "Numero du mode propre impose qui cale le signe et la pulsation de la charge forcee.",
+      "syntax": [
+        "MODE nm"
+      ],
+      "pages": [
+        211,
+        212
+      ],
+      "requiresV2": true,
+      "doc": "Numero du mode propre impose. Le poids applique est **pondere par le signe de la deformee de ce mode**, selon la composante choisie. Sauf si `FREQUENCE f0` est precise, la pulsation temporelle `w0` est celle du mode `nm` [p.211].",
+      "args": [
+        {
+          "name": "nm",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du mode propre impose.",
+          "required": true
+        }
+      ],
+      "prerequisites": [
+        "EXEC MODE avec un nombre de modes allant au moins jusqu'a nm [p.213]"
+      ],
+      "pitfalls": [
+        "Si `EXEC MODE` n'a pas calcule au moins `nm` modes, la charge forcee ne peut pas etre calee [p.213]."
+      ],
+      "examples": [
+        "DYNAMIQUE CHARGE 100\nPAS_TEMPS 0.05\nTEMPS 500\nMODE 1\nBARRE 1 a 10 FY +10\nFIN"
+      ]
+    },
+    {
+      "name": "PAS_TEMPS",
+      "family": "dynamique",
+      "context": "bloc:ACCELEROGRAMME",
+      "summary": "Pas de temps de l accelerogramme, en seconde.",
+      "syntax": [
+        "(PAS_TEMPS pas_temps)"
+      ],
+      "pages": [
+        207,
+        208
+      ],
+      "requiresV2": true,
+      "doc": "Pas de temps de l'accelerogramme, en seconde : c'est l'intervalle entre deux lignes `AX ... AY ... (AZ ...)` du bloc `ACCELERATION` [p.207].",
+      "args": [
+        {
+          "name": "pas_temps",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Pas de temps de l'accelerogramme.",
+          "required": true,
+          "unit": "seconde"
+        }
+      ],
+      "pitfalls": [
+        "Le pas de temps doit etre suffisamment petit pour que l'analyse temporelle donne des resultats admissibles. Texte litteral du manuel : « en general, il faut un pas de temps dont la duree soit inferieure 40 fois la periode propre la plus courte a prendre en compte du modele etudiee » [p.208]. ATTENTION : cette formulation est incomplete/ambigue (rapport 40 dans quel sens ?) ; ne pas la transformer en regle numerique T/40, non ecrite comme telle dans le manuel."
+      ],
+      "examples": [
+        "ACCELEROGRAMME 10\nPAS_TEMPS 0.01\nACCELERATION\nAX 0.1 AY 0.1\nFIN"
+      ]
+    },
+    {
+      "name": "PAS_TEMPS",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CONVOI",
+      "summary": "Pas de temps de l analyse dynamique de convoi, en seconde.",
+      "syntax": [
+        "PAS_TEMPS pas_temps"
+      ],
+      "pages": [
+        209
+      ],
+      "requiresV2": true,
+      "doc": "Pas de temps de l'analyse dynamique, en secondes. Parametre obligatoire [p.209].",
+      "args": [
+        {
+          "name": "pas_temps",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Pas de temps de l'analyse dynamique.",
+          "required": true,
+          "unit": "seconde"
+        }
+      ],
+      "examples": [
+        "DYNAMIQUE CONVOI 100\nCONVOI 12\nPAS_TEMPS 0.05\nVITESSE 1\nTEMPS 30\nFIN"
+      ]
+    },
+    {
+      "name": "PAS_TEMPS",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CHARGE",
+      "summary": "Pas de temps de l analyse de charge forcee, en seconde.",
+      "syntax": [
+        "PAS_TEMPS pas_temps"
+      ],
+      "pages": [
+        211,
+        212
+      ],
+      "requiresV2": true,
+      "doc": "Pas de temps de l'analyse dynamique, en secondes. Parametre obligatoire [p.211-212].",
+      "args": [
+        {
+          "name": "pas_temps",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Pas de temps de l'analyse dynamique.",
+          "required": true,
+          "unit": "seconde"
+        }
+      ],
+      "examples": [
+        "DYNAMIQUE CHARGE 100\nPAS_TEMPS 0.05\nTEMPS 500\nMODE 1\nBARRE 1 a 10 FY +10\nFIN"
+      ]
+    },
+    {
+      "name": "PERIODE",
+      "family": "dynamique",
+      "context": "bloc:SPECTRE",
+      "summary": "Point du spectre generique : periode et accelerations associees dans les directions locales.",
+      "syntax": [
+        "PERIODE tj AX axj AY ayj (AZ azj)"
+      ],
+      "pages": [
+        202,
+        203
+      ],
+      "doc": "Definit un point du spectre generique (sous `ACCELERATION`). Ligne repetable ; les valeurs sont interpolees entre points consecutifs [p.203].\n\nNB : le mot-cle `PERIODE` sert aussi, sur les lignes `EUROCODE` / `EUROCODE REDUIT`, a introduire les quatre periodes reglementaires `tb tc td te`.",
+      "args": [
+        {
+          "name": "tj",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Periode j du spectre, en seconde.",
+          "required": true,
+          "unit": "seconde"
+        },
+        {
+          "name": "AX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Acceleration associee a la periode tj dans la direction de l'axe local Ox.",
+          "required": true
+        },
+        {
+          "name": "AY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Acceleration associee a la periode tj dans la direction de l'axe local Oy.",
+          "required": true
+        },
+        {
+          "name": "AZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Acceleration associee a la periode tj dans la direction de l'axe local vertical Oz. Le spectre n'a de composantes x et y qu'en option plane, x, y et z en option spatiale [p.205].",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        }
+      ],
+      "pitfalls": [
+        "Le manuel comporte une coquille dans l'exemple du spectre generique (`PERIOD 2` au lieu de `PERIODE 2`) [p.203] : le mot-cle correct est `PERIODE`.",
+        "En option plane, il n'y a que les composantes locales x et y : `AZ` n'est pertinent qu'en option spatiale [p.205]."
+      ],
+      "examples": [
+        "ACCELERATION\nPERIODE 0     AX 0.1 AY 0.1 AZ 0.01\nPERIODE 0.5   AX 0.5 AY 0.5 AZ 0.2"
+      ]
+    },
+    {
+      "name": "PHI",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CHARGE",
+      "summary": "Liste des dephasages en radian de la sollicitation sinusoidale.",
+      "syntax": [
+        "(PHI lstphi)"
+      ],
+      "pages": [
+        211,
+        212
+      ],
+      "requiresV2": true,
+      "doc": "Liste des dephasages `phi1, phi2, ...` (radian) intervenant dans la ponderation temporelle generale :\n`coeff1*sin(w0*t+phi1) + coeff2*sin(w0*t+phi2) + ...`\nPar defaut `lstphi` vaut `phi1 = 0` [p.211-212].",
+      "args": [
+        {
+          "name": "lstphi",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Liste de dephasages phi1, phi2, ... en radian.",
+          "required": true,
+          "unit": "radian",
+          "default": "phi1 = 0"
+        }
+      ],
+      "pitfalls": [
+        "Angles en RADIAN [p.30, p.212].",
+        "`PHI` et `COEF` doivent etre coherents en nombre de termes (chaque terme i associe coeff_i et phi_i) [p.211]."
+      ],
+      "examples": [
+        "DYNAMIQUE CHARGE 200\nPAS_TEMPS 0.02\nTEMPS 300\nMODE 3\nPHI 0,1.5708\nCOEF 1,0.25\nBARRE 1 a 20 FZ -0.7\nFIN"
+      ]
+    },
+    {
+      "name": "POND",
+      "family": "dynamique",
+      "context": "bloc:AMORTISSEMENT",
+      "summary": "Ponderation appliquee aux coefficients ksij ou aux coefficients alpha et beta de Rayleigh.",
+      "syntax": [
+        "(POND pond)"
+      ],
+      "pages": [
+        200,
+        201
+      ],
+      "doc": "`pond` multiplie les coefficients `ksij` (amortissement modal ou energetique) ou les coefficients `alpha` et `beta` (Rayleigh) : `[C] = pond*(alpha*[M] + beta*[K])` [p.200].",
+      "args": [
+        {
+          "name": "pond",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Ponderation appliquee sur les coefficients ksij ou alpha/beta.",
+          "required": true
+        }
+      ],
+      "pitfalls": [
+        "Dans les exemples du manuel, `POND 0.01` sert a convertir un `KSI` saisi en pourcentage (`KSI 5`) en fraction (0.05) [p.201] : verifier la coherence KSI/POND, aucune conversion automatique n'est documentee."
+      ],
+      "examples": [
+        "AMORTISSEMENT 2\nMODE TOUT KSI 5\nPOND 0.01\nFIN"
+      ]
+    },
+    {
+      "name": "POND",
+      "family": "dynamique",
+      "context": "bloc:SPECTRE",
+      "summary": "Ponderation appliquee aux accelerations du spectre.",
+      "syntax": [
+        "(POND pond)"
+      ],
+      "pages": [
+        202,
+        203,
+        204
+      ],
+      "doc": "`pond` est la ponderation a appliquer aux accelerations `ax`, `ay` et `az`. Pour les formes `EUROCODE` et `EUROCODE REDUIT`, la ponderation est appliquee **en plus** sur Se ou Sd [p.203, p.204].\n\nUsage courant : saisir les accelerations en g puis `POND 9.81` pour revenir en unites de force/longueur coherentes.",
+      "args": [
+        {
+          "name": "pond",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Ponderation a appliquer aux accelerations ax, ay et az.",
+          "required": true
+        }
+      ],
+      "examples": [
+        "SPECTRE 1\nPOND 9.81\nACCELERATION\nPERIODE 0   AX 0.1 AY 0.1\nPERIODE 1   AX 0.5 AY 0.5\nFIN"
+      ]
+    },
+    {
+      "name": "POND",
+      "family": "dynamique",
+      "context": "bloc:SPECTRE REPONSE",
+      "summary": "Ponderations appliquees aux composantes locales du spectre dans la reponse spectrale.",
+      "syntax": [
+        "(POND X pondx Y pondy (Z pondz))"
+      ],
+      "pages": [
+        205
+      ],
+      "doc": "Ponderations sur les composantes locales du spectre : x et y en option plane, x, y et z en option spatiale. **Par defaut, les ponderations valent 0.0** [p.205].",
+      "args": [
+        {
+          "name": "X",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ponderation sur la composante locale x du spectre.",
+          "required": false,
+          "default": "0.0"
+        },
+        {
+          "name": "Y",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ponderation sur la composante locale y du spectre.",
+          "required": false,
+          "default": "0.0"
+        },
+        {
+          "name": "Z",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ponderation sur la composante locale z du spectre. Uniquement en option spatiale.",
+          "required": false,
+          "default": "0.0",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        }
+      ],
+      "pitfalls": [
+        "Defaut 0.0 : sans `POND`, la reponse spectrale est nulle [p.205].",
+        "Des ponderations signees (`POND X 1 Y -1`, `POND X -1 Y 1`, ...) permettent de balayer les combinaisons de signes entre directions (exemple p.306)."
+      ],
+      "examples": [
+        "SPECTRE 100 REPONSE\nSPECTRE 1\nCQC\nPOND X 1 Y 1\nFIN\nSPECTRE 101 REPONSE\nSPECTRE 1\nCQC\nPOND X 1 Y -1\nFIN"
+      ]
+    },
+    {
+      "name": "POND",
+      "family": "dynamique",
+      "context": "bloc:ACCELEROGRAMME",
+      "summary": "Ponderation appliquee aux accelerations au sol de l accelerogramme.",
+      "syntax": [
+        "(POND pond)"
+      ],
+      "pages": [
+        207
+      ],
+      "requiresV2": true,
+      "doc": "Ponderation a appliquer aux accelerations `ax`, `ay` et `az` de l'accelerogramme. Par defaut elle vaut 1 [p.207].\n\nUsage courant : saisir les accelerations en g puis `POND 9.81`.",
+      "args": [
+        {
+          "name": "pond",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Ponderation appliquee aux accelerations au sol.",
+          "required": true,
+          "default": "1"
+        }
+      ],
+      "examples": [
+        "ACCELEROGRAMME 10\nPAS_TEMPS 0.01\nPOND 9.81\nACCELERATION\nAX 0.1 AY 0.1 AZ 0.01\nFIN"
+      ]
+    },
+    {
+      "name": "POND",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CONVOI",
+      "summary": "Ponderation appliquee aux charges du convoi.",
+      "syntax": [
+        "(POND pond)"
+      ],
+      "pages": [
+        209
+      ],
+      "requiresV2": true,
+      "doc": "Ponderation a appliquer aux charges du convoi. Par defaut elle vaut 1 [p.209].",
+      "args": [
+        {
+          "name": "pond",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Ponderation appliquee aux charges du convoi.",
+          "required": true,
+          "default": "1"
+        }
+      ],
+      "examples": [
+        "DYNAMIQUE CONVOI 100\nCONVOI 12\nPAS_TEMPS 0.05\nVITESSE 5\nTEMPS 400\nPOND 1\nFIN"
+      ]
+    },
+    {
+      "name": "RIGIDITE CARA",
+      "family": "dynamique",
+      "context": "bloc:CARA SPECIAL",
+      "summary": "Introduit la ligne de caracteristiques mecaniques de l element special.",
+      "syntax": [
+        "RIGIDITE CARA",
+        "sx sy (sz ix iy) iz (ip)"
+      ],
+      "pages": [
+        386
+      ],
+      "requiresV2": true,
+      "doc": "**Sous-commande non attestee dans le manuel v24** : `RIGIDITE CARA` n'y a aucune occurrence et la page imprimee 214 est blanche. Source unique = memo distille ; seule reference du manuel = annexe B4.4 [p.386], sans syntaxe. Les restrictions d'option (PLANE / SPATIALE) ci-dessous en decoulent et ne sont donc pas sourcees non plus.\n\nIntroduit la ligne des caracteristiques RDM de l'element special. Les valeurs sont donnees sans mot-cle, dans l'ordre impose par l'option de structure (memo, non documente) :\n- option PLANE : `sx sy iz` ;\n- option SPATIALE : `sx sy sz ix iy iz ip`.",
+      "args": [
+        {
+          "name": "sx",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Section (aire) de l'element special.",
+          "required": true
+        },
+        {
+          "name": "sy",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant suivant y.",
+          "required": true
+        },
+        {
+          "name": "sz",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Section reduite d'effort tranchant suivant z. Option spatiale.",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "ix",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Inertie de torsion. Option spatiale.",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "iy",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Inertie de flexion autour de y. Option spatiale.",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "iz",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Inertie de flexion autour de z.",
+          "required": true
+        },
+        {
+          "name": "ip",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Inertie polaire. Option spatiale.",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        }
+      ],
+      "pitfalls": [
+        "Valeurs positionnelles sans mot-cle : l'ordre et le nombre de valeurs dependent de l'option de structure (memo distille, non documente dans le manuel v24).",
+        "`RIGIDITE CARA` est un mot-cle compose : les deux mots vont ensemble.",
+        "Provenance : la SYNTAXE de cette commande n'est pas attestee dans le manuel ST1 v24 (recherche plein texte : « CARA SPECIAL » et « RIGIDITE CARA », zero occurrence ; la page 214 est blanche). Seule l'annexe B4.4 « Elements speciaux » documente la methode de resolution, sans en donner la syntaxe. A confirmer aupres de l'editeur avant usage."
+      ],
+      "examples": [
+        "CARA SPECIAL 1\nRIGIDITE CARA\n0.5 0.4 0.02\nEFFORT\n1500 0 800\nFIN"
+      ]
+    },
+    {
+      "name": "SPECTRE",
+      "family": "dynamique",
+      "context": "top",
+      "summary": "Definit un spectre d acceleration, soit point par point, soit selon les formes reglementaires Eurocode Se ou Sd reduit.",
+      "syntax": [
+        "SPECTRE isp",
+        "   (POND pond)",
+        "   (BETA beta)",
+        "   < ACCELERATION",
+        "        PERIODE tj AX axj AY ayj (AZ azj)",
+        "        ... ,",
+        "     EUROCODE <HORIZONTAL(<X,Y>), VERTICAL> AX ax (S s) (ST st) (ALPHA alpha) ...",
+        "              ... (ETA eta) PERIODE tb tc td te ,",
+        "     EUROCODE REDUIT <HORIZONTAL(<X,Y>), VERTICAL> AX ax (S s) (ST st) (ALPHA alpha) ...",
+        "              ... (GAMMA gamma) (Q q) (BETA beta0) PERIODE tb tc td te >",
+        "   ...",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "pages": [
+        202,
+        203,
+        204
+      ],
+      "doc": "**Role** : definir le spectre d'acceleration numero `isp`, utilise ensuite par un bloc `SPECTRE ic REPONSE`.\n\n**Trois formes de definition** (exclusives au sein d'un meme bloc, notation `< , >`) :\n- `ACCELERATION` + lignes `PERIODE tj AX axj AY ayj (AZ azj)` : spectre generique point par point. Le spectre **interpole** les valeurs d'acceleration entre les periodes definies par l'utilisateur et **prend la valeur limite en dehors** [p.203].\n- `EUROCODE` : spectre elastique Se de l'EN 1998-1 §3.2.2.2 (horizontal) et §3.2.2.3 (vertical).\n- `EUROCODE REDUIT` : spectre de calcul Sd de l'EN 1998-1 §3.2.2.5.\n\n**Spectre Se (EUROCODE), horizontal** [p.203] :\n- `0 <= T <= Tb : Se = ax*S*St*[1 + T/Tb*(alpha*eta - 1)]`\n- `Tb <= T <= Tc : Se = ax*S*St*alpha*eta`\n- `Tc <= T <= Td : Se = ax*S*St*alpha*eta*Tc/T`\n- `Td <= T <= Te : Se = ax*S*St*alpha*eta*Tc*Td/T^2`\nLe spectre **vertical** utilise les memes expressions **sans le facteur S** (seul `St` intervient) [p.203].\nSe est ensuite modifie selon l'amortissement ksi de chaque mode : `eta = max[0.55 ; sqrt(10/(5+ksi))]`, ce qui suppose que Se est defini pour 5 % d'amortissement [p.203].\n\n**Spectre Sd (EUROCODE REDUIT), horizontal** [p.204] :\n- `0 <= T <= Tb : Sd = ax*S*St*[gamma + T/Tb*(alpha/q - gamma)]`\n- `Tb <= T <= Tc : Sd = ax*S*St*alpha/q`\n- `Tc <= T <= Td : Sd = max(ax*S*St*alpha/q*Tc/T ; beta0*ax)`\n- `Td <= T <= Te : Sd = max(ax*S*St*alpha/q*Tc*Td/T^2 ; beta0*ax)`\nMeme remarque pour le vertical (sans S).\n\n**Ponderation** : `pond` s'applique en plus sur Se comme sur Sd [p.203, p.204].",
+      "args": [
+        {
+          "name": "isp",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du spectre.",
+          "required": true
+        },
+        {
+          "name": "POND",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Ponderation a appliquer aux accelerations ax, ay et az (et, pour les formes Eurocode, au spectre Se ou Sd).",
+          "required": false
+        },
+        {
+          "name": "BETA",
+          "kind": "subcommand",
+          "type": "real",
+          "doc": "Angle dans le plan horizontal de l'axe local Ox du spectre par rapport a la direction Ox du repere global. Uniquement en option spatiale.",
+          "required": false,
+          "unit": "radian",
+          "default": "0",
+          "onlyOptions": [
+            "SPATIALE"
+          ]
+        },
+        {
+          "name": "ACCELERATION",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Introduit un spectre generique defini point par point par des lignes PERIODE ... AX ... AY ... (AZ ...).",
+          "required": false
+        },
+        {
+          "name": "EUROCODE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Introduit un spectre elastique Se selon EN 1998-1 (lignes HORIZONTAL / VERTICAL).",
+          "required": false
+        },
+        {
+          "name": "EUROCODE REDUIT",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "Introduit un spectre de calcul Sd selon EN 1998-1 §3.2.2.5 (lignes HORIZONTAL / VERTICAL).",
+          "required": false
+        }
+      ],
+      "prerequisites": [
+        "Un bloc SPECTRE ic REPONSE referencant ce spectre, puis EXEC SPECTRE REPONSE, sont necessaires pour obtenir des resultats [p.205-206]"
+      ],
+      "pitfalls": [
+        "**Le `BETA` du bloc SPECTRE (angle en radian, spatiale) et le `BETA beta0` de la ligne `EUROCODE REDUIT` (limite inferieure du spectre Sd, defaut 0,2) sont deux parametres differents portant le meme mot-cle** [p.202-204].",
+        "Le spectre **vertical** n'utilise pas le parametre de sol `S` : seul `ST` intervient dans les formules Se et Sd verticales [p.203-204]. Saisir `S` sur une ligne `VERTICAL` n'aura pas l'effet attendu.",
+        "`ALPHA` vaut 2.5 en horizontal et 3 en vertical pour le spectre Eurocode Se, mais 2.5 dans tous les cas pour le spectre Eurocode SD reduit [p.203].",
+        "Les periodes doivent verifier `0 <= tb <= tc <= td < te` [p.203].",
+        "Pour etendre le palier Sd defini entre Tb et Tc jusqu'a une periode nulle, il suffit d'imposer `Tb = 0` [p.204].",
+        "Le spectre generique interpole entre les periodes fournies et prend la valeur limite au-dela du dernier point : le dernier point conditionne tout le domaine des grandes periodes [p.203].",
+        "`eta` (correction d'amortissement) n'existe que pour `EUROCODE` ; `GAMMA`, `Q` et `BETA beta0` n'existent que pour `EUROCODE REDUIT`."
+      ],
+      "examples": [
+        "# Spectre generique defini point par point\nSPECTRE 1\nBETA 0.1\nPOND 9.81\nACCELERATION\nPERIODE 0     AX 0.1 AY 0.1 AZ 0.01\nPERIODE 0.5   AX 0.5 AY 0.5 AZ 0.2\nPERIODE 1     AX 0.1 AY 0.1 AZ 0.01\nPERIODE 2     AX 0.0 AY 0.0 AZ 0.00\nFIN",
+        "# Spectre elastique Eurocode Se (option spatiale)\nSPECTRE 2\nBETA 0.0\nPOND 9.81\nEUROCODE\nHORIZONTAL X AX 0.5  S 1 ST 1.2 PERIODE 0.03 0.2 2.5 4\nHORIZONTAL Y AX 0.5  S 1 ST 1.2 PERIODE 0.03 0.2 2.5 4\nVERTICAL     AX 0.25       ST 1.1 PERIODE 0.03 0.2 2.5 4\nFIN",
+        "# Spectre de calcul Eurocode reduit Sd\nSPECTRE 2\nBETA 0.0\nPOND 9.81\nEUROCODE REDUIT\nHORIZONTAL X AX 0.5  S 1 ST 1 Q 1.0 BETA 0.2 PERIODE 0.03 0.2 2.5 5\nHORIZONTAL Y AX 0.5  S 1 ST 1 Q 1.0 BETA 0.2 PERIODE 0.03 0.2 2.5 5\nVERTICAL     AX 0.25      ST 1 Q 1.0 BETA 0.2 PERIODE 0.03 0.2 2.5 5\nFIN",
+        "# Option plane : HORIZONTAL sans X/Y\nSPECTRE 1\nPOND 9.81\nEUROCODE\nHORIZONTAL AX 0.1     S 1   ST 1.2 PERIODE 0.01 0.2 2.5 4\nVERTICAL   AX 0.1*0.9 ST 1.1       PERIODE 0.01 0.2 2.0 3\nFIN"
+      ]
+    },
+    {
+      "name": "SPECTRE",
+      "family": "dynamique",
+      "context": "bloc:SPECTRE REPONSE",
+      "summary": "Designe le numero du spectre d acceleration a recombiner dans la reponse spectrale.",
+      "syntax": [
+        "SPECTRE isp"
+      ],
+      "pages": [
+        205
+      ],
+      "doc": "Reference le spectre d'acceleration `isp` defini par un bloc `SPECTRE isp ... FIN`. Ligne obligatoire dans un bloc `SPECTRE ic REPONSE` [p.205].",
+      "args": [
+        {
+          "name": "isp",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du spectre d'acceleration.",
+          "required": true
+        }
+      ],
+      "pitfalls": [
+        "Ne pas confondre avec le numero `ic` de la reponse spectrale porte par l'en-tete `SPECTRE ic REPONSE`."
+      ],
+      "examples": [
+        "SPECTRE 10 REPONSE\nSPECTRE 1\nCQC\nPOND X 1\nFIN"
+      ]
+    },
+    {
+      "name": "SPECTRE REPONSE",
+      "family": "dynamique",
+      "context": "top",
+      "summary": "Definit une reponse spectrale : recombinaison modale LIN, SRSS ou CQC d un spectre avec ponderations par direction.",
+      "syntax": [
+        "SPECTRE ic REPONSE",
+        "   SPECTRE isp",
+        "   <LIN, SRSS, CQC>",
+        "   (POND X pondx Y pondy (Z pondz))",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "pages": [
+        205,
+        206
+      ],
+      "exec": "EXEC SPECTRE REPONSE",
+      "doc": "**Role** : definir la reponse spectrale numero `ic` obtenue en recombinant les modes propres pour le spectre `isp`.\n\n**Recombinaisons** [p.205] :\n- `LIN` : combinaison lineaire des modes ;\n- `SRSS` : combinaison quadratique (racine carree de la somme des carres) ;\n- `CQC` : combinaison quadratique complete — **impose la definition prealable d'un amortissement dans les barres**.\n\n**Ponderations** : `pondx`, `pondy` portent sur les composantes locales x et y du spectre en option plane, `pondx`, `pondy`, `pondz` en option spatiale. Par defaut les ponderations valent 0.0 [p.205] : sans `POND`, la reponse est nulle.\n\n**Nature du resultat** : la reponse spectrale est un **cas de charge dynamique, pas une enveloppe** [p.206]. Pour obtenir un effet enveloppe +/-, il faut construire une `ENV ... COMB` avec des ponderations +1 / -1 (voir exemple p.305).\n\nCombinaison des directions : trois blocs `SPECTRE ic REPONSE` (un par direction) puis une `ENV COMB` donne `E = Ex + Ey + Ez` ; un seul bloc avec `POND X 1 Y 1 Z 1` et `SRSS` donne `E = sqrt(Ex^2 + Ey^2 + Ez^2)` [p.205].",
+      "args": [
+        {
+          "name": "ic",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la reponse spectrale.",
+          "required": true
+        },
+        {
+          "name": "REPONSE",
+          "kind": "keyword",
+          "type": "flag",
+          "doc": "Mot-cle obligatoire suivant le numero, qui distingue le bloc de reponse spectrale du bloc SPECTRE de definition d'un spectre.",
+          "required": true
+        },
+        {
+          "name": "SPECTRE",
+          "kind": "subcommand",
+          "type": "int",
+          "doc": "Numero isp du spectre d'acceleration a recombiner.",
+          "required": true
+        },
+        {
+          "name": "LIN",
+          "kind": "choice",
+          "type": "flag",
+          "doc": "Recombinaison modale lineaire.",
+          "required": true,
+          "values": [
+            "LIN",
+            "SRSS",
+            "CQC"
+          ]
+        },
+        {
+          "name": "POND",
+          "kind": "subcommand",
+          "type": "bloc",
+          "doc": "POND X pondx Y pondy (Z pondz) : ponderations sur les composantes locales du spectre. Par defaut 0.0.",
+          "required": false
+        }
+      ],
+      "prerequisites": [
+        "Le spectre isp doit avoir ete defini par un bloc SPECTRE ... FIN [p.202]",
+        "Pour CQC : un amortissement doit avoir ete defini et affecte aux barres [p.205]",
+        "L'execution passe par EXEC SPECTRE REPONSE, qui exige EXEC MODE prealable [p.206]"
+      ],
+      "pitfalls": [
+        "**Les ponderations valent 0.0 par defaut** : oublier la ligne `POND` produit une reponse spectrale nulle [p.205].",
+        "**La reponse spectrale est un cas de charge, pas une enveloppe** : pour un effet +/- il faut creer une `ENV ... COMB` avec coefficients +1 / -1 [p.206, exemple p.305].",
+        "`CQC` sans amortissement defini : le manuel indique que la combinaison CQC degenere alors en SRSS [p.245]. La commande impose neanmoins la definition prealable d'un amortissement dans les barres [p.205].",
+        "En option plane il n'y a que `POND X` et `POND Y` ; `POND Z` n'existe qu'en option spatiale [p.205].",
+        "Le bloc s'ecrit `SPECTRE ic REPONSE` (numero AVANT le mot-cle REPONSE) et contient une ligne `SPECTRE isp` : deux emplois differents du meme mot-cle."
+      ],
+      "examples": [
+        "# Reponse spectrale CQC dans la direction X\nSPECTRE 10 REPONSE\nSPECTRE 1\nCQC\nPOND X 1\nFIN",
+        "# Trois directions combinees lineairement via une enveloppe +/-1\nSPECTRE 10 REPONSE\nSPECTRE 1\nCQC\nPOND X 1\nFIN\nSPECTRE 20 REPONSE\nSPECTRE 1\nCQC\nPOND Y 1\nFIN\nSPECTRE 30 REPONSE\nSPECTRE 1\nCQC\nPOND Z 1\nFIN\nEXEC SPECTRE REPONSE 10,20,30\nENV 1 COMB\nSPECTRE 10 +1 -1\nSPECTRE 20 +1 -1\nSPECTRE 30 +1 -1\nFIN",
+        "# Reponse spectrale SRSS sur les differentes composantes\nSPECTRE 100 REPONSE\nSPECTRE 1\nSRSS\nPOND X 1 Y 1 Z 1\nFIN"
+      ]
+    },
+    {
+      "name": "SRSS",
+      "family": "dynamique",
+      "context": "bloc:SPECTRE REPONSE",
+      "summary": "Recombinaison modale quadratique simple (racine carree de la somme des carres).",
+      "syntax": [
+        "SRSS"
+      ],
+      "pages": [
+        205
+      ],
+      "doc": "Recombinaison quadratique dite SRSS. Avec `POND X 1 Y 1 Z 1`, les trois directions sont combinees quadratiquement : `E = sqrt(Ex^2 + Ey^2 + Ez^2)` [p.205]. Exclusif de `LIN` et `CQC`.",
+      "examples": [
+        "SPECTRE 100 REPONSE\nSPECTRE 1\nSRSS\nPOND X 1 Y 1 Z 1\nFIN"
+      ]
+    },
+    {
+      "name": "TEMPS",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CONVOI",
+      "summary": "Duree totale d analyse de la traversee du convoi, en seconde.",
+      "syntax": [
+        "TEMPS temps"
+      ],
+      "pages": [
+        209
+      ],
+      "requiresV2": true,
+      "doc": "Temps d'analyse, en secondes [p.209]. Parametre obligatoire.",
+      "args": [
+        {
+          "name": "temps",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Duree d'analyse.",
+          "required": true,
+          "unit": "seconde"
+        }
+      ],
+      "pitfalls": [
+        "Ne pas confondre avec l'option `TEMPS <OUI,NON>` de `EXEC HISTORIQUE`, qui pilote la conservation des resultats intermediaires en base [p.210]."
+      ],
+      "examples": [
+        "DYNAMIQUE CONVOI 100\nCONVOI 12\nPAS_TEMPS 0.05\nVITESSE 5\nTEMPS 400\nFIN"
+      ]
+    },
+    {
+      "name": "TEMPS",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CHARGE",
+      "summary": "Duree totale d analyse de la charge forcee, en seconde.",
+      "syntax": [
+        "TEMPS temps"
+      ],
+      "pages": [
+        211,
+        212
+      ],
+      "requiresV2": true,
+      "doc": "Temps d'analyse, en secondes. Parametre obligatoire [p.211-212].",
+      "args": [
+        {
+          "name": "temps",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Duree d'analyse.",
+          "required": true,
+          "unit": "seconde"
+        }
+      ],
+      "pitfalls": [
+        "Ne pas confondre avec l'option `TEMPS <OUI,NON>` de `EXEC HISTORIQUE` [p.213]."
+      ],
+      "examples": [
+        "DYNAMIQUE CHARGE 100\nPAS_TEMPS 0.05\nTEMPS 500\nMODE 1\nBARRE 1 a 10 FY +10\nFIN"
+      ]
+    },
+    {
+      "name": "VITESSE",
+      "family": "dynamique",
+      "context": "bloc:DYNAMIQUE CONVOI",
+      "summary": "Vitesse de deplacement du convoi, en unite de longueur du projet par seconde.",
+      "syntax": [
+        "VITESSE vitesse"
+      ],
+      "pages": [
+        209
+      ],
+      "requiresV2": true,
+      "doc": "Vitesse de deplacement du convoi, exprimee dans **l'unite de longueur du projet par seconde** [p.209]. Parametre obligatoire.",
+      "args": [
+        {
+          "name": "vitesse",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Vitesse de deplacement du convoi, en unite_longueur/seconde.",
+          "required": true
+        }
+      ],
+      "pitfalls": [
+        "L'unite est celle du projet : si les longueurs sont en metres, `VITESSE 5` signifie 5 m/s (18 km/h), pas 5 km/h [p.209]."
+      ],
+      "examples": [
+        "DYNAMIQUE CONVOI 100\nCONVOI 12\nPAS_TEMPS 0.05\nVITESSE 5\nTEMPS 400\nFIN"
+      ]
+    }
+  ]
+}

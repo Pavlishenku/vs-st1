@@ -1,0 +1,766 @@
+{
+  "commands": [
+    {
+      "name": "ACTIVER",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Active selectivement des barres et des appuis (hors phasage) ; seuls les elements actives sont pris en compte.",
+      "syntax": [
+        "ACTIVER TOUT",
+        "ACTIVER (BARRE liste) (APPUI liste)"
+      ],
+      "doc": "Activation selective des barres et des appuis, **hors phasage** [p.99].\n\n- **Par defaut, toutes les barres et tous les appuis definis sont actives** [p.99].\n- Des qu'une activation selective est demandee, **seuls les elements effectivement actives par `ACTIVER` sont pris en compte** [p.99].\n- `ACTIVER TOUT` : active tout ce qui a ete defini.\n- `ACTIVER (BARRE liste) (APPUI liste)` : activation partielle ; **les elements actives s'ajoutent aux elements deja actives** [p.99].\n- Dans ces instructions, `liste` peut etre remplacee par le mot `TOUT` : l'instruction agit alors sur toutes les barres / tous les appuis **deja definis** [p.99].\n\nLes listes suivent la syntaxe generale : `1,2,5 a 9`, `i a j pas p`, pas negatif admis [p.31].\n\nNe pas confondre avec `ACTIVER APPUI` / `ACTIVER BARRE` du bloc `PHASAGE` (contexte `bloc:PHASAGE`) : `ACTIVER BARRE` du phasage porte en plus `AGE` et `MODE` [p.187] ; `ACTIVER APPUI` du phasage n'a que la liste [p.186].",
+      "args": [
+        {
+          "name": "TOUT",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Active toutes les barres et tous les appuis definis.",
+          "values": [
+            "TOUT"
+          ],
+          "pages": [
+            99
+          ]
+        },
+        {
+          "name": "BARRE",
+          "kind": "keyword",
+          "type": "list",
+          "required": false,
+          "doc": "Liste des barres a activer. `TOUT` admis a la place de la liste.",
+          "pages": [
+            99
+          ]
+        },
+        {
+          "name": "APPUI",
+          "kind": "keyword",
+          "type": "list",
+          "required": false,
+          "doc": "Liste des appuis a activer. `TOUT` admis a la place de la liste.",
+          "pages": [
+            99
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Les barres et appuis vises doivent avoir ete definis (BARRE, APPUI) avant d etre actives"
+      ],
+      "forbidden": [],
+      "pitfalls": [
+        "L'emploi des mots-cles `ACTIVER` ou `DESACTIVER` **supprime toute activation par defaut** : a partir de la, il faut activer explicitement tout ce que l'on veut calculer [p.99-100].",
+        "Les activations sont **cumulatives** : `ACTIVER BARRE 1 a 5` puis `ACTIVER BARRE 8` laisse 1 a 5 et 8 actives [p.99].",
+        "En activation selective, **modifier les coordonnees d'un noeud impose de reactiver toutes les barres** qui y etaient liees [p.42].",
+        "Dans les blocs de chargement, le mot `TOUT` designe les elements **actives au moment de l'execution du chargement** : desactiver une barre change silencieusement le chargement effectivement applique [p.108-121].",
+        "Ne pas confondre avec l'activation du `PHASAGE` (`ACTIVER BARRE liste (AGE a) (MODE <ABS,REL>)`, p.187-188) : la, il n'y a **aucune activation par defaut** et les appuis doivent etre actives avant les barres [p.181]."
+      ],
+      "examples": [
+        "ACTIVER BARRE 1 a 5 APPUI 2,10",
+        "ACTIVER TOUT",
+        "ACTIVER BARRE TOUT     # toutes les barres deja definies"
+      ],
+      "pages": [
+        99,
+        100
+      ]
+    },
+    {
+      "name": "DESACTIVER",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Desactive selectivement des barres et des appuis (hors phasage).",
+      "syntax": [
+        "DESACTIVER TOUT",
+        "DESACTIVER (BARRE liste) (APPUI liste)"
+      ],
+      "doc": "Desactivation selective des barres et des appuis, **hors phasage** [p.100].\n\n- `DESACTIVER TOUT` : desactive tout ce qui a ete defini.\n- `DESACTIVER (BARRE liste) (APPUI liste)` : les elements listes sont **enleves de la liste des barres et des appuis actives** [p.100].\n- `liste` peut etre remplacee par le mot `TOUT` : l'instruction agit sur toutes les barres / tous les appuis **deja definis** [p.100].\n\nNe pas confondre avec `DESACTIVER (BARRE liste, APPUI liste)` du bloc `PHASAGE` (contexte `bloc:PHASAGE`, p.189), qui vaut **suppression** de l'element dans la chronologie de construction, ni avec `DESACTIVER ENV liste` du phasage (suspension d'une enveloppe, p.184).",
+      "args": [
+        {
+          "name": "TOUT",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Desactive toutes les barres et tous les appuis definis.",
+          "values": [
+            "TOUT"
+          ],
+          "pages": [
+            100
+          ]
+        },
+        {
+          "name": "BARRE",
+          "kind": "keyword",
+          "type": "list",
+          "required": false,
+          "doc": "Liste des barres a desactiver. `TOUT` admis a la place de la liste.",
+          "pages": [
+            100
+          ]
+        },
+        {
+          "name": "APPUI",
+          "kind": "keyword",
+          "type": "list",
+          "required": false,
+          "doc": "Liste des appuis a desactiver. `TOUT` admis a la place de la liste.",
+          "pages": [
+            100
+          ]
+        }
+      ],
+      "prerequisites": [],
+      "forbidden": [],
+      "pitfalls": [
+        "**Piege documente majeur** : si aucune activation explicite (par `ACTIVER`) n'a ete effectuee, l'emploi de `DESACTIVER` aboutit **toujours a desactiver TOUT**, puisqu'il n'y a plus d'activation par defaut [p.99-100]. Commencer par `ACTIVER TOUT` avant de desactiver un sous-ensemble.",
+        "L'emploi de `ACTIVER` ou `DESACTIVER` supprime toute activation par defaut [p.99-100].",
+        "Desactiver un appui peut rendre la structure instable : il faut au moins un appui bloque en X pour la stabilite [p.48].",
+        "Ne pas confondre avec le `DESACTIVER` du phasage, qui **supprime** l'element de la structure a la date courante [p.189]."
+      ],
+      "examples": [
+        "ACTIVER TOUT              # on repart d une structure entierement active\nDESACTIVER BARRE 1 a 5 APPUI 2,10",
+        "DESACTIVER TOUT\nACTIVER BARRE 1 a 20 APPUI 1,2"
+      ],
+      "pages": [
+        99,
+        100
+      ]
+    },
+    {
+      "name": "ENREGISTRER",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Enregistre l etat courant de la session (base de donnees ST1) sous un nom de projet.",
+      "syntax": [
+        "ENREGISTRER 'Nom du projet'",
+        "ENREGISTRER (PROJET) 'Nom du projet'"
+      ],
+      "doc": "Sauvegarde dans la base de donnees du projet l'**ensemble des definitions et des resultats** de la session courante, sous le nom indique [p.39-40].\n\nLes deux ecritures sont documentees comme equivalentes : `ENREGISTRER 'Nom du projet'` et `ENREGISTRER PROJET 'Nom du projet'` [p.40].\n\nLe projet ainsi enregistre est relu ulterieurement par la commande `PROJET 'Nom du projet'` [p.40].",
+      "args": [
+        {
+          "name": "Nom du projet",
+          "kind": "positional",
+          "type": "string",
+          "required": true,
+          "doc": "Nom du projet, entre quotes simples. La longueur du nom **avec son repertoire** ne doit pas depasser 256 caracteres [p.29, p.40].",
+          "pages": [
+            40
+          ]
+        },
+        {
+          "name": "PROJET",
+          "kind": "keyword",
+          "type": "flag",
+          "required": false,
+          "doc": "Mot-cle optionnel : `ENREGISTRER PROJET 'nom'` est equivalent a `ENREGISTRER 'nom'` [p.40].",
+          "pages": [
+            40
+          ]
+        }
+      ],
+      "prerequisites": [],
+      "forbidden": [],
+      "pitfalls": [
+        "Taille des projets sur disque limitee a un peu plus de 1 Go (fichier `BASEDAT` dimensionne a 1280 Mo) ; pour les gros projets, augmenter le 3e chiffre du fichier `ST1.par` (`nb_lign_index`, 64 par defaut) [p.29, p.40].",
+        "Modifier `nb_lign_index` change la **structure de la base de donnees** : le projet genere ne sera relisible qu'en presence du `ST1.par` modifie. Recommandation de la doc : ne pas modifier le `ST1.par` du repertoire de l'executable, mais en placer une copie modifiee dans le repertoire du projet (ST1 cherche d'abord le fichier local) [p.40].",
+        "Une valeur trop grande de `nb_lign_index` ralentit le demarrage de ST1 (reservation de la base d'index sur disque) [p.40].",
+        "Nom de projet + repertoire > 256 caracteres : source documentee d'erreur de syntaxe a la relecture [p.29, p.40]."
+      ],
+      "examples": [
+        "ENREGISTRER 'pont_pousse'",
+        "EXEC CHARG\nENREGISTRER 'etape1'"
+      ],
+      "pages": [
+        39,
+        40
+      ]
+    },
+    {
+      "name": "ENREGISTRER PROJET",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Forme explicite de ENREGISTRER : sauvegarde la base de donnees courante sous un nom de projet.",
+      "syntax": [
+        "ENREGISTRER PROJET 'Nom du projet'"
+      ],
+      "doc": "Forme documentee avec le mot-cle `PROJET` explicite. Strictement equivalente a `ENREGISTRER 'Nom du projet'` : l'etat courant de la session (definitions + resultats) est enregistre dans le projet [p.40].\n\nL'aide-memoire du manuel note la commande sous la forme `ENREGISTRER (PROJET) ('Nom du projet')`, le mot-cle `PROJET` etant optionnel (renvoi p.40).",
+      "args": [
+        {
+          "name": "PROJET",
+          "kind": "keyword",
+          "type": "flag",
+          "required": true,
+          "doc": "Mot-cle explicite de cette forme.",
+          "pages": [
+            40
+          ]
+        },
+        {
+          "name": "Nom du projet",
+          "kind": "positional",
+          "type": "string",
+          "required": true,
+          "doc": "Nom du projet, entre quotes simples.",
+          "pages": [
+            40
+          ]
+        }
+      ],
+      "prerequisites": [],
+      "forbidden": [],
+      "pitfalls": [
+        "Memes limites que `ENREGISTRER` : taille de projet (~1 Go, modifiable par `nb_lign_index` dans `ST1.par`) et 256 caracteres pour le nom avec repertoire [p.29, p.40]."
+      ],
+      "examples": [
+        "ENREGISTRER PROJET 'pont_pousse'"
+      ],
+      "pages": [
+        40
+      ]
+    },
+    {
+      "name": "LIRE",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Lit et interprete un fichier de donnees ST1 depuis la console ou depuis un autre fichier de donnees.",
+      "syntax": [
+        "LIRE <'Nom du fichier', CONSOLE>",
+        "LIRE 'Nom du fichier'"
+      ],
+      "doc": "Interprete toutes les commandes contenues dans le fichier designe, jusqu'a ce que ST1 reaffiche le prompt `>` a la console [p.37].\n\n- Le nom de fichier est une **chaine entre quotes simples** (regle generale des chaines : quote interne doublee, **aucun caractere accentue**) [p.31].\n- **Imbrication autorisee** : la lecture d'un fichier de donnees peut s'effectuer a l'interieur d'un autre fichier de donnees [p.37].\n- La lecture s'interrompt sur `RETOUR` (fin anticipee) ou sur `LIRE CONSOLE` (main rendue a la console) [p.37-38].\n- Extension conseillee pour les fichiers de donnees : `.ST1` (association Windows posee a l'installation) [p.29, p.33].\n- `LIRE` est aussi utilisable en mode graphique pour lancer un fichier d'instructions de dessin deja prepare [p.247].\n\nLimites documentees : **256 caracteres** maximum pour un nom de fichier (repertoire compris), **128 caracteres** maximum par ligne de fichier de donnees [p.29].",
+      "args": [
+        {
+          "name": "Nom du fichier",
+          "kind": "positional",
+          "type": "string",
+          "required": true,
+          "doc": "Nom (et chemin) du fichier de donnees a interpreter, entre quotes simples. 256 caracteres maximum, repertoire compris [p.29].",
+          "pages": [
+            37
+          ]
+        },
+        {
+          "name": "CONSOLE",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Forme alternative `LIRE CONSOLE` : sortie temporaire vers la console (voir la commande dediee) [p.38].",
+          "values": [
+            "CONSOLE"
+          ],
+          "pages": [
+            38
+          ]
+        }
+      ],
+      "prerequisites": [],
+      "forbidden": [],
+      "pitfalls": [
+        "Fichiers projet d'une version anterieure : les `.STD`/`.STI` et `.ST1D`/`.ST1I` sont **incompatibles** avec ST1 v24 ; le projet doit etre regenere en **relisant le fichier de donnees** avec LIRE [p.28, p.39-40].",
+        "Erreur de syntaxe a la relecture : verifier que la longueur du nom de fichier **avec son repertoire** ne depasse pas 256 caracteres ; sinon recreer le projet dans un repertoire au nom plus court [p.29, p.40].",
+        "Une ligne de fichier de donnees ne doit pas depasser 128 caracteres [p.29] ; pour une liste longue, terminer la ligne par une virgule pour la poursuivre [p.31]."
+      ],
+      "examples": [
+        "LIRE 'pont.st1'",
+        "# lecture imbriquee depuis un fichier maitre\nLIRE 'geometrie.st1'\nLIRE 'charges.st1'"
+      ],
+      "pages": [
+        37,
+        38
+      ]
+    },
+    {
+      "name": "LIRE CONSOLE",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Interrompt temporairement la lecture du fichier de donnees et rend la main a la console.",
+      "syntax": [
+        "LIRE CONSOLE"
+      ],
+      "doc": "Place dans un fichier de donnees, `LIRE CONSOLE` suspend l'interpretation du fichier et redonne la main a l'utilisateur a la console [p.38].\n\nLe prompt affiche alors **le nom de tous les fichiers en cours de lecture**. Exemple : apres `LIRE 'toto.st1'`, si `toto.st1` contient `LIRE CONSOLE`, ST1 affiche `>toto.st1>>` [p.38].\n\nLa lecture reprend par la commande `RETOUR`, qui poursuit l'interpretation du fichier jusqu'a sa fin ; le prompt `>` est ensuite reaffiche [p.38].",
+      "args": [],
+      "prerequisites": [
+        "Doit se trouver dans un fichier de donnees en cours de lecture pour avoir un sens (sortie temporaire vers la console)"
+      ],
+      "forbidden": [],
+      "pitfalls": [
+        "Ne pas confondre avec `SORTIE CONSOLE` : `LIRE CONSOLE` agit sur le **flux de lecture des commandes**, `SORTIE CONSOLE` agit sur le **flux d'edition des resultats** [p.38, p.39].",
+        "Apres `LIRE CONSOLE`, c'est `RETOUR` qui **poursuit** la lecture ; le meme mot-cle `RETOUR` place directement dans un fichier **arrete** au contraire la lecture [p.37-38]."
+      ],
+      "examples": [
+        "# dans toto.st1 :\nLIRE CONSOLE     # rend la main a la console ; RETOUR poursuivra la lecture"
+      ],
+      "pages": [
+        37,
+        38
+      ]
+    },
+    {
+      "name": "LISTER PROJET",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Edite la liste des projets deja stockes sur disque.",
+      "syntax": [
+        "LISTER PROJET"
+      ],
+      "doc": "Donne la liste des projets deja stockes sur disque [p.40].\n\nComme toutes les commandes d'edition, la sortie est dirigee par la commande `SORTIE` (console, ou fichier si `SORTIE 'nom'` a ete utilisee) [p.39].",
+      "args": [],
+      "prerequisites": [],
+      "forbidden": [],
+      "pitfalls": [
+        "Commande composee : `LISTER PROJET` appartient a la famille `LISTER` (rappel des donnees, p.240-243) mais est documentee avec la gestion des projets [p.40]."
+      ],
+      "examples": [
+        "LISTER PROJET",
+        "SORTIE 'liste_projets.txt'\nLISTER PROJET\nSORTIE CONSOLE"
+      ],
+      "pages": [
+        40
+      ]
+    },
+    {
+      "name": "MESSAGE",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Regle le niveau d affichage des messages d execution et d avertissement.",
+      "syntax": [
+        "MESSAGE <AUCUN, TOUT, (REDUIT)>"
+      ],
+      "doc": "Controle l'affichage des messages d'execution et d'avertissement (`attention : redefinition ...`), a l'ecran et dans le fichier `erreur.txt` [p.34, p.41].\n\n- `MESSAGE TOUT` : affichage de **tous** les messages d'execution et d'avertissement.\n- `MESSAGE REDUIT` : suppression des messages **d'avertissement seuls**.\n- `MESSAGE AUCUN` : suppression de **tous** les messages.\n\nLa commande **prend effet a partir de l'endroit ou elle est inseree** dans le fichier de donnees [p.41].\n\nRappel : les messages affiches a l'ecran sont sauvegardes dans le fichier `erreur.txt`, consultable apres l'execution pour localiser les erreurs signalees [p.34].",
+      "args": [
+        {
+          "name": "niveau",
+          "kind": "choice",
+          "type": "enum",
+          "required": true,
+          "doc": "Niveau d'affichage : TOUT (tous les messages d'execution et d'avertissement), REDUIT (supprime les avertissements seuls), AUCUN (supprime tous les messages).",
+          "values": [
+            "AUCUN",
+            "TOUT",
+            "REDUIT"
+          ],
+          "pages": [
+            41
+          ]
+        }
+      ],
+      "prerequisites": [],
+      "forbidden": [],
+      "pitfalls": [
+        "Effet **positionnel** : la commande ne vaut qu'a partir de son point d'insertion ; la placer avant la partie de fichier a filtrer [p.41].",
+        "`MESSAGE AUCUN` masque aussi les messages d'execution : a proscrire pendant la mise au point d'un modele ; repasser en `MESSAGE TOUT` pour deboguer [p.41].",
+        "Les avertissements masques par `REDUIT` signalent des usages licites mais peut-etre involontaires, typiquement la **redefinition des caracteristiques d'une barre** par un second `CARA` [p.34].",
+        "La notation de l'aide-memoire `<AUCUN, TOUT, (REDUIT)>` est celle du manuel ; les trois mots-cles sont les seules valeurs documentees [p.41]."
+      ],
+      "examples": [
+        "MESSAGE REDUIT     # supprime les avertissements seuls",
+        "MESSAGE AUCUN\nCARA 10 IZ .45     # redefinition volontaire, sans message\nMESSAGE TOUT"
+      ],
+      "pages": [
+        41
+      ]
+    },
+    {
+      "name": "MX_ETUDE",
+      "family": "general",
+      "context": "top",
+      "aliases": [
+        "mx_etude"
+      ],
+      "summary": "Fixe le nombre limite de sections d etude dans le fichier parametres ST1.par.",
+      "syntax": [
+        "MX_ETUDE nse"
+      ],
+      "doc": "Commande du **fichier parametres `ST1.par`** : donne la valeur `nse` au nombre limite de **sections d'etude** [p.29, p.332].\n\nLa limite par defaut annoncee au chapitre `Limites du programme` est **80000 sections d'etude** [p.29] ; l'extrait du fichier parametres livre avec ST1 v24 contient `MX_ETUDE 200000` [p.332].\n\nLes sections d'etude sont creees par la commande `ETUDE` (une section a chaque extremite de barre par defaut, plus celles demandees par `SE` / `PAS`) [p.101-102].\n\nAucune unite : c'est un effectif.",
+      "args": [
+        {
+          "name": "nse",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Nombre limite de sections d'etude. Valeur du ST1.par livre : 200000 [p.332] ; le chapitre Limites annonce 80000 [p.29]. Aucune de ces deux valeurs contradictoires ne peut etre presentee comme LA valeur par defaut.",
+          "pages": [
+            29,
+            332
+          ]
+        }
+      ],
+      "prerequisites": [],
+      "forbidden": [
+        "Commande documentee comme commande du fichier parametres ST1.par (p.29, p.332) ; le manuel ne la documente pas comme commande d un fichier de donnees .ST1"
+      ],
+      "pitfalls": [
+        "Les valeurs annoncees different entre le chapitre `Limites du programme` (80000, p.29) et l'extrait de `ST1.par` livre (`MX_ETUDE 200000`, p.332) : verifier le `ST1.par` reellement utilise.",
+        "Une demande `ETUDE ... TOUT SE 0. a 1. PAS lpas` a pas fin sur un modele important genere tres vite un grand nombre de sections d'etude : c'est le poste qui sature cette limite [p.101-102].",
+        "Les modes propres et le flambement se calculent **uniquement a partir des noeuds** : augmenter le nombre de sections d'etude n'ameliore pas ces calculs, il faut discretiser en noeuds [p.197, p.215].",
+        "ST1 lit d'abord le `ST1.par` present dans le repertoire local, puis a defaut celui du repertoire de l'executable [p.40]."
+      ],
+      "examples": [
+        "# dans le fichier parametres ST1.par\nMX_ETUDE 200000      #-nombre maximum de sections d etude"
+      ],
+      "pages": [
+        29,
+        332
+      ]
+    },
+    {
+      "name": "PAGINATION",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Definit le nombre de lignes par page et le caractere ASCII de saut de page des fichiers de sortie.",
+      "syntax": [
+        "PAGINATION",
+        "   (ASC_PAGE iasc)",
+        "   (MAX_LIGNE n)",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "doc": "Bloc de parametrage de la mise en pages des fichiers de sortie [p.41].\n\n- `MAX_LIGNE n` : nombre de lignes par page.\n- `ASC_PAGE iasc` : code ASCII designant le saut de page :\n  - `12` : imprimantes reconnaissant le caractere saut de page **standard** ;\n  - `49` : imprimantes reconnaissant le saut de page des programmes **Fortran**.\n\nLe **nombre de caracteres par ligne** n'est pas parametrable ici : il depend de l'option de calcul, soit **80 caracteres** en `PLANE` et `GRILL`, **128 caracteres** en `SPATIALE` [p.41].\n\nLes parametres de pagination sont **initialises dans le fichier parametres `ST1.par`** (ce qui fournit une initialisation par defaut), et peuvent etre redefinis dans le fichier de donnees [p.41]. L'extrait de `ST1.par` livre avec ST1 v24 contient `ASC_PAGE 12` et `MAX_LIGNE 100` [p.332].",
+      "args": [
+        {
+          "name": "ASC_PAGE",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "doc": "Code ASCII designant le saut de page. 12 = saut de page standard, 49 = saut de page des programmes Fortran.",
+          "values": [
+            "12",
+            "49"
+          ],
+          "pages": [
+            41,
+            332
+          ]
+        },
+        {
+          "name": "MAX_LIGNE",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "doc": "Nombre de lignes par page des fichiers de sortie. Aucune valeur par defaut n'est documentee p.41 : les parametres de pagination sont initialises par le fichier `ST1.par` (valeurs de l'extrait livre : `ASC_PAGE 12` / `MAX_LIGNE 100` [p.332]).",
+          "pages": [
+            41,
+            332
+          ]
+        }
+      ],
+      "prerequisites": [],
+      "forbidden": [],
+      "pitfalls": [
+        "Bloc a terminer imperativement par `FIN` [p.41].",
+        "Les defauts `ASC_PAGE 12` / `MAX_LIGNE 100` proviennent du fichier parametres `ST1.par` livre [p.332] : ils sont modifiables par l'administrateur du poste et ne doivent donc pas etre supposes identiques sur toutes les installations [p.41].",
+        "Seules les valeurs 12 et 49 de `ASC_PAGE` sont documentees ; aucune autre valeur n'est attestee [p.41].",
+        "Pour supprimer la pagination d'une sortie donnee, ce n'est pas `PAGINATION` mais `SORTIE 'nom' NON PAGINE` [p.39].",
+        "La largeur de ligne (80 ou 128 caracteres) suit l'option de calcul et n'est pas reglable par `PAGINATION` [p.41]."
+      ],
+      "examples": [
+        "PAGINATION\n   ASC_PAGE 12\n   MAX_LIGNE 100\nFIN",
+        "# sortie destinee a une imprimante Fortran\nPAGINATION\n   ASC_PAGE 49\nFIN"
+      ],
+      "pages": [
+        41
+      ]
+    },
+    {
+      "name": "PARA_STRUCTURE",
+      "family": "general",
+      "context": "top",
+      "aliases": [
+        "para_structure"
+      ],
+      "summary": "Fixe les nombres limites de noeuds, de barres et d appuis dans le fichier parametres ST1.par.",
+      "syntax": [
+        "PARA_STRUCTURE nd nb na"
+      ],
+      "doc": "Commande du **fichier parametres `ST1.par`** : donne respectivement les valeurs `nd`, `nb` et `na` aux nombres limites des noeuds, des barres et des appuis [p.29, p.332].\n\nLes limites annoncees par defaut au chapitre `Limites du programme` sont **20000 noeuds, 40000 barres, 4000 appuis** [p.29] ; l'extrait du fichier parametres livre avec ST1 v24 contient `PARA_STRUCTURE 20000 40000 2000` [p.332].\n\nRappels de limites **non** modifiables par cette commande [p.29] :\n- 8 chiffres maximum pour un numero de noeud ou de barre ;\n- 100 000 pour un numero de chargement ;\n- memoire allouee 300 Mo par defaut, < 500 Mo maximum [p.29] ; l'extrait `ST1.par` livre porte 400 Mo [p.332]. Base de donnees projet `BASEDAT` dimensionnee a 1280 Mo.\n\nAucune unite : ce sont des effectifs.",
+      "args": [
+        {
+          "name": "nd",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Nombre limite de noeuds.",
+          "default": "20000",
+          "pages": [
+            29,
+            332
+          ]
+        },
+        {
+          "name": "nb",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Nombre limite de barres.",
+          "default": "40000",
+          "pages": [
+            29,
+            332
+          ]
+        },
+        {
+          "name": "na",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Nombre limite d'appuis. Valeur du ST1.par livre : 2000 [p.332] ; le chapitre Limites annonce 4000 [p.29]. Aucune de ces deux valeurs contradictoires ne peut etre presentee comme LA valeur par defaut.",
+          "pages": [
+            29,
+            332
+          ]
+        }
+      ],
+      "prerequisites": [],
+      "forbidden": [
+        "Commande documentee comme commande du fichier parametres ST1.par (p.29, p.332) ; le manuel ne la documente pas comme commande d un fichier de donnees .ST1"
+      ],
+      "pitfalls": [
+        "Ces limites sont celles des **tableaux de donnees** ; la matrice de rigidite peut malgre tout etre trop importante pour tenir en memoire vive. ST1 affiche alors `Place memoire insuffisante` au moment de l'execution des chargements [p.29].",
+        "Les valeurs annoncees different entre le chapitre `Limites du programme` (4000 appuis, p.29) et l'extrait de `ST1.par` livre (`PARA_STRUCTURE 20000 40000 2000`, p.332) : verifier le `ST1.par` reellement utilise.",
+        "Avant d'augmenter ces limites, verifier que la **numerotation des noeuds est optimisee** (X croissants puis Y croissants) : cela reduit notablement la largeur de bande de la matrice, donc la memoire necessaire et les temps de calcul [p.29, p.46].",
+        "ST1 lit d'abord le `ST1.par` present dans le repertoire local, puis a defaut celui du repertoire de l'executable : preferer une copie locale plutot que de modifier le fichier d'installation [p.40].",
+        "Retour d'experience support, **non documente** : bien que le manuel autorise 8 chiffres par numero de noeud/barre [p.29], des indices superieurs a 65536 provoquent en pratique des erreurs `lecture/ecriture en base de donnees` et `mot clef mal place` ; viser des numeros <= 32768 et renumeroter au besoin."
+      ],
+      "examples": [
+        "# dans le fichier parametres ST1.par\nPARA_STRUCTURE 20000 40000 2000 #-nombre maximum de : noeuds, barres, appuis"
+      ],
+      "pages": [
+        29,
+        332
+      ]
+    },
+    {
+      "name": "PROJET",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Relit un projet enregistre, ou rappelle le nom du projet courant si aucun nom n est donne.",
+      "syntax": [
+        "PROJET 'Nom du projet'",
+        "PROJET"
+      ],
+      "doc": "Gestion des bases de donnees ST1 par la notion de projet : a chaque session, l'utilisateur peut creer un projet, en rappeler ou en modifier un deja stocke [p.39-40].\n\n- `PROJET 'Nom du projet'` : **relecture** du projet indique (definitions et resultats deja obtenus sont restaures) [p.40].\n- `PROJET` seul : **rappel du nom du projet courant** [p.40].",
+      "args": [
+        {
+          "name": "Nom du projet",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Nom du projet a relire, entre quotes simples. Omis : la commande rappelle le nom du projet courant [p.40].",
+          "pages": [
+            40
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Le projet doit avoir ete cree par ENREGISTRER (ou par la sauvegarde proposee par QUITTER)"
+      ],
+      "forbidden": [],
+      "pitfalls": [
+        "Les fichiers projet `.ST1D` et `.ST1I` d'une version anterieure de ST1 **ne sont pas relisibles** (refonte du noyau) : regenerer le projet en relisant le fichier de donnees avec `LIRE` [p.28, p.39-40].",
+        "Erreur de syntaxe a la relecture d'un projet : verifier que le nom du fichier avec son repertoire ne depasse pas 256 caracteres ; le cas echeant, recreer le projet dans un repertoire au nom plus court et renommer les fichiers [p.40].",
+        "Si `ST1.par` a ete modifie (parametre `nb_lign_index`), le projet ne peut etre relu qu'en presence de ce meme `ST1.par` ; garder la copie modifiee dans le repertoire du projet [p.40]."
+      ],
+      "examples": [
+        "PROJET 'pont_pousse'   # relecture du projet\nRESU\n   BARRE EFFORT\nFIN",
+        "PROJET                 # rappel du nom du projet courant"
+      ],
+      "pages": [
+        39,
+        40
+      ]
+    },
+    {
+      "name": "QUITTER",
+      "family": "general",
+      "context": "top",
+      "aliases": [
+        "QUIT"
+      ],
+      "summary": "Termine la session ST1 en proposant la sauvegarde de l etat courant sous un nom de projet.",
+      "syntax": [
+        "QUITTER"
+      ],
+      "doc": "Fin de l'utilisation de ST1 [p.41].\n\nLorsqu'elle est saisie au clavier, la commande **demande un nom de projet (entre quotes)** :\n\n- si l'utilisateur saisit un nom de projet, ST1 sauvegarde dans une base de donnees l'etat de la structure et les resultats deja obtenus, reutilisables ulterieurement via `PROJET` [p.33, p.41] ;\n- si l'utilisateur tape un **retour chariot** a la place du nom, **aucune sauvegarde** n'est effectuee [p.33, p.41].\n\nEn mode graphique, la selection du bouton de fermeture situe a gauche du menu `Fichier` equivaut a la saisie de `QUITTER` dans la ligne de texte ; ST1 demande alors un nom de projet pour une sauvegarde eventuelle (chapitre commandes graphiques, renvoi p.41).\n\nLa forme abregee `QUIT` est attestee : \"La sortie de ST1 s'effectue par la commande QUIT ou QUITTER (cf. p41)\" (chapitres d'exemples).",
+      "args": [],
+      "prerequisites": [],
+      "forbidden": [],
+      "pitfalls": [
+        "Le retour chariot seul en reponse a la demande de nom de projet **perd tous les resultats** de la session : preferer un `ENREGISTRER 'nom'` explicite avant de quitter [p.33, p.41].",
+        "Ne pas confondre avec `RETOUR`, qui arrete la lecture d'un fichier ou sort du mode graphique sans terminer ST1 [p.37-38, p.247].",
+        "L'aide-memoire du manuel renvoie `QUITTER` a la p.40, alors que le corps du texte renvoie systematiquement a la p.41 : la description detaillee (section 1.9 SORTIE DE ST1) est bien en p.41."
+      ],
+      "examples": [
+        "ENREGISTRER 'pont_pousse'\nQUITTER",
+        "QUIT"
+      ],
+      "pages": [
+        40,
+        41
+      ]
+    },
+    {
+      "name": "RETOUR",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Arrete la lecture d un fichier de donnees, poursuit la lecture apres LIRE CONSOLE, ou sort du mode graphique.",
+      "syntax": [
+        "RETOUR"
+      ],
+      "doc": "Mot-cle a trois emplois documentes, selon le contexte :\n\n1. **Dans un fichier de donnees** : arrete la lecture avant la fin du fichier. Toutes les commandes qui suivent `RETOUR` dans ce fichier sont **ignorees** [p.37-38].\n2. **A la console apres un `LIRE CONSOLE`** : poursuit la lecture du fichier interrompu jusqu'a sa fin ; le prompt `>` est ensuite reaffiche [p.38].\n3. **En mode graphique** : sortie du mode graphique (equivalent de l'option `Retour mode calcul` du menu `Fichier`) [p.247].",
+      "args": [],
+      "prerequisites": [],
+      "forbidden": [],
+      "pitfalls": [
+        "Tres pratique pour desactiver temporairement la fin d'un fichier de donnees pendant la mise au point, mais facile a oublier : tout ce qui suit `RETOUR` est silencieusement ignore [p.37-38].",
+        "`RETOUR` ne sort pas de ST1 : la sortie du programme est `QUITTER` [p.41]."
+      ],
+      "examples": [
+        "# dans toto.st1 :\nNOEUD 1 12 15\nRETOUR           # les commandes suivantes du fichier sont ignorees\nNOEUD 2 6 8"
+      ],
+      "pages": [
+        37,
+        38,
+        247
+      ]
+    },
+    {
+      "name": "SORTIE",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Dirige les editions (LISTER, RESU, ECRIRE) vers un fichier ou vers la console.",
+      "syntax": [
+        "SORTIE <'Nom du fichier', CONSOLE, FICHIER> (SUITE) (NON PAGINE)",
+        "SORTIE 'Nom du fichier' (SUITE) (NON PAGINE)",
+        "SORTIE CONSOLE",
+        "SORTIE FICHIER"
+      ],
+      "doc": "Definit la destination des editions de ST1 [p.39].\n\n- `SORTIE 'nom'` : cree le fichier de sortie et y dirige les editions. Exemple documente : `SORTIE 'toto'` puis `LISTER GEOM` ecrit dans le fichier `toto` les caracteristiques geometriques et mecaniques de la structure [p.39].\n- `SUITE` : ecrit les sorties **a la fin du fichier** si celui-ci existe deja [p.39].\n- `NON PAGINE` : sorties non paginees (desactive la mise en pages definie par `PAGINATION`) [p.39, p.41].\n- `SORTIE CONSOLE` : edition a la console [p.39].\n- `SORTIE FICHIER` : revient au **dernier fichier de sortie utilise**, apres une edition a la console [p.39].\n\nLa destination ainsi definie s'applique aux commandes d'edition (`LISTER`, `RESU`) et a `ECRIRE` : par defaut `ECRIRE` s'affiche a la console, sauf si `SORTIE` a ete utilisee prealablement, auquel cas le resultat va dans la sortie specifiee (chapitre pseudo-programmation, p.263-281).\n\nAucune unite n'est associee a cette commande.",
+      "args": [
+        {
+          "name": "Nom du fichier",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Nom du fichier de sortie, entre quotes simples. Alternative obligatoire a CONSOLE / FICHIER.",
+          "pages": [
+            39
+          ]
+        },
+        {
+          "name": "CONSOLE",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Edition a la console.",
+          "values": [
+            "CONSOLE"
+          ],
+          "pages": [
+            39
+          ]
+        },
+        {
+          "name": "FICHIER",
+          "kind": "choice",
+          "type": "flag",
+          "required": false,
+          "doc": "Retour au dernier fichier de sortie utilise (apres une edition a la console).",
+          "values": [
+            "FICHIER"
+          ],
+          "pages": [
+            39
+          ]
+        },
+        {
+          "name": "SUITE",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Ecrit les sorties a la fin du fichier si celui-ci existe deja.",
+          "pages": [
+            39
+          ]
+        },
+        {
+          "name": "NON PAGINE",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Sorties non paginees (mot-cle en deux mots).",
+          "pages": [
+            39
+          ]
+        }
+      ],
+      "prerequisites": [],
+      "forbidden": [],
+      "pitfalls": [
+        "`SORTIE FICHIER` n'a de sens qu'**apres** une edition a la console : il rebascule vers le dernier fichier de sortie utilise [p.39].",
+        "Sans `SUITE`, la commande cree le fichier de sortie ; c'est `SUITE` qui permet d'ecrire a la fin d'un fichier existant [p.39].",
+        "`NON PAGINE` est un mot-cle en **deux mots** ; il agit sur cette sortie, alors que la commande `PAGINATION` regle les parametres globaux de mise en pages [p.39, p.41].",
+        "Le nombre de caracteres par ligne des sorties est impose par l'option de calcul (80 en PLANE/GRILL, 128 en SPATIALE) et n'est pas modifiable par `SORTIE` [p.41]."
+      ],
+      "examples": [
+        "SORTIE 'toto'          # creation du fichier toto\nLISTER GEOM            # ecriture dans toto de la geometrie et des caracteristiques",
+        "SORTIE 'exemple10.txt' NON PAGINE",
+        "SORTIE CONSOLE         # retour de l edition a la console\nSORTIE FICHIER         # retour au dernier fichier de sortie",
+        "SORTIE 'resultats.txt' SUITE\nRESU\n   BARRE EFFORT DEPLA CONTR\nFIN"
+      ],
+      "pages": [
+        39
+      ]
+    },
+    {
+      "name": "TITRE",
+      "family": "general",
+      "context": "top",
+      "aliases": [],
+      "summary": "Definit le titre de la structure, rappele dans les editions de resultats et sur les dessins.",
+      "syntax": [
+        "TITRE 'Titre de la structure'"
+      ],
+      "doc": "Definit le titre de la structure [p.45].\n\nLe titre est **rappele lors de l'edition des resultats et sur les dessins**. Il peut etre **modifie a l'interieur d'un fichier de donnees** [p.45].\n\nLe titre est une chaine de caracteres : entre quotes simples, une quote interne doit etre **doublee**, et **aucun caractere accentue** ne doit etre utilise [p.31].\n\nUsage observe dans les exemples du manuel : `TITRE` y est place juste apres `OPTION` (p.292, p.296, p.300). Le manuel n'impose toutefois aucun ordre : les commandes de description de la geometrie peuvent etre utilisees plusieurs fois et dans un ordre quelconque, c'est la derniere description qui est prise en compte [p.42].",
+      "args": [
+        {
+          "name": "Titre de la structure",
+          "kind": "positional",
+          "type": "string",
+          "required": true,
+          "doc": "Chaine entre quotes simples. Quote interne doublee, pas de caractere accentue [p.31].",
+          "pages": [
+            45
+          ]
+        }
+      ],
+      "prerequisites": [],
+      "forbidden": [],
+      "pitfalls": [
+        "Les caracteres accentues sont interdits dans ST1 : ecrire `'Poussage d''un pont'` et non un titre accentue [p.31].",
+        "Une apostrophe dans le titre doit etre **doublee** (`d''un`), sans quoi la chaine est mal fermee [p.31].",
+        "Redefinir `TITRE` plus loin dans le fichier ecrase le titre precedent : c'est la derniere description qui est prise en compte [p.42, p.45]."
+      ],
+      "examples": [
+        "TITRE 'Poussage d''un pont'",
+        "OPTION PLANE\nTITRE 'Calcul d''un cadre ferme - Charges permanentes'"
+      ],
+      "pages": [
+        45
+      ]
+    }
+  ]
+}

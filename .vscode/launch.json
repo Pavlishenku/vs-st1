@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Lancer l'extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}", "${workspaceFolder}/examples"],
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "preLaunchTask": "npm: compile"
+    },
+    {
+      "name": "Attacher au serveur de langage",
+      "type": "node",
+      "request": "attach",
+      "port": 6019,
+      "restart": true,
+      "outFiles": ["${workspaceFolder}/dist/server.js"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Extension + serveur",
+      "configurations": ["Lancer l'extension", "Attacher au serveur de langage"],
+      "stopAll": true
+    }
+  ]
+}

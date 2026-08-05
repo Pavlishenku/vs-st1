@@ -1,0 +1,350 @@
+{
+  "_comment": "Partie invariante du catalogue ST1 : provenance, options de structure, vocabulaire lexical. Les commandes vivent dans catalog/commands/*.json. Assemblage par scripts/build-catalog.mjs (npm run gen).",
+  "schemaVersion": 1,
+  "source": {
+    "title": "ST1 v24 — Manuel utilisateur (FR)",
+    "version": "24",
+    "sha256": "b9c087cab586da1136f2b65ec6cb386a0606ef0a2ebefc1d4bab92de66bb2a1d",
+    "pageCount": 403,
+    "provenanceKind": "physical_pdf_page"
+  },
+  "structureOptions": {
+    "PLANE": {
+      "coordinates": [
+        "X",
+        "Y"
+      ],
+      "ddl": [
+        "DX",
+        "DY",
+        "RZ"
+      ],
+      "barProperties": [
+        "SX",
+        "SY",
+        "IZ",
+        "VY",
+        "WY",
+        "KFX",
+        "KFY"
+      ],
+      "nodalLoads": [
+        "FX",
+        "FY",
+        "MZ"
+      ],
+      "surchargeComponents": {
+        "EFFORT": [
+          "N",
+          "TY",
+          "MZ"
+        ],
+        "DEPLA": [
+          "DX",
+          "DY",
+          "RZ"
+        ],
+        "CONTR": [
+          "VY",
+          "WY"
+        ],
+        "PRESS": [
+          "PX",
+          "PY"
+        ],
+        "REAC": [
+          "FX",
+          "FY",
+          "MZ"
+        ]
+      },
+      "pages": [
+        43,
+        44,
+        60,
+        141
+      ]
+    },
+    "GRILL": {
+      "coordinates": [
+        "X",
+        "Y"
+      ],
+      "ddl": [
+        "RX",
+        "DZ",
+        "RY"
+      ],
+      "barProperties": [
+        "SZ",
+        "IX",
+        "IY",
+        "VZ",
+        "WZ",
+        "KFZ",
+        "KMX"
+      ],
+      "nodalLoads": [
+        "MX",
+        "FZ",
+        "MY"
+      ],
+      "surchargeComponents": {
+        "EFFORT": [
+          "MX",
+          "TZ",
+          "MY"
+        ],
+        "DEPLA": [
+          "RX",
+          "DZ",
+          "RY"
+        ],
+        "CONTR": [
+          "VZ",
+          "WZ"
+        ],
+        "PRESS": [
+          "PZ",
+          "MX"
+        ],
+        "REAC": [
+          "FZ",
+          "MY"
+        ]
+      },
+      "pages": [
+        43,
+        44,
+        60,
+        141
+      ]
+    },
+    "SPATIALE": {
+      "coordinates": [
+        "X",
+        "Y",
+        "Z"
+      ],
+      "ddl": [
+        "DX",
+        "DY",
+        "DZ",
+        "RX",
+        "RY",
+        "RZ"
+      ],
+      "barProperties": [
+        "SX",
+        "SY",
+        "SZ",
+        "IX",
+        "IY",
+        "IZ",
+        "VY",
+        "WY",
+        "VZ",
+        "WZ",
+        "KFX",
+        "KFY",
+        "KFZ",
+        "KMX"
+      ],
+      "nodalLoads": [
+        "FX",
+        "FY",
+        "FZ",
+        "MX",
+        "MY",
+        "MZ"
+      ],
+      "surchargeComponents": {
+        "EFFORT": [
+          "N",
+          "TY",
+          "TZ",
+          "MX",
+          "MY",
+          "MZ"
+        ],
+        "DEPLA": [
+          "DX",
+          "DY",
+          "DZ",
+          "RX",
+          "RY",
+          "RZ"
+        ],
+        "CONTR": [
+          "VYVZ",
+          "VYWZ",
+          "WYVZ",
+          "WYWZ"
+        ],
+        "PRESS": [
+          "PX",
+          "PY",
+          "PZ"
+        ],
+        "REAC": [
+          "FX",
+          "FY",
+          "FZ",
+          "MX",
+          "MY",
+          "MZ"
+        ]
+      },
+      "pages": [
+        43,
+        44,
+        60,
+        141
+      ]
+    }
+  },
+  "lexical": {
+    "functions": [
+      "abs",
+      "int",
+      "sqrt",
+      "sin",
+      "cos",
+      "tan",
+      "asin",
+      "acos",
+      "atan",
+      "exp",
+      "log",
+      "sinh",
+      "cosh",
+      "tanh"
+    ],
+    "operators": [
+      "+",
+      "-",
+      "*",
+      "/",
+      "**",
+      "==",
+      "=",
+      "/=",
+      ">",
+      "<",
+      ">=",
+      "<="
+    ],
+    "controlKeywords": [
+      "POUR",
+      "SI",
+      "SINON",
+      "PASSER",
+      "BRISER",
+      "ECRIRE",
+      "PAUSE",
+      "DIM",
+      "NON",
+      "ET",
+      "OU",
+      "VIDE"
+    ],
+    "colors": [
+      "NOIR",
+      "INDIGO",
+      "VERT",
+      "CYAN",
+      "ROUGE",
+      "MAGENTA",
+      "MARRON",
+      "NEUTRE",
+      "GRIS",
+      "BLEU",
+      "PISTACHE",
+      "CIEL",
+      "CORAIL",
+      "MAUVE",
+      "JAUNE",
+      "BLANC"
+    ],
+    "_reservedWordsComment": "Mots reserves definis dans st1.par (livre avec ST1), et classes en [ReservedWords] par le highlighter PsPad ST1.INI : constante mathematique PI, pilotes de trace et types d'ecran. Provenance = st1.par (fichier de parametres officiel), non le manuel : d'ou l'absence de pages, comme pour colors et functions.",
+    "reservedWords": [
+      "PI",
+      "POST",
+      "POSTP",
+      "POST3",
+      "POST3P",
+      "POSTC",
+      "POSTEN",
+      "POSTEW",
+      "BGL",
+      "CALC",
+      "CALCP",
+      "DXF",
+      "GDI",
+      "GDISB",
+      "KYO",
+      "KYOP",
+      "HPGL",
+      "HPGLP",
+      "HPGL3",
+      "HPGL3P",
+      "LJET",
+      "LJETP",
+      "LJET3",
+      "LJET3P",
+      "PJET",
+      "PJETP",
+      "PJET3",
+      "PJET3P",
+      "W640_480",
+      "W800_600",
+      "W1024_768",
+      "W1280_1024"
+    ],
+    "listKeywords": [
+      "A",
+      "PAS",
+      "TOUT",
+      "TOUS",
+      "TOUTES"
+    ],
+    "getVariables": [
+      "$dx",
+      "$dy",
+      "$dz",
+      "$rx",
+      "$ry",
+      "$rz",
+      "$fx",
+      "$fy",
+      "$fz",
+      "$mx",
+      "$my",
+      "$mz",
+      "$n",
+      "$ty",
+      "$tz",
+      "$vy",
+      "$wy",
+      "$vz",
+      "$wz",
+      "$vyvz",
+      "$wyvz",
+      "$vywz",
+      "$wywz",
+      "$px",
+      "$py",
+      "$pz",
+      "$contrg",
+      "$xl",
+      "$nsec",
+      "$sigp",
+      "$dsigp",
+      "$x",
+      "$y",
+      "$z",
+      "$alpha",
+      "$err"
+    ]
+  }
+}

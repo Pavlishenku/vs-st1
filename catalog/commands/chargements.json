@@ -1,0 +1,2244 @@
+{
+  "commands": [
+    {
+      "name": "APPUI",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Impose un deplacement ou une rotation aux appuis rigides, dans le repere global.",
+      "syntax": [
+        "APPUI liste (DX dx) (DY dy) (DZ dz) (RX rx) (RY ry) (RZ rz)",
+        "APPUI",
+        "   liste (DX dx) (DY dy) (DZ dz) (RX rx) (RY ry) (RZ rz)",
+        "   ..."
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        116
+      ],
+      "doc": "Deplacement des appuis rigides, defini **dans le repere global de la structure** [p.116].\n\nDeux ecritures : instruction simple ou instruction de bloc.\n\n- `liste` : numeros des noeuds appuyes **rigidement**.\n- **Les rotations sont exprimees en radians** [p.116].\n\nDeplacements d'appui utilisables selon l'option [p.116] :\n- `OPTION PLANE` : `DX`, `DY`, `RZ`\n- `OPTION GRILL` : `RX`, `DZ`, `RY`\n- `OPTION SPATIALE` : `DX`, `DY`, `DZ`, `RX`, `RY`, `RZ`\n\n`liste` peut etre remplacee par `TOUT` [p.116].\n\nA ne pas confondre avec la commande `APPUI` de definition des conditions d'appui [p.47-48] : ici le contexte est le bloc `CHARG`.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros des noeuds appuyes rigidement. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            116
+          ]
+        },
+        {
+          "name": "DX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Deplacement impose suivant l'axe OX du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            116
+          ]
+        },
+        {
+          "name": "DY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Deplacement impose suivant l'axe OY du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            116
+          ]
+        },
+        {
+          "name": "DZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Deplacement impose suivant l'axe OZ du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            116
+          ]
+        },
+        {
+          "name": "RX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Rotation imposee autour de l'axe OX du repere general.",
+          "required": false,
+          "unit": "radian",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            116
+          ]
+        },
+        {
+          "name": "RY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Rotation imposee autour de l'axe OY du repere general.",
+          "required": false,
+          "unit": "radian",
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            116
+          ]
+        },
+        {
+          "name": "RZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Rotation imposee autour de l'axe OZ du repere general.",
+          "required": false,
+          "unit": "radian",
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            116
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG",
+        "APPUI (definition des appuis rigides) [p.47-48]"
+      ],
+      "forbidden": [
+        "hors du couple CHARG ... FIN [p.116]",
+        "noeuds non appuyes rigidement (l'instruction s'adresse aux appuis rigides) [p.116]"
+      ],
+      "pitfalls": [
+        "**Rotations en radians** : une valeur donnee en degres produit un deplacement d'appui environ 57 fois trop grand [p.116].",
+        "Ne s'applique qu'aux appuis **rigides** ; pour un appui elastique, agir sur la raideur ou passer par une deformation imposee [p.116].",
+        "Composantes dependantes de l'OPTION : `DX/DY/RZ` en PLANE, `RX/DZ/RY` en GRILL [p.116]."
+      ],
+      "examples": [
+        "APPUI 1 a 3 DX .1 RZ 2.3   # RZ en radian",
+        "APPUI\n   1 DY -0.02\n   5 DY -0.015"
+      ]
+    },
+    {
+      "name": "BARRE CON",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Charge concentree (force ou couple) appliquee a une abscisse donnee sur des barres.",
+      "syntax": [
+        "BARRE liste CON XL xl (REL,ABS) (FX fx) (FY fy) ... (MZ mz) (GLO,LOC)",
+        "BARRE",
+        "   liste CON XL xl (REL,ABS) (FX fx) (FY fy) ... (MZ mz) (GLO,LOC)",
+        "   ..."
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        110,
+        111
+      ],
+      "doc": "Charge concentree sur des barres.\n\n- `XL xl` : abscisse du chargement sur la barre.\n- `REL` : abscisse **relative** a la longueur de la barre, comprise entre `0` (debut de barre) et `1` (extremite) [p.110-111].\n- `ABS` : abscisse en **longueur reelle** comptee depuis le noeud origine, comprise entre `0` et la longueur de la barre. **`ABS` est la valeur par defaut** [p.110-111].\n- `GLO` : charges dans le repere global de la structure. **Valeur par defaut** [p.110].\n- `LOC` : charges dans le repere local de la barre [p.110].\n\nCharges utilisables selon l'option [p.110] :\n- `OPTION PLANE` : `FX`, `FY`, `MZ`\n- `OPTION GRILL` : `MX`, `FZ`, `MY`\n- `OPTION SPATIALE` : `FX`, `FY`, `FZ`, `MX`, `MY`, `MZ`\n\n`liste` peut etre remplacee par `TOUT` : agit sur toutes les barres activees a l'execution [p.111].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros de barres. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            110
+          ]
+        },
+        {
+          "name": "CON",
+          "kind": "subcommand",
+          "type": "flag",
+          "doc": "Selectionne le type de charge concentree.",
+          "required": true,
+          "pages": [
+            110
+          ]
+        },
+        {
+          "name": "XL",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Abscisse du chargement sur la barre. Bornee par 0 et 1 si REL, par 0 et la longueur de la barre si ABS.",
+          "required": true,
+          "min": 0,
+          "pages": [
+            110,
+            111
+          ]
+        },
+        {
+          "name": "REL",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "REL",
+            "ABS"
+          ],
+          "doc": "Abscisse donnee relativement a la longueur de la barre, dans le repere de la barre (0 a 1).",
+          "required": false,
+          "pages": [
+            110,
+            111
+          ]
+        },
+        {
+          "name": "ABS",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "REL",
+            "ABS"
+          ],
+          "doc": "Abscisse donnee en longueur reelle depuis le noeud origine. Valeur par defaut.",
+          "required": false,
+          "default": "ABS",
+          "pages": [
+            110,
+            111
+          ]
+        },
+        {
+          "name": "FX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Force suivant l'axe OX.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            110
+          ]
+        },
+        {
+          "name": "FY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Force suivant l'axe OY.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            110
+          ]
+        },
+        {
+          "name": "FZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Force suivant l'axe OZ.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            110
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Couple autour de l'axe OX.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            110
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Couple autour de l'axe OY.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            110
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Couple autour de l'axe OZ.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            110
+          ]
+        },
+        {
+          "name": "GLO",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC"
+          ],
+          "doc": "Charges donnees dans le repere global de la structure. Valeur par defaut.",
+          "required": false,
+          "default": "GLO",
+          "pages": [
+            110
+          ]
+        },
+        {
+          "name": "LOC",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC"
+          ],
+          "doc": "Charges donnees dans le repere local de la barre.",
+          "required": false,
+          "pages": [
+            110
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG",
+        "BARRE (geometrie)"
+      ],
+      "forbidden": [
+        "hors du couple CHARG ... FIN [p.111]",
+        "abscisse hors de la barre (REL hors [0,1], ABS hors [0, longueur]) [p.111]",
+        "PRO (reserve aux charges reparties BARRE UNI et BARRE LIN) [p.110, p.112, p.115]"
+      ],
+      "pitfalls": [
+        "**Le defaut d'abscisse est ABS (longueur reelle), pas REL** : `XL .5` sur une barre de 10 charge a 0.5 m de l'origine et non a mi-portee [p.110-111].",
+        "Le defaut de repere est `GLO` pour les charges de barre, alors que pour `DEFOR` le defaut est `LOC` [p.110, p.119].",
+        "`PRO` n'existe pas pour une charge concentree ; il est reserve a `BARRE UNI` et `BARRE LIN` [p.110, p.112, p.115].",
+        "Composantes dependantes de l'OPTION : `FX/FY/MZ` en PLANE, `MX/FZ/MY` en GRILL [p.110]."
+      ],
+      "examples": [
+        "BARRE 1 a 3 CON XL .5 REL FX 12 FY 15   # milieu de barre, repere general",
+        "BARRE 1 a 3 CON XL 1.2 ABS FX 7 LOC   # a 1.2 du noeud origine, repere local",
+        "BARRE\n   1 a 5 CON XL .5 FX 10\n   10 CON XL 0. REL MZ 25"
+      ]
+    },
+    {
+      "name": "BARRE LIN",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Charge repartie variant lineairement entre deux abscisses sur les barres.",
+      "syntax": [
+        "BARRE liste LIN XL xl1 xl2 (REL,ABS) (FX fx1 fx2) (FY fy1 fy2) ... (MZ mz1 mz2) (GLO,LOC,PRO)",
+        "BARRE",
+        "   liste LIN XL xl1 xl2 (REL,ABS)",
+        "      (FX fx1 fx2) (FY fy1 fy2) ... (MZ mz1 mz2) (GLO,LOC,PRO)",
+        "   ..."
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        115
+      ],
+      "doc": "Charge supposee varier lineairement d'une valeur `v1` situee a l'abscisse `xl1` a une valeur `v2` situee a l'abscisse `xl2` [p.115].\n\n- `REL` : abscisses relatives a la longueur de la barre, comprises entre `0` et `1` [p.115].\n- `ABS` : abscisses en longueur reelle depuis le noeud origine, comprises entre `0` et la longueur de la barre. **Valeur par defaut** [p.115].\n- `GLO` : repere global de la structure. **Valeur par defaut** [p.115].\n- `LOC` : repere local de la barre [p.115].\n- `PRO` : seules les projections des charges definies dans le repere global sont appliquees dans le repere local de la barre (voir `BARRE UNI` pour le detail) [p.115, p.113].\n\nCharges utilisables selon l'option [p.115] :\n- `OPTION PLANE` : `fx1, fx2, fy1, fy2, mz1, mz2`\n- `OPTION GRILL` : `mx1, mx2, fz1, fz2, my1, my2`\n- `OPTION SPATIALE` : toutes\n\n`liste` peut etre remplacee par `TOUT` : agit sur toutes les barres activees a l'execution [p.115].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros de barres. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "LIN",
+          "kind": "subcommand",
+          "type": "flag",
+          "doc": "Selectionne le type de charge lineairement repartie.",
+          "required": true,
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "XL",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Deux valeurs : abscisse de debut xl1 puis abscisse de fin xl2 du chargement sur la barre.",
+          "required": true,
+          "min": 0,
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "REL",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "REL",
+            "ABS"
+          ],
+          "doc": "Abscisses donnees relativement a la longueur de la barre (0 a 1).",
+          "required": false,
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "ABS",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "REL",
+            "ABS"
+          ],
+          "doc": "Abscisses donnees en longueur reelle depuis le noeud origine. Valeur par defaut.",
+          "required": false,
+          "default": "ABS",
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "FX",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Valeurs extremes fx1 fx2 de la force repartie suivant l'axe OX.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "FY",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Valeurs extremes fy1 fy2 de la force repartie suivant l'axe OY.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "FZ",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Valeurs extremes fz1 fz2 de la force repartie suivant l'axe OZ.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Valeurs extremes mx1 mx2 du couple reparti autour de l'axe OX.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Valeurs extremes my1 my2 du couple reparti autour de l'axe OY.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Valeurs extremes mz1 mz2 du couple reparti autour de l'axe OZ.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "GLO",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC",
+            "PRO"
+          ],
+          "doc": "Charges donnees dans le repere global de la structure. Valeur par defaut.",
+          "required": false,
+          "default": "GLO",
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "LOC",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC",
+            "PRO"
+          ],
+          "doc": "Charges donnees dans le repere local de la barre.",
+          "required": false,
+          "pages": [
+            115
+          ]
+        },
+        {
+          "name": "PRO",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC",
+            "PRO"
+          ],
+          "doc": "Seules les projections des charges globales sont appliquees (voir BARRE UNI p.113).",
+          "required": false,
+          "pages": [
+            115
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG",
+        "BARRE (geometrie)"
+      ],
+      "forbidden": [
+        "hors du couple CHARG ... FIN [p.115]",
+        "abscisses hors de la barre (REL hors [0,1], ABS hors [0, longueur]) [p.115]"
+      ],
+      "pitfalls": [
+        "Chaque composante attend **deux** valeurs (`FX fx1 fx2`) : une seule valeur decale la lecture des mots-cles suivants [p.115].",
+        "Le defaut d'abscisse est `ABS` (longueur reelle), pas `REL` [p.115].",
+        "Une charge uniforme sur toute la barre s'ecrit plus surement `UNI` que `LIN XL 0 1 REL` avec deux valeurs egales.",
+        "`PRO` modifie la resultante (longueur projetee) : voir l'explication et l'exemple donnes pour `BARRE UNI` [p.113-114]."
+      ],
+      "examples": [
+        "BARRE 1 a 3 LIN XL .2 .7 FX 12 15   # abscisses absolues par defaut",
+        "BARRE 100 LIN XL 0. 1. REL FY -1 -1 PRO   # charge unite projetee sur barre inclinee",
+        "BARRE 100 LIN XL 0. 1. REL FX 1 1 PRO"
+      ]
+    },
+    {
+      "name": "BARRE UNI",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Charge uniformement repartie sur toute la longueur des barres.",
+      "syntax": [
+        "BARRE liste UNI (FX fx) (FY fy) ... (MZ mz) (GLO,LOC,PRO)",
+        "BARRE",
+        "   liste UNI (FX fx) (FY fy) ... (MZ mz) (GLO,LOC,PRO)",
+        "   ..."
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        112,
+        113,
+        114
+      ],
+      "doc": "Charge uniformement repartie sur les barres.\n\n- `GLO` : charges donnees dans le repere global de la structure. **Valeur par defaut** [p.112].\n- `LOC` : charges donnees dans le repere local de la barre [p.112].\n- `PRO` : seules les **projections** des charges definies dans le repere global sont appliquees [p.112].\n\n**Difference GLO/LOC vs PRO** [p.113] : avec `GLO` ou `LOC`, la charge appliquee vaut toujours la densite integree sur la longueur reelle de l'element, quelle que soit l'inclinaison de la barre. Avec `PRO`, la resultante vaut le produit de la densite par la **longueur projetee** de la barre sur un plan orthogonal a la direction de la charge. `PRO` est destine notamment a la prise en compte des actions des terres (buses, voutes).\n\nCharges utilisables selon l'option [p.112] :\n- `OPTION PLANE` : `FX`, `FY`, `MZ`\n- `OPTION GRILL` : `MX`, `FZ`, `MY`\n- `OPTION SPATIALE` : `FX`, `FY`, `FZ`, `MX`, `MY`, `MZ`\n\n`liste` peut etre remplacee par `TOUT` : agit sur toutes les barres activees a l'execution [p.112].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros de barres. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            112
+          ]
+        },
+        {
+          "name": "UNI",
+          "kind": "subcommand",
+          "type": "flag",
+          "doc": "Selectionne le type de charge uniformement repartie.",
+          "required": true,
+          "pages": [
+            112
+          ]
+        },
+        {
+          "name": "FX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Densite de force repartie suivant l'axe OX.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            112
+          ]
+        },
+        {
+          "name": "FY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Densite de force repartie suivant l'axe OY.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            112
+          ]
+        },
+        {
+          "name": "FZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Densite de force repartie suivant l'axe OZ.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            112
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Densite de couple reparti autour de l'axe OX.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            112
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Densite de couple reparti autour de l'axe OY.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            112
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Densite de couple reparti autour de l'axe OZ.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            112
+          ]
+        },
+        {
+          "name": "GLO",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC",
+            "PRO"
+          ],
+          "doc": "Charges donnees dans le repere global de la structure. Valeur par defaut.",
+          "required": false,
+          "default": "GLO",
+          "pages": [
+            112
+          ]
+        },
+        {
+          "name": "LOC",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC",
+            "PRO"
+          ],
+          "doc": "Charges donnees dans le repere local de la barre.",
+          "required": false,
+          "pages": [
+            112
+          ]
+        },
+        {
+          "name": "PRO",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC",
+            "PRO"
+          ],
+          "doc": "Seules les projections des charges definies dans le repere global sont appliquees ; la resultante vaut densite x longueur projetee.",
+          "required": false,
+          "pages": [
+            112,
+            113
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG",
+        "BARRE (geometrie)"
+      ],
+      "forbidden": [
+        "hors du couple CHARG ... FIN [p.112]"
+      ],
+      "pitfalls": [
+        "`PRO` change la **resultante** : densite x longueur projetee au lieu de densite x longueur reelle. Sur une barre inclinee a 45 degres, `FY -1 PRO` equivaut a `FY -1*cos(45 deg) GLO` [p.113-114].",
+        "Le defaut de repere est `GLO` (comme pour `BARRE CON`), alors que pour `DEFOR UNI` le defaut est `LOC` [p.112, p.120].",
+        "Composantes dependantes de l'OPTION : `FX/FY/MZ` en PLANE, `MX/FZ/MY` en GRILL [p.112].",
+        "Le resume de syntaxe du debut de chapitre [p.106] omet `PRO` pour `BARRE UNI` ; le detail p.112 et l'aide-memoire de syntaxe le documentent bien."
+      ],
+      "examples": [
+        "BARRE 1 a 3 UNI FX 12   # densite repartie suivant OX, repere global",
+        "BARRE 100 UNI FY -25 PRO   # action des terres : resultante = densite x longueur projetee",
+        "BARRE\n   1 a 10 UNI FY -30\n   20 a 25 UNI FX 5 LOC"
+      ]
+    },
+    {
+      "name": "CABLE",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Applique dans un chargement l'effet de la tension et/ou des pertes d'un cable de precontrainte.",
+      "syntax": [
+        "CABLE liste (TENSION) (PERTE (INST) (RETRAIT er) (UNI dsig) (RELAX (cf)))",
+        "CABLE",
+        "   liste (TENSION) (PERTE (INST) (RETRAIT er) (UNI dsig) (RELAX (cf)))",
+        "   ..."
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        122,
+        123,
+        124
+      ],
+      "doc": "Action d'un cable de precontrainte a l'interieur d'un chargement [p.122].\n\nL'action d'un cable est decomposee en deux effets [p.122] :\n- **`TENSION`** : effet de la tension du cable **sans perte** ;\n- **`PERTE`** : effet des pertes instantanees et differees, lui-meme decompose en :\n  - `INST` : pertes instantanees (frottement et recul d'ancrage) ;\n  - `RETRAIT er` : pertes differees dues au retrait ;\n  - `UNI dsig` : pertes differees dues au fluage (`dsig > 0` pour une perte de tension) ;\n  - `RELAX (cf)` : pertes differees dues a la relaxation, `cf` coefficient ponderateur.\n\nChaque effet peut etre pris de maniere independante ou cumule [p.122].\n\n**Fluage** [p.124] : `dsig` peut etre evalue par la formule BPEL 3.3,22 `dsig = 2.5 * sigma_b * Ep / Eij`, avec `sigma_b` contrainte moyenne finale dans le beton (generalement 6 a 8 MPa), `Ep` module apparent des torons (190000 MPa), `Eij` module du beton lors de la mise en tension. Exemple du manuel : beton B35 mis en tension a 3 jours, `sigma_b = 8 MPa` -> `dsig = 18 * 8 = 140`.\n\n**Relaxation** [p.124] : en cas de prise en compte simultanee du retrait, du fluage et de la relaxation, le BPEL 3.3,24 impose de ponderer les pertes de relaxation par `5/6` ; c'est le coefficient `cf` de `RELAX cf`.\n\n`liste` peut etre remplacee par `TOUT` : agit sur tous les cables definis au moment de l'execution du chargement [p.123].\n\nA ne pas confondre avec la commande `CABLE` de definition du trace d'un cable [p.95] : ici le contexte est le bloc `CHARG`.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros de cables. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            122,
+            123
+          ]
+        },
+        {
+          "name": "TENSION",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Effet de la tension du cable sans perte.",
+          "required": false,
+          "pages": [
+            122
+          ]
+        },
+        {
+          "name": "PERTE",
+          "kind": "subcommand",
+          "type": "flag",
+          "doc": "Ouvre la description des pertes prises en compte (instantanees et/ou differees).",
+          "required": false,
+          "pages": [
+            122
+          ]
+        },
+        {
+          "name": "INST",
+          "kind": "flag",
+          "type": "flag",
+          "doc": "Pertes instantanees : frottement et recul d'ancrage.",
+          "required": false,
+          "pages": [
+            122
+          ]
+        },
+        {
+          "name": "RETRAIT",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Valeur du retrait er utilisee pour le calcul des pertes differees.",
+          "required": false,
+          "pages": [
+            122
+          ]
+        },
+        {
+          "name": "UNI",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Perte uniforme de tension dsig, representant le fluage. dsig > 0 pour une perte de tension.",
+          "required": false,
+          "pages": [
+            122,
+            124
+          ]
+        },
+        {
+          "name": "RELAX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Pertes differees dues a la relaxation ; cf est le coefficient ponderateur (BPEL 3.3,24 : 5/6 en cumul retrait + fluage + relaxation). La valeur cf est facultative.",
+          "required": false,
+          "pages": [
+            122,
+            124
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG",
+        "PREC (type de precontrainte) [p.92]",
+        "CABLE (definition du cable et de son trace) [p.95]"
+      ],
+      "forbidden": [
+        "hors du couple CHARG ... FIN [p.123]",
+        "ponderation de l'effet des cables dans une CHARG COMB [p.125]"
+      ],
+      "pitfalls": [
+        "**`CABLE`/`PREC` = precontrainte uniquement** : un cable ST1 est une armature de precontrainte portee par des barres support, dont l'action (`TENSION`/`PERTE`) est reservee au bloc `CHARG` [p.95-96, p.122-124]. Ce n'est pas un element porteur a traction seule : haubans et suspentes se modelisent en BARRES ordinaires (section reelle `SX`, inerties quasi nulles, module propre au produit), comme l'exemple officiel du pont a haubans [p.292-295].",
+        "**Les pertes differees calculees a l'interieur d'un chargement ne sont prises en compte que de maniere simplifiee** ; pour un traitement exact des effets differes, passer par un `PHASAGE` (utilisateurs ST1 v2) [p.123, p.179].",
+        "**`PERTE UNI dsig` est une perte de fluage forfaitaire et UNIFORME sur tout le cable**, sans variation le long du trace [p.122, p.124, p.336].",
+        "**Unite de `dsig` : non documentee (retour d'experience support).** `dsig` s'exprime dans le systeme d'unites du fichier ; les exemples de la doc sont en MPa [p.124] mais tout systeme coherent est admis, ST1 ne fait aucune conversion implicite. Rappel : aucune unite imposee sauf le calcul au feu (metre) [p.218].",
+        "**Le denominateur reducteur de la formule EC2-1-1 (5.46) n'est pas implemente** : la ponderation se limite au coefficient `cf` de `RELAX` (retour d'experience).",
+        "Le manuel affiche p.124, sous le titre \"definition du fluage\", le raccourci `TENSION UNI 140` ; la syntaxe documentee de l'action d'un cable dans un chargement reste `CABLE liste PERTE UNI dsig` [p.122] (incoherence du manuel).",
+        "Dans une `CHARG COMB`, l'effet sur les cables de precontrainte **ne peut pas etre pondere** [p.125]."
+      ],
+      "examples": [
+        "CABLE 1,2 TENSION   # tension sans perte",
+        "CABLE 1 TENSION PERTE INST",
+        "CABLE 3 PERTE INST   # effet des seules pertes instantanees",
+        "CABLE 1 a 10 TENSION PERTE INST RETRAIT 2e-4 UNI 120 RELAX 5/6",
+        "CABLE 1 a 100 PERTE RETRAIT 2e-4 UNI 125 RELAX 5/6",
+        "# Chaine complete pour un 12T13 classe 1860 [p.123]\nCHARG 1 'effet du cable 1'\n   CABLE 1 TENSION PERTE INST\nFIN\nCHARG 2 'pertes differees du cable 1'\n   CABLE 1 PERTE RETRAIT 2e-4 UNI 110 RELAX 5/6\nFIN"
+      ]
+    },
+    {
+      "name": "CHARG",
+      "family": "chargements",
+      "context": "top",
+      "summary": "Ouvre le bloc de definition d'un chargement fixe numerote, ferme par FIN.",
+      "syntax": [
+        "CHARG (i) ('Titre du chargement')",
+        "   POIDS PROPRE liste",
+        "   POIDS PROPRE <X,Y,Z> (POS,NEG) liste",
+        "   NOEUD liste (FX fx) (FY fy) ... (MZ mz)",
+        "   BARRE",
+        "      liste CON XL xl (REL,ABS) (FX fx) (FY fy) ... (MZ mz) (GLO,LOC)",
+        "      liste UNI (FX fx) (FY fy) ... (MZ mz) (GLO,LOC,PRO)",
+        "      liste LIN XL xl1 xl2 (REL,ABS) (FX fx1 fx2) (FY fy1 fy2) ... (MZ mz1 mz2) (GLO,LOC,PRO)",
+        "   APPUI liste (DX dx) (DY dy) ... (RZ rz)",
+        "   TEMP",
+        "      liste UNI dt",
+        "      liste (GY dty) (GZ dtz)",
+        "   DEFOR",
+        "      liste CON XL xl (REL,ABS) (DX dx) (DY dy) ... (RZ rz) (GLO,LOC)",
+        "      liste UNI (DX dx) (DY dy) ... (RZ rz) (GLO,LOC)",
+        "      liste LIN XL xl1 xl2 (REL,ABS) (DX dx1 dx2) ... (RZ rz1 rz2) (GLO,LOC)",
+        "   CABLE",
+        "      liste (TENSION) (PERTE (INST) (RETRAIT er) (UNI dsig) (RELAX (cf)))",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "exec": "EXEC CHARG",
+      "pages": [
+        106,
+        107,
+        190
+      ],
+      "doc": "Ouvre la definition d'un chargement fixe. Le bloc se termine par `FIN`.\n\n- `i` numero du chargement, **1 par defaut** [p.106].\n- Le titre est facultatif, entre apostrophes.\n- Les chargements fixes comprennent : poids propre des barres, charges aux noeuds, charges concentrees sur les barres, charges reparties sur les barres, deplacements d'appuis rigides, dilatations thermiques, gradient thermique, deformations concentrees sur les barres, deformations reparties sur les barres [p.107]. La sous-commande `CABLE` figure par ailleurs dans le bloc de syntaxe de `CHARG` [p.106] mais n'est pas citee dans cette enumeration.\n- **Toutes** ces instructions ne sont valides qu'entre `CHARG` et `FIN` [p.108 a p.124].\n- Dans chaque sous-commande, `liste` peut etre remplacee par `TOUT` : l'instruction agit alors sur tous les elements **actives au moment de l'execution** du chargement [p.108 a p.124].\n- Le chargement n'existe en base qu'apres `EXEC CHARG` (ou `EXEC CHARG PSE`) [p.125].\n- Aucun systeme d'unites n'est impose (seul le calcul au feu impose le metre [p.218]) ; les valeurs doivent etre coherentes avec `CARA`, `CONS`/`MAT`.\n- **Dans un phasage**, `CHARG` s'emploie sans numero ni titre, soit en bloc `CHARG ... FIN`, soit sur une seule ligne `CHARG <definition d'une sollicitation>` ; les instructions sont identiques a celles du chapitre chargement [p.190].",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero du chargement.",
+          "required": false,
+          "default": "1",
+          "pages": [
+            106
+          ]
+        },
+        {
+          "name": "Titre du chargement",
+          "kind": "positional",
+          "type": "string",
+          "doc": "Titre libre entre apostrophes simples.",
+          "required": false,
+          "pages": [
+            106
+          ]
+        }
+      ],
+      "prerequisites": [
+        "OPTION",
+        "geometrie definie (NOEUD, BARRE)",
+        "CARA",
+        "CONS ou MAT"
+      ],
+      "forbidden": [
+        "POIDS PROPRE avec OPTION GRILL [p.108]",
+        "toute sous-commande de chargement en dehors du couple CHARG ... FIN [p.108-124]"
+      ],
+      "pitfalls": [
+        "Les sous-commandes de chargement placees hors du couple `CHARG ... FIN` sont refusees [p.108-124].",
+        "`liste`/`TOUT` designe les elements ACTIVES a l'execution du chargement : en phasage une barre non encore activee ne recoit pas la charge [p.108-124, p.190].",
+        "Sans `EXEC CHARG` aucun resultat n'est en base : `RESU` et les dessins restent vides [p.125].",
+        "Casse mixte des mots-cles non reconnue (`Charg` invalide) et aucun caractere accentue admis dans un fichier ST1 [p.30-31]."
+      ],
+      "examples": [
+        "CHARG 100 'charges permanentes'\n   POIDS PROPRE 1 a 10\n   BARRE 1 a 5 CON XL .5 FX 10\n   CABLE 1 a 10 TENSION PERTE INST\nFIN\nEXEC CHARG 100",
+        "# Forme utilisee a l'interieur d'un PHASAGE : ni numero ni titre [p.190]\nPHASAGE 1\n   ACTIVER BARRE 2 AGE 12\n   CHARG POIDS PROPRE 2\n   CHARG\n      BARRE 5 CON XL 0.2 REL FX 12.\n      NOEUD 3 FY 0.2\n   FIN\nFIN PHASAGE"
+      ]
+    },
+    {
+      "name": "CHARG",
+      "family": "chargements",
+      "context": "bloc:CHARG COMB",
+      "summary": "Ligne d'une charge combinee : reference un ou plusieurs chargements avec leur coefficient de ponderation.",
+      "syntax": [
+        "CHARG liste coef"
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        125,
+        229
+      ],
+      "doc": "Ligne de composition d'une charge combinee, valide uniquement entre `CHARG i COMB` et `FIN` [p.125].\n\n- `liste` : numeros des chargements a inclure.\n- `coef` : coefficient de ponderation du chargement, **1 par defaut** [p.125].\n\nLa ligne peut etre repetee autant de fois que necessaire.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros des chargements a combiner.",
+          "required": true,
+          "pages": [
+            125
+          ]
+        },
+        {
+          "name": "coef",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Coefficient de ponderation du chargement.",
+          "required": false,
+          "default": "1",
+          "pages": [
+            125
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG i COMB",
+        "chargements elementaires deja definis par CHARG [p.106]"
+      ],
+      "forbidden": [
+        "hors du couple CHARG i COMB ... FIN [p.125]",
+        "ponderation de l'effet sur les cables de precontrainte [p.125]"
+      ],
+      "pitfalls": [
+        "`coef` vaut 1 s'il est omis [p.125].",
+        "L'effet sur les cables de precontrainte n'est pas pondere, meme si un `coef` est indique [p.125]."
+      ],
+      "examples": [
+        "CHARG 1 1.35",
+        "CHARG 5 a 9 1.5",
+        "CHARG 1,2,4   # coef 1 par defaut"
+      ]
+    },
+    {
+      "name": "CHARG COMB",
+      "family": "chargements",
+      "context": "top",
+      "summary": "Definit une charge combinee : plusieurs chargements ponderes appliques ensemble en un seul calcul.",
+      "syntax": [
+        "CHARG i COMB ('Titre')",
+        "   CHARG liste coef",
+        "   ...",
+        "FIN"
+      ],
+      "terminator": "FIN",
+      "exec": "EXEC CHARG",
+      "pages": [
+        125,
+        229
+      ],
+      "doc": "La commande `CHARG` est completee par la possibilite d'appliquer directement une combinaison de charges. Elle est utile pour les **calculs non lineaires** au feu ou sur sol plastique [p.125, p.229].\n\n- `liste` : numeros des chargements a combiner.\n- `coef` : coefficient de ponderation du chargement, **1 par defaut** [p.125].\n\n**Charge combinee vs combinaison de charges** [p.125] : la charge combinee definie ici est formee de plusieurs charges de definition, et on calcule l'effet de toutes ces charges combinees **ensemble** (un seul `EXEC CHARG` sur la charge combinee). Dans une combinaison de charges (commande `COMB` p.234), on calcule d'abord l'effet charge par charge (`EXEC CHARG` sur chaque charge), puis on combine les effets.\n\nLes deux approches donnent le meme resultat en calcul lineaire classique ; elles different des que le calcul est non lineaire (feu, sol plastique, decollement) [p.229].\n\nPour l'analyse au feu, le chargement doit etre representatif des charges permanentes et des charges d'exploitation eventuelles : il faut simuler ces dernieres par des charges statiques equivalentes puis les combiner via `CHARG COMB` ; il n'est ni equivalent ni correct de cumuler un effet d'incendie calcule d'un cote et des effets `SURCH` calcules en elastique [p.230].",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "doc": "Numero de la charge combinee.",
+          "required": true,
+          "pages": [
+            125
+          ]
+        },
+        {
+          "name": "COMB",
+          "kind": "subcommand",
+          "type": "flag",
+          "doc": "Mot-cle qui transforme le bloc CHARG en charge combinee.",
+          "required": true,
+          "pages": [
+            125
+          ]
+        },
+        {
+          "name": "Titre",
+          "kind": "positional",
+          "type": "string",
+          "doc": "Titre libre entre apostrophes simples.",
+          "required": false,
+          "pages": [
+            125
+          ]
+        }
+      ],
+      "prerequisites": [
+        "chargements elementaires prealablement definis par CHARG [p.106]"
+      ],
+      "forbidden": [
+        "ponderation de l'effet sur les cables de precontrainte [p.125]"
+      ],
+      "pitfalls": [
+        "**L'effet sur les cables de precontrainte ne peut pas etre pondere** dans une charge combinee [p.125].",
+        "Ne pas confondre avec la commande `COMB` [p.234], qui combine les **effets** deja calcules charge par charge. Les resultats different des que le calcul est non lineaire (feu, sol plastique, decollement) [p.125, p.229].",
+        "Pour l'analyse au feu, il ne faut pas cumuler un effet d'incendie et des effets `SURCH` (calcul elastique) : construire une `CHARG COMB` representative et l'utiliser dans `INCENDIE ... CHARG k` [p.230].",
+        "Pour `EXEC CHARG PSE` (sol plastique), il est recommande d'utiliser une `CHARG COMB` plutot qu'une charge simple, du fait de la non linearite [p.125]."
+      ],
+      "examples": [
+        "CHARG 10 COMB 'combinaison feu'\n   CHARG 1 1.0\n   CHARG 2 0.8\nFIN\nEXEC CHARG 10",
+        "CHARG 20 COMB 'permanentes + exploitation equivalente'\n   CHARG 1,2 1.35\n   CHARG 5 a 9 1.5\nFIN"
+      ]
+    },
+    {
+      "name": "DEFOR CON",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Deformation concentree (saut de deplacement ou de rotation) imposee a une abscisse sur des barres.",
+      "syntax": [
+        "DEFOR liste CON XL xl (REL,ABS) (DX dx) (DY dy) ... (RZ rz) (GLO,LOC)",
+        "DEFOR",
+        "   liste CON XL xl (REL,ABS) (DX dx) (DY dy) ... (RZ rz) (GLO,LOC)",
+        "   ..."
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        119
+      ],
+      "doc": "Deformation concentree sur des barres [p.119].\n\n- `XL xl` : abscisse de la deformation sur la barre.\n- `REL` : abscisse relative a la longueur de la barre. `ABS` : abscisse en longueur reelle. **`ABS` est la valeur par defaut** [p.119].\n- `GLO` : deformations dans le repere global de la structure. `LOC` : deformations dans le repere local de la barre. **`LOC` est la valeur par defaut** [p.119].\n- **Les deformations sont toujours relatives** [p.119].\n- L'application de deformations **unitaires** permet de calculer les lignes d'influence [p.119].\n\nDeformations utilisables selon l'option [p.119] :\n- `OPTION PLANE` : `DX`, `DY`, `RZ`\n- `OPTION GRILL` : `RX`, `DZ`, `RY`\n- `OPTION SPATIALE` : `DX`, `DY`, `DZ`, `RX`, `RY`, `RZ`\n\n`liste` peut etre remplacee par `TOUT` [p.119].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros de barres. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            119
+          ]
+        },
+        {
+          "name": "CON",
+          "kind": "subcommand",
+          "type": "flag",
+          "doc": "Selectionne la deformation concentree.",
+          "required": true,
+          "pages": [
+            119
+          ]
+        },
+        {
+          "name": "XL",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Abscisse de la deformation sur la barre. Bornee par 0 et 1 si REL, par 0 et la longueur de la barre si ABS.",
+          "required": true,
+          "min": 0,
+          "pages": [
+            119
+          ]
+        },
+        {
+          "name": "REL",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "REL",
+            "ABS"
+          ],
+          "doc": "Abscisse relative a la longueur de la barre (0 a 1).",
+          "required": false,
+          "pages": [
+            119
+          ]
+        },
+        {
+          "name": "ABS",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "REL",
+            "ABS"
+          ],
+          "doc": "Abscisse en longueur reelle depuis le noeud origine. Valeur par defaut.",
+          "required": false,
+          "default": "ABS",
+          "pages": [
+            119
+          ]
+        },
+        {
+          "name": "DX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Deformation suivant l'axe OX (ou ox local).",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            119
+          ]
+        },
+        {
+          "name": "DY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Deformation suivant l'axe OY (ou oy local).",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            119
+          ]
+        },
+        {
+          "name": "DZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Deformation suivant l'axe OZ (ou oz local).",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            119
+          ]
+        },
+        {
+          "name": "RX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Rotation autour de l'axe OX (ou ox local).",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            119
+          ]
+        },
+        {
+          "name": "RY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Rotation autour de l'axe OY (ou oy local).",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            119
+          ]
+        },
+        {
+          "name": "RZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Rotation autour de l'axe OZ (ou oz local).",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            119
+          ]
+        },
+        {
+          "name": "GLO",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC"
+          ],
+          "doc": "Deformations donnees dans le repere global de la structure.",
+          "required": false,
+          "pages": [
+            119
+          ]
+        },
+        {
+          "name": "LOC",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC"
+          ],
+          "doc": "Deformations donnees dans le repere local de la barre. Valeur par defaut.",
+          "required": false,
+          "default": "LOC",
+          "pages": [
+            119
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG",
+        "BARRE (geometrie)"
+      ],
+      "forbidden": [
+        "hors du couple CHARG ... FIN [p.119]",
+        "abscisse hors de la barre [p.119]"
+      ],
+      "pitfalls": [
+        "**Le repere par defaut est `LOC` pour `DEFOR`, alors qu'il est `GLO` pour les charges `BARRE`** : c'est une source d'erreur classique [p.119, p.110].",
+        "Le defaut d'abscisse reste `ABS` (longueur reelle) comme pour les charges [p.119].",
+        "**Une deformation concentree est un saut de deplacement impose** : sur une structure isostatique aucun effort ne nait, on lit seulement le saut (poutre sur 2 appuis, saut `dz` a mi-travee : -dz/2 d'un cote, +dz/2 de l'autre).",
+        "**Verinage (retour d'experience support, non documente)** : une deformation imposee sur la barre d'appareil d'appui met le verin EN SERIE avec l'appareil (compression accrue). Pour simuler un soulevement (verin EN PARALLELE), imposer le deplacement en tete d'appareil ou appliquer la deformation a une barre rigide parallele.",
+        "Les deformations sont **toujours relatives** [p.119]."
+      ],
+      "examples": [
+        "DEFOR 1 a 3 CON XL .5 REL DX 12 DY 15   # repere local par defaut",
+        "DEFOR 1 a 3 CON XL 1.2 ABS DX 7 GLO",
+        "DEFOR 10 CON XL .5 REL DY 1.   # deformation unitaire : ligne d'influence"
+      ]
+    },
+    {
+      "name": "DEFOR LIN",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Deformation repartie variant lineairement entre deux abscisses sur les barres.",
+      "syntax": [
+        "DEFOR liste LIN XL xl1 xl2 (REL,ABS) (DX dx1 dx2) (DY dy1 dy2) ... (RZ rz1 rz2) (GLO,LOC)",
+        "DEFOR",
+        "   liste LIN XL xl1 xl2 (REL,ABS)",
+        "      (DX dx1 dx2) (DY dy1 dy2) ... (RZ rz1 rz2) (GLO,LOC)",
+        "   ..."
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        121
+      ],
+      "doc": "Deformation supposee varier lineairement d'une valeur `v1` situee a l'abscisse `xl1` a une valeur `v2` situee a l'abscisse `xl2` [p.121].\n\n- `REL` : abscisses relatives a la longueur de la barre. `ABS` : abscisses en longueur reelle. **`ABS` est la valeur par defaut** [p.121].\n- `GLO` : repere global. `LOC` : repere local de la barre. **`LOC` est la valeur par defaut** [p.121].\n- **Les deformations sont toujours relatives** [p.121].\n\nDeformations utilisables selon l'option [p.121] :\n- `OPTION PLANE` : `dx1, dx2, dy1, dy2, rz1, rz2`\n- `OPTION GRILL` : `rx1, rx2, dz1, dz2, ry1, ry2`\n- `OPTION SPATIALE` : toutes\n\n`liste` peut etre remplacee par `TOUT` [p.121].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros de barres. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            121
+          ]
+        },
+        {
+          "name": "LIN",
+          "kind": "subcommand",
+          "type": "flag",
+          "doc": "Selectionne la deformation lineairement repartie.",
+          "required": true,
+          "pages": [
+            121
+          ]
+        },
+        {
+          "name": "XL",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Deux valeurs : abscisse de debut xl1 puis abscisse de fin xl2 de la deformation sur la barre.",
+          "required": true,
+          "min": 0,
+          "pages": [
+            121
+          ]
+        },
+        {
+          "name": "REL",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "REL",
+            "ABS"
+          ],
+          "doc": "Abscisses relatives a la longueur de la barre (0 a 1).",
+          "required": false,
+          "pages": [
+            121
+          ]
+        },
+        {
+          "name": "ABS",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "REL",
+            "ABS"
+          ],
+          "doc": "Abscisses en longueur reelle depuis le noeud origine. Valeur par defaut.",
+          "required": false,
+          "default": "ABS",
+          "pages": [
+            121
+          ]
+        },
+        {
+          "name": "DX",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Valeurs extremes dx1 dx2 de la deformation repartie suivant l'axe OX.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            121
+          ]
+        },
+        {
+          "name": "DY",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Valeurs extremes dy1 dy2 de la deformation repartie suivant l'axe OY.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            121
+          ]
+        },
+        {
+          "name": "DZ",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Valeurs extremes dz1 dz2 de la deformation repartie suivant l'axe OZ.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            121
+          ]
+        },
+        {
+          "name": "RX",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Valeurs extremes rx1 rx2 de la rotation repartie autour de l'axe OX.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            121
+          ]
+        },
+        {
+          "name": "RY",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Valeurs extremes ry1 ry2 de la rotation repartie autour de l'axe OY.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            121
+          ]
+        },
+        {
+          "name": "RZ",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Valeurs extremes rz1 rz2 de la rotation repartie autour de l'axe OZ.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            121
+          ]
+        },
+        {
+          "name": "GLO",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC"
+          ],
+          "doc": "Deformations donnees dans le repere global de la structure.",
+          "required": false,
+          "pages": [
+            121
+          ]
+        },
+        {
+          "name": "LOC",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC"
+          ],
+          "doc": "Deformations donnees dans le repere local de chaque barre. Valeur par defaut.",
+          "required": false,
+          "default": "LOC",
+          "pages": [
+            121
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG",
+        "BARRE (geometrie)"
+      ],
+      "forbidden": [
+        "hors du couple CHARG ... FIN [p.121]",
+        "PRO (n'existe que pour les charges BARRE UNI et BARRE LIN) [p.115, p.121]"
+      ],
+      "pitfalls": [
+        "Chaque composante attend **deux** valeurs (`DX dx1 dx2`) [p.121].",
+        "**Repere par defaut `LOC`**, contrairement aux charges `BARRE LIN` dont le defaut est `GLO` [p.121, p.115].",
+        "Le defaut d'abscisse est `ABS` (longueur reelle) [p.121].",
+        "Les deformations sont **toujours relatives** [p.121]."
+      ],
+      "examples": [
+        "DEFOR 1 a 3 LIN XL .2 .7 DX 12 15",
+        "DEFOR 1 a 3 LIN XL 0. 1. REL DY -0.001 0.001 GLO"
+      ]
+    },
+    {
+      "name": "DEFOR UNI",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Deformation uniformement repartie sur toute la longueur des barres.",
+      "syntax": [
+        "DEFOR liste UNI (DX dx) (DY dy) ... (RZ rz) (GLO,LOC)",
+        "DEFOR",
+        "   liste UNI (DX dx) (DY dy) ... (RZ rz) (GLO,LOC)",
+        "   ..."
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        120
+      ],
+      "doc": "Deformation uniformement repartie sur les barres [p.120].\n\n- `GLO` : deformations dans le repere global de la structure. `LOC` : deformations dans le repere local de la barre. **`LOC` est la valeur par defaut** [p.120].\n- **Les deformations sont toujours relatives** [p.120].\n\nDeformations utilisables selon l'option [p.120] :\n- `OPTION PLANE` : `DX`, `DY`, `RZ`\n- `OPTION GRILL` : `RX`, `DZ`, `RY`\n- `OPTION SPATIALE` : `DX`, `DY`, `DZ`, `RX`, `RY`, `RZ`\n\n`liste` peut etre remplacee par `TOUT` [p.120].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros de barres. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            120
+          ]
+        },
+        {
+          "name": "UNI",
+          "kind": "subcommand",
+          "type": "flag",
+          "doc": "Selectionne la deformation uniformement repartie.",
+          "required": true,
+          "pages": [
+            120
+          ]
+        },
+        {
+          "name": "DX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Deformation repartie suivant l'axe OX (ou ox local).",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            120
+          ]
+        },
+        {
+          "name": "DY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Deformation repartie suivant l'axe OY (ou oy local).",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            120
+          ]
+        },
+        {
+          "name": "DZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Deformation repartie suivant l'axe OZ (ou oz local).",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            120
+          ]
+        },
+        {
+          "name": "RX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Rotation repartie autour de l'axe OX (ou ox local).",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            120
+          ]
+        },
+        {
+          "name": "RY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Rotation repartie autour de l'axe OY (ou oy local).",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            120
+          ]
+        },
+        {
+          "name": "RZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Rotation repartie autour de l'axe OZ (ou oz local).",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            120
+          ]
+        },
+        {
+          "name": "GLO",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC"
+          ],
+          "doc": "Deformations donnees dans le repere global de la structure.",
+          "required": false,
+          "pages": [
+            120
+          ]
+        },
+        {
+          "name": "LOC",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "GLO",
+            "LOC"
+          ],
+          "doc": "Deformations donnees dans le repere local de la barre. Valeur par defaut.",
+          "required": false,
+          "default": "LOC",
+          "pages": [
+            120
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG",
+        "BARRE (geometrie)"
+      ],
+      "forbidden": [
+        "hors du couple CHARG ... FIN [p.120]",
+        "PRO (n'existe que pour les charges BARRE UNI et BARRE LIN) [p.112, p.115, p.120]"
+      ],
+      "pitfalls": [
+        "**Repere par defaut `LOC`** (contrairement aux charges `BARRE UNI` dont le defaut est `GLO`) [p.120, p.112].",
+        "`PRO` n'est pas admis pour les deformations : seuls `GLO` et `LOC` [p.120].",
+        "Les deformations sont **toujours relatives** [p.120]."
+      ],
+      "examples": [
+        "DEFOR 1 a 3 UNI DX 12   # repere local des barres par defaut",
+        "DEFOR 1 a 3 UNI DY -0.001 GLO"
+      ]
+    },
+    {
+      "name": "EXEC CHARG",
+      "family": "chargements",
+      "context": "exec",
+      "summary": "Execute les chargements fixes definis et stocke les resultats en base de donnees.",
+      "syntax": [
+        "EXEC CHARG (liste)"
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        125
+      ],
+      "doc": "Execute les chargements precedemment definis [p.125].\n\n- `liste` : numeros de chargements deja definis. **Par defaut, tous les chargements definis sont executes** [p.125].\n- `liste` peut etre remplacee par `TOUT` : equivalent a ne pas mettre de liste [p.125].\n- La commande **stocke les resultats en base de donnees** [p.125].\n- Les contraintes generalisees (`CONTRG`) sont integrees aux resultats de chaque section d'etude au moment de l'execution des chargements [p.105].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros des chargements a executer. `TOUT` admis. Par defaut tous les chargements definis.",
+          "required": false,
+          "default": "tous les chargements definis",
+          "pages": [
+            125
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG (au moins un chargement defini) [p.106]"
+      ],
+      "forbidden": [],
+      "pitfalls": [
+        "Sans `EXEC CHARG`, aucun resultat n'est en base : `RESU`, `COMB`, `ENV` et les dessins de deformee / efforts / contraintes / pressions restent sans objet [p.125, p.254-258].",
+        "`EXEC CHARG` sans liste execute **tous** les chargements definis, y compris ceux dont on ne veut pas les resultats : sur un gros modele cela peut couter cher [p.125].",
+        "Le calcul est lineaire : pour un modele comportant des poutres sur sol plastique, utiliser `EXEC CHARG PSE` [p.125].",
+        "Les sections d'etude doivent avoir ete definies (`ETUDE`) avant l'execution pour disposer des efforts et deplacements intermediaires [p.101-102]."
+      ],
+      "examples": [
+        "EXEC CHARG 100",
+        "EXEC CHARG 1,2,5 a 9",
+        "EXEC CHARG   # tous les chargements definis",
+        "EXEC CHARG TOUT"
+      ]
+    },
+    {
+      "name": "EXEC CHARG PSE",
+      "family": "chargements",
+      "context": "exec",
+      "summary": "Execute les chargements sur un modele comportant des poutres sur ressort plastique (calcul non lineaire).",
+      "syntax": [
+        "EXEC CHARG PSE (liste)"
+      ],
+      "exec": "EXEC CHARG PSE",
+      "pages": [
+        125
+      ],
+      "doc": "Execute les chargements precedemment definis lorsque le modele comporte des **poutres sur sols plastiques** [p.125].\n\n- `liste` : numeros de chargements deja definis. **Par defaut, tous les chargements definis sont executes** [p.125].\n- `liste` peut etre remplacee par `TOUT` : equivalent a ne pas mettre de liste [p.125].\n- La commande **stocke les resultats en base de donnees** [p.125].\n- Le comportement plastique du sol est declare par `CARA PSE` puis `PLASTIQUE <POS,NEG> ...` [p.59-60].\n\nLe calcul etant non lineaire, il peut etre tres pratique d'utiliser une charge realisee avec `CHARG COMB` au lieu d'une simple charge [p.125].",
+      "args": [
+        {
+          "name": "PSE",
+          "kind": "subcommand",
+          "type": "flag",
+          "doc": "Selectionne l'execution avec poutres sur ressort plastique.",
+          "required": true,
+          "pages": [
+            125
+          ]
+        },
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros des chargements a executer. `TOUT` admis. Par defaut tous les chargements definis.",
+          "required": false,
+          "default": "tous les chargements definis",
+          "pages": [
+            125
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG (au moins un chargement defini) [p.106]",
+        "CARA PSE avec seuil PLASTIQUE sur les barres sur sol [p.59-60]"
+      ],
+      "forbidden": [
+        "SY et SZ dans CARA PSE [p.60]"
+      ],
+      "pitfalls": [
+        "**Le calcul est non lineaire et depend du chargement applique** : les effets de plusieurs chargements executes separement ne s'additionnent pas. Construire une `CHARG COMB` representative et l'executer en une fois [p.125].",
+        "**Ne pas tout declarer plastique au premier calcul** : sans appui inconditionnellement stable, le calcul diverge. Etudier d'abord la structure avec des appuis / zones stables (fixes ou elastiques), observer deplacements et pressions, puis introduire la non linearite progressivement (retour d'experience support).",
+        "`CARA PSE` : ne jamais definir `SY` ni `SZ` ; discretiser les poutres sur sol (rigidite, pression moyenne) [p.60].",
+        "Pour un phasage sur sol plastique, la commande equivalente est `EXEC PHASAGE PSE` [p.196]."
+      ],
+      "examples": [
+        "EXEC CHARG PSE 102",
+        "# Sequence complete d'apres l'exemple 19.11 du manuel [p.326-327]\nCARA PSE 1 a nb pas 1 SX 1 IZ 10\nPLASTIQUE NEG KFY 300\nZONE 1 KFX 1 KFY 500\nCHARG 102 'ressort plastique'\n   BARRE numb a nb UNI FY -1000\nFIN\nEXEC CHARG PSE 102"
+      ]
+    },
+    {
+      "name": "NOEUD",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Applique des forces et des couples sur des noeuds, dans le repere general de la structure.",
+      "syntax": [
+        "NOEUD liste (FX fx) (FY fy) ... (MZ mz)",
+        "NOEUD",
+        "   liste (FX fx) (FY fy) ... (MZ mz)",
+        "   ..."
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        109
+      ],
+      "doc": "Charges appliquees aux noeuds, **toujours dans le repere general de la structure** [p.109].\n\nDeux ecritures : instruction simple (tout sur une ligne) ou instruction de bloc (`NOEUD` seul puis une ligne par groupe de noeuds).\n\nCharges utilisables selon l'option [p.109] :\n- `OPTION PLANE` : `FX`, `FY`, `MZ`\n- `OPTION GRILL` : `MX`, `FZ`, `MY`\n- `OPTION SPATIALE` : `FX`, `FY`, `FZ`, `MX`, `MY`, `MZ`\n\n`liste` peut etre remplacee par `TOUT` : agit sur tous les noeuds actives a l'execution [p.109].\n\nA ne pas confondre avec la commande `NOEUD` de definition de la geometrie [p.46] : ici le contexte est le bloc `CHARG`.",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros de noeuds. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            109
+          ]
+        },
+        {
+          "name": "FX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Force suivant l'axe OX du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            109
+          ]
+        },
+        {
+          "name": "FY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Force suivant l'axe OY du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            109
+          ]
+        },
+        {
+          "name": "FZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Force suivant l'axe OZ du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            109
+          ]
+        },
+        {
+          "name": "MX",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Couple autour de l'axe OX du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            109
+          ]
+        },
+        {
+          "name": "MY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Couple autour de l'axe OY du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            109
+          ]
+        },
+        {
+          "name": "MZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Couple autour de l'axe OZ du repere general.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            109
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG",
+        "NOEUD (geometrie)"
+      ],
+      "forbidden": [
+        "hors du couple CHARG ... FIN [p.109]",
+        "composantes non disponibles dans l'OPTION active (ex. FX en GRILL) [p.109]"
+      ],
+      "pitfalls": [
+        "Les charges de noeud sont **toujours** dans le repere general : il n'existe pas de mot-cle `LOC` ici [p.109].",
+        "Composantes dependantes de l'OPTION : `FX/FY/MZ` en PLANE, `MX/FZ/MY` en GRILL, toutes en SPATIALE [p.109].",
+        "Les enveloppes de deplacement des charges d'exploitation ne portent jamais sur les noeuds ; ce n'est pas le cas ici (chargement fixe), mais la confusion est frequente [p.141]."
+      ],
+      "examples": [
+        "NOEUD 1 a 3 FX 12   # OPTION PLANE",
+        "NOEUD\n   1 a 3 FX 12 FY -50\n   10,12 MZ 25"
+      ]
+    },
+    {
+      "name": "POIDS PROPRE",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Genere le poids propre des barres listees, suivant la direction par defaut ou suivant un axe impose.",
+      "syntax": [
+        "POIDS PROPRE liste",
+        "POIDS PROPRE <X,Y,Z> (POS,NEG) liste"
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        108
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Poids propre des barres.\n\n- Forme sans axe : direction **par defaut** [p.108] :\n  - `OPTION PLANE` : axe **Y negatif**\n  - `OPTION GRILL` : **pas de poids propre** (interdit)\n  - `OPTION SPATIALE` : axe **Z negatif**\n- Forme avec axe impose : axes utilisables [p.108] :\n  - `OPTION PLANE` : `X`, `Y`\n  - `OPTION GRILL` : aucun\n  - `OPTION SPATIALE` : `X`, `Y`, `Z`\n- Le poids propre est genere **sur toute la longueur de la barre**, en multipliant le poids volumique (`RO` de `CONS`/`MAT`) par la section de la barre (`CARA`) [p.108, p.72].\n- Les excentrements eventuels des barres **ne sont pas pris en compte** pour generer le poids propre [p.108].\n- `liste` peut etre remplacee par `TOUT` : agit sur toutes les barres activees a l'execution [p.108].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros des barres. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            108
+          ]
+        },
+        {
+          "name": "X",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "X",
+            "Y",
+            "Z"
+          ],
+          "doc": "Axe impose du poids propre.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            108
+          ]
+        },
+        {
+          "name": "Y",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "X",
+            "Y",
+            "Z"
+          ],
+          "doc": "Axe impose du poids propre. Direction par defaut en OPTION PLANE (sens negatif).",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            108
+          ]
+        },
+        {
+          "name": "Z",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "X",
+            "Y",
+            "Z"
+          ],
+          "doc": "Axe impose du poids propre. Direction par defaut en OPTION SPATIALE (sens negatif).",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ],
+          "pages": [
+            108
+          ]
+        },
+        {
+          "name": "POS",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "POS",
+            "NEG"
+          ],
+          "doc": "Sens positif de l'axe impose.",
+          "required": false,
+          "pages": [
+            108
+          ]
+        },
+        {
+          "name": "NEG",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "POS",
+            "NEG"
+          ],
+          "doc": "Sens negatif de l'axe impose.",
+          "required": false,
+          "pages": [
+            108
+          ]
+        }
+      ],
+      "prerequisites": [
+        "OPTION PLANE ou SPATIALE",
+        "BARRE",
+        "CARA (section)",
+        "CONS RO ou MAT (poids volumique) [p.72]"
+      ],
+      "forbidden": [
+        "OPTION GRILL : la section droite des poutres n'y est jamais definie [p.108]"
+      ],
+      "pitfalls": [
+        "**Interdit en OPTION GRILL** : la section droite n'est jamais definie en grillage [p.108].",
+        "Les excentrements ne sont pas pris en compte : le poids propre est applique sur l'axe de la barre [p.108]. Les barres rigides d'excentrement ne recoivent ni chargement, ni section d'etude, ni poids propre [p.53].",
+        "Le manuel documente le **sens par defaut** de la forme `POIDS PROPRE liste` (Y negatif en PLANE, Z negatif en SPATIALE) mais ne documente pas explicitement le sens par defaut de la forme `POIDS PROPRE <X,Y,Z> (POS,NEG) liste` : ecrire `POS` ou `NEG` explicitement.",
+        "En phasage, l'activation d'une barre **ne genere pas** son poids propre : il faut le creer par un `CHARG POIDS PROPRE` [p.188].",
+        "Sans `RO` (`CONS` ou `MAT`) et sans section (`CARA`), le poids propre genere est nul."
+      ],
+      "examples": [
+        "POIDS PROPRE 1 a 4,10   # direction par defaut",
+        "POIDS PROPRE Y NEG TOUT   # OPTION PLANE, sens explicite",
+        "POIDS PROPRE Z NEG 1 a 20   # OPTION SPATIALE"
+      ]
+    },
+    {
+      "name": "TEMP GY",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Gradient thermique autour de l'axe local oy des barres (ecart fibre superieure - fibre inferieure).",
+      "syntax": [
+        "TEMP liste (GY dty) (GZ dtz)",
+        "TEMP",
+        "   liste (GY dty) (GZ dtz)",
+        "   ..."
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        118
+      ],
+      "restrictedToOptions": [
+        "PLANE",
+        "SPATIALE"
+      ],
+      "doc": "Gradient thermique sur les barres [p.118].\n\n- `dty` : ecart de temperature entre les fibres superieure et inferieure de l'axe `oy` du **repere local** des barres.\n- **Un ecart est positif si la temperature de la fibre superieure est plus elevee que celle de la fibre inferieure** [p.118].\n- Ecarts utilisables selon l'option [p.118] : `OPTION PLANE` -> `dty` ; `OPTION GRILL` -> `dtz` ; `OPTION SPATIALE` -> `dty` et `dtz`.\n- `GY` et `GZ` peuvent etre donnes sur la meme instruction en `OPTION SPATIALE`.\n- **La prise en compte d'un gradient thermique exige le coefficient de dilatation (`CONS` p.72) ET les fibres superieure et inferieure (`CARA` p.59)** [p.118].\n- `liste` peut etre remplacee par `TOUT` [p.118].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros de barres. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            118
+          ]
+        },
+        {
+          "name": "GY",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ecart de temperature dty entre fibres superieure et inferieure suivant l'axe local oy. Positif si la fibre superieure est plus chaude.",
+          "required": false,
+          "onlyOptions": [
+            "PLANE",
+            "SPATIALE"
+          ],
+          "pages": [
+            118
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG",
+        "coefficient de dilatation thermique (CONS TEMP ou MAT) [p.72]",
+        "fibres superieure et inferieure definies par CARA (VY/WY, VZ/WZ) [p.59]"
+      ],
+      "forbidden": [
+        "hors du couple CHARG ... FIN [p.118]",
+        "GY en OPTION GRILL (seul GZ y est utilisable) [p.118]"
+      ],
+      "pitfalls": [
+        "**Convention de signe** : positif si la fibre superieure est plus chaude que la fibre inferieure [p.118].",
+        "Le gradient est defini dans le **repere local** de la barre : l'orientation des barres conditionne le signe obtenu [p.118].",
+        "**Deux prerequis, pas un** : coefficient de dilatation (`CONS`/`MAT`) ET fibres (`CARA`). Sans fibres, le gradient reste sans effet [p.118, p.59, p.72].",
+        "`GY` n'existe pas en `OPTION GRILL` : y utiliser `GZ` [p.118]."
+      ],
+      "examples": [
+        "TEMP 1 a 3 GY 15.   # OPTION PLANE ou SPATIALE",
+        "TEMP 1 a 10 GY 10. GZ -5.   # OPTION SPATIALE, les deux gradients sur la meme ligne"
+      ]
+    },
+    {
+      "name": "TEMP GZ",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Gradient thermique autour de l'axe local oz des barres (ecart fibre superieure - fibre inferieure).",
+      "syntax": [
+        "TEMP liste (GY dty) (GZ dtz)",
+        "TEMP",
+        "   liste (GY dty) (GZ dtz)",
+        "   ..."
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        118
+      ],
+      "restrictedToOptions": [
+        "GRILL",
+        "SPATIALE"
+      ],
+      "doc": "Gradient thermique sur les barres [p.118].\n\n- `dtz` : ecart de temperature entre les fibres superieure et inferieure de l'axe `oz` du **repere local** des barres.\n- **Un ecart est positif si la temperature de la fibre superieure est plus elevee que celle de la fibre inferieure** [p.118].\n- Ecarts utilisables selon l'option [p.118] : `OPTION PLANE` -> `dty` ; `OPTION GRILL` -> `dtz` ; `OPTION SPATIALE` -> `dty` et `dtz`.\n- **La prise en compte d'un gradient thermique exige le coefficient de dilatation (`CONS` p.72) ET les fibres superieure et inferieure (`CARA` p.59)** [p.118].\n- `liste` peut etre remplacee par `TOUT` [p.118].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros de barres. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            118
+          ]
+        },
+        {
+          "name": "GZ",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Ecart de temperature dtz entre fibres superieure et inferieure suivant l'axe local oz. Positif si la fibre superieure est plus chaude.",
+          "required": false,
+          "onlyOptions": [
+            "GRILL",
+            "SPATIALE"
+          ],
+          "pages": [
+            118
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG",
+        "coefficient de dilatation thermique (CONS TEMP ou MAT) [p.72]",
+        "fibres superieure et inferieure definies par CARA (VZ/WZ) [p.59]"
+      ],
+      "forbidden": [
+        "hors du couple CHARG ... FIN [p.118]",
+        "GZ en OPTION PLANE (seul GY y est utilisable) [p.118]"
+      ],
+      "pitfalls": [
+        "**Convention de signe** : positif si la fibre superieure est plus chaude que la fibre inferieure [p.118].",
+        "`GZ` est le seul gradient disponible en `OPTION GRILL` ; `GY` y est interdit [p.118].",
+        "Sans fibres definies par `CARA`, le gradient reste sans effet [p.118, p.59]."
+      ],
+      "examples": [
+        "TEMP 1 a 3 GZ 12.   # OPTION GRILL ou SPATIALE",
+        "TEMP\n   1 a 20 GZ 10.\n   21 a 30 GZ -8."
+      ]
+    },
+    {
+      "name": "TEMP UNI",
+      "family": "chargements",
+      "context": "bloc:CHARG",
+      "summary": "Dilatation thermique uniforme des barres sous un ecart de temperature.",
+      "syntax": [
+        "TEMP liste UNI dt",
+        "TEMP",
+        "   liste UNI dt",
+        "   ..."
+      ],
+      "exec": "EXEC CHARG",
+      "pages": [
+        117
+      ],
+      "doc": "Dilatation thermique des barres [p.117].\n\n- `dt` : ecart de temperature applique uniformement a la barre.\n- Deux ecritures : instruction simple ou instruction de bloc.\n- **La prise en compte d'un effet thermique n'a lieu que si le coefficient de dilatation a ete defini** (`CONS ... TEMP temp` ou `MAT`) [p.117, p.72].\n- `liste` peut etre remplacee par `TOUT` : agit sur toutes les barres activees a l'execution [p.117].\n\nUnite : aucun systeme n'est impose ; `dt` doit etre coherent avec le coefficient de dilatation declare dans `CONS`/`MAT`. L'exemple du manuel parle d'un ecart de 20 degres [p.117].",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "doc": "Numeros de barres. `TOUT` admis.",
+          "required": true,
+          "pages": [
+            117
+          ]
+        },
+        {
+          "name": "UNI",
+          "kind": "subcommand",
+          "type": "flag",
+          "doc": "Selectionne la dilatation uniforme.",
+          "required": true,
+          "pages": [
+            117
+          ]
+        },
+        {
+          "name": "dt",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Ecart de temperature applique a la barre (coherent avec le coefficient de dilatation de CONS/MAT).",
+          "required": true,
+          "pages": [
+            117
+          ]
+        }
+      ],
+      "prerequisites": [
+        "CHARG",
+        "coefficient de dilatation thermique defini par CONS TEMP ou MAT [p.72, p.117]"
+      ],
+      "forbidden": [
+        "hors du couple CHARG ... FIN [p.117]"
+      ],
+      "pitfalls": [
+        "**Sans coefficient de dilatation (`CONS ... TEMP temp` ou `MAT`), l'effet thermique est nul** : aucun effort n'apparait [p.117, p.72].",
+        "`dt` est un **ecart** de temperature, pas une temperature absolue [p.117].",
+        "`TEMP` est aussi un mot-cle de `CONS`/`MAT` (coefficient de dilatation) : ne pas confondre les deux emplois [p.72].",
+        "Sur une structure isostatique la dilatation ne cree aucun effort : on ne lit que les deplacements."
+      ],
+      "examples": [
+        "TEMP 1 a 3 UNI 20.",
+        "TEMP\n   1 a 50 UNI 20.\n   51 a 60 UNI -15."
+      ]
+    }
+  ]
+}

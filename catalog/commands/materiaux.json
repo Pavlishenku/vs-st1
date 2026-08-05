@@ -1,0 +1,2989 @@
+{
+  "commands": [
+    {
+      "name": "ALIGNE",
+      "family": "materiaux",
+      "context": "bloc:TRACE",
+      "summary": "Impose un alignement droit entre le point de passage courant du cable et le point suivant.",
+      "syntax": [
+        "(X) x (Y) y ((Z) z) ALIGNE"
+      ],
+      "doc": "Mot-cle sans valeur, place a la fin d'une ligne de point de passage du bloc `TRACE`. Il impose un **segment droit** entre ce point et le point suivant du trace.\n\nAlternative aux tangentes `PENTE` / `GIS` pour decrire la forme locale du cable.",
+      "args": [],
+      "prerequisites": [
+        "Etre sur une ligne de point de passage d'un bloc TRACE (commande CABLE)"
+      ],
+      "pitfalls": [
+        "ALIGNE s'applique au segment allant du point courant vers le point SUIVANT, pas au segment precedent (p97).",
+        "Un trace ALIGNE et un trace decrit par PENTE aux memes points ne sont que 'pratiquement equivalents' (p97).",
+        "ALIGNE et RAYON s'excluent mutuellement et excluent la definition d'une tangente ; en revanche PENTE et GIS sont cumulables sur un meme point pour definir completement la tangente : la tangente est definie par l'angle avec le plan horizontal (PENTE) ET/OU l'angle du trace en plan par rapport a OX global (GIS) (p97)."
+      ],
+      "examples": [
+        "X 1 Y 3 ALIGNE",
+        "X 0 Z 0 ALIGNE",
+        "1 3 ALIGNE              # mots-cles X et Y omis"
+      ],
+      "pages": [
+        97
+      ]
+    },
+    {
+      "name": "AVANCE",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Coefficients de ponderation avances appliques au module d'Young, aux deformations et aux cinetiques de retrait et de fluage ; tous valent 1 par defaut.",
+      "syntax": [
+        "AVANCE (K_MODULE km)",
+        "       (<K_RETRAIT_ENDOGENE, KRE> kre)",
+        "       (<K_RETRAIT_DESSICATION, KRD> krd)",
+        "       (<K_FLUAGE_ENDOGENE, KFE> kfe)",
+        "       (<K_FLUAGE_DESSICATION, KFD> kfd)",
+        "       (<K_FLUAGE_CINETIQUE, KFC> kfc)",
+        "       (<K_RETRAIT_ENDOGENE_CINETIQUE, KREC> krec)",
+        "       (<K_RETRAIT_DESSIC_CINETIQUE, KRDC> krdc)",
+        "       (<K_FLUAGE_ENDOGENE_CINETIQUE, KFEC> kfec)",
+        "       (<K_FLUAGE_DESSIC_CINETIQUE, KFDC> kfdc)"
+      ],
+      "doc": "Destine au **recalage des ouvrages existants** : permet d'adapter l'affinite des lois de comportement (module, retrait, fluage) pour les differents materiaux (BPEL, CEB, EC2). Les coefficients s'appliquent aux lois decrites en annexe (p341 et suivantes).\n\n**Tous les coefficients valent 1 par defaut.**\n\nChaque coefficient dispose d'un mot-cle long et d'un mot-cle court strictement equivalents (les mots-cles alternatifs ne modifient pas la commande, ce sont de simples raccourcis).",
+      "args": [
+        {
+          "name": "K_MODULE",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "km : coefficient applique sur le module d'Young.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "K_RETRAIT_ENDOGENE",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "kre : coefficient applique sur la deformation de retrait endogene. Mot-cle court equivalent : KRE.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "KRE",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Raccourci strictement equivalent a K_RETRAIT_ENDOGENE.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "K_RETRAIT_DESSICATION",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "krd : coefficient applique sur la deformation de retrait de dessiccation. Mot-cle court equivalent : KRD.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "KRD",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Raccourci strictement equivalent a K_RETRAIT_DESSICATION.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "K_FLUAGE_ENDOGENE",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "kfe : coefficient applique sur la deformation de fluage propre. Mot-cle court equivalent : KFE.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "KFE",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Raccourci strictement equivalent a K_FLUAGE_ENDOGENE.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "K_FLUAGE_DESSICATION",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "kfd : coefficient applique sur la deformation de fluage de dessiccation. Mot-cle court equivalent : KFD.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "KFD",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Raccourci strictement equivalent a K_FLUAGE_DESSICATION.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "K_FLUAGE_CINETIQUE",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "kfc : coefficient applique sur la cinetique de deformation de fluage (EN 2010). Mot-cle court equivalent : KFC.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "KFC",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Raccourci strictement equivalent a K_FLUAGE_CINETIQUE.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "K_RETRAIT_ENDOGENE_CINETIQUE",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "krec : coefficient sur la cinetique de retrait endogene (EN 2027). Mot-cle court equivalent : KREC.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "KREC",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Raccourci strictement equivalent a K_RETRAIT_ENDOGENE_CINETIQUE.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "K_RETRAIT_DESSIC_CINETIQUE",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "krdc : coefficient sur la cinetique de retrait par dessiccation (EN 2027). Mot-cle court equivalent : KRDC.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "KRDC",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Raccourci strictement equivalent a K_RETRAIT_DESSIC_CINETIQUE.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "K_FLUAGE_ENDOGENE_CINETIQUE",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "kfec : coefficient sur la cinetique de fluage endogene (EN 2027). Mot-cle court equivalent : KFEC.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "KFEC",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Raccourci strictement equivalent a K_FLUAGE_ENDOGENE_CINETIQUE.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "K_FLUAGE_DESSIC_CINETIQUE",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "kfdc : coefficient sur la cinetique de fluage par dessiccation (EN 2027). Mot-cle court equivalent : KFDC.",
+          "pages": [
+            91
+          ]
+        },
+        {
+          "name": "KFDC",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "1",
+          "doc": "Raccourci strictement equivalent a K_FLUAGE_DESSIC_CINETIQUE.",
+          "pages": [
+            91
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT (seule la ligne E est obligatoire, p74)"
+      ],
+      "pitfalls": [
+        "Les coefficients de retrait et de fluage n'ont d'effet que si les lois correspondantes sont declarees : dans la syntaxe generale de MAT, RETRAIT et FLUAGE sont optionnels (p74), meme si le bloc de syntaxe de AVANCE les montre sans parentheses (p91).",
+        "Attention a l'orthographe DESSICATION (un seul S au milieu) dans K_RETRAIT_DESSICATION et K_FLUAGE_DESSICATION, mais DESSIC dans K_RETRAIT_DESSIC_CINETIQUE et K_FLUAGE_DESSIC_CINETIQUE (p91).",
+        "Les coefficients cinetiques KREC, KRDC, KFEC, KFDC sont documentes pour l'EN 2027 et KFC pour l'EN 2010 : leur emploi sous une autre loi n'est pas documente (p91).",
+        "Tous les coefficients valent 1 par defaut : ne renseigner que ceux que l'on recale reellement (p91).",
+        "Commande destinee au recalage d'ouvrages EXISTANTS : elle sort du cadre reglementaire pur, a documenter dans la note de calcul (p91)."
+      ],
+      "examples": [
+        "AVANCE K_MODULE 0.8 K_RETRAIT_ENDOGENE 0.5",
+        "AVANCE K_MODULE 0.9 KRE 0.6 KRD 0.7 KFE 1.1 KFD 1.2",
+        "MAT 1 'BETON MODIFIE'\nE EC2_BHP1 MPA FCK 80\nRETRAIT EC2_BHP1\nFLUAGE EC2_BHP1\nRM_EC 250 RH 70 CIMENT N ROS 0.05\nAVANCE K_MODULE 0.8 K_RETRAIT_ENDOGENE 0.5\nFIN"
+      ],
+      "pages": [
+        91
+      ]
+    },
+    {
+      "name": "BARRE",
+      "family": "materiaux",
+      "context": "bloc:CABLE",
+      "summary": "Liste des barres servant de support au cable ; par defaut toutes les barres, mais la specification est fortement recommandee.",
+      "syntax": [
+        "(BARRE liste)"
+      ],
+      "doc": "`liste` : liste des barres servant de support au cable. **Par defaut, toutes les barres.**\n\nUn cable modelise dans ST1 sollicite la barre la plus proche choisie dans la liste des barres support. La definition des barres support doit etre utilisee chaque fois qu'il peut y avoir ambiguite sur le choix de la barre qui doit recevoir l'effet du cable (exemple : pont modelise avec ses piles, la liste ne doit contenir que les barres du tablier).\n\nEn general, la liste doit comporter uniquement les barres susceptibles de recevoir l'effet du cable (ne pas inclure, par exemple, des barres verticales reposant sur des appuis).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des barres support du cable. Par defaut toutes les barres.",
+          "pages": [
+            95,
+            96
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc CABLE i ... FIN",
+        "BARRE (les barres doivent etre definies)"
+      ],
+      "forbidden": [
+        "Appliquer la precontrainte sur des barres definies par des excentrements (EXC) ou discontinues entre elles : vivement deconseille, l'affectation est ambigue pour ST1 (p96). Specifier directement les coordonnees des noeuds a leur position reelle (en general le centre d'inertie)."
+      ],
+      "pitfalls": [
+        "Pour les structures de geometrie complexe (portique, pont a haubans...), bien que la saisie des barres soit optionnelle, il est FORTEMENT recommande de specifier la liste : l'affectation des poussees des troncons de cable se fait aux elements les plus proches, donc pas forcement aux barres souhaitees (p96).",
+        "Ne pas inclure les barres de piles ou les barres verticales reposant sur des appuis dans la liste support : elles capteraient une part des poussees (p96).",
+        "Les excentrements EXC sont des barres infiniment rigides qui ne recoivent ni chargement ni section d'etude (p53-54) : y accrocher un cable donne un resultat local errone."
+      ],
+      "examples": [
+        "BARRE 1 a 20",
+        "BARRE 11,12",
+        "BARRE 1 a 40 pas 1      # barres du tablier uniquement"
+      ],
+      "pages": [
+        95,
+        96
+      ]
+    },
+    {
+      "name": "CABLE",
+      "family": "materiaux",
+      "context": "top",
+      "terminator": "FIN",
+      "summary": "Definit la geometrie d'un cable de precontrainte dans le repere global, son dispositif PREC, son mode de mise en tension et ses barres support.",
+      "syntax": [
+        "CABLE i ('Nom du cable')",
+        "   PREC j ((NON) SIMUL n)",
+        "   TENSION <OR, EX, OR EX, EX OR>",
+        "   (BARRE liste)",
+        "   (PAS CABLE pas)",
+        "   (LG GAINE OR lg1 EX lg2)",
+        "   TRACE (INTERIEUR, EXTERIEUR)",
+        "      (X) x1 (Y) y1 ((Z) z1) (ALIGNE, PENTE pt, GIS gi, RAYON ray)",
+        "      ...",
+        "FIN"
+      ],
+      "doc": "**Role** : decrire le trace d'une armature de precontrainte dans le **repere global** de la structure, la rattacher a un dispositif `PREC` et a des barres support.\n\nST1 discretise le trace (cubiques parametrees par l'abscisse curviligne) en une ligne brisee qui sert a construire un chargement de la structure equivalent a l'effet de l'armature : c'est la **methode externe** (p334).\n\nUn cable ST1 peut representer **plusieurs cables elementaires de meme geometrie** (ex. cables d'un pont-dalle modelise en 2D), tendus simultanement (`SIMUL n`) ou non (`NON SIMUL n`).\n\n**Deux facons de decrire le trace** :\n- par **points de passage** : coordonnees, eventuellement completees d'une tangente (`PENTE`, `GIS`) ou d'un alignement droit (`ALIGNE`) avec le point suivant ;\n- par **poles** : ligne brisee (deviateurs, entretoises) avec raccordements circulaires (`RAYON`), typique des cables exterieurs.\n\n**Mise en oeuvre** : la geometrie seule ne produit aucun effort. L'action du cable s'obtient soit hors phasage par `CHARG ... CABLE liste TENSION / PERTE ... FIN` + `EXEC CHARG` (p122-125), soit en phasage par `TENDRE CABLE`, `INJECTER CABLE`, `DETENDRE CABLE`, `TENDRE_BANC` / `RELACHER_BANC` + `EXEC PHASAGE` (p191-196).",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero du cable.",
+          "pages": [
+            95
+          ]
+        },
+        {
+          "name": "titre",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Nom du cable entre quotes simples, sans caractere accentue.",
+          "pages": [
+            95
+          ]
+        },
+        {
+          "name": "PREC",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Numero du dispositif de precontrainte et nombre d'unites tendues (SIMUL / NON SIMUL).",
+          "pages": [
+            95
+          ]
+        },
+        {
+          "name": "TENSION",
+          "kind": "subcommand",
+          "type": "enum",
+          "values": [
+            "OR",
+            "EX",
+            "OR EX",
+            "EX OR"
+          ],
+          "required": true,
+          "doc": "Mode de mise en tension (post-tension). Non necessaire en pretension.",
+          "pages": [
+            95,
+            96
+          ]
+        },
+        {
+          "name": "BARRE",
+          "kind": "subcommand",
+          "type": "list",
+          "required": false,
+          "doc": "Liste des barres servant de support au cable. Par defaut toutes les barres.",
+          "pages": [
+            95,
+            96
+          ]
+        },
+        {
+          "name": "PAS CABLE",
+          "kind": "subcommand",
+          "type": "real",
+          "required": false,
+          "default": "0.25",
+          "doc": "Pas de discretisation de l'action du cable sur la structure.",
+          "pages": [
+            95
+          ]
+        },
+        {
+          "name": "LG GAINE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Longueurs de gainage a l'origine (OR lg1) et a l'extremite (EX lg2) du cable, utile en pretension.",
+          "pages": [
+            95
+          ]
+        },
+        {
+          "name": "TRACE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Ouvre la description du trace ; INTERIEUR ou EXTERIEUR au beton, puis les points de passage.",
+          "pages": [
+            95,
+            96,
+            97,
+            98
+          ]
+        }
+      ],
+      "prerequisites": [
+        "OPTION",
+        "NOEUD et BARRE (barres support)",
+        "PREC j defini",
+        "Un seul appui bloque en X (voir APPUI p47-48)"
+      ],
+      "forbidden": [
+        "Appliquer la precontrainte sur des barres definies par des excentrements (EXC) ou discontinues entre elles : vivement deconseille par la doc, l'affectation est ambigue pour ST1 et localement mal representee (p96).",
+        "Employer TRACE EXTERIEUR pour un cable de pretension : un cable de pretension doit etre interieur (p96)."
+      ],
+      "pitfalls": [
+        "CABLE/PREC = PRECONTRAINTE uniquement. Un cable ST1 est une armature portee par des barres support, dont l'action est declenchee par CHARG ... CABLE (p122-124) ou par le phasage. Ce n'est PAS un element porteur a traction seule : haubans et suspentes se modelisent en BARRES ordinaires (section reelle SX, inerties quasi nulles ix=iy=iz~1e-6, module E propre au produit), comme l'exemple officiel du pont a haubans (p292-295).",
+        "BARRE liste est optionnel mais FORTEMENT recommande : l'affectation des poussees des troncons de cable se fait aux elements les plus proches, donc pas forcement aux barres souhaitees (pont modelise avec ses piles : ne lister que les barres du tablier) (p96).",
+        "PIEGE STRUCTURE : s'il existe une precontrainte, un seul appui doit etre bloque en X, sinon la precontrainte reste sans effet (p47-48).",
+        "L'ordre de relachement TENSION OR EX / EX OR n'a d'influence que si le cable est court, c'est-a-dire s'il y a recouvrement des troncons detendus par recul d'ancrage (p96, p334).",
+        "Pour ST1, un cable EXTERIEUR n'est pas lie a la structure sur les troncons rectilignes (p96).",
+        "Les mots-cles PAS CABLE et LG GAINE sont imprimes 'PAS CABLE' et 'LG GAINE' (sans underscore) dans le manuel v24 (p95 et fichier d'exemple du chapitre EXEMPLES, p286 et suivantes) ; le memo de reference et le schema verifie retiennent la graphie avec underscore, coherente avec les autres mots-cles composes du langage (LG_SCEL, PAS_LIGNE, PAS_TEMPS, G_DYN). En cas de rejet par l'interpreteur, tester l'autre graphie.",
+        "L'alias CABLES (pluriel) est atteste dans les fichiers d'exemples officiels pour les commandes de phasage (TENDRE_BANC CABLES 101)."
+      ],
+      "examples": [
+        "CABLE 1 'cable de fleau'\nPREC 2\nTENSION OR\nBARRE 1 a 20\nTRACE INTERIEUR\nX 1 Y 3 ALIGNE\nX 3 Y 2.5\nX 5 Y 1 PENTE 0\nX 9 Y 3\nFIN",
+        "CABLE 1\nPREC 1\nTENSION OR EX\nBARRE 1 a 40\nPAS CABLE 0.5\nTRACE INTERIEUR\nX 0 Z 0\nX 1 Z -0.5 PENTE -0.5\nX 20 Z -4 PENTE 0\nX 39 Z -0.5 PENTE 0.5\nX 40 Z 0\nFIN",
+        "CABLE 1 'cable exterieur sur deviateurs'\nPREC 1\nTENSION EX OR\nBARRE 1 a 20\nTRACE EXTERIEUR\nX 1 Y 3\nX 3 Y 2.5 RAYON 2\nX 5 Y 1 RAYON 2\nX 9 Y 3\nFIN",
+        "CABLE 102          # pretension gainee aux deux abouts\nPREC 12\nLG GAINE OR 2 EX 2\nBARRE 11,12\nTRACE INTERIEUR\nX 0 Y 0 Z 0\nX 10 Y 0 Z 0\nX 20 Y 0 Z 0\nFIN"
+      ],
+      "pages": [
+        95,
+        96,
+        97,
+        98
+      ]
+    },
+    {
+      "name": "CIMENT",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Classe de ciment utilisee par les calculs automatiques de retrait et de fluage ; les valeurs admises dependent du reglement.",
+      "syntax": [
+        "(CIMENT <SL, N, R, RS>)",
+        "(CIMENT <S, N, R>)",
+        "(CIMENT classe_ciment)"
+      ],
+      "doc": "**Loi CEB** : `<SL, N, R, RS>`\n- `SL` ciments a prise lente ;\n- `N`, `R` ciments normaux ou a prise rapide ;\n- `RS` ciments haute resistance a prise rapide.\n\n**Lois EC2, EC2_BHP1, EC2_BHP2, FIB_2010** : `<S, N, R>`\n- `S` classe de resistance CEM 32,5 N (prise lente) ;\n- `N` classe de resistance CEM 32,5 R, CEM 42,5 N (normal) ;\n- `R` classe de resistance CEM 42,5 R, CEM 52,5 N, CEM 52,5 R (rapide, haute resistance).\n\n**Loi ACI_B3** : valeur numerique\n- `1` utilisation generale (type I) ;\n- `2` resistance aux sulfates moderee (type II) ;\n- `3` ciment a haute resistance initiale (type III).\n\n**Loi EC2_2027** : la ligne de syntaxe donne `<S, N, R>` (tableau B1 de l'EC2-1-1 : CS 32,5 N ; CN 32,5 R / 42,5 N ; CR 42,5 R / 52,5 N / 52,5 R), mais le texte et tous les exemples du manuel emploient `CS`, `CN`, `CR`.",
+      "args": [
+        {
+          "name": "classe_ciment",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "SL",
+            "S",
+            "N",
+            "R",
+            "RS",
+            "1",
+            "2",
+            "3"
+          ],
+          "required": true,
+          "doc": "Classe de ciment. CEB : SL, N, R, RS. EC2 / EC2_BHP1 / EC2_BHP2 / FIB_2010 : S, N, R. ACI_B3 : 1, 2 ou 3 (types I, II, III). EC2_2027 : S, N, R selon la ligne de syntaxe ; CS, CN, CR selon le texte et les exemples du manuel.",
+          "pages": [
+            78,
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E CEB / EC2 / EC2_BHP1 / EC2_BHP2 / FIB_2010 / ACI_B3 / EC2_2027"
+      ],
+      "forbidden": [
+        "Employer CIMENT avec les lois BPEL, BHP1, BHP2, BPEL_BL : ces lois n'utilisent pas de classe de ciment, mais ROH / ROS / RM (p75)."
+      ],
+      "pitfalls": [
+        "Les valeurs admises changent de reglement en reglement : SL/N/R/RS en CEB, S/N/R en EC2 et FIB, 1/2/3 en ACI_B3 (p78, p80, p85, p87). Ecrire CIMENT SL sous EC2 ou CIMENT N sous ACI_B3 est une erreur.",
+        "Incoherence documentee de la doc EC2_2027 : la ligne de syntaxe et la liste de mots-cles donnent S, N, R, mais le paragraphe sur ecs0 et TOUS les exemples de la doc ecrivent CS, CN, CR (CIMENT CN) (p89-90). Prevoir les deux graphies en validation, ou verifier sur la version installee."
+      ],
+      "examples": [
+        "H 250 RH 70 CIMENT N          # loi CEB",
+        "RM_EC 250 RH 70 CIMENT N      # loi EC2 / EC2_BHP / FIB_2010",
+        "RM_EC 250 RH 70 CIMENT 1      # loi ACI_B3, ciment type I",
+        "RM_EC 250 RH 70 CIMENT CN     # loi EC2_2027, graphie des exemples du manuel"
+      ],
+      "pages": [
+        78,
+        80,
+        83,
+        85,
+        87,
+        89
+      ]
+    },
+    {
+      "name": "CONS",
+      "family": "materiaux",
+      "context": "top",
+      "aliases": [
+        "CONSTANTES"
+      ],
+      "summary": "Affecte les constantes physiques a une liste de barres, soit directement (E, NU, RO...), soit par renvoi a un materiau MAT.",
+      "syntax": [
+        "CONS liste (E e) (NU nu) (RO ro) (G_DYN g) (TEMP temp) (AMORTISSEMENT am)",
+        "CONS liste MAT i",
+        "CONS",
+        "   liste (E e) (NU nu) (RO ro) (G_DYN g) (TEMP temp) (AMORTISSEMENT am)",
+        "   ...",
+        "CONS",
+        "   liste MAT i",
+        "   ..."
+      ],
+      "doc": "**Role** : donner a chaque barre activee son module d'Young, son coefficient de Poisson, son poids volumique, son coefficient de dilatation, son type d'amortissement et l'acceleration de pesanteur servant aux masses modales.\n\nDeux ecritures equivalentes :\n- **definition directe** : `CONS liste E e NU nu RO ro ...`\n- **par materiau** : `CONS liste MAT i`, ou `i` est un materiau defini par `MAT i ... FIN` (p74). Seule cette forme permet une evolution des constantes dans le temps (phasage).\n\nLes deux formes existent aussi en **instruction de bloc** : `CONS` seul sur une ligne, puis une ligne par liste de barres.\n\n**Unites** : aucune unite n'est imposee par ST1 ; `e`, `ro`, `g`, `temp` doivent former un systeme coherent avec la geometrie et les charges (seul le calcul au feu impose le metre, p218).\n\n**Masses modales** : masse_vol = `ro`/`g` (mot-cle `G_DYN`).",
+      "args": [
+        {
+          "name": "liste",
+          "kind": "positional",
+          "type": "list",
+          "required": true,
+          "doc": "Liste des barres concernees. Le mot TOUT agit sur toutes les barres deja definies.",
+          "pages": [
+            72,
+            73
+          ]
+        },
+        {
+          "name": "E",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Module d'Young de la barre.",
+          "pages": [
+            72
+          ]
+        },
+        {
+          "name": "NU",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient de Poisson.",
+          "pages": [
+            72
+          ]
+        },
+        {
+          "name": "RO",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Poids volumique (poids, pas masse).",
+          "pages": [
+            72
+          ]
+        },
+        {
+          "name": "G_DYN",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Acceleration de pesanteur, utilisee uniquement pour les calculs de masses modales : masse_vol = ro/g.",
+          "pages": [
+            72
+          ]
+        },
+        {
+          "name": "TEMP",
+          "kind": "keyword",
+          "type": "real",
+          "doc": "Coefficient de dilatation thermique. Necessaire pour les chargements TEMP UNI et TEMP GY/GZ.",
+          "pages": [
+            72
+          ]
+        },
+        {
+          "name": "AMORTISSEMENT",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero du type d'amortissement dynamique defini par la commande AMORTISSEMENT (p200).",
+          "pages": [
+            72
+          ]
+        },
+        {
+          "name": "MAT",
+          "kind": "keyword",
+          "type": "int",
+          "doc": "Numero du materiau associe a la liste de barres (voir MAT p74). Exclusif de la definition directe sur la meme ligne.",
+          "pages": [
+            73
+          ]
+        }
+      ],
+      "prerequisites": [
+        "OPTION",
+        "BARRE (les barres doivent etre definies)",
+        "MAT i defini si la forme CONS liste MAT i est employee"
+      ],
+      "forbidden": [
+        "Faire evoluer dans le temps des constantes definies directement par CONS : en phasage, elles restent figees ; il faut passer par un materiau MAT."
+      ],
+      "pitfalls": [
+        "Il n'y a AUCUNE constante par defaut : les constantes de toutes les barres activees doivent etre definies, sinon le calcul echoue (p72-73).",
+        "Les constantes physiques definies directement par CONS ne peuvent pas evoluer avec le temps au cours d'un phasage ; pour du retrait/fluage/module evolutif il faut CONS liste MAT i (p72, p74, p179).",
+        "CONS liste MAT i doit imperativement etre complete par la definition MAT i ... FIN (p73).",
+        "Aucune unite n'est imposee : melanger MPa pour E et t/m2 pour RO produit des resultats faux sans message d'erreur (p18 du memo, p218 pour l'exception feu).",
+        "Sans RO (ou sans materiau portant RO), POIDS PROPRE ne genere aucune charge ; sans G_DYN, pas de masses modales automatiques.",
+        "L'alias CONSTANTES est atteste une seule fois, dans l'exemple de modele 3D du chapitre CHARGES D'EXPLOITATION (p138) : CONSTANTES tout MATERIAU 10. Le chapitre EXEMPLES (p286 et suivantes) n'emploie jamais CONSTANTES, il ecrit CONS 11,12 MAT 1 (p301). L'alias MATERIAU (pour MAT) est atteste p138, p301 et p317. Ni le memo de reference ni le schema verifie ne declarent d'alias pour CONS."
+      ],
+      "examples": [
+        "CONS 2,11 NU .5 E 1e6",
+        "CONS 12 a 15 E 1e6 NU 0.2 RO 2.5",
+        "CONS 2,11 MAT 1",
+        "CONS TOUT MAT 1   # toutes les barres recoivent le materiau 1",
+        "CONS               # forme bloc\n   1 a 10 MAT 1\n   11 a 20 MAT 2"
+      ],
+      "pages": [
+        72,
+        73
+      ]
+    },
+    {
+      "name": "E",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Definit le module d'Young du materiau, soit par une valeur directe, soit par une loi reglementaire assortie d'une unite et d'une resistance FC28 ou FCK.",
+      "syntax": [
+        "E e",
+        "E <BPEL, BHP1, BHP2, BPEL_BL> (<MPA, TM2, KNM2>) FC28 fc28",
+        "E CEB (<MPA, TM2, KNM2>) FCK fck",
+        "E EC2 (<MPA, TM2, KNM2>) FCK fck",
+        "E <EC2_BHP1, EC2_BHP2> (<MPA, TM2, KNM2>) FCK fck",
+        "E FIB_2010 (<MPA, TM2, KNM2>) FCK fck",
+        "E ACI_B3 (<MPA, TM2, KNM2>) FCK fck",
+        "E EC2_2027 (<MPA, TM2, KNM2>) FCK fck"
+      ],
+      "doc": "Ligne obligatoire d'un bloc `MAT`.\n\n**Forme valeur directe** : `E e` (aucune loi d'evolution, module constant).\n\n**Forme reglementaire** : mot-cle de loi, puis unite du module, puis la resistance caracteristique a 28 jours :\n- `FC28 fc28` pour `BPEL`, `BHP1`, `BHP2`, `BPEL_BL` ;\n- `FCK fck` pour `CEB`, `EC2`, `EC2_BHP1`, `EC2_BHP2`, `FIB_2010`, `ACI_B3`, `EC2_2027`.\n\n**Unite du module** : `MPA` = MPa, `TM2` = t/m2, `KNM2` = kN/m2. Si l'unite est precisee, ST1 fixe automatiquement g = 9.81.\n\n**Domaines de validite documentes** : `BPEL` fc28 <= 60 MPa ; `BHP1`/`BHP2` 40 <= fc28 <= 80 MPa ; `EC2_BHP1`/`EC2_BHP2` 40 <= fck <= 90 MPa. Aucune borne documentee pour `CEB`, `EC2`, `FIB_2010`, `ACI_B3`, `EC2_2027`.",
+      "args": [
+        {
+          "name": "e",
+          "kind": "positional",
+          "type": "real",
+          "doc": "Valeur directe du module d'Young (forme sans loi reglementaire). Exclusif des mots-cles de loi.",
+          "pages": [
+            74
+          ]
+        },
+        {
+          "name": "loi",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "BPEL",
+            "BHP1",
+            "BHP2",
+            "BPEL_BL",
+            "CEB",
+            "EC2",
+            "EC2_BHP1",
+            "EC2_BHP2",
+            "FIB_2010",
+            "ACI_B3",
+            "EC2_2027"
+          ],
+          "doc": "Reglement de la loi d'evolution du module. BPEL = BPEL91 ; BHP1/BHP2 = AFREM/BHP 16 mai 1995 sans/avec fumees de silice ; BPEL_BL = BPEL91 beton leger ; CEB = CEB90 ; EC2 = EN1992-1-1 (2010) ; EC2_BHP1/EC2_BHP2 = BHP EN1992-2 annexe B sans/avec fumees de silice ; FIB_2010 = Code FIB CM 2010 ; ACI_B3 = modele B3 ; EC2_2027 = EN1992-1-1 (2027).",
+          "pages": [
+            75,
+            78,
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        },
+        {
+          "name": "unite",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "MPA",
+            "TM2",
+            "KNM2"
+          ],
+          "required": false,
+          "doc": "Unite dans laquelle est exprime le module calcule a partir de fc28/fck : MPA (MPa), TM2 (t/m2), KNM2 (kN/m2). En la precisant, l'acceleration g est automatiquement fixee a 9.81.",
+          "pages": [
+            75,
+            78,
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        },
+        {
+          "name": "FC28",
+          "kind": "keyword",
+          "type": "real",
+          "unit": "MPa",
+          "doc": "Resistance caracteristique a la compression du beton (lois BPEL, BHP1, BHP2, BPEL_BL). BPEL : fc28 <= 60 ; BHP1/BHP2 : 40 <= fc28 <= 80.",
+          "pages": [
+            75
+          ]
+        },
+        {
+          "name": "FCK",
+          "kind": "keyword",
+          "type": "real",
+          "unit": "MPa",
+          "doc": "Resistance caracteristique a la compression a 28 jours (lois CEB, EC2, EC2_BHP1, EC2_BHP2, FIB_2010, ACI_B3, EC2_2027). EC2_BHP1/EC2_BHP2 : 40 <= fck <= 90.",
+          "pages": [
+            78,
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc MAT i ... FIN"
+      ],
+      "pitfalls": [
+        "Ne pas confondre FC28 (lois BPEL/BHP/BPEL_BL) et FCK (toutes les autres lois) : ce sont deux mots-cles distincts (p75 vs p78-89).",
+        "Preciser l'unite MPA/TM2/KNM2 impose g = 9.81 : incoherent si le reste du fichier n'est pas dans ce systeme (p76, p78, p80, p84, p86, p88, p89).",
+        "Avec BPEL, le module a une date de quelques jours reste proche du module instantane ; le module differe demande une date beaucoup plus grande (plusieurs mois ou annees) (p75).",
+        "Le mot-cle E existe aussi dans le bloc PREC, ou il designe le module des aciers de precontrainte (p92) : contexte different, ne pas confondre."
+      ],
+      "examples": [
+        "E 1e6                      # module donne directement",
+        "E BPEL TM2 FC28 30         # B30, module en t/m2",
+        "E BPEL MPA FC28 40",
+        "E BHP1 MPA FC28 80         # BHP sans fumee de silice",
+        "E CEB TM2 FCK 30",
+        "E EC2 MPA FCK 40",
+        "E EC2_BHP1 MPA FCK 60",
+        "E FIB_2010 MPA FCK 45",
+        "E ACI_B3 MPA FCK 35",
+        "E EC2_2027 MPA FCK 40"
+      ],
+      "pages": [
+        74,
+        75,
+        78,
+        80,
+        83,
+        85,
+        87,
+        89
+      ]
+    },
+    {
+      "name": "E",
+      "family": "materiaux",
+      "context": "bloc:PREC",
+      "summary": "Module d'elasticite des aciers de precontrainte (obligatoire dans un bloc PREC).",
+      "syntax": [
+        "E Ep"
+      ],
+      "doc": "`Ep` : module des aciers de precontrainte (module apparent des torons).\n\nIl intervient :\n- dans le calcul du recul d'ancrage (`RECUL` non nul) ;\n- dans les pertes instantanees de deformation ;\n- indirectement, dans les effets de precontrainte induits par les deformations des differents cas de charge (dont retrait et fluage).",
+      "args": [
+        {
+          "name": "Ep",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Module d'elasticite des aciers de precontrainte.",
+          "pages": [
+            92
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc PREC i ... FIN"
+      ],
+      "pitfalls": [
+        "Ne pas confondre avec le mot-cle E du bloc MAT (module du beton, p74) : meme mot-cle, contexte different.",
+        "Ep doit etre coherent en unites avec TENSION et avec le module du beton ; les exemples de la doc utilisent 190000 (MPa) ou 2e7 (t/m2)."
+      ],
+      "examples": [
+        "E 190000                # module apparent des torons, en MPa",
+        "E 2e7                   # meme module exprime en t/m2"
+      ],
+      "pages": [
+        92
+      ]
+    },
+    {
+      "name": "EA",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Quantite d'eau absorbee par les granulats legers, en litres/m3 (loi BPEL_BL uniquement).",
+      "syntax": [
+        "(ROBS robs EA Ea)"
+      ],
+      "doc": "Parametre specifique de la loi `BPEL_BL` (BPEL91 beton leger). Se saisit avec `ROBS`.",
+      "args": [
+        {
+          "name": "Ea",
+          "kind": "positional",
+          "type": "real",
+          "unit": "litre/m3",
+          "required": true,
+          "doc": "Quantite d'eau absorbee par les granulats legers en litres/m3.",
+          "pages": [
+            75
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E BPEL_BL"
+      ],
+      "pitfalls": [
+        "ROBS et EA ne sont documentes que pour la loi BPEL_BL (beton leger) (p75)."
+      ],
+      "examples": [
+        "ROBS 1.8 EA 60"
+      ],
+      "pages": [
+        75
+      ]
+    },
+    {
+      "name": "FLUAGE",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Active la loi de fluage du materiau, avec option de fluage en traction et, pour les lois Eurocode, option de fluage non lineaire.",
+      "syntax": [
+        "(FLUAGE <BPEL, BHP1, BHP2, BPEL_BL> (TRACTION <OUI, NON>))",
+        "(FLUAGE CEB (TRACTION <OUI, NON>))",
+        "(FLUAGE EC2 (TRACTION <OUI, NON>) (LINEAIRE <OUI, NON>))",
+        "(FLUAGE <EC2_BHP1, EC2_BHP2> (TRACTION <OUI, NON>) (LINEAIRE <OUI, NON>))",
+        "(FLUAGE FIB_2010 (TRACTION <OUI, NON>))",
+        "(FLUAGE ACI_B3 (TRACTION <OUI, NON>))",
+        "(FLUAGE EC2_2027 (TRACTION <OUI, NON>) (LINEAIRE <OUI, NON>))"
+      ],
+      "doc": "Sans cette ligne, aucune deformation de fluage n'est prise en compte.\n\n**TRACTION** : le fluage peut etre pris en compte soit en compression ET en traction, soit en compression seulement, via ce mot-cle. Le manuel ne documente pas explicitement la valeur retenue par defaut.\n\n**LINEAIRE** (lois `EC2`, `EC2_BHP1`, `EC2_BHP2`, `EC2_2027` uniquement) : gouverne le coefficient correcteur de fluage non lineaire.\n- EN1992-1-1 (2010) art. 3.1.4(4) : exp(1.5*(ks-0.45)) avec ks = max(0.45, sigma/fcm(t0)) ;\n- EN1992-1-1 (2027) art. B19 : exp(1.5*(ks-0.4)) avec ks = max(0.4, sigma/fcm(t0)).\nPar defaut ce coefficient **n'est pas applique** ; pour l'appliquer il faut ecrire `LINEAIRE NON`.\n\nLes parametres d'ambiance et de forme utiles au fluage sont les memes que pour le retrait (`ROH`/`ROS`/`RM` en BPEL, `RH`/`H` en CEB, `RH`/`RM_EC`/`CIMENT` pour les lois Eurocode, FIB et ACI).",
+      "args": [
+        {
+          "name": "loi",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "BPEL",
+            "BHP1",
+            "BHP2",
+            "BPEL_BL",
+            "CEB",
+            "EC2",
+            "EC2_BHP1",
+            "EC2_BHP2",
+            "FIB_2010",
+            "ACI_B3",
+            "EC2_2027"
+          ],
+          "required": true,
+          "doc": "Loi de fluage ; la doc emploie systematiquement la meme loi que celle de la ligne E.",
+          "pages": [
+            75,
+            78,
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        },
+        {
+          "name": "TRACTION",
+          "kind": "keyword",
+          "type": "enum",
+          "values": [
+            "OUI",
+            "NON"
+          ],
+          "required": false,
+          "doc": "OUI : fluage pris en compte en compression et en traction. NON : fluage en compression seulement. Valeur par defaut non documentee.",
+          "pages": [
+            75,
+            78,
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        },
+        {
+          "name": "LINEAIRE",
+          "kind": "keyword",
+          "type": "enum",
+          "values": [
+            "OUI",
+            "NON"
+          ],
+          "required": false,
+          "onlyOptions": [],
+          "doc": "Uniquement pour les lois EC2, EC2_BHP1, EC2_BHP2 et EC2_2027. LINEAIRE NON active le coefficient correcteur de fluage non lineaire ; par defaut ce coefficient n'est pas applique.",
+          "pages": [
+            80,
+            83,
+            89
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc MAT i ... FIN",
+        "Ligne E prealable definissant la loi"
+      ],
+      "forbidden": [
+        "Employer LINEAIRE avec les lois BPEL, BHP1, BHP2, BPEL_BL, CEB, FIB_2010 ou ACI_B3 : l'option n'apparait pas dans leur syntaxe (p75, p78, p85, p87)."
+      ],
+      "pitfalls": [
+        "Piege majeur : le fluage NON LINEAIRE n'est pas applique par defaut et s'active en ecrivant LINEAIRE NON (et non LINEAIRE OUI). La formulation de la doc est contre-intuitive (p81, p84, p90).",
+        "Le fluage n'est calcule pas a pas qu'en phasage (methode incrementale des temps equivalents ACKER-EYMARD, p338-339). Hors phasage on ne dispose que de regles simplifiees : CHARG CABLE PERTE UNI dsig avec dsig = 2.5*sigma_b*Ep/Eij en BPEL (p122, p124, p336).",
+        "Le fluage utilise les fibres extremes des barres (VY/WY) definies par CARA : sans elles le comportement differe en phasage est incorrect (p60-66)."
+      ],
+      "examples": [
+        "FLUAGE BPEL",
+        "FLUAGE CEB TRACTION NON",
+        "FLUAGE EC2",
+        "FLUAGE EC2 LINEAIRE NON      # active le fluage non lineaire EN1992-1-1 3.1.4(4)",
+        "FLUAGE EC2_BHP1 TRACTION NON LINEAIRE NON",
+        "FLUAGE FIB_2010",
+        "FLUAGE ACI_B3",
+        "FLUAGE EC2_2027 LINEAIRE NON"
+      ],
+      "pages": [
+        75,
+        78,
+        80,
+        83,
+        85,
+        87,
+        89
+      ]
+    },
+    {
+      "name": "FPK",
+      "family": "materiaux",
+      "context": "bloc:PREC",
+      "summary": "Limite de rupture garantie des aciers de precontrainte, notation Eurocode (fpk), avec R1000.",
+      "syntax": [
+        "(<RG fprg, FPK fpk> R1000 ro1000)"
+      ],
+      "doc": "`fpk` : limite de rupture garantie des aciers de precontrainte, notation Eurocode. S'ecrit avec `R1000`.\n\nN'est obligatoire que si l'on veut que ST1 calcule les pertes par relaxation. Employe notamment avec `LOI EC2` et `LOI EC2_2027`.",
+      "args": [
+        {
+          "name": "fpk",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Limite de rupture garantie des aciers (notation Eurocode).",
+          "pages": [
+            92
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc PREC i ... FIN",
+        "R1000 sur la meme ligne"
+      ],
+      "forbidden": [
+        "Employer RG et FPK simultanement : choix obligatoire entre les deux notations (p92)."
+      ],
+      "pitfalls": [
+        "FPK (Eurocode) et RG (BPEL) designent la meme grandeur (p92).",
+        "Sans RG/FPK ET R1000, aucune perte par relaxation n'est calculee (p93)."
+      ],
+      "examples": [
+        "FPK 1770 R1000 2.5      # classe 1770, armature TBR"
+      ],
+      "pages": [
+        92
+      ]
+    },
+    {
+      "name": "GIS",
+      "family": "materiaux",
+      "context": "bloc:TRACE",
+      "summary": "Impose l'angle en plan (gisement) du trace du cable par rapport a l'axe OX global, en radians.",
+      "syntax": [
+        "(X) x (Y) y ((Z) z) GIS gi"
+      ],
+      "doc": "`gi` : angle en plan du trace du cable par rapport a l'axe OX global, exprime en **radians**, dans le repere general.\n\nAvec `PENTE` (angle avec le plan horizontal), il permet de definir completement la tangente du cable en un point.",
+      "args": [
+        {
+          "name": "gi",
+          "kind": "positional",
+          "type": "real",
+          "unit": "radian",
+          "required": true,
+          "doc": "Angle en plan (gisement) du trace du cable par rapport a l'axe OX global, en radians.",
+          "pages": [
+            95,
+            97
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre sur une ligne de point de passage d'un bloc TRACE (commande CABLE)"
+      ],
+      "pitfalls": [
+        "GIS est en RADIANS (p30, p95).",
+        "GIS decrit le trace EN PLAN : c'est le complement de PENTE pour un cable a geometrie tridimensionnelle (cable de precontrainte transversale, ouvrage courbe).",
+        "ALIGNE, PENTE, GIS et RAYON sont presentes comme un choix sur la ligne de point : ne pas les cumuler avec ALIGNE ou RAYON sur un meme point."
+      ],
+      "examples": [
+        "X 10 Y 2 Z -1 GIS 0.05",
+        "X 20 Y 0 Z -4 PENTE 0 GIS 0"
+      ],
+      "pages": [
+        95,
+        97
+      ]
+    },
+    {
+      "name": "H",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Rayon moyen de la piece en millimetres (2Ac/u), parametre de forme de la loi CEB90.",
+      "syntax": [
+        "(RH rh H h)"
+      ],
+      "doc": "Rayon moyen de la piece `h` = 2Ac/u exprime en **millimetres** (CEB90-2.1.69), pour la loi `CEB`. Se saisit avec `RH` et eventuellement `CIMENT`.\n\nPour les lois EC2, EC2_BHP, FIB_2010, ACI_B3 et EC2_2027, le mot-cle equivalent est `RM_EC`.",
+      "args": [
+        {
+          "name": "h",
+          "kind": "positional",
+          "type": "real",
+          "unit": "millimetre",
+          "required": true,
+          "doc": "Rayon moyen de la piece 2Ac/u, en mm.",
+          "pages": [
+            78
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E CEB"
+      ],
+      "pitfalls": [
+        "H = 2Ac/u en millimetres, alors que RM (lois BPEL) = Ac/u en centimetres : conventions et unites differentes (p78 vs p75).",
+        "Le fichier d'exemple officiel de pretension (chapitre EXEMPLES, p286 et suivantes) ecrit RH 55 H 1250 dans un materiau declare E EC2 TM2 FCK 30, alors que la syntaxe documentee de l'EC2 impose RM_EC (p80). En cas de doute, s'en tenir a RM_EC pour les lois EC2/EC2_BHP/FIB/ACI/EC2_2027."
+      ],
+      "examples": [
+        "H 250 RH 70 CIMENT N"
+      ],
+      "pages": [
+        78
+      ]
+    },
+    {
+      "name": "K_CURE",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Coefficient dependant du type de cure et duree de cure, pour le modele ACI_B3.",
+      "syntax": [
+        "(K_CURE kc TEMPS_CURE tc)"
+      ],
+      "doc": "`kc` coefficient dependant du type de cure (1.00 par defaut ; par exemple 0.75 pour une cure par evaporation) et `tc` temps de cure en jours (>= 1.00 jour, 1.00 par defaut).",
+      "args": [
+        {
+          "name": "kc",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1.00",
+          "doc": "Coefficient dependant du type de cure (1.00 par defaut).",
+          "pages": [
+            87
+          ]
+        },
+        {
+          "name": "TEMPS_CURE",
+          "kind": "keyword",
+          "type": "real",
+          "unit": "jour",
+          "required": false,
+          "default": "1.00",
+          "min": 1,
+          "doc": "Temps de cure en jours (>= 1.00 jour, 1.00 par defaut).",
+          "pages": [
+            87
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E ACI_B3"
+      ],
+      "pitfalls": [
+        "K_CURE, TEMPS_CURE ne sont documentes que pour la loi ACI_B3 (p87).",
+        "TEMPS_CURE doit valoir au moins 1.00 jour (p87)."
+      ],
+      "examples": [
+        "K_CURE 0.75 TEMPS_CURE 7     # cure par evaporation pendant 7 jours"
+      ],
+      "pages": [
+        87
+      ]
+    },
+    {
+      "name": "K_FORME",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Facteur de forme du specimen pour le modele ACI_B3 (defaut 1.00).",
+      "syntax": [
+        "(K_FORME ks)"
+      ],
+      "doc": "Facteur de forme `ks` du specimen, modele ACI B3. Par exemple ks = 1.00 pour une dalle infinie.",
+      "args": [
+        {
+          "name": "ks",
+          "kind": "positional",
+          "type": "real",
+          "required": false,
+          "default": "1.00",
+          "doc": "Facteur de forme du specimen (1.00 par defaut).",
+          "pages": [
+            87
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E ACI_B3"
+      ],
+      "pitfalls": [
+        "K_FORME, K_CURE, TEMPS_CURE et les mots-cles QUANTITE_* ne sont documentes que pour la loi ACI_B3 (p87)."
+      ],
+      "examples": [
+        "K_FORME 1.00     # dalle infinie"
+      ],
+      "pages": [
+        87
+      ]
+    },
+    {
+      "name": "LG GAINE",
+      "family": "materiaux",
+      "context": "bloc:CABLE",
+      "summary": "Longueurs de gainage a l'origine et a l'extremite du cable, utiles en pretension.",
+      "syntax": [
+        "(LG GAINE OR lg1 EX lg2)",
+        "(LG GAINE OR lg1 EX lg2)"
+      ],
+      "doc": "`lg1`, `lg2` : longueurs de gainage a l'origine (`OR`) et a l'extremite (`EX`) du cable. Utile dans le cas de la **pretension** : sur la longueur gainee, le cable n'adhere pas au beton.\n\nLes deux mots-cles `OR` et `EX` sont independants : le fichier d'exemple officiel de pretension emploie aussi bien `LG GAINE OR 2 EX 2` que `LG GAINE OR 2` seul.",
+      "args": [
+        {
+          "name": "OR",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "lg1 : longueur de gainage a l'origine du cable.",
+          "pages": [
+            95
+          ]
+        },
+        {
+          "name": "EX",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "lg2 : longueur de gainage a l'extremite du cable.",
+          "pages": [
+            95
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc CABLE i ... FIN"
+      ],
+      "pitfalls": [
+        "Graphie attestee par le manuel v24 : 'LG GAINE' sans underscore, a la fois dans la syntaxe p95 et dans le fichier d'exemple de pretension (LG GAINE OR 2 EX 2 et LG GAINE OR 2, p301). La graphie LG GAINE n'est portee que par le memo de reference et le schema verifie, par coherence avec LG_SCEL (lui bien atteste avec underscore, p92 et p301) ; elle n'est pas attestee dans le manuel. Tester l'autre graphie si l'interpreteur rejette la ligne.",
+        "Utile essentiellement en pretension : a combiner avec PREC ... PRETENSION ... LG_SCEL (p92-93, p95).",
+        "Ne pas confondre LG GAINE (longueur de gainage, bloc CABLE) et LG_SCEL (longueur de scellement / transmission, bloc PREC)."
+      ],
+      "examples": [
+        "LG GAINE OR 2 EX 2",
+        "LG GAINE OR 2"
+      ],
+      "pages": [
+        95
+      ]
+    },
+    {
+      "name": "LOI",
+      "family": "materiaux",
+      "context": "bloc:PREC",
+      "summary": "Impose la loi de relaxation des aciers du dispositif (BPEL, EC2 ou EC2_2027), avec ses options KP et SEUIL.",
+      "syntax": [
+        "(LOI <BPEL, EC2, EC2_2027> (KP kp) (SEUIL seuil_relax))"
+      ],
+      "doc": "Sans `LOI`, la precontrainte suit la loi de relaxation associee a la **loi de comportement du beton** de la poutre a laquelle est applique le cable. Si l'on impose une loi materiaux a la precontrainte par `LOI`, c'est cette loi qui sera appliquee pour la relaxation du cable.\n\n**KP** (loi EC2_2027) : coefficient de la formule de relaxation pure EN1992-1-1 B.43 (p380)\ndelta_sigma_pr(t) = k1 * ro1000 * (24t/1000)^kp * sigma_pi, avec k1 = 0.01 et kp = 0.16 par defaut.\n\n**SEUIL** : date seuil de la relaxation, en **heures**. Par defaut aucun seuil n'est retenu (relaxation illimitee). La valeur 0 applique le seuil 5e5 heures (57 ans) ; toute autre valeur est appliquee telle quelle.",
+      "args": [
+        {
+          "name": "loi",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "BPEL",
+            "EC2",
+            "EC2_2027"
+          ],
+          "required": true,
+          "doc": "Loi de relaxation imposee aux aciers du dispositif.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "KP",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "0.16",
+          "doc": "kp : coefficient de la loi de relaxation EC2 2027 (0.16 par defaut, EN1992-1-1 B.43).",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "SEUIL",
+          "kind": "keyword",
+          "type": "real",
+          "unit": "heure",
+          "required": false,
+          "doc": "seuil_relax : date seuil de la relaxation en heures. Par defaut aucun seuil (relaxation illimitee). La valeur 0 applique le seuil 5e5 h (57 ans).",
+          "pages": [
+            92
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc PREC i ... FIN",
+        "RG/FPK et R1000 pour que la relaxation soit reellement calculee"
+      ],
+      "pitfalls": [
+        "SEUIL 0 n'annule PAS le seuil : il applique au contraire le seuil de 5e5 heures (57 ans). L'absence de la ligne SEUIL correspond a une relaxation illimitee (p92).",
+        "SEUIL s'exprime en HEURES, alors que DATE en phasage s'exprime en JOURS (p92 vs p185).",
+        "Sans LOI, la loi de relaxation est heritee de la loi de comportement du BETON de la barre support : modifier le materiau de la poutre modifie silencieusement la relaxation du cable (p93).",
+        "KP n'a de sens documente que pour la loi EC2_2027 (p92, p380)."
+      ],
+      "examples": [
+        "LOI EC2_2027            # loi de relaxation imposee",
+        "LOI EC2_2027 KP 0.16 SEUIL 500000",
+        "LOI BPEL SEUIL 0        # applique le seuil 5e5 h (57 ans)"
+      ],
+      "pages": [
+        92
+      ]
+    },
+    {
+      "name": "MAT",
+      "family": "materiaux",
+      "context": "top",
+      "aliases": [
+        "MATERIAU"
+      ],
+      "terminator": "FIN",
+      "summary": "Definit un materiau et ses lois d'evolution dans le temps (module d'Young, retrait, fluage) selon un reglement, puis l'affecte aux barres via CONS liste MAT i.",
+      "syntax": [
+        "MAT i ('Titre du materiau')",
+        "   E ... (voir sous-commande E)",
+        "   (RETRAIT ...)",
+        "   (FLUAGE ...)",
+        "   (NU nu)",
+        "   (RO ro) (G_DYN g) (AMORTISSEMENT am)",
+        "   (TEMP temp)",
+        "   (... parametres propres a la loi : ROH/ROS/RM, RH/H, RH/RM_EC, CIMENT, ROBS/EA, ROS, SILICE, K_FORME, K_CURE, QUANTITE_* , T_THERM ...)",
+        "   (AVANCE ...)",
+        "FIN"
+      ],
+      "doc": "**Role** : description complete des constantes physiques d'une barre AVEC lois d'evolution au cours du temps de :\n- le module d'elasticite (module d'Young),\n- la deformation de retrait,\n- la deformation de fluage.\n\n**Reglements disponibles** (mot-cle porte par la sous-commande `E`) :\n\n| mot-cle | reglement | resistance |\n|---|---|---|\n| `BPEL` | BPEL91 beton courant | `FC28` <= 60 MPa |\n| `BHP1` / `BHP2` | AFREM/BHP 16 mai 1995, sans / avec fumees de silice | 40 <= `FC28` <= 80 MPa |\n| `BPEL_BL` | BPEL91 beton leger | `FC28` |\n| `CEB` | code modele CEB90 | `FCK` |\n| `EC2` | EN 1992-1-1 version 2010 | `FCK` |\n| `EC2_BHP1` / `EC2_BHP2` | BHP EN 1992-2 annexe B, sans / avec fumees de silice | 40 <= `FCK` <= 90 MPa |\n| `FIB_2010` | Code FIB CM 2010 | `FCK` |\n| `ACI_B3` | modele ACI B3 | `FCK` |\n| `EC2_2027` | EN 1992-1-1 version 2027 | `FCK` |\n\nOn peut aussi donner le module en valeur directe (`E e`), sans loi d'evolution.\n\n**Module initial** : lorsque le materiau est defini par un reglement (et non par valeur directe), le module initial prend la **valeur instantanee** (age du beton = 28 jours) (p74).\n\n**Affectation** : `CONS liste MAT i` (p73).\n\n**Hors perimetre de cette famille** : la sous-commande `E FEU EC2 ...` et les complements feu (`UU`, `CONDUCTIVITE`, `GRANULAT`, `EMISSIVITE`, `RHO_FEU`, `CHALEUR_SPECIFIQUE_MASSIQUE`) relevent du calcul au feu (p218-219).",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero du materiau, reference ensuite par CONS liste MAT i.",
+          "pages": [
+            74
+          ]
+        },
+        {
+          "name": "titre",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Titre du materiau entre quotes simples. Pas de caractere accentue.",
+          "pages": [
+            74
+          ]
+        },
+        {
+          "name": "E",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": true,
+          "doc": "Definition du module : valeur directe ou loi reglementaire + unite + FC28/FCK.",
+          "pages": [
+            74,
+            75,
+            78,
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        },
+        {
+          "name": "RETRAIT",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Loi de retrait ; sans cette ligne, pas de deformation de retrait.",
+          "pages": [
+            75,
+            78,
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        },
+        {
+          "name": "FLUAGE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Loi de fluage ; sans cette ligne, pas de deformation de fluage.",
+          "pages": [
+            75,
+            78,
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        },
+        {
+          "name": "NU",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Coefficient de Poisson.",
+          "pages": [
+            74
+          ]
+        },
+        {
+          "name": "RO",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Poids volumique.",
+          "pages": [
+            74
+          ]
+        },
+        {
+          "name": "G_DYN",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Acceleration de pesanteur (masses modales : masse_vol = ro/g). Mise automatiquement a 9.81 si l'unite MPA/TM2/KNM2 est precisee sur E.",
+          "pages": [
+            74,
+            75
+          ]
+        },
+        {
+          "name": "AMORTISSEMENT",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "doc": "Numero du type d'amortissement dynamique (voir AMORTISSEMENT p200).",
+          "pages": [
+            74
+          ]
+        },
+        {
+          "name": "TEMP",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Coefficient de dilatation thermique.",
+          "pages": [
+            74
+          ]
+        },
+        {
+          "name": "AVANCE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Coefficients de ponderation avances sur module, retrait et fluage.",
+          "pages": [
+            91
+          ]
+        }
+      ],
+      "prerequisites": [
+        "OPTION",
+        "Affectation ulterieure par CONS liste MAT i"
+      ],
+      "forbidden": [],
+      "pitfalls": [
+        "La doc n'ecrit toujours qu'un seul reglement par bloc MAT entre E, RETRAIT et FLUAGE, mais aucun texte n'interdit explicitement le melange : ce n'est pas une interdiction documentee. Seul contre-exemple du manuel : la coquille p90, qui ecrit RETRAIT EC2 dans un materiau declare E EC2_2027.",
+        "Module par reglement = valeur INSTANTANEE a 28 jours au depart (p74). Pour un module differe il faut atteindre une date tres grande (mois ou annees) dans un phasage ; pour les surcharges on redefinit generalement E instantane (p75).",
+        "Preciser l'unite (MPA, TM2 ou KNM2) sur la ligne E met automatiquement g a 9.81 : si votre systeme d'unites n'est pas coherent avec cette valeur, les masses modales seront fausses (p76, p78, p80, p84, p86, p88, p89).",
+        "Le fluage non lineaire (EC2, EC2_BHP1/2, EC2_2027) n'est PAS applique par defaut ; pour l'appliquer il faut ecrire LINEAIRE NON. La formulation de la doc est contre-intuitive (p81, p84, p90).",
+        "Le traitement thermique T_THERM n'est pris en compte QUE pour les phasages de construction ; hors phasage l'utilisateur doit saisir lui-meme les pertes supplementaires dans les commandes de chargement forfaitaire (p76, p81, p84, p86, p90).",
+        "En cas de traitement thermique, ST1 n'applique AUCUN abattement sur fck/fc28 : c'est a l'utilisateur de reduire lui-meme la resistance (p81, p84, p86, p90).",
+        "Retrait EC2 / EC2_BHP / FIB_2010 / ACI_B3 / EC2_2027 : ER (ecs0) ne fixe que le retrait de DESSICCATION ; le retrait endogene est toujours calcule par ST1 en plus (p80, p83, p85, p87, p89).",
+        "Le retrait et le fluage ne sont exploites en evolution temporelle que par un PHASAGE (ST1 v2, p179) ; hors phasage on ne dispose que de regles simplifiees (DEFOR, CHARG CABLE PERTE, p120, p122).",
+        "Alias attestes dans les exemples du manuel : MATERIAU (pour MAT) p138, p301 et p317 ; CONSTANTES (pour CONS) p138 uniquement (le chapitre EXEMPLES p286 et suivantes n'emploie jamais CONSTANTES)."
+      ],
+      "examples": [
+        "MAT 1\nE 1e6\nNU 0.2\nRO 2.5\nFIN\nCONS 12 a 15 MAT 1",
+        "MAT 1 'B30'\nE BPEL TM2 FC28 30\nFIN",
+        "MAT 1 'beton B40'\nE BPEL MPA FC28 40\nRETRAIT BPEL ER 2e-4\nFIN",
+        "MAT 1 'beton C30'\nE EC2 MPA FCK 30\nRETRAIT EC2\nFLUAGE EC2\nRM_EC 250 RH 70 CIMENT N\nFIN",
+        "MAT 1 'BETON MODIFIE'\nE EC2_BHP1 MPA FCK 80\nRETRAIT EC2_BHP1\nFLUAGE EC2_BHP1\nRM_EC 250 RH 70 CIMENT N ROS 0.05\nAVANCE K_MODULE 0.8 K_RETRAIT_ENDOGENE 0.5\nFIN"
+      ],
+      "pages": [
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91
+      ]
+    },
+    {
+      "name": "PAS CABLE",
+      "family": "materiaux",
+      "context": "bloc:CABLE",
+      "summary": "Pas de discretisation de l'action du cable sur la structure ; 0.25 par defaut.",
+      "syntax": [
+        "(PAS CABLE pas)",
+        "(PAS CABLE pas)"
+      ],
+      "doc": "`pas` : pas de discretisation de l'action du cable sur la structure. **Par defaut pas = 0.25** (dans l'unite de longueur du fichier).\n\nST1 discretise le trace du cable suivant un pas variable fonction de la courbure, ce qui conduit a une ligne brisee servant a construire un chargement equivalent a l'effet de l'armature (methode externe, p334).",
+      "args": [
+        {
+          "name": "pas",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "default": "0.25",
+          "doc": "Pas de discretisation de l'action du cable sur la structure.",
+          "pages": [
+            95
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc CABLE i ... FIN"
+      ],
+      "pitfalls": [
+        "Graphie attestee par le manuel v24 : 'PAS CABLE' sans underscore, a la fois dans la syntaxe p95 et dans le fichier d'exemple de pretension (PAS CABLE 0.5, p301). La graphie PAS CABLE n'est portee que par le memo de reference et le schema verifie, par coherence avec PAS_LIGNE et PAS_TEMPS ; elle n'est pas attestee dans le manuel. Tester l'autre graphie si l'interpreteur rejette la ligne.",
+        "0.25 est exprime dans l'unite de longueur du fichier : sur un ouvrage decrit en centimetres, le pas par defaut est absurdement fin (p95).",
+        "Un pas trop grossier lisse les poussees au deviateur ; un pas trop fin alourdit inutilement le chargement equivalent."
+      ],
+      "examples": [
+        "PAS CABLE 0.5",
+        "PAS CABLE 0.25          # valeur par defaut, explicitee"
+      ],
+      "pages": [
+        95
+      ]
+    },
+    {
+      "name": "PENTE",
+      "family": "materiaux",
+      "context": "bloc:TRACE",
+      "summary": "Impose la tangente du cable en un point de passage : angle du cable avec le plan horizontal, en radians.",
+      "syntax": [
+        "(X) x (Y) y ((Z) z) PENTE pt"
+      ],
+      "doc": "`pt` : pente du trace du cable, exprimee en **radians**, dans le repere general. C'est l'angle du cable avec le plan horizontal.\n\nSe combine avec `GIS` (angle du trace en plan) pour definir completement une tangente en spatiale.",
+      "args": [
+        {
+          "name": "pt",
+          "kind": "positional",
+          "type": "real",
+          "unit": "radian",
+          "required": true,
+          "doc": "Pente du trace du cable en ce point, en radians, repere general.",
+          "pages": [
+            95,
+            97
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre sur une ligne de point de passage d'un bloc TRACE (commande CABLE)"
+      ],
+      "pitfalls": [
+        "PENTE est en RADIANS, comme tous les angles du langage ST1 (p30, p95).",
+        "PENTE 0 impose une tangente horizontale : c'est la facon documentee de fixer le point bas d'un cable parabolique (p97).",
+        "ALIGNE, PENTE, GIS et RAYON sont presentes comme un choix sur la ligne de point : ne pas les cumuler avec ALIGNE ou RAYON sur un meme point."
+      ],
+      "examples": [
+        "X 5 Y 1 PENTE 0         # point bas, tangente horizontale",
+        "X 1 Z -0.5 PENTE -0.5",
+        "X 39 Z -0.5 PENTE 0.5"
+      ],
+      "pages": [
+        95,
+        97
+      ]
+    },
+    {
+      "name": "PERTE",
+      "family": "materiaux",
+      "context": "bloc:PREC",
+      "summary": "Coefficients de perte par frottement du cable (notation BPEL F/PHI ou Eurocode MU/KPHI) et perte uniforme instantanee de pretension (INST).",
+      "syntax": [
+        "<(PERTE F f PHI phi), (PERTE MU f KPHI kphi)> (PERTE INST pinst)"
+      ],
+      "doc": "**Pertes par frottement** (post-tension). La tension a l'abscisse curviligne s vaut :\nsigma_p0(s) = sigma_pa * exp(-f*alpha - phi*s) = sigma_pa * exp(-mu*(alpha - kphi*s))\navec alpha la deviation angulaire totale et s la distance curviligne a l'ancrage actif le plus proche.\n\nDeux ecritures **exclusives** :\n- `PERTE F f PHI phi` : notation **BPEL** ; `f` coefficient de frottement en courbe (rd-1), `phi` coefficient de perte de tension par unite de longueur (m-1) ;\n- `PERTE MU f KPHI kphi` : notation **Eurocode** ; `mu` coefficient de frottement en courbe (rd-1), `kphi` coefficient de perte de tension par unite de longueur (rd.m-1), aussi nomme deviation angulaire parasite ou coefficient de festonnage. Relation : `kphi * f = phi`.\n\nDefauts documentes : `f = 0` et `phi = 0` (donc kphi = 0), c'est-a-dire aucun frottement.\n\n**PERTE INST pinst** : perte uniforme instantanee (pretension : peignes, etc.), `pinst = 0` par defaut. Cette forme se cumule avec l'une des deux ecritures de frottement.",
+      "args": [
+        {
+          "name": "F",
+          "kind": "keyword",
+          "type": "real",
+          "unit": "rd-1",
+          "required": false,
+          "default": "0",
+          "doc": "f : coefficient de frottement en courbe, notation BPEL (post-tension). 0 par defaut.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "PHI",
+          "kind": "keyword",
+          "type": "real",
+          "unit": "m-1",
+          "required": false,
+          "default": "0",
+          "doc": "phi : coefficient de perte de tension par unite de longueur, notation BPEL (post-tension). 0 par defaut.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "MU",
+          "kind": "keyword",
+          "type": "real",
+          "unit": "rd-1",
+          "required": false,
+          "default": "0",
+          "doc": "mu : coefficient de frottement en courbe, notation Eurocode (post-tension). 0 par defaut.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "KPHI",
+          "kind": "keyword",
+          "type": "real",
+          "unit": "rd.m-1",
+          "required": false,
+          "default": "0",
+          "doc": "kphi : deviation angulaire parasite / coefficient de festonnage, notation Eurocode (post-tension). Relation kphi*f = phi. 0 par defaut.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "INST",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "0",
+          "doc": "pinst : perte uniforme instantanee (pretension, peignes...). 0 par defaut.",
+          "pages": [
+            92
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc PREC i ... FIN"
+      ],
+      "forbidden": [
+        "Melanger PERTE F / PHI (BPEL) et PERTE MU / KPHI (Eurocode) dans un meme dispositif : les deux ecritures sont presentees en choix obligatoire (p92, p334)."
+      ],
+      "pitfalls": [
+        "f et phi valent 0 par defaut : sans ligne PERTE, aucune perte par frottement n'est calculee, la tension reste egale a TENSION sur tout le cable (p92).",
+        "Confusion classique phi / kphi : phi (BPEL) est en m-1, kphi (Eurocode) en rd.m-1, avec kphi*f = phi. Une transposition directe d'un jeu de coefficients Eurocode dans PERTE F/PHI donne un frottement faux (p92, p334).",
+        "Ne pas confondre le mot-cle PERTE du bloc PREC (coefficients de frottement du dispositif) avec le mot-cle PERTE du bloc CHARG CABLE (application des pertes instantanees et differees a un chargement, p122).",
+        "PERTE INST est documente pour la PRETENSION (peignes...) ; en post-tension, les pertes instantanees viennent de RECUL et du frottement (p92)."
+      ],
+      "examples": [
+        "PERTE F 0.20 PHI 0.003  # notation BPEL, cable traversant de nombreux joints",
+        "PERTE F 0.18 PHI 0.002  # notation BPEL, cable ne traversant pas de joints",
+        "PERTE MU 0.19 KPHI 0.01 # notation Eurocode",
+        "PERTE INST 20           # pretension : perte uniforme instantanee"
+      ],
+      "pages": [
+        92,
+        93
+      ]
+    },
+    {
+      "name": "PREC",
+      "family": "materiaux",
+      "context": "top",
+      "terminator": "FIN",
+      "summary": "Definit un type (dispositif) de precontrainte : section d'acier, tension de mise en tension, module, relaxation, recul d'ancrage, pertes par frottement et, le cas echeant, pretension.",
+      "syntax": [
+        "PREC i ('Titre de la precontrainte')",
+        "   SECTION Ap",
+        "   TENSION sigma",
+        "   E Ep",
+        "   (<RG fprg, FPK fpk> R1000 ro1000)",
+        "   (LOI <BPEL, EC2, EC2_2027> (KP kp) (SEUIL seuil_relax))",
+        "   (RECUL g)",
+        "   <(PERTE F f PHI phi), (PERTE MU f KPHI kphi)> (PERTE INST pinst)",
+        "   (PRETENSION < PARABOL LG_SCEL lg1,",
+        "                 LINEAIRE LG_SCEL lg1,",
+        "                 BILINEAIRE LG_SCEL lg1 lg2 COEF alpha >)",
+        "FIN"
+      ],
+      "doc": "**Role** : decrire les caracteristiques d'un dispositif de mise en tension et certains parametres du cable. Un type `PREC i` est ensuite reference par un ou plusieurs cables (`CABLE i ... PREC j ... FIN`, p95).\n\n**Par defaut, la precontrainte est calculee en POST-TENSION.** Le mot-cle `PRETENSION` active a lui seul le calcul de la pretension : l'effort final apres relachement du banc tient alors compte de la perte par deformation elastique instantanee.\n\n**Role de Ep (`E`)** : intervient dans le recul d'ancrage (`RECUL` non nul), dans les pertes instantanees de deformation, et indirectement dans les effets de precontrainte induits par les deformations des cas de charges (dont retrait-fluage).\n\n**Relaxation** : `fprg`/`fpk` (`RG`/`FPK`) et `ro1000` (`R1000`) ne sont obligatoires que si l'on veut que ST1 calcule les pertes par relaxation. Sans `LOI`, la precontrainte suit la loi de relaxation associee a la loi de comportement du beton de la poutre supportant le cable ; avec `LOI`, c'est la loi imposee qui s'applique.\n\n**Sections unitaires usuelles** (Ap en mm2, tableau p93) : fil 7 mm = 38.5 ; fil 8 mm = 50.3 ; T13 = 93 ; T13 S = 100 ; T15 = 139 ; T15 S = 150.",
+      "args": [
+        {
+          "name": "i",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero du type de precontrainte, reference par CABLE ... PREC j.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "titre",
+          "kind": "positional",
+          "type": "string",
+          "required": false,
+          "doc": "Titre du dispositif entre quotes simples, sans caractere accentue.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "SECTION",
+          "kind": "subcommand",
+          "type": "real",
+          "required": true,
+          "doc": "Ap : section du cable de precontrainte.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "TENSION",
+          "kind": "subcommand",
+          "type": "real",
+          "required": true,
+          "doc": "sigma : contrainte a la mise en tension.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "E",
+          "kind": "subcommand",
+          "type": "real",
+          "required": true,
+          "doc": "Ep : module des aciers de precontrainte.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "RG",
+          "kind": "subcommand",
+          "type": "real",
+          "required": false,
+          "doc": "fprg : limite de rupture garantie (notation BPEL). Exclusif de FPK.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "FPK",
+          "kind": "subcommand",
+          "type": "real",
+          "required": false,
+          "doc": "fpk : limite de rupture garantie (notation Eurocode). Exclusif de RG.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "R1000",
+          "kind": "subcommand",
+          "type": "real",
+          "unit": "pourcent",
+          "required": false,
+          "doc": "ro1000 : valeur garantie de la perte par relaxation a 1000 h, en %.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "LOI",
+          "kind": "subcommand",
+          "type": "enum",
+          "values": [
+            "BPEL",
+            "EC2",
+            "EC2_2027"
+          ],
+          "required": false,
+          "doc": "Impose la loi de relaxation, avec ses options KP et SEUIL.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "RECUL",
+          "kind": "subcommand",
+          "type": "real",
+          "required": false,
+          "default": "0",
+          "doc": "g : valeur de la rentree d'ancrage (post-tension).",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "PERTE",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Pertes par frottement (F/PHI en notation BPEL ou MU/KPHI en notation Eurocode) et perte uniforme instantanee (INST, pretension).",
+          "pages": [
+            92,
+            93
+          ]
+        },
+        {
+          "name": "PRETENSION",
+          "kind": "subcommand",
+          "type": "bloc",
+          "required": false,
+          "doc": "Active le calcul en pretension et decrit la loi de scellement d'ancrage.",
+          "pages": [
+            92,
+            93
+          ]
+        }
+      ],
+      "prerequisites": [
+        "OPTION"
+      ],
+      "forbidden": [
+        "Melanger PERTE F / PHI (notation BPEL) et PERTE MU / KPHI (notation Eurocode) dans un meme dispositif : les deux ecritures sont exclusives (p92, p334).",
+        "Employer RG et FPK simultanement : ce sont deux notations d'une meme grandeur, presentees en choix obligatoire <RG fprg, FPK fpk>."
+      ],
+      "pitfalls": [
+        "Par defaut la precontrainte est calculee en POST-TENSION ; le seul mot-cle PRETENSION bascule tout le dispositif en pretension (p92-93).",
+        "TENSION sigma n'a pas le meme sens selon le mode : en post-tension c'est la contrainte au verin ; en pretension c'est la valeur finale sur banc AVANT relachement du banc (p92).",
+        "fprg/fpk et ro1000 ne sont obligatoires que si l'on veut le calcul des pertes par relaxation ; sans eux, aucune relaxation n'est calculee (p92-93).",
+        "Sans LOI, la relaxation suit la loi de comportement du BETON de la barre support, pas celle de l'acier : un changement de materiau de la poutre change la relaxation du cable (p93).",
+        "SEUIL : par defaut aucun seuil n'est retenu (relaxation illimitee). La valeur 0 declenche le seuil 5e5 heures (57 ans). Toute autre valeur est prise telle quelle, en HEURES (p92).",
+        "PIEGE STRUCTURE : s'il existe une precontrainte, un seul appui doit etre bloque en X, sinon la precontrainte reste sans effet (APPUI, p47-48).",
+        "PERTE F/PHI : f est le coefficient de frottement en courbe (rd-1) et phi la perte par unite de longueur (m-1) ; en notation Eurocode kphi*f = phi. Confondre phi et kphi fausse le diagramme de tension (p92, p334).",
+        "Aucune unite n'est imposee : sigma, Ep, Ap doivent etre coherents entre eux et avec le reste du fichier (les exemples de la doc melangent MPa et t/m2)."
+      ],
+      "examples": [
+        "PREC 2 '12T13'\nSECTION 1.116e-3        # Ap=12*93e-6\nTENSION 1488            # sigma = 0.8*1860\nRECUL 0.006             # recul d ancrage 6 mm\nPERTE F 0.20 PHI 0.003  # cable traversant de nombreux joints\nE 190000                # module apparent des torons\nFIN",
+        "PREC 3\nSECTION 100e-6\nTENSION 1300\nFIN",
+        "PREC 1 '19T15 S'\nSECTION 2.851e-3        # Ap=19*150e-6\nTENSION 1416            # sigma = 0.8*1770\nRECUL 0.008\nPERTE F 0.18 PHI 0.002\nE 190000\nRG 1770 R1000 2.5       # classe 1770, armature TBR\nFIN",
+        "PREC 1 'Pretension BPEL'\nSECTION 3.0e-3\nTENSION 1400\nE 190000\nRG 1770 R1000 2.5\nPRETENSION PARABOL LG_SCEL 2\nFIN",
+        "PREC 2 'Pretension ELU EC'\nSECTION 3.0e-3\nTENSION 1400\nE 190000\nFPK 1770 R1000 2.5\nPRETENSION BILINEAIRE LG_SCEL 2.5 3 COEF 0.8\nFIN",
+        "PREC 2 'Cable EC2 2027'\nSECTION 3.0e-3\nTENSION 1400\nE 190000\nFPK 1770 R1000 2.5\nLOI EC2_2027            # loi de relaxation imposee\nFIN"
+      ],
+      "pages": [
+        92,
+        93,
+        94
+      ]
+    },
+    {
+      "name": "PREC",
+      "family": "materiaux",
+      "context": "bloc:CABLE",
+      "summary": "Rattache le cable a un type de precontrainte et indique le nombre d'unites tendues, simultanement ou non.",
+      "syntax": [
+        "PREC j ((NON) SIMUL n)"
+      ],
+      "doc": "`j` : numero de l'unite de precontrainte, definie par `PREC j ... FIN` (p92).\n\n`n` (`SIMUL`) : nombre d'unites tendues. **Par defaut n = 1.**\n\nUn cable defini dans ST1 peut representer plusieurs cables elementaires de meme geometrie (exemple : cables d'un pont-dalle modelise en 2D). Ces cables elementaires peuvent etre tendus **simultanement** (`SIMUL n`) ou **non simultanement** (`NON SIMUL n`).\n\nLes pertes de tension par non simultaneite de mise en tension sont evaluees a partir du calcul de la deformation des elements lors de la mise en tension (cas d'un phasage, p334).",
+      "args": [
+        {
+          "name": "j",
+          "kind": "positional",
+          "type": "int",
+          "required": true,
+          "doc": "Numero du type de precontrainte defini par la commande PREC (p92).",
+          "pages": [
+            95
+          ]
+        },
+        {
+          "name": "SIMUL",
+          "kind": "keyword",
+          "type": "int",
+          "required": false,
+          "default": "1",
+          "doc": "n : nombre d'unites tendues simultanement (1 par defaut).",
+          "pages": [
+            95
+          ]
+        },
+        {
+          "name": "NON",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Prefixe de SIMUL : les n unites elementaires sont tendues NON simultanement.",
+          "pages": [
+            95
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc CABLE i ... FIN",
+        "PREC j defini au prealable"
+      ],
+      "pitfalls": [
+        "L'effet de NON SIMUL (pertes par non simultaneite de mise en tension) n'est evalue que dans le cadre d'un PHASAGE (p95, p334).",
+        "PREC est ici une sous-commande du bloc CABLE (reference a un dispositif) et non la commande de premier niveau PREC i ... FIN (p92) : contexte different."
+      ],
+      "examples": [
+        "PREC 2",
+        "PREC 2 SIMUL 4          # 4 cables elementaires tendus simultanement",
+        "PREC 2 NON SIMUL 4      # 4 cables elementaires tendus non simultanement"
+      ],
+      "pages": [
+        95
+      ]
+    },
+    {
+      "name": "PRETENSION",
+      "family": "materiaux",
+      "context": "bloc:PREC",
+      "summary": "Bascule le dispositif en pretension et decrit la loi de scellement d'ancrage (parabolique, lineaire ou bilineaire).",
+      "syntax": [
+        "(PRETENSION < PARABOL LG_SCEL lg1,",
+        "              LINEAIRE LG_SCEL lg1,",
+        "              BILINEAIRE LG_SCEL lg1 lg2 COEF alpha >)"
+      ],
+      "doc": "**Le mot-cle PRETENSION active a lui seul le calcul de la pretension.** Lorsqu'on tend un cable affecte de ce dispositif, l'effort final calcule apres mise en precontrainte de l'element (apres relachement du banc) tient compte de la perte par deformation elastique instantanee.\n\nTrois formes de loi de scellement d'ancrage :\n- `PARABOL LG_SCEL lg1` : montee parabolique sur la longueur de scellement ;\n- `LINEAIRE LG_SCEL lg1` : montee lineaire sur la longueur de scellement ;\n- `BILINEAIRE LG_SCEL lg1 lg2 COEF alpha` : loi bilineaire, `lg1` longueur de transmission (EC2-1-1 : lpt), `lg2` longueur d'ancrage totale (EC2-1-1 : lbpd, avec lg2 > lg1), `alpha` = sig1/sig2 le ratio de la contrainte obtenue a la distance lg1 sur la contrainte seuil obtenue a la distance lg2 (EC2-1-1 8.10.2 : alpha = spd/sp0), sans dimension et compris entre 0 et 1.",
+      "args": [
+        {
+          "name": "forme",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "PARABOL",
+            "LINEAIRE",
+            "BILINEAIRE"
+          ],
+          "required": true,
+          "doc": "Forme de la loi de scellement d'ancrage.",
+          "pages": [
+            92,
+            93
+          ]
+        },
+        {
+          "name": "LG_SCEL",
+          "kind": "keyword",
+          "type": "list",
+          "required": true,
+          "doc": "lg1 (PARABOL, LINEAIRE) : longueur de scellement / de transmission (EC2-1-1 : lpt). En BILINEAIRE : deux valeurs lg1 puis lg2, avec lg2 = longueur d'ancrage totale (EC2-1-1 : lbpd) et lg2 > lg1.",
+          "pages": [
+            92
+          ]
+        },
+        {
+          "name": "COEF",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "min": 0,
+          "max": 1,
+          "doc": "alpha : ratio sig1/sig2 decrivant la forme de la loi bilineaire (EC2-1-1 8.10.2, alpha = spd/sp0). Sans dimension, compris entre 0 et 1. Obligatoire avec BILINEAIRE.",
+          "pages": [
+            92
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc PREC i ... FIN",
+        "CABLE avec TRACE INTERIEUR (obligatoire en pretension, p96)"
+      ],
+      "forbidden": [
+        "Employer COEF sans BILINEAIRE : alpha n'est documente que pour la loi bilineaire (p92).",
+        "Donner lg2 <= lg1 en BILINEAIRE : la doc impose lg2 > lg1 (p92)."
+      ],
+      "pitfalls": [
+        "PRETENSION suffit a basculer TOUT le dispositif en pretension : par defaut ST1 calcule en post-tension (p92-93).",
+        "En pretension, TENSION sigma est la valeur finale sur banc AVANT relachement du banc, pas la tension au verin (p92).",
+        "En pretension, un cable doit avoir TRACE INTERIEUR (p96), et le mode d'ancrage actif (TENSION OR/EX) n'a pas a etre specifie (p96).",
+        "En phasage, la pretension impose un ordre precis : activer la barre AVANT de tendre le banc, avec un age positif quasi nul (ex. AGE 0.01), puis TENDRE_BANC puis RELACHER_BANC (p192-193).",
+        "LG GAINE (bloc CABLE) est le complement naturel de la pretension : il neutralise le scellement sur les longueurs gainees (p95)."
+      ],
+      "examples": [
+        "PRETENSION PARABOL LG_SCEL 2",
+        "PRETENSION LINEAIRE LG_SCEL 2",
+        "PRETENSION BILINEAIRE LG_SCEL 2.5 3 COEF 0.8",
+        "PREC 1 'Pretension BPEL'\nSECTION 3.0e-3\nTENSION 1400\nE 190000\nRG 1770 R1000 2.5\nPRETENSION PARABOL LG_SCEL 2\nFIN"
+      ],
+      "pages": [
+        92,
+        93
+      ]
+    },
+    {
+      "name": "QUANTITE_AGREGAT",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Quantite d'agregats dans le beton, en kg/m3 (modele ACI_B3).",
+      "syntax": [
+        "(QUANTITE_EAU w QUANTITE_CIMENT c QUANTITE_AGREGAT ag)"
+      ],
+      "doc": "Quantite d'agregats `ag` dans le beton, en kg/m3. Domaine de validite documente : 2.5 <= ag/c <= 13.5.",
+      "args": [
+        {
+          "name": "ag",
+          "kind": "positional",
+          "type": "real",
+          "unit": "kg/m3",
+          "required": true,
+          "doc": "Quantite d'agregats dans le beton en kg/m3. Domaine de validite : 2.5 <= ag/c <= 13.5.",
+          "pages": [
+            87
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E ACI_B3"
+      ],
+      "pitfalls": [
+        "Borne exprimee en RAPPORT : 2.5 <= ag/c <= 13.5 (p87)."
+      ],
+      "examples": [
+        "QUANTITE_EAU 205 QUANTITE_CIMENT 409 QUANTITE_AGREGAT 1730"
+      ],
+      "pages": [
+        87
+      ]
+    },
+    {
+      "name": "QUANTITE_CIMENT",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Quantite de ciment dans le beton, en kg/m3 (modele ACI_B3).",
+      "syntax": [
+        "(QUANTITE_EAU w QUANTITE_CIMENT c QUANTITE_AGREGAT ag)"
+      ],
+      "doc": "Quantite de ciment `c` dans le beton, en kg/m3. Domaine de validite documente : 160 kg/m3 <= c <= 720 kg/m3.",
+      "args": [
+        {
+          "name": "c",
+          "kind": "positional",
+          "type": "real",
+          "unit": "kg/m3",
+          "required": true,
+          "min": 160,
+          "max": 720,
+          "doc": "Quantite de ciment dans le beton en kg/m3 (160 <= c <= 720).",
+          "pages": [
+            87
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E ACI_B3"
+      ],
+      "pitfalls": [
+        "Bornes absolues documentees : 160 kg/m3 <= c <= 720 kg/m3 (p87)."
+      ],
+      "examples": [
+        "QUANTITE_EAU 205 QUANTITE_CIMENT 409 QUANTITE_AGREGAT 1730"
+      ],
+      "pages": [
+        87
+      ]
+    },
+    {
+      "name": "QUANTITE_EAU",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Quantite d'eau libre dans le beton, en kg/m3 (modele ACI_B3).",
+      "syntax": [
+        "(QUANTITE_EAU w QUANTITE_CIMENT c QUANTITE_AGREGAT ag)"
+      ],
+      "doc": "Quantite d'eau libre `w` dans le beton, en kg/m3. Le modele ACI B3 est valide pour 0.35 <= w/c <= 0.85, ou `c` est la quantite de ciment (`QUANTITE_CIMENT`).",
+      "args": [
+        {
+          "name": "w",
+          "kind": "positional",
+          "type": "real",
+          "unit": "kg/m3",
+          "required": true,
+          "doc": "Quantite d'eau libre dans le beton en kg/m3. Domaine de validite : 0.35 <= w/c <= 0.85.",
+          "pages": [
+            87
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E ACI_B3"
+      ],
+      "pitfalls": [
+        "Bornes exprimees en RAPPORTS et non en valeurs absolues : 0.35 <= w/c <= 0.85 (p87). Un w seul, sans QUANTITE_CIMENT, ne permet pas de verifier ce domaine.",
+        "L'exemple de la doc emploie QUANTITE_EAU seul (sans QUANTITE_CIMENT ni QUANTITE_AGREGAT) pour un calcul de retrait sans fluage (p87)."
+      ],
+      "examples": [
+        "QUANTITE_EAU 205",
+        "QUANTITE_EAU 205 QUANTITE_CIMENT 409 QUANTITE_AGREGAT 1730"
+      ],
+      "pages": [
+        87
+      ]
+    },
+    {
+      "name": "R1000",
+      "family": "materiaux",
+      "context": "bloc:PREC",
+      "summary": "Valeur garantie de la perte par relaxation a 1000 heures, en pourcent.",
+      "syntax": [
+        "(<RG fprg, FPK fpk> R1000 ro1000)"
+      ],
+      "doc": "`ro1000` : valeur garantie de la perte par relaxation a 1000 h, exprimee en **pourcent**. Se saisit sur la meme ligne que `RG` ou `FPK`.\n\nValeurs usuelles : 2.5 pour une armature TBR (tres basse relaxation), classe 1770 ou 1860.\n\nEn BPEL91 et EC2, ro1000 pilote aussi le coefficient mu0 : 0.43 si ro1000 <= 2.5 (TBR), 0.35 si 2.5 < ro1000 < 8, 0.30 si 8 <= ro1000 (RN).",
+      "args": [
+        {
+          "name": "ro1000",
+          "kind": "positional",
+          "type": "real",
+          "unit": "pourcent",
+          "required": true,
+          "doc": "Valeur garantie de la perte par relaxation a 1000 heures, en %.",
+          "pages": [
+            92
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc PREC i ... FIN",
+        "RG ou FPK sur la meme ligne"
+      ],
+      "pitfalls": [
+        "ro1000 s'exprime en POURCENT (2.5 et non 0.025) (p92).",
+        "La valeur de ro1000 fait basculer mu0 entre 0.43, 0.35 et 0.30 dans la formule BPEL/EC2 : une saisie en fraction au lieu de % change de branche et fausse la relaxation (p337)."
+      ],
+      "examples": [
+        "RG 1770 R1000 2.5",
+        "FPK 1770 R1000 2.5"
+      ],
+      "pages": [
+        92
+      ]
+    },
+    {
+      "name": "RAYON",
+      "family": "materiaux",
+      "context": "bloc:TRACE",
+      "summary": "Definit un raccordement circulaire au passage d'un pole : rayon du trace du cable au point anguleux (deviateur, entretoise).",
+      "syntax": [
+        "(X) x (Y) y ((Z) z) RAYON ray"
+      ],
+      "doc": "`ray` : rayon du trace du cable au passage d'un pole.\n\n**Definition par poles** : les cables exterieurs s'appuient generalement sur une ligne brisee dont les points anguleux correspondent aux deviateurs et entretoises. Le trace reel est alors construit en imposant des raccordements circulaires au niveau de ces points anguleux. Le cable est decrit par les points de passage de la ligne brisee et les rayons de raccordement en ces points.",
+      "args": [
+        {
+          "name": "ray",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Rayon du trace du cable au passage du pole (raccordement circulaire).",
+          "pages": [
+            95,
+            98
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre sur une ligne de point de passage d'un bloc TRACE (commande CABLE)"
+      ],
+      "pitfalls": [
+        "RAYON s'emploie sur les points ANGULEUX intermediaires (deviateurs, entretoises) ; les points d'extremite du trace n'en portent pas dans l'exemple de la doc (p98).",
+        "Mode de description typique des cables EXTERIEURS, qui ne sont pas lies a la structure sur les troncons rectilignes (p96, p98).",
+        "RAYON et ALIGNE s'excluent mutuellement et excluent la definition d'une tangente ; en revanche PENTE et GIS sont cumulables sur un meme point pour definir completement la tangente (p97).",
+        "Le rayon de raccordement est une longueur, pas un angle : aucune unite n'est imposee, il suit le systeme d'unites du fichier."
+      ],
+      "examples": [
+        "X 3 Y 2.5 RAYON 2",
+        "X 5 Y 1 RAYON 2",
+        "3 2.5 RAYON 2           # mots-cles X et Y omis"
+      ],
+      "pages": [
+        95,
+        98
+      ]
+    },
+    {
+      "name": "RECUL",
+      "family": "materiaux",
+      "context": "bloc:PREC",
+      "summary": "Valeur de la rentree d'ancrage (recul d'ancrage) en post-tension ; 0 par defaut.",
+      "syntax": [
+        "(RECUL g)"
+      ],
+      "doc": "`g` : valeur de la rentree d'ancrage (post-tension). **Par defaut g = 0.**\n\nLa perte par recul d'ancrage est evaluee en resolvant\ng = (1/Ep) * integrale de [sigma_p0(s) - sigma_p(s1)*exp(-f*alpha(s1-s) - phi*(s1-s))] ds\nsur la zone de propagation. Le recul depend donc du module `E` (Ep) du dispositif.",
+      "args": [
+        {
+          "name": "g",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "default": "0",
+          "doc": "Valeur de la rentree d'ancrage (post-tension), en unite de longueur du fichier.",
+          "pages": [
+            92
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc PREC i ... FIN"
+      ],
+      "pitfalls": [
+        "RECUL vaut 0 par defaut : oublier cette ligne surestime la precontrainte pres des ancrages (p92).",
+        "S'exprime dans l'unite de longueur du fichier : 0.006 pour 6 mm si le fichier est en metres (p93).",
+        "Le recul d'ancrage n'a de sens qu'en post-tension ; il n'est pas documente pour la pretension (voir plutot PERTE INST) (p92).",
+        "Sur un cable court tendu par ses deux extremites, les zones de recul peuvent se recouvrir : l'ordre de relachement (CABLE TENSION OR EX ou EX OR) devient alors influent (p95-96, p334)."
+      ],
+      "examples": [
+        "RECUL 0.006             # recul d ancrage 6 mm, fichier en metres",
+        "RECUL 0.008             # recul d ancrage 8 mm"
+      ],
+      "pages": [
+        92
+      ]
+    },
+    {
+      "name": "RETRAIT",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Active la loi de retrait du materiau ; la valeur finale du retrait peut etre imposee par ER, sinon ST1 la calcule a partir des parametres d'ambiance et de forme.",
+      "syntax": [
+        "(RETRAIT <BPEL, BHP1, BHP2, BPEL_BL> (ER er))",
+        "(RETRAIT CEB (ER ecs0))",
+        "(RETRAIT EC2 (ER ecs0))",
+        "(RETRAIT <EC2_BHP1, EC2_BHP2> (ER ecs0))",
+        "(RETRAIT FIB_2010 (ER ecs0))",
+        "(RETRAIT ACI_B3 (ER ecs0))",
+        "(RETRAIT EC2_2027 (ER ecs0))"
+      ],
+      "doc": "Sans cette ligne, aucune deformation de retrait n'est prise en compte.\n\n**Calcul automatique de la valeur finale** si `ER` n'est pas donne :\n- lois `BPEL`, `BHP1`, `BHP2`, `BPEL_BL` : a partir de `ROH`, `ROS` et `RM` ;\n- loi `CEB` : a partir de `RH`, `H` et du type de ciment (`SL`, `N`, `R`, `RS`) ;\n- lois `EC2`, `EC2_BHP1`, `EC2_BHP2`, `FIB_2010` : a partir de `RH`, `RM_EC` et du type de ciment (`S`, `N`, `R`) ;\n- loi `ACI_B3` : a partir de `RH`, `RM_EC` et du type de ciment (1, 2, 3) ;\n- loi `EC2_2027` : a partir de `RH`, `RM_EC` et du type de ciment.\n\n**Portee de ER selon la loi** :\n- `BPEL`/`BHP`/`BPEL_BL`/`CEB` : `er`/`ecs0` = valeur finale de retrait ;\n- `EC2`, `EC2_BHP1/2`, `FIB_2010`, `ACI_B3`, `EC2_2027` : `ecs0` = valeur finale du retrait de **dessiccation** seulement ; le retrait **endogene** est toujours calcule en plus par ST1.",
+      "args": [
+        {
+          "name": "loi",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "BPEL",
+            "BHP1",
+            "BHP2",
+            "BPEL_BL",
+            "CEB",
+            "EC2",
+            "EC2_BHP1",
+            "EC2_BHP2",
+            "FIB_2010",
+            "ACI_B3",
+            "EC2_2027"
+          ],
+          "required": true,
+          "doc": "Loi de retrait ; la doc emploie systematiquement la meme loi que celle de la ligne E.",
+          "pages": [
+            75,
+            78,
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        },
+        {
+          "name": "ER",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Valeur finale du retrait (deformation, sans dimension, typiquement 2e-4). Si absente, ST1 la calcule a partir des parametres d'ambiance et de forme. Pour EC2/EC2_BHP/FIB_2010/ACI_B3/EC2_2027 il s'agit du retrait de dessiccation seul.",
+          "pages": [
+            75,
+            78,
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc MAT i ... FIN",
+        "Ligne E prealable definissant la loi"
+      ],
+      "pitfalls": [
+        "RETRAIT <loi> ER 0 est la maniere documentee d'annuler le retrait tout en conservant le fluage (exemples p75-77 et p78-79).",
+        "Sur les lois EC2, EC2_BHP1/2, FIB_2010, ACI_B3 et EC2_2027, ER n'annule pas le retrait endogene, qui est toujours calcule par ST1 : ER 0 ne donne donc pas un retrait total nul (p80, p83, p85, p87, p89).",
+        "Le retrait n'est reellement exploite en evolution temporelle qu'en phasage (ST1 v2, p179) ; hors phasage il faut passer par CHARG DEFOR (p120) ou CHARG CABLE PERTE RETRAIT (p122).",
+        "Coquille du manuel : l'exemple EC2_2027 'beton C40 sans fluage' ecrit RETRAIT EC2 dans un materiau declare E EC2_2027 (p89-90). Ecrire RETRAIT EC2_2027 pour rester coherent."
+      ],
+      "examples": [
+        "RETRAIT BPEL ER 2e-4",
+        "RETRAIT BPEL          # valeur finale calculee par ST1 a partir de ROH, ROS, RM",
+        "RETRAIT CEB ER 0      # annule le retrait, le fluage reste actif",
+        "RETRAIT EC2",
+        "RETRAIT EC2_BHP1 ER 2e-4",
+        "RETRAIT ACI_B3",
+        "RETRAIT EC2_2027"
+      ],
+      "pages": [
+        75,
+        78,
+        80,
+        83,
+        85,
+        87,
+        89
+      ]
+    },
+    {
+      "name": "RG",
+      "family": "materiaux",
+      "context": "bloc:PREC",
+      "summary": "Limite de rupture garantie des aciers de precontrainte, notation BPEL (fprg), avec R1000.",
+      "syntax": [
+        "(<RG fprg, FPK fpk> R1000 ro1000)"
+      ],
+      "doc": "`fprg` : limite de rupture garantie des aciers de precontrainte, notation BPEL. S'ecrit avec `R1000`.\n\nN'est obligatoire que si l'on veut que ST1 calcule les pertes par relaxation. Intervient dans la formule BPEL91 3.3,23 :\ndelta_sigma_p = (6/100)*ro1000*(sigma_pi/fprg - mu0)*sigma_pi, avec mu0 = 0.43 si ro1000 <= 2.5 (TBR), 0.35 si 2.5 < ro1000 < 8, 0.30 si 8 <= ro1000 (RN).",
+      "args": [
+        {
+          "name": "fprg",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Limite de rupture garantie des aciers (notation BPEL).",
+          "pages": [
+            92
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc PREC i ... FIN",
+        "R1000 sur la meme ligne"
+      ],
+      "forbidden": [
+        "Employer RG et FPK simultanement : choix obligatoire entre les deux notations (p92)."
+      ],
+      "pitfalls": [
+        "RG (BPEL) et FPK (Eurocode) designent la meme grandeur : le manuel les presente en choix obligatoire <RG fprg, FPK fpk> (p92).",
+        "Sans RG/FPK ET R1000, aucune perte par relaxation n'est calculee (p93)."
+      ],
+      "examples": [
+        "RG 1770 R1000 2.5       # classe 1770, armature TBR",
+        "RG 2000*100 R1000 2.5   # meme donnee exprimee en t/m2 (expression admise)"
+      ],
+      "pages": [
+        92
+      ]
+    },
+    {
+      "name": "RH",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Hygrometrie ambiante moyenne, en pourcent, pour les lois CEB, EC2, EC2_BHP, FIB_2010, ACI_B3 et EC2_2027.",
+      "syntax": [
+        "(RH rh H h)",
+        "(RH rh RM_EC h)",
+        "(RH rh RM_EC hn)"
+      ],
+      "doc": "Hygrometrie ambiante moyenne en %. Se saisit sur la meme ligne que le parametre de forme (`H` pour CEB, `RM_EC` pour EC2 / EC2_BHP1 / EC2_BHP2 / FIB_2010 / ACI_B3 / EC2_2027) et, le cas echeant, `CIMENT`.\n\nSert au calcul automatique du retrait final (quand `ER` n'est pas donne) et du fluage.\n\nPour les lois BPEL/BHP, le mot-cle equivalent est `ROH`.",
+      "args": [
+        {
+          "name": "rh",
+          "kind": "positional",
+          "type": "real",
+          "unit": "pourcent",
+          "required": true,
+          "doc": "Hygrometrie ambiante moyenne en %. Pour EC2_BHP1/EC2_BHP2, l'annexe B de l'EC2-2 suppose en principe rh <= 80%.",
+          "pages": [
+            78,
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E CEB / EC2 / EC2_BHP1 / EC2_BHP2 / FIB_2010 / ACI_B3 / EC2_2027"
+      ],
+      "pitfalls": [
+        "RH (lois CEB/EC2/FIB/ACI/EC2_2027) et ROH (lois BPEL/BHP) sont deux mots-cles distincts (p78-89 vs p75).",
+        "Pour EC2_BHP1 et EC2_BHP2, la doc rappelle que l'annexe B de l'EN1992-2 vaut en principe pour rh <= 80% (p83)."
+      ],
+      "examples": [
+        "H 250 RH 70 CIMENT N",
+        "RM_EC 250 RH 70 CIMENT N",
+        "RM_EC 250 RH 70 CIMENT N ROS 0.05"
+      ],
+      "pages": [
+        78,
+        80,
+        83,
+        85,
+        87,
+        89
+      ]
+    },
+    {
+      "name": "RM",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Rayon moyen de la piece en centimetres (Ac/u), parametre de forme des lois BPEL91 et AFREM/BHP.",
+      "syntax": [
+        "(ROH roh ROS ros RM rom)"
+      ],
+      "doc": "Rayon moyen de la piece `rom` = Ac/u, exprime en **centimetres**, pour les lois `BPEL`, `BHP1`, `BHP2`, `BPEL_BL`. Sert au calcul automatique du retrait final et du fluage, ainsi qu'a la loi d'evolution des pertes differees hors phasage r(j) = j/(j + 9*rm) (p337).\n\nPour les lois CEB, EC2, EC2_BHP, FIB_2010, ACI_B3 et EC2_2027 le parametre de forme est `H` (CEB) ou `RM_EC`, exprime en **millimetres** et valant 2Ac/u.",
+      "args": [
+        {
+          "name": "rom",
+          "kind": "positional",
+          "type": "real",
+          "unit": "centimetre",
+          "required": true,
+          "doc": "Rayon moyen de la piece Ac/u en cm.",
+          "pages": [
+            75
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E BPEL / BHP1 / BHP2 / BPEL_BL"
+      ],
+      "pitfalls": [
+        "Piege d'unite et de definition : RM = Ac/u en CENTIMETRES (BPEL), alors que H et RM_EC = 2Ac/u en MILLIMETRES (CEB, EC2, EC2_BHP, FIB, ACI, EC2_2027). Un facteur 20 separe les deux conventions (p75 vs p78, p80).",
+        "RM est l'un des rares parametres du langage dont l'unite est imposee par la doc, alors que ST1 n'impose pas d'unites par ailleurs (p75)."
+      ],
+      "examples": [
+        "RM 25 ROH 70 ROS 0.05   # rayon moyen 25 cm, hygrometrie 70%, As/B = 0.05"
+      ],
+      "pages": [
+        75
+      ]
+    },
+    {
+      "name": "RM_EC",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Diametre (rayon) moyen de la piece en millimetres (2Ac/u) pour les lois EC2, EC2_BHP1/2, FIB_2010, ACI_B3 et EC2_2027.",
+      "syntax": [
+        "(RH rh RM_EC h)",
+        "(RH rh RM_EC hn)"
+      ],
+      "doc": "Parametre de forme `h` (`hn` pour EC2_2027) = 2Ac/u exprime en **millimetres** :\n- `EC2`, `EC2_BHP1`, `EC2_BHP2` : diametre moyen de la piece (EC2-1 B.2) ;\n- `FIB_2010`, `ACI_B3` : diametre moyen de la piece ;\n- `EC2_2027` : rayon moyen de la piece (EC2-1-1 B.5(3)).\n\nSe saisit avec `RH` et, le cas echeant, `CIMENT` et `ROS`.",
+      "args": [
+        {
+          "name": "h",
+          "kind": "positional",
+          "type": "real",
+          "unit": "millimetre",
+          "required": true,
+          "doc": "Diametre / rayon moyen de la piece 2Ac/u en mm (note hn pour EC2_2027).",
+          "pages": [
+            80,
+            83,
+            85,
+            87,
+            89
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E EC2 / EC2_BHP1 / EC2_BHP2 / FIB_2010 / ACI_B3 / EC2_2027"
+      ],
+      "pitfalls": [
+        "L'aide-memoire du manuel imprime ce mot-cle 'RM EC' (sans underscore) ; la forme correcte attestee par le chapitre detaille et tous les exemples est RM_EC (p80, p83, p85, p87, p89).",
+        "RM_EC est en millimetres et vaut 2Ac/u ; RM (BPEL) est en centimetres et vaut Ac/u (p80 vs p75)."
+      ],
+      "examples": [
+        "RM_EC 250 RH 70 CIMENT N",
+        "RM_EC 250 RH 70 CIMENT N ROS 0.05",
+        "RM_EC 250 RH 70 CIMENT 1     # loi ACI_B3, ciment de type I"
+      ],
+      "pages": [
+        80,
+        83,
+        85,
+        87,
+        89
+      ]
+    },
+    {
+      "name": "ROBS",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Masse volumique seche du beton leger, en t/m3 (loi BPEL_BL uniquement).",
+      "syntax": [
+        "(ROBS robs EA Ea)"
+      ],
+      "doc": "Parametre specifique de la loi `BPEL_BL` (BPEL91 beton leger). Se saisit avec `EA`.",
+      "args": [
+        {
+          "name": "robs",
+          "kind": "positional",
+          "type": "real",
+          "unit": "t/m3",
+          "required": true,
+          "doc": "Masse volumique seche du beton leger en t/m3.",
+          "pages": [
+            75
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E BPEL_BL"
+      ],
+      "pitfalls": [
+        "ROBS et EA ne sont documentes que pour la loi BPEL_BL (beton leger) (p75)."
+      ],
+      "examples": [
+        "ROBS 1.8 EA 60"
+      ],
+      "pages": [
+        75
+      ]
+    },
+    {
+      "name": "ROH",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Hygrometrie ambiante moyenne, en pourcent, pour les lois BPEL91 et AFREM/BHP.",
+      "syntax": [
+        "(ROH roh ROS ros RM rom)"
+      ],
+      "doc": "Parametre d'ambiance des lois `BPEL`, `BHP1`, `BHP2`, `BPEL_BL`. Sert au calcul automatique du retrait final (quand `ER` n'est pas donne) et du fluage. Se saisit generalement sur la meme ligne que `ROS` et `RM`.\n\nPour les lois CEB, EC2, EC2_BHP, FIB_2010, ACI_B3 et EC2_2027, l'hygrometrie se saisit avec le mot-cle `RH` (et non `ROH`).",
+      "args": [
+        {
+          "name": "roh",
+          "kind": "positional",
+          "type": "real",
+          "unit": "pourcent",
+          "required": true,
+          "doc": "Hygrometrie ambiante moyenne en %.",
+          "pages": [
+            75
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E BPEL / BHP1 / BHP2 / BPEL_BL"
+      ],
+      "pitfalls": [
+        "ROH (lois BPEL/BHP) et RH (lois CEB/EC2/FIB/ACI/EC2_2027) sont deux mots-cles differents pour la meme grandeur : les confondre est une source classique d'erreur (p75 vs p78-89)."
+      ],
+      "examples": [
+        "RM 25 ROH 70 ROS 0.05"
+      ],
+      "pages": [
+        75
+      ]
+    },
+    {
+      "name": "ROS",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Rapport des armatures adherentes a la section de beton (As/B), utilise par les lois de retrait et de fluage.",
+      "syntax": [
+        "(ROH roh ROS ros RM rom)",
+        "(ROS ros)"
+      ],
+      "doc": "Rapport As/B des armatures adherentes a la section de beton.\n\nDocumente pour les lois `BPEL`, `BHP1`, `BHP2`, `BPEL_BL` (sur la ligne `ROH ... ROS ... RM ...`), ainsi que pour `EC2_BHP1`, `EC2_BHP2`, `FIB_2010`, `ACI_B3` et `EC2_2027` (mot-cle isole `ROS ros`).\n\n**Cas EC2_2027** : `ros` doit etre pondere par un coefficient d'equivalence Es/Eb moyen (ros = n*p_s) ; la doc precise pour cette loi une valeur par defaut de 0. Aucune valeur par defaut n'est documentee pour les autres lois.",
+      "args": [
+        {
+          "name": "ros",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Rapport As/B des armatures adherentes a la section de beton. Pour EC2_2027, valeur ponderee par le coefficient d'equivalence Es/Eb (0 par defaut d'apres p89).",
+          "pages": [
+            75,
+            83,
+            85,
+            87,
+            89
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT"
+      ],
+      "pitfalls": [
+        "La valeur par defaut 0 n'est documentee que pour la loi EC2_2027 (p89) ; ne pas la supposer pour BPEL, EC2_BHP, FIB_2010 ou ACI_B3.",
+        "En EC2_2027, ros n'est pas le simple ratio geometrique : il doit etre multiplie par le coefficient d'equivalence Es/Eb moyen (p89)."
+      ],
+      "examples": [
+        "RM 25 ROH 70 ROS 0.05",
+        "RM_EC 250 RH 70 CIMENT N ROS 0.05"
+      ],
+      "pages": [
+        75,
+        83,
+        85,
+        87,
+        89
+      ]
+    },
+    {
+      "name": "SECTION",
+      "family": "materiaux",
+      "context": "bloc:PREC",
+      "summary": "Section d'acier du cable de precontrainte (obligatoire dans un bloc PREC).",
+      "syntax": [
+        "SECTION Ap"
+      ],
+      "doc": "`Ap` : section du cable de precontrainte, dans le systeme d'unites du fichier (p92).\n\nSections unitaires usuelles, en mm2 (tableau p93) : fil 7 mm = 38.5 ; fil 8 mm = 50.3 ; T13 = 93 ; T13 S = 100 ; T15 = 139 ; T15 S = 150. Un cable 12T13 vaut donc Ap = 12*93e-6 = 1.116e-3 m2.",
+      "args": [
+        {
+          "name": "Ap",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Section du cable de precontrainte (p92) ; tableau des sections unitaires usuelles p93.",
+          "pages": [
+            92,
+            93
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc PREC i ... FIN"
+      ],
+      "pitfalls": [
+        "SECTION dans un bloc PREC (section d'acier de precontrainte) n'a rien a voir avec la commande SECTION du calcul au feu (p222) ni avec le mot-cle SECTION / SE de ETUDE (p101).",
+        "Aucune unite imposee : si le reste du fichier est en metres, saisir Ap en m2 (ex. 1.116e-3 pour 12T13)."
+      ],
+      "examples": [
+        "SECTION 1.116e-3        # Ap = 12*93e-6, cable 12T13",
+        "SECTION 2.851e-3        # Ap = 19*150e-6, cable 19T15 S",
+        "SECTION 100e-6"
+      ],
+      "pages": [
+        92,
+        93
+      ]
+    },
+    {
+      "name": "SILICE",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Indique la presence de fumee de silice dans le beton pour le calcul du fluage (loi EC2_2027 uniquement).",
+      "syntax": [
+        "(SILICE <OUI, NON>)"
+      ],
+      "doc": "L'ajout de fumee de silice dans le beton peut etre pris en compte pour le calcul du fluage de la loi `EC2_2027`.\n\nPour les autres reglements, la presence de fumee de silice est portee par le mot-cle de loi lui-meme : `BHP1` / `BHP2` (AFREM/BHP sans / avec fumees de silice) et `EC2_BHP1` / `EC2_BHP2` (EN1992-2 annexe B sans / avec fumees de silice).",
+      "args": [
+        {
+          "name": "silice",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "OUI",
+            "NON"
+          ],
+          "required": true,
+          "default": "NON",
+          "doc": "OUI : beton avec fumee de silice. NON par defaut (p90).",
+          "pages": [
+            89,
+            90
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT avec E EC2_2027"
+      ],
+      "forbidden": [
+        "Employer SILICE avec une autre loi que EC2_2027 : la doc ne l'indique que pour ce reglement (p89)."
+      ],
+      "pitfalls": [
+        "SILICE NON par defaut (p90). Pour les lois BHP1/BHP2 et EC2_BHP1/EC2_BHP2, la fumee de silice est deja codee dans le nom de la loi et SILICE n'est pas documente."
+      ],
+      "examples": [
+        "SILICE OUI"
+      ],
+      "pages": [
+        89,
+        90
+      ]
+    },
+    {
+      "name": "T_THERM",
+      "family": "materiaux",
+      "context": "bloc:MAT",
+      "summary": "Decrit le traitement thermique (cure) du beton : resistance en fin de cure, coefficient de pertes thermiques sur le cable, intervalles de temps et temperatures de cure.",
+      "syntax": [
+        "(T_THERM FCP fcp (LAMBDA lambda) DTP tpa THETA tetamax)",
+        "(T_THERM FCMP fcmp (LAMBDA lambda) DTP lisdt THETA listeta)"
+      ],
+      "doc": "**Forme BPEL / BHP** (`E BPEL`, `BHP1`, `BHP2`, `BPEL_BL`, BPEL annexe 6) : `FCP fcp`, `DTP tpa` (un intervalle scalaire), `THETA tetamax` (une temperature scalaire, entre 20 et 80 degres).\n\n**Forme Eurocode / FIB** (`E EC2`, `EC2_BHP1`, `EC2_BHP2`, `FIB_2010`, `EC2_2027`) : `FCMP fcmp`, `DTP lisdt` (LISTE d'intervalles de temps en jours), `THETA listeta` (LISTE de temperatures maximales en degres, aucune borne documentee : p80, p83, p85, p89). Les deux listes doivent se correspondre terme a terme.\n\n**LAMBDA** : coefficient applique aux pertes thermiques du cable pendant la cure. En general 0,1 en BPEL (annexe 6), normalement 0,5 en EC2 / EC2-2 / FIB ; 0,5 par defaut pour EC2_2027. La valeur 1 revient a supprimer ces pertes.\n\nLa formule EC2_2027 associee : delta_sigma = (1-lambda)*Ep*alpha_b*(theta_max - theta_0) avec theta_0 = 20 degres (p381, eq 13.3 ; formes BPEL91 p346 et EC2-2010 p359).",
+      "args": [
+        {
+          "name": "FCP",
+          "kind": "keyword",
+          "type": "real",
+          "unit": "MPa",
+          "doc": "Resistance fcp a la fin du traitement thermique (lois BPEL / BHP, BPEL annexe 6).",
+          "pages": [
+            75
+          ]
+        },
+        {
+          "name": "FCMP",
+          "kind": "keyword",
+          "type": "real",
+          "unit": "MPa",
+          "doc": "Resistance moyenne fcmp a la fin du traitement thermique (lois EC2, EC2_BHP1/2, FIB_2010, EC2_2027 ; EC2-1-1 10.3, et 13.3 pour la version 2027).",
+          "pages": [
+            80,
+            83,
+            85,
+            89
+          ]
+        },
+        {
+          "name": "LAMBDA",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "default": "0.5 (documente uniquement pour EC2_2027, p89)",
+          "doc": "Coefficient sur les pertes thermiques appliquees au cable pendant la cure. En general 0,1 en BPEL ; normalement 0,5 en EC2 / EC2-2 / FIB ; 0,5 par defaut pour EC2_2027. lambda = 1 supprime ces pertes.",
+          "pages": [
+            75,
+            80,
+            83,
+            85,
+            89
+          ]
+        },
+        {
+          "name": "DTP",
+          "kind": "keyword",
+          "type": "list",
+          "unit": "jour",
+          "doc": "Intervalle (BPEL : scalaire tpa) ou liste d'intervalles de temps (EC2 / FIB / EC2_2027 : lisdt) pendant lesquels sont appliquees les temperatures THETA, en jours.",
+          "pages": [
+            75,
+            80,
+            83,
+            85,
+            89
+          ]
+        },
+        {
+          "name": "THETA",
+          "kind": "keyword",
+          "type": "list",
+          "doc": "Temperature maximale (BPEL : scalaire tetamax, entre 20 et 80 degres, p75) ou liste de temperatures maximales (EC2 / FIB / EC2_2027 : listeta), en degres. La borne 20-80 n'est documentee que pour la forme BPEL ; aucune borne n'est documentee pour les listes listeta des formes Eurocode/FIB (p80, p83, p85, p89).",
+          "pages": [
+            75,
+            80,
+            83,
+            85,
+            89
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Bloc MAT",
+        "Exploitation uniquement dans un PHASAGE (ST1 v2, p179)"
+      ],
+      "requiresV2": true,
+      "pitfalls": [
+        "Le traitement thermique n'est pris en compte QUE pour les phasages de construction ; pour les charges hors phasage l'utilisateur doit specifier lui-meme les pertes supplementaires dans les commandes de chargement forfaitaire (p75, p80, p83, p85, p89).",
+        "ST1 n'effectue AUCUN abattement sur fck/fc28 en presence d'un traitement thermique : c'est a l'utilisateur de reduire lui-meme la resistance (p80, p83, p85, p89).",
+        "Pour EC2_BHP1/EC2_BHP2 et FIB_2010, l'adaptation du traitement thermique (en particulier sur le fluage) est une libre adaptation de la norme par ST1, dont la pertinence est laissee a l'appreciation de l'utilisateur (p83, p85).",
+        "Ne pas confondre FCP (BPEL) et FCMP (EC2 / EC2-2 / FIB / EC2_2027) (p75 vs p80).",
+        "L'aide-memoire du manuel imprime 'DT tpa' pour la forme BPEL ; le mot-cle correct atteste par le chapitre detaille et l'exemple est DTP (p75).",
+        "En forme Eurocode, DTP et THETA attendent des LISTES de meme longueur (ex. DTP 0.5,1,0.5 THETA 30,60,30) ; en forme BPEL ce sont des scalaires (p75, p80)."
+      ],
+      "examples": [
+        "T_THERM FCP 30 LAMBDA 0.1 DTP 2 THETA 65        # forme BPEL",
+        "T_THERM FCMP 30 LAMBDA 0.5 DTP 0.5,1,0.5 THETA 30,60,30    # forme EC2 / EC2_2027"
+      ],
+      "pages": [
+        75,
+        80,
+        83,
+        85,
+        89
+      ]
+    },
+    {
+      "name": "TENSION",
+      "family": "materiaux",
+      "context": "bloc:PREC",
+      "summary": "Contrainte de mise en tension du dispositif de precontrainte (obligatoire dans un bloc PREC).",
+      "syntax": [
+        "TENSION sigma"
+      ],
+      "doc": "`sigma` : contrainte a la mise en tension.\n- **post-tension** : contrainte au verin ;\n- **pretension** : valeur finale sur banc, AVANT relachement du banc.",
+      "args": [
+        {
+          "name": "sigma",
+          "kind": "positional",
+          "type": "real",
+          "required": true,
+          "doc": "Contrainte a la mise en tension (au verin en post-tension ; valeur finale sur banc avant relachement en pretension).",
+          "pages": [
+            92
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc PREC i ... FIN"
+      ],
+      "pitfalls": [
+        "Le sens physique de sigma change avec le mode : verin (post-tension) ou banc avant relachement (pretension) (p92).",
+        "Le mot-cle TENSION existe aussi dans le bloc CABLE (mode d'ancrage actif OR/EX, p95) et dans le bloc CHARG (action du cable, p122) : trois contextes differents pour un meme mot."
+      ],
+      "examples": [
+        "TENSION 1488            # sigma = 0.8*1860, classe 1860",
+        "TENSION 1416            # sigma = 0.8*1770, classe 1770"
+      ],
+      "pages": [
+        92
+      ]
+    },
+    {
+      "name": "TENSION",
+      "family": "materiaux",
+      "context": "bloc:CABLE",
+      "summary": "Definit le mode de mise en tension d'un cable de post-tension : un ou deux ancrages actifs, et l'ordre de relachement.",
+      "syntax": [
+        "TENSION <OR, EX, OR EX, EX OR>"
+      ],
+      "doc": "Un cable de post-tension peut etre tendu a l'aide d'un ou de deux ancrages actifs :\n\n**Un seul ancrage actif**\n- `TENSION OR` : mise en tension cote origine ;\n- `TENSION EX` : mise en tension cote extremite.\n\n**Deux ancrages actifs**\n- `TENSION OR EX` : relachement cote origine puis cote extremite ;\n- `TENSION EX OR` : relachement cote extremite puis cote origine.\n\nUn cable de **pretension** n'a pas besoin de specifier le mode de mise en tension a l'aide d'ancrages actifs.",
+      "args": [
+        {
+          "name": "mode",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "OR",
+            "EX",
+            "OR EX",
+            "EX OR"
+          ],
+          "required": true,
+          "doc": "OR = ancrage actif cote origine ; EX = cote extremite ; OR EX / EX OR = deux ancrages actifs, avec l'ordre de relachement.",
+          "pages": [
+            95,
+            96
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc CABLE i ... FIN"
+      ],
+      "pitfalls": [
+        "L'ordre de relachement (OR EX contre EX OR) n'a d'influence que si le cable est court, c'est-a-dire s'il y a recouvrement des troncons detendus par recul d'ancrage (p96, p334).",
+        "En pretension, cette ligne est inutile : le mode d'ancrage actif n'a pas a etre specifie (p96).",
+        "Origine et extremite se rapportent au sens du trace du cable, lui-meme decrit par l'ordre des points de la sous-commande TRACE (p97).",
+        "Le mot-cle TENSION existe aussi dans le bloc PREC (contrainte de mise en tension, p92) et dans le bloc CHARG (action du cable, p122)."
+      ],
+      "examples": [
+        "TENSION OR              # un ancrage actif, cote origine",
+        "TENSION EX",
+        "TENSION OR EX           # deux ancrages actifs, relachement origine puis extremite",
+        "TENSION EX OR"
+      ],
+      "pages": [
+        95,
+        96
+      ]
+    },
+    {
+      "name": "TRACE",
+      "family": "materiaux",
+      "context": "bloc:CABLE",
+      "summary": "Ouvre la description geometrique du cable (interieur ou exterieur au beton) puis liste ses points de passage dans le repere global.",
+      "syntax": [
+        "TRACE (INTERIEUR, EXTERIEUR)",
+        "   (X) x1 (Y) y1 ((Z) z1) (ALIGNE, PENTE pt, GIS gi, RAYON ray)",
+        "   ..."
+      ],
+      "doc": "**INTERIEUR / EXTERIEUR** : un cable de post-tension peut etre interieur ou exterieur au beton. Pour ST1, un cable exterieur n'est **pas lie a la structure sur les troncons rectilignes**. Un cable de **pretension doit etre interieur**.\n\n**Points de passage** : chaque ligne donne les coordonnees d'un point dans le repere global. Les mots-cles `X`, `Y`, `Z` sont facultatifs : `X 1 Y 3 ALIGNE` et `1 3 ALIGNE` sont equivalents.\n\nDeux modes de description :\n- **par points de passage** : la description d'un point peut etre completee par une tangente (`PENTE` pour l'angle avec le plan horizontal, `GIS` pour l'angle du trace en plan par rapport a OX global) ou par un alignement droit impose avec le point suivant (`ALIGNE`) ;\n- **par poles** : les cables exterieurs s'appuient sur une ligne brisee dont les points anguleux correspondent aux deviateurs et entretoises ; le trace reel est construit en imposant des raccordements circulaires (`RAYON ray`) en ces points.",
+      "args": [
+        {
+          "name": "position",
+          "kind": "choice",
+          "type": "enum",
+          "values": [
+            "INTERIEUR",
+            "EXTERIEUR"
+          ],
+          "required": false,
+          "doc": "INTERIEUR ou EXTERIEUR au beton. INTERIEUR est obligatoire pour un cable de pretension. Valeur par defaut non documentee.",
+          "pages": [
+            95,
+            96
+          ]
+        },
+        {
+          "name": "X",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Abscisse x d'un point de passage dans le repere global. Le mot-cle X est facultatif (forme positionnelle admise).",
+          "pages": [
+            95,
+            97
+          ]
+        },
+        {
+          "name": "Y",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "Ordonnee y d'un point de passage dans le repere global. Le mot-cle Y est facultatif.",
+          "pages": [
+            95,
+            97
+          ]
+        },
+        {
+          "name": "Z",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "onlyOptions": [
+            "SPATIALE"
+          ],
+          "doc": "Cote z d'un point de passage dans le repere global. Les coordonnees disponibles dependent de l'option : x,y en PLANE et GRILL ; x,y,z en SPATIALE (p43-44).",
+          "pages": [
+            95,
+            43,
+            44
+          ]
+        },
+        {
+          "name": "ALIGNE",
+          "kind": "flag",
+          "type": "flag",
+          "required": false,
+          "doc": "Impose un alignement droit entre ce point et le point suivant.",
+          "pages": [
+            97
+          ]
+        },
+        {
+          "name": "PENTE",
+          "kind": "keyword",
+          "type": "real",
+          "unit": "radian",
+          "required": false,
+          "doc": "pt : pente du trace du cable en ce point (angle avec le plan horizontal), en radians, repere general.",
+          "pages": [
+            95,
+            97
+          ]
+        },
+        {
+          "name": "GIS",
+          "kind": "keyword",
+          "type": "real",
+          "unit": "radian",
+          "required": false,
+          "doc": "gi : angle en plan du trace du cable par rapport a l'axe OX global, en radians, repere general.",
+          "pages": [
+            95,
+            97
+          ]
+        },
+        {
+          "name": "RAYON",
+          "kind": "keyword",
+          "type": "real",
+          "required": false,
+          "doc": "ray : rayon du trace du cable au passage d'un pole (raccordement circulaire).",
+          "pages": [
+            95,
+            98
+          ]
+        }
+      ],
+      "prerequisites": [
+        "Etre a l'interieur d'un bloc CABLE i ... FIN",
+        "OPTION (nombre de coordonnees)"
+      ],
+      "forbidden": [
+        "TRACE EXTERIEUR pour un cable de pretension : un cable de pretension doit etre interieur (p96)."
+      ],
+      "pitfalls": [
+        "Pour ST1, un cable EXTERIEUR n'est pas lie a la structure sur les troncons rectilignes : les poussees ne s'appliquent qu'aux deviateurs (p96).",
+        "Les angles PENTE et GIS sont en RADIANS, comme tous les angles du langage (p30).",
+        "En PLANE et GRILL, seules deux coordonnees existent (x,y) ; la troisieme n'a de sens qu'en SPATIALE (p43-44).",
+        "Un trace decrit avec PENTE aux points intermediaires et un trace decrit avec ALIGNE ne sont que 'pratiquement equivalents' : la doc le souligne sur son exemple a 5 points (p97).",
+        "L'ordre des points de TRACE definit l'origine et l'extremite du cable, donc le sens de TENSION OR / EX et de LG GAINE OR / EX (p95-97)."
+      ],
+      "examples": [
+        "TRACE\nX 1 Y 3 ALIGNE\nX 3 Y 2.5\nX 5 Y 1 PENTE 0\nX 9 Y 3",
+        "TRACE\n1 3 ALIGNE\n3 2.5\n5 1 PENTE 0\n9 3",
+        "TRACE INTERIEUR\nX 0 Z 0\nX 1 Z -0.5 PENTE -0.5\nX 20 Z -4 PENTE 0\nX 39 Z -0.5 PENTE 0.5\nX 40 Z 0",
+        "TRACE EXTERIEUR\nX 1 Y 3\nX 3 Y 2.5 RAYON 2\nX 5 Y 1 RAYON 2\nX 9 Y 3"
+      ],
+      "pages": [
+        95,
+        96,
+        97,
+        98
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+# Ce qui n'a pas a partir dans le .vsix.
+
+# Sources et outillage
+.vscode/**
+.claude/**
+.github/**
+node_modules/**
+server/node_modules/**
+src/**
+server/src/**
+shared/**
+test/**
+scripts/**
+Documentation/**
+
+**/*.ts
+**/*.map
+**/tsconfig*.json
+**/.eslintrc*
+
+# Artefacts de build hors des deux bundles reellement charges
+dist/**
+!dist/extension.js
+!dist/server.js
+
+# Sources du catalogue : seul le catalogue assemble est utile a l'utilisateur
+# (reglage st1.catalogPath, transparence de la provenance).
+catalog/**
+!catalog/st1-catalog.json
+
+# Documents de travail — le CHANGELOG est un journal interne, il ne part ni
+# sur le Marketplace ni sur GitHub.
+rapport-vs-code-aster.md
+CLAUDE.md
+CHANGELOG.md
+docs/**
+
+# Fichier de parametres livre avec ST1 (sous licence, ne pas distribuer)
+ST1.INI
+.gitignore
+.gitattributes
+.editorconfig
+*.vsix
+
+# Conserves : dist/extension.js, dist/server.js, catalog/st1-catalog.json,
+# syntaxes/, snippets/, media/, icons/, examples/,
+# language-configuration.json, package.json, README.md, LICENSE.

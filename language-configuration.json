@@ -1,0 +1,43 @@
+{
+  "comments": {
+    "lineComment": "#"
+  },
+  "brackets": [
+    ["(", ")"],
+    ["<<", ">>"]
+  ],
+  "autoClosingPairs": [
+    { "open": "(", "close": ")" },
+    { "open": "<<", "close": ">>" },
+    { "open": "'", "close": "'", "notIn": ["string", "comment"] }
+  ],
+  "surroundingPairs": [
+    ["(", ")"],
+    ["<<", ">>"],
+    ["'", "'"]
+  ],
+  "autoCloseBefore": ";,)]} \n\t",
+  "wordPattern": "(-?\\d*\\.\\d\\w*)|([^\\`\\~\\!\\@\\#\\%\\^\\&\\*\\(\\)\\-\\=\\+\\[\\{\\]\\}\\\\\\|\\;\\:\\'\\\"\\,\\.\\<\\>\\/\\?\\s]+)",
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(?:MAT|MATERIAU|PREC|CABLE|CHARG|TABLIER|SURCH|PHASAGE|COMB|ENV|RESU|INCENDIE|AMORTISSEMENT|SPECTRE|ACCELEROGRAMME|EXPOSITION|SECTION|ANALYSE|ACIER|ARMATURE|FEU|EUROCODE|ALG|CONV|PAGINATION|CONTRG|MASSE|DYNAMIQUE|mat|materiau|prec|cable|charg|tablier|surch|phasage|comb|env|resu|incendie|amortissement|spectre|accelerogramme|exposition|section|analyse|acier|armature|feu|eurocode|alg|conv|pagination|contrg|masse|dynamique)\\b(?!.*\\b(?:FIN|fin)\\b)",
+    "decreaseIndentPattern": "^\\s*(?:FIN|fin)\\b"
+  },
+  "onEnterRules": [
+    {
+      "beforeText": "^\\s*(?:CHARG|MAT|MATERIAU|PREC|CABLE|TABLIER|SURCH|PHASAGE|COMB|ENV|RESU|charg|mat|materiau|prec|cable|tablier|surch|phasage|comb|env|resu)\\b.*$",
+      "afterText": "^\\s*(?:FIN|fin)\\b",
+      "action": { "indent": "indentOutdent" }
+    },
+    {
+      "beforeText": "^\\s*#.*$",
+      "action": { "indent": "none", "appendText": "# " }
+    }
+  ],
+  "folding": {
+    "offSide": false,
+    "markers": {
+      "start": "^\\s*(?:MAT|MATERIAU|PREC|CABLE|CHARG|TABLIER|SURCH|PHASAGE|COMB|ENV|RESU|INCENDIE|AMORTISSEMENT|SPECTRE|ACCELEROGRAMME|EXPOSITION|SECTION|ANALYSE|ACIER|ARMATURE|FEU|EUROCODE|ALG|CONV|PAGINATION|CONTRG|MASSE|DYNAMIQUE|mat|materiau|prec|cable|charg|tablier|surch|phasage|comb|env|resu|incendie|amortissement|spectre|accelerogramme|exposition|section|analyse|acier|armature|feu|eurocode|alg|conv|pagination|contrg|masse|dynamique)\\b",
+      "end": "^\\s*(?:FIN|fin)\\b"
+    }
+  }
+}
